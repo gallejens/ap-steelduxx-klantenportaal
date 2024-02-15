@@ -1,0 +1,24 @@
+{
+  "name": "steelduxx-klantenportaal-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "format": "pnpm dlx @biomejs/biome check --apply ."
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.5.3",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.0"
+  }
+}

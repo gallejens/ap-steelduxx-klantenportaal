@@ -9,5 +9,5 @@ public class SteelduxxKlantenportaalApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SteelduxxKlantenportaalApplication.class, args);
 	}
-
 }
+

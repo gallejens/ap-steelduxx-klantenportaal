@@ -3,7 +3,7 @@ services:
   database:
     image: 'mysql:8.3.0'
     restart: unless-stopped
-    env_file: ./.env
+    env_file: .env
     environment:
       - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
       - MYSQL_DATABASE=$DB_DATABASE
@@ -18,7 +18,7 @@ services:
       - database
     build: ./backend
     restart: on-failure
-    env_file: ./.env
+    env_file: .env
     ports:
       - $BACKEND_LOCAL_PORT:$BACKEND_DOCKER_PORT
     environment:
@@ -35,5 +35,11 @@ services:
       - .m2:/root/.m2
     stdin_open: true
     tty: true
+  frontend:
+    build: ./frontend
+    restart: on-failure
+    env_file: .env
+    ports:
+      - $FRONTEND_LOCAL_PORT:$FRONTEND_DOCKER_PORT
 volumes:
   db:

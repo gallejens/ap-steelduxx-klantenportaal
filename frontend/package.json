@@ -7,9 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "format": "pnpm dlx @biomejs/biome check --apply ."
+    "format": "npx @biomejs/biome check --apply ."
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.21.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

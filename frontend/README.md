@@ -13,7 +13,7 @@
 - [Mantine](https://mantine.dev/getting-started/) - Component library
 - [Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/overview) - Managing api requests
 - [Tanstack Router](https://tanstack.com/router/latest/docs/framework/react/overview) - Clientside routing
-- [i18n](https://react.i18next.com/) - Internationalization
+- [i18n](https://react.i18next.com/getting-started) - Internationalization
 - [TablerIcons](https://tabler.io/icons) - Icons
 - [SASS](https://sass-lang.com/) - Stylesheets
 

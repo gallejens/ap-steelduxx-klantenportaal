@@ -7,6 +7,9 @@ import { Providers } from './Providers.tsx';
 import '@mantine/core/styles.css';
 import './styles/main.scss';
 
+// localisation
+import './i18n.ts';
+
 const rootElement = document.getElementById('root');
 
 if (!rootElement) throw new Error('Root element not found');

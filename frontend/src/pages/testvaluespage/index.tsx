@@ -1,11 +1,16 @@
 import { Button, TextInput } from '@mantine/core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { doApiAction } from '../../lib/api';
 import { TestValue } from './components/TestValue';
 import styles from './styles/testvaluespage.module.scss';
 
 export const TestValuesPage: FC = () => {
+  const {
+    t,
+    i18n: { changeLanguage, language },
+  } = useTranslation();
   const [inputValue, setInputValue] = useState('');
   const client = useQueryClient();
 
@@ -69,7 +74,7 @@ export const TestValuesPage: FC = () => {
       ))}
       <div className={styles.item}>
         <TextInput
-          placeholder='Type new value here...'
+          placeholder={t('testvaluespage:newValueInputPlaceholder')}
           value={inputValue}
           onChange={e => setInputValue(e.currentTarget.value)}
         />
@@ -79,9 +84,16 @@ export const TestValuesPage: FC = () => {
             setInputValue('');
           }}
         >
-          Add
+          {t('testvaluespage:newValueButton')}
         </Button>
       </div>
+      <Button
+        onClick={() => {
+          changeLanguage(language === 'en' ? 'nl' : 'en');
+        }}
+      >
+        Toggle Language
+      </Button>
     </div>
   );
 };

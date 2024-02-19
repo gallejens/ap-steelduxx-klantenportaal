@@ -1,7 +1,9 @@
+import { Button, TextInput } from '@mantine/core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type FC, useState } from 'react';
 import { doApiAction } from '../../lib/api';
-import styles from './testvaluespage.module.css';
+import { TestValue } from './components/TestValue';
+import styles from './styles/testvaluespage.module.scss';
 
 export const TestValuesPage: FC = () => {
   const [inputValue, setInputValue] = useState('');
@@ -57,33 +59,28 @@ export const TestValuesPage: FC = () => {
   return (
     <div className={styles.wrapper}>
       {testValues.map(testValue => (
-        <div className={styles.item} key={testValue.id}>
-          <p>{testValue.value}</p>
-          <button
-            onClick={() => {
-              deleteMutation.mutate(testValue.id);
-            }}
-            type='button'
-          >
-            Delete
-          </button>
-        </div>
+        <TestValue
+          key={testValue.id}
+          value={testValue.value}
+          onDelete={() => {
+            deleteMutation.mutate(testValue.id);
+          }}
+        />
       ))}
       <div className={styles.item}>
-        <input
-          type='text'
+        <TextInput
+          placeholder='Type new value here...'
           value={inputValue}
           onChange={e => setInputValue(e.currentTarget.value)}
         />
-        <button
+        <Button
           onClick={() => {
             addMutation.mutate(inputValue);
             setInputValue('');
           }}
-          type='button'
         >
-          Add new
-        </button>
+          Add
+        </Button>
       </div>
     </div>
   );

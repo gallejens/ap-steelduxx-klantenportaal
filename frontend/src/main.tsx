@@ -1,7 +1,11 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App.tsx';
-import './styles/main.css';
+import { Providers } from './Providers.tsx';
+
+// Base styles
+import '@mantine/core/styles.css';
+import './styles/main.scss';
 
 const rootElement = document.getElementById('root');
 
@@ -11,6 +15,8 @@ const root = ReactDOM.createRoot(rootElement);
 
 root.render(
   <StrictMode>
-    <App />
+    <Providers>
+      <App />
+    </Providers>
   </StrictMode>
 );

@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.item {
+  min-width: 25rem;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-grow: 1;
+
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: light-dark(
+    var(--mantine-color-dark-1),
+    var(--mantine-color-dark-7)
+  );
+}

@@ -8,7 +8,7 @@ import '@mantine/core/styles.css';
 import './styles/main.scss';
 
 // localisation
-import './i18n.ts';
+import './localisation/i18n.ts';
 
 const rootElement = document.getElementById('root');
 

@@ -1,4 +1,4 @@
-import { Input, TextInput, createTheme } from '@mantine/core';
+import { Input, PasswordInput, createTheme } from '@mantine/core';
 import styles from './styles/mantine.module.scss';
 
 const PRIMARY_COLORS = [
@@ -32,7 +32,7 @@ export const theme = createTheme({
       },
     }),
     // password somehow doesnt use the inputwrapper so manually override
-    PasswordInput: TextInput.extend({
+    PasswordInput: PasswordInput.extend({
       defaultProps: {
         classNames: {
           label: styles.input_label,

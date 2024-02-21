@@ -5,7 +5,18 @@
   },
   "linter": {
     "enabled": true,
-    "ignore": ["node_modules", "dist", "build", "out", "coverage", "public", "static", "vendor", "tmp", "temp"],
+    "ignore": [
+      "node_modules",
+      "dist",
+      "build",
+      "out",
+      "coverage",
+      "public",
+      "static",
+      "vendor",
+      "tmp",
+      "temp"
+    ],
     "rules": {
       "recommended": true,
       "suspicious": {

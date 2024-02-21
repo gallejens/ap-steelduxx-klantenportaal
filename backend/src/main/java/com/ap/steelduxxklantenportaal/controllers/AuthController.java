@@ -1,0 +1,19 @@
+package com.ap.steelduxxklantenportaal.controllers;
+
+import com.ap.steelduxxklantenportaal.DTOs.LoginValuesDTO;
+import com.ap.steelduxxklantenportaal.models.TestValue;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+@CrossOrigin(origins = "http://localhost:3000")
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/login")
+    public boolean login(@RequestBody LoginValuesDTO loginValuesDTO) {
+        System.out.println(loginValuesDTO);
+        return true;
+    }
+
+}

@@ -2,5 +2,22 @@
   "testvaluespage": {
     "newValueInputPlaceholder": "Enter new value...",
     "newValueButton": "Add"
+  },
+  "loginpage": {
+    "title": "Customer Portal",
+    "emailInputTitle": "Email",
+    "emailInputPlaceholder": "john.doe@mail.com",
+    "emailInputError": "Invalid email address.",
+    "passwordInputTitle": "Password",
+    "passwordInputPlaceholder": "******",
+    "passwordInputError": "Password is required.",
+    "forgotPassword": "Forgot password",
+    "loginButton": "Login",
+    "noAccountLabel": "Don't have an account?",
+    "registerLink": "Register now"
+  },
+  "notifications": {
+    "genericError": "Something went wrong",
+    "invalidForm": "One of the inputs is invalid."
   }
 }

@@ -1,0 +1,1 @@
+export const DEFAULT_MAX_NOTIFICATION_ITEMS = 5;

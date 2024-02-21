@@ -1,0 +1,10 @@
+.notifications {
+  position: absolute;
+  right: var(--mantine-spacing-md);
+  bottom: var(--mantine-spacing-md);
+  width: 20rem;
+
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--mantine-spacing-xs);
+}

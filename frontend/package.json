@@ -1,0 +1,39 @@
+{
+  "name": "steelduxx-klantenportaal-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "format": "npx @biomejs/biome check --apply ."
+  },
+  "dependencies": {
+    "@mantine/core": "^7.5.3",
+    "@mantine/hooks": "^7.5.3",
+    "@tabler/icons-react": "^2.47.0",
+    "@tanstack/react-query": "^5.21.4",
+    "@tanstack/react-router": "^1.16.6",
+    "@types/uuid": "^9.0.8",
+    "i18next": "^23.9.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^14.0.5",
+    "uuid": "^9.0.1",
+    "vite-tsconfig-paths": "^4.3.1",
+    "zustand": "^4.5.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.5.3",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "postcss": "^8.4.35",
+    "postcss-preset-mantine": "^1.13.0",
+    "postcss-simple-vars": "^7.0.1",
+    "sass": "^1.71.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.0"
+  }
+}

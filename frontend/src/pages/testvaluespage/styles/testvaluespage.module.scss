@@ -1,4 +1,5 @@
 .wrapper {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,7 +13,6 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  flex-grow: 1;
 
   border: 1px solid var(--mantine-color-default-border);
   border-radius: var(--mantine-radius-md);

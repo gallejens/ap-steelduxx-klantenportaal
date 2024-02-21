@@ -1,7 +1,10 @@
+import { ConfirmModal } from '@/components/modals';
+import { useModalStore } from '@/stores/useModalStore';
 import { Button, TextInput } from '@mantine/core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { notifications } from '../../components/notifications';
 import { doApiAction } from '../../lib/api';
 import { TestValue } from './components/TestValue';
 import styles from './styles/testvaluespage.module.scss';
@@ -13,6 +16,7 @@ export const TestValuesPage: FC = () => {
   } = useTranslation();
   const [inputValue, setInputValue] = useState('');
   const client = useQueryClient();
+  const { openModal, closeModal } = useModalStore();
 
   const {
     data: testValues,
@@ -93,6 +97,37 @@ export const TestValuesPage: FC = () => {
         }}
       >
         Toggle Language
+      </Button>
+      <Button
+        onClick={() => {
+          notifications.add({
+            message: 'This is a testnotification',
+            title: 'Test',
+            autoClose: 5000,
+          });
+        }}
+      >
+        Add Test Notification
+      </Button>
+      <Button
+        onClick={() => {
+          openModal(
+            <ConfirmModal
+              title='This is a testmodal'
+              text='You can add text here to explain what the user is confirming.'
+              onConfirm={() => {
+                closeModal();
+                notifications.add({
+                  message: 'Confirmed',
+                  title: 'Test',
+                  autoClose: 5000,
+                });
+              }}
+            />
+          );
+        }}
+      >
+        Add Confirm Modal
       </Button>
     </div>
   );

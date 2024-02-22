@@ -12,7 +12,6 @@ export const doApiAction = async <T>(data: {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
     },
     body: data.body ? JSON.stringify(data.body) : undefined,
   });

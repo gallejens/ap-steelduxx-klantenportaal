@@ -23,6 +23,8 @@
     align-items: center;
     gap: var(--mantine-spacing-md);
 
+    border-radius: var(--mantine-radius-default);
+
     // hide logo on mobile
     @media screen and (max-width: variables.$mobile-breakpoint) {
       .logo {

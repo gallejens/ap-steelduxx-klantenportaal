@@ -1,7 +1,37 @@
 version: '3.8'
 services:
+  traefik:
+    image: traefik:v3.0
+    env_file: .env
+    command:
+      - --api.dashboard=true
+      - --api.insecure=false
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entryPoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.asDefault=true
+      - --entrypoints.websecure.http.tls.certresolver=myresolver
+      - --certificatesresolvers.myresolver.acme.email=$TRAEFIK_LETSENCRYPT_EMAIL
+      - --certificatesresolvers.myresolver.acme.tlschallenge=true
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+      - --log.level=DEBUG
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - letsencrypt:/letsencrypt
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mydashboard.rule=Host(`$TRAEFIK_DASHBOARD_URL`)
+      - traefik.http.routers.mydashboard.service=api@internal
+      - traefik.http.routers.mydashboard.middlewares=myauth
+      - traefik.http.middlewares.myauth.basicauth.users=$TRAEFIK_USER:$TRAEFIK_PASSWORD/
   database:
-    image: 'mysql:8.3.0'
+    image: mysql:8.3.0
     restart: unless-stopped
     env_file: .env
     environment:
@@ -35,11 +65,20 @@ services:
       - .m2:/root/.m2
     stdin_open: true
     tty: true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`$APP_URL`) && PathPrefix(`/api`)
   frontend:
     build: ./frontend
     restart: on-failure
     env_file: .env
     ports:
       - $FRONTEND_LOCAL_PORT:$FRONTEND_DOCKER_PORT
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`$APP_URL`)
 volumes:
   db:
+  letsencrypt:
+    name: letsencrypt
+

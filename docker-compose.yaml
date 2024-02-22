@@ -17,7 +17,7 @@ services:
       - --certificatesresolvers.myresolver.acme.email=$TRAEFIK_LETSENCRYPT_EMAIL
       - --certificatesresolvers.myresolver.acme.tlschallenge=true
       - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
-      - --log.level=DEBUG
+      - --log.level=INFO
     ports:
       - 80:80
       - 443:443
@@ -29,7 +29,7 @@ services:
       - traefik.http.routers.mydashboard.rule=Host(`$TRAEFIK_DASHBOARD_URL`)
       - traefik.http.routers.mydashboard.service=api@internal
       - traefik.http.routers.mydashboard.middlewares=myauth
-      - traefik.http.middlewares.myauth.basicauth.users=$TRAEFIK_USER:$TRAEFIK_PASSWORD/
+      - traefik.http.middlewares.myauth.basicauth.users=$TRAEFIK_DASHBOARD_USER
   database:
     image: mysql:8.3.0
     restart: unless-stopped

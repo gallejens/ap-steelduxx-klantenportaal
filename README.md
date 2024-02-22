@@ -1,12 +1,18 @@
 # SP - Steelduxx klantenportaal
 
-## Stack
+## Development
 
 ### Frontend
 
-This project was scaffolded on Node 20.11.1 so we recommend using that version.
+Use Node 20.11.1 to avoid compatibility issues
+
+```
+cd frontend && npm install && npm run dev
+```
 
 ### Backend
+
+I personally use IntelliJ IDEA to run the backend during development
 
 - BellSoft Liberica JDK v17 is recommended to avoid compatibility issues
 
@@ -17,35 +23,22 @@ This project was scaffolded on Node 20.11.1 so we recommend using that version.
 
 ### Database
 
-This project uses a MySQL 8.3.0 database.
+You can use a local MySQL 8.3.0 database or fire up a MySQL 8.3.0 container, make sure its running on port 3306 and the database is named `steelduxxklantenportaal` so you dont need to change the connectionstring
 
-## Development
+## Production
 
-### Frontend
+Copy .env.template and rename to .env  
+Complete the env file by filling in db password, app_url, letsencrypt email & dashboard user
 
-```
-cd frontend && npm install && npm run dev
-```
+- To generate dashboard user password, use the following command
+  ```sh
+  echo $(htpasswd -nB user) | sed -e s/\\$/\\$\\$/g
+  ```
 
-### Backend
-
-I personally use IntelliJ IDEA to run the backend during development
-
-### Database
-
-You can use a local MySQL database or fire up a mysql container, make sure its running on port 3306 and the database is named `steelduxxklantenportaal` so you dont need to change the connectionstring
-
-## Docker
-
-Copy .env.template and rename to .env
-Complete the env file by filling in passwords
-
-Then use the following command to start containers
+Then use the following command to build & start containers
 
 ```
-
 docker compose up --build -d
-
 ```
 
 ## Bruno
@@ -53,7 +46,3 @@ docker compose up --build -d
 [Bruno](https://www.usebruno.com/) is a postman alternative to test API endpoints.
 Bruno allows you to keep track of requests inside of a collection using git.
 You can find the existing collection in bruno folder in the root of the project.
-
-```
-
-```

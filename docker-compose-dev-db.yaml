@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.3.0
+    container_name: steelduxx-dev-db
+    restart: always
+    ports:
+      - 3306:3306
+      - 33060:33060
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=steelduxxklantenportaal
+    volumes:
+      - db:/var/lib/mysql
+volumes:
+  db:

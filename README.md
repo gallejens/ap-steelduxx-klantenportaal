@@ -28,7 +28,18 @@
   - Use a local MySQL 8.3.0 installation
   - Use a MySQL 8.3.0 container
 - Make sure the database is running on port 3306 and the database is named `steelduxxklantenportaal`
+
   - If not, you will need to change the connectionstring in application.properties
+
+- There is a docker-compose-dev-db provided to start a mysql container for development
+  - Use the following command to start the container
+    ```
+    docker compose -f docker-compose-dev-db.yaml up -d
+    ```
+  - Use the following command to stop the container
+    ```
+    docker compose -f docker-compose-dev-db.yaml down
+    ```
 
 ## Staging
 

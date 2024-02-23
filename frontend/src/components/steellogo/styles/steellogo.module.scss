@@ -1,0 +1,15 @@
+.steel_logo {
+  aspect-ratio: 0.95;
+  overflow: hidden;
+
+  flex-grow: 0;
+  flex-shrink: 0;
+
+  & > .background {
+    width: 100%;
+
+    mask-image: url('/logo.svg');
+    mask-repeat: no-repeat;
+    mask-size: 100%;
+  }
+}

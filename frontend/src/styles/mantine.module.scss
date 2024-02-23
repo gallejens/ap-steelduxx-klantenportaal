@@ -1,0 +1,8 @@
+// This files serves to provide classes to as default styles for mantine components
+// these get used in the theme.ts file to extend components
+
+.input_label {
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  margin-bottom: 0.4rem;
+}

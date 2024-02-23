@@ -16,6 +16,7 @@
 - [i18n](https://react.i18next.com/getting-started) - Internationalization
 - [TablerIcons](https://tabler.io/icons) - Icons
 - [SASS](https://sass-lang.com/) - Stylesheets
+- [Zustand](https://github.com/pmndrs/zustand) - Global state management
 
 ## Folder structure
 

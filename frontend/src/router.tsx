@@ -14,13 +14,23 @@ const indexRoute = createRoute({
   component: LoginPage,
 });
 
+const loginRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/login',
+  component: LoginPage,
+});
+
 const testvaluesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/testvalues',
   component: TestValuesPage,
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, testvaluesRoute]);
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  loginRoute,
+  testvaluesRoute,
+]);
 export const router = createRouter({ routeTree });
 
 // Make autocomplete work

@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  database:
+  dev-db:
     image: mysql:8.3.0
     container_name: steelduxx-dev-db
     restart: always
@@ -12,6 +12,6 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=steelduxxklantenportaal
     volumes:
-      - db:/var/lib/mysql
+      - dev-db:/var/lib/mysql
 volumes:
-  db:
+  dev-db:

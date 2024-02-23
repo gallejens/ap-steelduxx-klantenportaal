@@ -1,23 +1,30 @@
 {
-  "testvaluespage": {
-    "newValueInputPlaceholder": "Vul een nieuwe waarde in...",
-    "newValueButton": "Toevoegen"
-  },
-  "loginpage": {
-    "title": "Klantenportaal",
-    "emailInputTitle": "Email",
-    "emailInputPlaceholder": "john.doe@mail.com",
-    "emailInputError": "Ongeldig emailadres",
-    "passwordInputTitle": "Wachtwoord",
-    "passwordInputPlaceholder": "******",
-    "passwordInputError": "Wachtwoord is vereist",
-    "forgotPassword": "Wachtwoord vergeten",
-    "loginButton": "Aanmelden",
-    "noAccountLabel": "Nog geen account?",
-    "registerLink": "Registreer nu"
-  },
-  "notifications": {
-    "genericError": "Er is iets misgegaan",
-    "invalidForm": "Een van de ingevulde waarden is ongeldig."
-  }
+	"testvaluespage": {
+		"newValueInputPlaceholder": "Vul een nieuwe waarde in...",
+		"newValueButton": "Toevoegen"
+	},
+	"loginpage": {
+		"title": "Klantenportaal",
+		"emailInputTitle": "Email",
+		"emailInputPlaceholder": "john.doe@mail.com",
+		"emailInputError": "Ongeldig emailadres",
+		"passwordInputTitle": "Wachtwoord",
+		"passwordInputPlaceholder": "******",
+		"passwordInputError": "Wachtwoord is vereist",
+		"forgotPassword": "Wachtwoord vergeten",
+		"loginButton": "Aanmelden",
+		"noAccountLabel": "Nog geen account?",
+		"registerLink": "Registreer nu"
+	},
+	"registerpage": {
+		"title": "Registratie",
+		"companyInputTitle": "Bedrijf",
+		"companyInputPlaceholder": "Steelduxx",
+		"companyInputError": "Bedrijfsnaam is verplicht",
+		"emailInputError": "Ongeldig emailadres"
+	},
+	"notifications": {
+		"genericError": "Er is iets misgegaan",
+		"invalidForm": "Een van de ingevulde waarden is ongeldig."
+	}
 }

@@ -58,7 +58,7 @@ export const RegisterForm: FC = () => {
 				}
 			},
 			postalCode: (value) => {
-				if (!value || value.length !== 4) {
+				if (!value) {
 					return t("registerpage:postalCodeInputError");
 				}
 			},
@@ -73,7 +73,7 @@ export const RegisterForm: FC = () => {
 				}
 			},
 			streetNr: (value) => {
-				if (!value || value.length !== 0) {
+				if (!value && value !== "0") {
 					return t("registerpage:streetNrInputError");
 				}
 			},
@@ -127,6 +127,7 @@ export const RegisterForm: FC = () => {
 				boxNr: values.boxNr,
 				firstName: values.firstName,
 				lastName: values.lastName,
+				//intriscode: values.intrisCode
 			},
 		});
 
@@ -175,7 +176,6 @@ export const RegisterForm: FC = () => {
 						hideControls
 						allowNegative={false}
 						allowDecimal={false}
-						maxLength={4}
 						required
 						{...registerForm.getInputProps("postalCode")}
 					/>
@@ -202,7 +202,7 @@ export const RegisterForm: FC = () => {
 						hideControls
 						allowNegative={false}
 						allowDecimal={false}
-						maxLength={4}
+						maxLength={3}
 						required
 						{...registerForm.getInputProps("streetNr")}
 					/>

@@ -28,7 +28,7 @@
 		"emailInputError": "Invalid email address",
 
 		"phoneNrInputTitle": "Phone number",
-		"phoneNrInputDesription": "Fill in the phone number of the company here",
+		"phoneNrInputDescription": "Fill in the phone number of the company here",
 		"phoneNrInputPlaceholder": "+32 123 456 789",
 		"phoneNrInputError": "Invalid phone number",
 		"vatNrInputTitle": "VAT number",

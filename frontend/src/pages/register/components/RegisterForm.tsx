@@ -1,15 +1,16 @@
 import { notifications } from "@/components/notifications";
-import { TextInput } from "@mantine/core";
+import { Button, TextInput } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
-import { FC } from "react";
+import { FC } from "react"; // Import useState
 import { useTranslation } from "react-i18next";
-import PhoneInput, { formatPhoneNumber, formatPhoneNumberIntl, isPossiblePhoneNumber, isValidPhoneNumber } from "react-phone-number-input";
+import { isPossiblePhoneNumber, isValidPhoneNumber } from "react-phone-number-input";
+import styles from "../styles/register.module.scss";
 
 type RegisterFormValues = {
 	companyName: string;
 	email: string;
 	telNr: string;
-	btwNr: string;
+	vatNr: string;
 	postalCode: string;
 	town: string;
 	street: string;
@@ -28,7 +29,7 @@ export const RegisterForm: FC = () => {
 			companyName: "",
 			email: "",
 			telNr: "",
-			btwNr: "",
+			vatNr: "",
 			postalCode: "",
 			town: "",
 			street: "",
@@ -47,7 +48,14 @@ export const RegisterForm: FC = () => {
 			},
 			email: isEmail(t("register:emailInputError")),
 			telNr: (value) => {
-				if ((!value || isPossiblePhoneNumber(value), isValidPhoneNumber(value))) {
+				if (!value || !isPossiblePhoneNumber(value) || !isValidPhoneNumber(value)) {
+					return t("registerpage:telNrInputError");
+				}
+			},
+			// FIX VAT VALIDATION
+			vatNr: (value) => {
+				if (!value) {
+					return t("registerpage:btwNrInputError");
 				}
 			},
 		},
@@ -63,16 +71,39 @@ export const RegisterForm: FC = () => {
 			});
 			return;
 		}
+
+		// Continue with your registration logic here
 	};
 
 	return (
-		<form onSubmit={registerForm.onSubmit((values) => handleRegisterButton(values))}>
+		<form className={styles.register_form} onSubmit={registerForm.onSubmit((values) => handleRegisterButton(values))}>
 			<TextInput
 				label={t("registerpage:companyInputTitle")}
 				placeholder={t("registerpage:companyInputPlaceholder")}
 				required
 				{...registerForm.getInputProps("company")}
 			/>
+			<TextInput
+				label={t("registerpage:emailInputTitle")}
+				placeholder={t("registerpage:emailInputPlaceholder")}
+				required
+				{...registerForm.getInputProps("email")}
+			/>
+			<TextInput
+				label={t("registerpage:telNrInputTitle")}
+				placeholder={t("registerpage:telNrPlaceholder")}
+				required
+				{...registerForm.getInputProps("telNr")}
+			/>
+			<TextInput
+				label={t("registerpage:vatNrInputTitle")}
+				placeholder={t("registerpage:vatNrPlaceholder")}
+				required
+				{...registerForm.getInputProps("vatNr")}
+			/>
+			<div>
+				<Button type="submit">{t("registerpage:registerButton")}</Button>
+			</div>
 		</form>
 	);
 };

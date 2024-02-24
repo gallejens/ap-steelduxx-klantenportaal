@@ -29,7 +29,7 @@ const testvaluesRoute = createRoute({
 	component: TestValuesPage,
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute, testvaluesRoute]);
+const routeTree = rootRoute.addChildren([indexRoute, loginRoute, registerRoute, testvaluesRoute]);
 export const router = createRouter({ routeTree });
 
 // Make autocomplete work

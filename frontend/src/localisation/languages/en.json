@@ -1,23 +1,40 @@
 {
-  "testvaluespage": {
-    "newValueInputPlaceholder": "Enter new value...",
-    "newValueButton": "Add"
-  },
-  "loginpage": {
-    "title": "Customer Portal",
-    "emailInputTitle": "Email",
-    "emailInputPlaceholder": "john.doe@mail.com",
-    "emailInputError": "Invalid email address.",
-    "passwordInputTitle": "Password",
-    "passwordInputPlaceholder": "******",
-    "passwordInputError": "Password is required.",
-    "forgotPassword": "Forgot password",
-    "loginButton": "Login",
-    "noAccountLabel": "Don't have an account?",
-    "registerLink": "Register now"
-  },
-  "notifications": {
-    "genericError": "Something went wrong",
-    "invalidForm": "One of the inputs is invalid."
-  }
+	"testvaluespage": {
+		"newValueInputPlaceholder": "Enter new value...",
+		"newValueButton": "Add"
+	},
+	"loginpage": {
+		"title": "Customer Portal",
+		"emailInputTitle": "Email",
+		"emailInputPlaceholder": "john.doe@mail.com",
+		"emailInputError": "Invalid email address.",
+		"passwordInputTitle": "Password",
+		"passwordInputPlaceholder": "******",
+		"passwordInputError": "Password is required.",
+		"forgotPassword": "Forgot password",
+		"loginButton": "Login",
+		"noAccountLabel": "Don't have an account?",
+		"registerLink": "Register now"
+	},
+	"registerpage": {
+		"title": "Request Account",
+		"companyInputTitle": "Company",
+		"companyInputPlaceholder": "Steelduxx",
+		"companyInputError": "Company name is required",
+		"emailInputTitle": "Email",
+		"emailInputPlaceholder": "info@steelduxx.be",
+		"emailInputError": "Invalid email address",
+		"telNrInputTitle": "Phone number",
+		"telNrInputPlaceholder": "+32 123 456 789",
+		"telNrInputError": "Invalid phone number",
+		"vatNrInputTitle": "VAT number",
+		"vatNrPlaceholder": "BE 0123 456 789",
+		"varNrInputError": "Invalid VAT number",
+
+		"registerButton": "Request"
+	},
+	"notifications": {
+		"genericError": "Something went wrong",
+		"invalidForm": "One of the inputs is invalid."
+	}
 }

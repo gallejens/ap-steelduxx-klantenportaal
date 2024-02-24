@@ -6,7 +6,7 @@
 	"loginpage": {
 		"title": "Klantenportaal",
 		"emailInputTitle": "Email",
-		"emailInputPlaceholder": "john.doe@mail.com",
+		"emailInputPlaceholder": "info@steelduxx.be",
 		"emailInputError": "Ongeldig emailadres",
 		"passwordInputTitle": "Wachtwoord",
 		"passwordInputPlaceholder": "******",
@@ -17,11 +17,21 @@
 		"registerLink": "Registreer nu"
 	},
 	"registerpage": {
-		"title": "Registratie",
+		"title": "Account Aanvragen",
 		"companyInputTitle": "Bedrijf",
 		"companyInputPlaceholder": "Steelduxx",
 		"companyInputError": "Bedrijfsnaam is verplicht",
-		"emailInputError": "Ongeldig emailadres"
+		"emailInputTitle": "Email",
+		"emailInputPlaceholder": "info@steelduxx.be",
+		"emailInputError": "Ongeldig emailadres",
+		"telNrInputTitle": "Telefoonnummer",
+		"telNrInputPlaceholder": "+32 123 456 789",
+		"telNrInputError": "Ongeldig telefoonnummer",
+		"vatNrInputTitle": "BTW nummer",
+		"vatNrPlaceholder": "BE 0123 456 789",
+		"varNrInputError": "Ongeldig BTW nummer",
+
+		"registerButton": "Aanvragen"
 	},
 	"notifications": {
 		"genericError": "Er is iets misgegaan",

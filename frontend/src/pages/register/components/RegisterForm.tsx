@@ -1,25 +1,26 @@
 import { notifications } from "@/components/notifications";
-import { Button, TextInput } from "@mantine/core";
+import { Button, NumberInput, TextInput } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 import { FC } from "react"; // Import useState
+import { checkVAT, countries } from "jsvat";
 import { useTranslation } from "react-i18next";
 import { isPossiblePhoneNumber, isValidPhoneNumber } from "react-phone-number-input";
 import styles from "../styles/register.module.scss";
+import { doApiAction } from "@/lib/api";
 
 type RegisterFormValues = {
 	companyName: string;
 	email: string;
-	telNr: string;
+	phoneNr: string;
 	vatNr: string;
 	postalCode: string;
-	town: string;
+	district: string;
 	street: string;
-	streetNumber: string;
-	boxNumber: string;
+	streetNr: string;
+	boxNr: string;
 	firstName: string;
 	lastName: string;
-	intrisCode: string;
-	password: string;
+	//intrisCode: string;
 };
 
 export const RegisterForm: FC = () => {
@@ -28,36 +29,75 @@ export const RegisterForm: FC = () => {
 		initialValues: {
 			companyName: "",
 			email: "",
-			telNr: "",
+			phoneNr: "",
 			vatNr: "",
 			postalCode: "",
-			town: "",
+			district: "",
 			street: "",
-			streetNumber: "",
-			boxNumber: "",
+			streetNr: "",
+			boxNr: "",
 			firstName: "",
 			lastName: "",
-			intrisCode: "",
-			password: "",
+			//intrisCode: ""
 		},
 		validate: {
 			companyName: (value) => {
-				if (!value || value.length === 0) {
+				if (!value) {
 					return t("registerpage:companyInputError");
 				}
 			},
-			email: isEmail(t("register:emailInputError")),
-			telNr: (value) => {
+			email: isEmail(t("registerpage:emailInputError")),
+			phoneNr: (value) => {
 				if (!value || !isPossiblePhoneNumber(value) || !isValidPhoneNumber(value)) {
-					return t("registerpage:telNrInputError");
+					return t("registerpage:phoneNrInputError");
 				}
 			},
-			// FIX VAT VALIDATION
 			vatNr: (value) => {
-				if (!value) {
-					return t("registerpage:btwNrInputError");
+				if (!value || !checkVAT(value, countries)?.isValid) {
+					return t("registerpage:vatNrInputError");
 				}
 			},
+			postalCode: (value) => {
+				if (!value || value.length !== 4) {
+					return t("registerpage:postalCodeInputError");
+				}
+			},
+			district: (value) => {
+				if (!value) {
+					return t("registerpage:districtInputError");
+				}
+			},
+			street: (value) => {
+				if (!value) {
+					return t("registerpage:streetInputError");
+				}
+			},
+			streetNr: (value) => {
+				if (!value || value.length !== 0) {
+					return t("registerpage:streetNrInputError");
+				}
+			},
+			boxNr: (value) => {
+				if (value === "0") {
+					return t("registerpage:boxNrInputError");
+				}
+			},
+			firstName: (value) => {
+				if (!value) {
+					return t("registerpage:firstNameInputError");
+				}
+			},
+			lastName: (value) => {
+				if (!value) {
+					return t("registerpage:lastNameInputError");
+				}
+			},
+			// Kan mogelijk weg gelaten worden! FIX VALIDATION
+			// intrisCode: (value) => {
+			// 	if (!value) {
+			// 		return t("registerpage:intrisCodeInputError");
+			// 	}
+			// },
 		},
 		validateInputOnBlur: true,
 	});
@@ -72,36 +112,141 @@ export const RegisterForm: FC = () => {
 			return;
 		}
 
-		// Continue with your registration logic here
+		const result = await doApiAction({
+			endpoint: "/auth/register",
+			method: "POST",
+			body: {
+				companyName: values.companyName,
+				email: values.email,
+				phoneNr: values.phoneNr,
+				vatNr: values.vatNr,
+				postalCode: values.postalCode,
+				district: values.district,
+				street: values.street,
+				streetNr: values.streetNr,
+				boxNr: values.boxNr,
+				firstName: values.firstName,
+				lastName: values.lastName,
+			},
+		});
+
+		console.log(result);
 	};
 
 	return (
 		<form className={styles.register_form} onSubmit={registerForm.onSubmit((values) => handleRegisterButton(values))}>
-			<TextInput
-				label={t("registerpage:companyInputTitle")}
-				placeholder={t("registerpage:companyInputPlaceholder")}
-				required
-				{...registerForm.getInputProps("company")}
-			/>
-			<TextInput
-				label={t("registerpage:emailInputTitle")}
-				placeholder={t("registerpage:emailInputPlaceholder")}
-				required
-				{...registerForm.getInputProps("email")}
-			/>
-			<TextInput
-				label={t("registerpage:telNrInputTitle")}
-				placeholder={t("registerpage:telNrPlaceholder")}
-				required
-				{...registerForm.getInputProps("telNr")}
-			/>
-			<TextInput
-				label={t("registerpage:vatNrInputTitle")}
-				placeholder={t("registerpage:vatNrPlaceholder")}
-				required
-				{...registerForm.getInputProps("vatNr")}
-			/>
-			<div>
+			<div className={styles.company_detail_fields}>
+				<TextInput
+					label={t("registerpage:companyInputTitle")}
+					description={t("registerpage:companyInputDescription")}
+					placeholder={t("registerpage:companyInputPlaceholder")}
+					required
+					{...registerForm.getInputProps("companyName")}
+				/>
+				<TextInput
+					className={styles.email_field}
+					label={t("registerpage:emailInputTitle")}
+					description={t("registerpage:emailInputDescription")}
+					placeholder={t("registerpage:emailInputPlaceholder")}
+					required
+					{...registerForm.getInputProps("email")}
+				/>
+				<div className={styles.number_fields}>
+					<TextInput
+						label={t("registerpage:phoneNrInputTitle")}
+						description={t("registerpage:phoneNrInputDescription")}
+						placeholder={t("registerpage:phoneNrInputPlaceholder")}
+						required
+						{...registerForm.getInputProps("phoneNr")}
+					/>
+					<TextInput
+						label={t("registerpage:vatNrInputTitle")}
+						description={t("registerpage:vatNrInputDescription")}
+						placeholder={t("registerpage:vatNrInputPlaceholder")}
+						required
+						{...registerForm.getInputProps("vatNr")}
+					/>
+				</div>
+				<div className={styles.place_fields}>
+					<NumberInput
+						label={t("registerpage:postalCodeInputTitle")}
+						description={t("registerpage:postalCodeInputDescription")}
+						placeholder={t("registerpage:postalCodeInputPlaceholder")}
+						hideControls
+						allowNegative={false}
+						allowDecimal={false}
+						maxLength={4}
+						required
+						{...registerForm.getInputProps("postalCode")}
+					/>
+					<TextInput
+						label={t("registerpage:districtInputTitle")}
+						description={t("registerpage:districtInputDescription")}
+						placeholder={t("registerpage:districtInputPlaceholder")}
+						required
+						{...registerForm.getInputProps("district")}
+					/>
+				</div>
+				<div className={styles.street_fields}>
+					<TextInput
+						label={t("registerpage:streetInputTitle")}
+						description={t("registerpage:streetInputDescription")}
+						placeholder={t("registerpage:streetInputPlaceholder")}
+						required
+						{...registerForm.getInputProps("street")}
+					/>
+					<NumberInput
+						label={t("registerpage:streetNrInputTitle")}
+						description={t("registerpage:streetNrInputDescription")}
+						placeholder={t("registerpage:streetNrInputPlaceholder")}
+						hideControls
+						allowNegative={false}
+						allowDecimal={false}
+						maxLength={4}
+						required
+						{...registerForm.getInputProps("streetNr")}
+					/>
+					<NumberInput
+						label={t("registerpage:boxNrInputTitle")}
+						description={t("registerpage:boxNrInputDescription")}
+						placeholder={t("registerpage:boxNrInputPlaceholder")}
+						hideControls
+						allowNegative={false}
+						allowDecimal={false}
+						maxLength={1}
+						{...registerForm.getInputProps("boxNr")}
+					/>
+				</div>
+			</div>
+			<div className={styles.name_fields}>
+				<TextInput
+					label={t("registerpage:firstNameInputTitle")}
+					description={t("registerpage:firstNameInputDescription")}
+					placeholder={t("registerpage:firstNameInputPlaceholder")}
+					required
+					{...registerForm.getInputProps("firstName")}
+				/>
+				<TextInput
+					className={styles.lastname_field}
+					label={" "}
+					description={t("registerpage:lastNameInputDescription")}
+					placeholder={t("registerpage:lastNameInputPlaceholder")}
+					{...registerForm.getInputProps("lastName", { required: true })}
+				/>
+				{/* <NumberInput
+					className={styles.intriscode_field}
+					label={t("registerpage:intrisCodeInputTitle")}
+					description={t("registerpage:intrisCodeInputDescription")}
+					placeholder={t("registerpage:intrisCodeInputPlaceholder")}
+					hideControls
+					allowNegative={false}
+					allowDecimal={false}
+					required
+					{...registerForm.getInputProps("intrisCode")}
+				/> */}
+			</div>
+
+			<div className={styles.register_button}>
 				<Button type="submit">{t("registerpage:registerButton")}</Button>
 			</div>
 		</form>

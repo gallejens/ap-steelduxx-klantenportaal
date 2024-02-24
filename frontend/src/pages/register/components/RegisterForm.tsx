@@ -132,6 +132,12 @@ export const RegisterForm: FC = () => {
 		});
 
 		console.log(result);
+
+		// TODO: get response from backend if account already exists
+		// 		IF NOT:
+		// 			Clear all fields and navigate to confirmation page
+		//		ELSE:
+		//			Show notification and do nothing
 	};
 
 	return (

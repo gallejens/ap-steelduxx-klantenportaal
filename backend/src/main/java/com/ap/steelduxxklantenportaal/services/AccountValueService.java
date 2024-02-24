@@ -33,6 +33,12 @@ public class AccountValueService {
                 accountValuesDTO.getFirstName(),
                 accountValuesDTO.getLastName());
 
+        if (accountValueRepository.checkIfCompanyExists(accountValuesDTO.getVatNr(), accountValuesDTO.getEmail())
+                .isPresent()) {
+            // RETURN TO FRONTEND TO SHOW POPUP
+            return null;
+        }
+
         return accountValueRepository.save(accountValues);
     }
 

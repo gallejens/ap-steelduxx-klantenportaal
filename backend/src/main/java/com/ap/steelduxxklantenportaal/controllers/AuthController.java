@@ -3,6 +3,7 @@ package com.ap.steelduxxklantenportaal.controllers;
 import com.ap.steelduxxklantenportaal.DTOs.LoginValuesDTO;
 import com.ap.steelduxxklantenportaal.DTOs.AccountValuesDTO;
 import com.ap.steelduxxklantenportaal.models.AccountValue;
+import com.ap.steelduxxklantenportaal.repositories.AccountValueRepository;
 import com.ap.steelduxxklantenportaal.services.AccountValueService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class AuthController {
     @PostMapping("/register")
     public AccountValue saveRequest(@RequestBody AccountValuesDTO accountValuesDTO) {
         System.out.println(accountValuesDTO);
+
         return accountValueService.add(accountValuesDTO);
     }
 }

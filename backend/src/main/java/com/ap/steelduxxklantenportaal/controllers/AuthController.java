@@ -46,10 +46,4 @@ public class AuthController {
         Map<String, String> responseBody = Collections.singletonMap("message", "registerpage:accountRegistered");
         return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
-
-    // @GetMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    // public Map<String, Object> getString() {
-
-    // }
-
 }

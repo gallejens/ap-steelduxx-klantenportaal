@@ -36,10 +36,10 @@
 		"vatNrInputPlaceholder": "BE 0123 456 789",
 		"vatNrInputError": "Invalid VAT number",
 
-		"postalCodeInputTitle": "Postal code",
-		"postalCodeInputDescription": "Fill in the postal code of the company here",
+		"postalCodeInputTitle": "ZIP",
+		"postalCodeInputDescription": "Fill in the zip of the company here",
 		"postalCodeInputPlaceholder": "2000",
-		"postalCodeInputError": "Postal code is required",
+		"postalCodeInputError": "ZIP is required",
 		"districtInputTitle": "District",
 		"districtInputDescription": "Fill in the district of the company here",
 		"districtInputPlaceholder": "Antwerp",
@@ -73,8 +73,11 @@
 
 		"registerButton": "Request",
 
-    "accountAlreadyExists": "Account already exists",
-    "accountRegistered": "Account registered"
+		"accountAlreadyExists": "Account already exists",
+		"accountRegistered": "Account registered",
+
+		"accountLabel": "Already have an account?",
+		"loginLink": "Log in"
 	},
 	"notifications": {
 		"genericError": "Something went wrong",

@@ -1,5 +1,5 @@
 import { notifications } from "@/components/notifications";
-import { Button, NumberInput, TextInput } from "@mantine/core";
+import { Button, NumberInput, TextInput, Text } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 import { FC } from "react"; // Import useState
 import { checkVAT, countries } from "jsvat";
@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { isPossiblePhoneNumber, isValidPhoneNumber } from "react-phone-number-input";
 import styles from "../styles/register.module.scss";
 import { doApiAction } from "@/lib/api";
+import { useNavigate } from "@tanstack/react-router";
 
 type RegisterFormValues = {
 	companyName: string;
@@ -25,6 +26,8 @@ type RegisterFormValues = {
 
 export const RegisterForm: FC = () => {
 	const { t } = useTranslation();
+	const navigate = useNavigate();
+
 	const registerForm = useForm<RegisterFormValues>({
 		initialValues: {
 			companyName: "",
@@ -112,7 +115,7 @@ export const RegisterForm: FC = () => {
 			return;
 		}
 
-		const result = await doApiAction<{message: string}>({
+		const result = await doApiAction<{ message: string }>({
 			endpoint: "/auth/register",
 			method: "POST",
 			body: {
@@ -131,17 +134,10 @@ export const RegisterForm: FC = () => {
 			},
 		});
 
-    notifications.add({
-      message: t(result.message),
-      autoClose: 5000
-    });
-
-
-		// TODO: get response from backend if account already exists
-		// 		IF NOT:
-		// 			Clear all fields and navigate to confirmation page
-		//		ELSE:
-		//			Show notification and do nothing
+		notifications.add({
+			message: t(result.message),
+			autoClose: 5000,
+		});
 	};
 
 	return (
@@ -205,14 +201,11 @@ export const RegisterForm: FC = () => {
 						required
 						{...registerForm.getInputProps("street")}
 					/>
-					<NumberInput
+					<TextInput
 						label={t("registerpage:streetNrInputTitle")}
 						description={t("registerpage:streetNrInputDescription")}
 						placeholder={t("registerpage:streetNrInputPlaceholder")}
-						hideControls
-						allowNegative={false}
-						allowDecimal={false}
-						maxLength={3}
+						maxLength={4}
 						required
 						{...registerForm.getInputProps("streetNr")}
 					/>
@@ -255,9 +248,21 @@ export const RegisterForm: FC = () => {
 					{...registerForm.getInputProps("intrisCode")}
 				/> */}
 			</div>
-
-			<div className={styles.register_button}>
-				<Button type="submit">{t("registerpage:registerButton")}</Button>
+			<div className={styles.go_login_register_button}>
+				<div className={styles.register_button}>
+					<Button type="submit">{t("registerpage:registerButton")}</Button>
+				</div>
+				<div className={styles.go_login_text}>
+					<Text c="dimmed">{t("registerpage:accountLabel")}</Text>
+					<Text
+						c="dimmed"
+						onClick={() => {
+							navigate({ to: "/login" });
+						}}
+						className={styles.login_link}>
+						{t("registerpage:loginLink")}
+					</Text>
+				</div>
 			</div>
 		</form>
 	);

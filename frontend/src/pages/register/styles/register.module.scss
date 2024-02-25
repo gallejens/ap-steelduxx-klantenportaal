@@ -56,7 +56,7 @@
 
 			& > button {
 				position: absolute;
-				top: 25%;
+				gap: calc(var(--mantine-spacing-xs) / 2);
 				left: 20px;
 			}
 
@@ -68,16 +68,6 @@
 
 		& > .body {
 			gap: var(--mantine-spacing-xl);
-		}
-
-		& > .footer {
-			align-items: center;
-			justify-content: center;
-			gap: calc(var(--mantine-spacing-xs) / 2);
-
-			& > * {
-				font-size: 0.8rem;
-			}
 		}
 	}
 }
@@ -151,10 +141,36 @@
 		}
 	}
 
-	& > .register_button {
+	& > .go_login_register_button {
 		position: absolute;
 		bottom: 20px;
 		right: 0;
+
+		& > .register_button {
+			display: flex;
+			justify-content: end;
+
+			margin-bottom: 10px;
+		}
+
+		& > .go_login_text {
+			display: flex;
+			justify-content: end;
+		}
+
+		& > * {
+			font-size: 0.8rem;
+		}
+
+		& .login_link {
+			font-weight: 700;
+			text-decoration: underline;
+			padding-left: 5px;
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
 	}
 
 	@media screen and (max-width: variables.$mobile-breakpoint) {

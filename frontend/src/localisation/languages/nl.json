@@ -32,14 +32,14 @@
 		"phoneNrInputPlaceholder": "+32 123 456 789",
 		"phoneNrInputError": "Ongeldig telefoonnummer",
 		"vatNrInputTitle": "BTW nummer",
-		"vatNrInputDescription": "Vul hier de BTW numme van het bedrijf",
+		"vatNrInputDescription": "Vul hier de BTW nummer van het bedrijf",
 		"vatNrInputPlaceholder": "BE 0123 456 789",
 		"vatNrInputError": "Ongeldig BTW nummer",
 
-		"postalCodeInputTitle": "Postcode",
-		"postalCodeInputDescription": "Vul hier de postcode van het bedrijf",
+		"postalCodeInputTitle": "ZIP",
+		"postalCodeInputDescription": "Vul hier de zip van het bedrijf",
 		"postalCodeInputPlaceholder": "2000",
-		"postalCodeInputError": "Postcode is verplicht",
+		"postalCodeInputError": "ZIP is verplicht",
 		"districtInputTitle": "Gemeente",
 		"districtInputDescription": "Vul hier de gemeente van het bedrijf",
 		"districtInputPlaceholder": "Antwerpen",
@@ -73,8 +73,11 @@
 
 		"registerButton": "Request",
 
-    "accountAlreadyExists": "Account bestaat al",
-    "accountRegistered": "Account geregistreerd"
+		"accountAlreadyExists": "Account bestaat al",
+		"accountRegistered": "Account geregistreerd",
+
+		"accountLabel": "Heeft u al een account?",
+		"loginLink": "Log in"
 	},
 	"notifications": {
 		"genericError": "Er is iets misgegaan",

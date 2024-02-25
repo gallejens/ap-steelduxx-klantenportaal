@@ -4,7 +4,7 @@ import styles from "./styles/register.module.scss";
 import { ActionIcon, Divider, Text } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "@tanstack/react-router";
-import navigate_back_icon from "../../../public/navigate_back_icon.svg";
+import { IconArrowLeft } from "@tabler/icons-react";
 
 export const RegisterPage: FC = () => {
 	const { t } = useTranslation();
@@ -15,11 +15,7 @@ export const RegisterPage: FC = () => {
 			<div className={styles.panel}>
 				<div className={styles.header}>
 					<ActionIcon onClick={() => history.go(-1)} style={{ width: "32px", height: "32px" }}>
-						<img
-							src={navigate_back_icon}
-							alt="Navigate Back"
-							style={{ width: "18px", height: "18px", filter: "invert(100%)" }}
-						/>
+						<IconArrowLeft />
 					</ActionIcon>
 					<Text>{t("registerpage:title")}</Text>
 				</div>

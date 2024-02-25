@@ -8,23 +8,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notification")
 public class NotificationController {
 
-    private final NotificationService notificationService;
-
     @Autowired
-    public NotificationController(NotificationService notificationService) {
-        this.notificationService = notificationService;
+    private NotificationService notificationService;
+
+    @GetMapping("/notifications")
+    public List<Notification> getAllNotifications() {
+        return notificationService.getAllNotifications();
     }
 
-    @PostMapping
-    public Notification createNotification(@RequestBody Notification notification) {
-        return notificationService.createNotification(notification);
-    }
-
-    @GetMapping("/{userId}")
-    public List<Notification> getNotificationsByUserId(@PathVariable Long userId) {
-        return notificationService.getNotificationsByUserId(userId);
+    @PostMapping("/notifications/test")
+    public Notification createTestNotification() {
+        return notificationService.createTestNotification();
     }
 }

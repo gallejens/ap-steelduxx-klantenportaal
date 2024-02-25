@@ -4,22 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.ap.steelduxxklantenportaal.repositories.NotificationRepository;
 import com.ap.steelduxxklantenportaal.models.Notification;
 
+import java.util.Date;
 import java.util.List;
 
 public class NotificationService {
 
-    private final NotificationRepository notificationRepository;
-
     @Autowired
-    public NotificationService(NotificationRepository notificationRepository) {
-        this.notificationRepository = notificationRepository;
+    private NotificationRepository notificationRepository;
+
+    public List<Notification> getAllNotifications() {
+        return notificationRepository.findAll();
     }
 
-    public Notification createNotification(Notification notification) {
+    public Notification createTestNotification() {
+        Notification notification = new Notification();
+        notification.setTitle("Test Notification");
+        notification.setMessage("This is a test notification.");
+        notification.setCreatedAt(new Date());
+        notification.setRead(false);
         return notificationRepository.save(notification);
-    }
-
-    public List<Notification> getNotificationsByUserId(Long userId) {
-        return notificationRepository.findByUserId(userId);
     }
 }

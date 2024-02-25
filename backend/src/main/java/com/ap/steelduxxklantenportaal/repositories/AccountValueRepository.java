@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ap.steelduxxklantenportaal.models.AccountValue;
 
 public interface AccountValueRepository extends JpaRepository<AccountValue, Long> {
-    Optional<AccountValue> checkIfAccountRequestExists(String vatNr, String email);
+    Optional<AccountValue> findByVatNrAndEmail(String vatNr, String email);
 }

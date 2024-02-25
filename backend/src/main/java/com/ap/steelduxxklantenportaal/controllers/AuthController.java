@@ -6,13 +6,20 @@ import com.ap.steelduxxklantenportaal.models.AccountValue;
 import com.ap.steelduxxklantenportaal.repositories.AccountValueRepository;
 import com.ap.steelduxxklantenportaal.services.AccountValueService;
 
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+    @Autowired
+    AccountValueRepository accountValueRepository;
 
     @Autowired
     private AccountValueService accountValueService;
@@ -24,11 +31,25 @@ public class AuthController {
         return true;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register")
-    public AccountValue saveRequest(@RequestBody AccountValuesDTO accountValuesDTO) {
+    public ResponseEntity<Object> saveRequest(@RequestBody AccountValuesDTO accountValuesDTO) {
         System.out.println(accountValuesDTO);
+        if (accountValueRepository.findByVatNrAndEmail(accountValuesDTO.getVatNr(),
+                accountValuesDTO.getEmail()).isPresent()) {
 
-        return accountValueService.add(accountValuesDTO);
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("success", false);
+            responseMap.put("message", "Account request already exists");
+            return new ResponseEntity<>(responseMap, HttpStatus.OK);
+        }
+
+        AccountValue savedAccountValue = accountValueService.add(accountValuesDTO);
+        return new ResponseEntity<>(savedAccountValue, HttpStatus.CREATED);
     }
+
+    // @GetMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    // public Map<String, Object> getString() {
+
+    // }
+
 }

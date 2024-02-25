@@ -131,6 +131,12 @@ export const RegisterForm: FC = () => {
 			},
 		});
 
+		const response = await doApiAction({
+			endpoint: "/auth/register",
+			method: "GET",
+			body: {},
+		});
+
 		console.log(result);
 
 		// TODO: get response from backend if account already exists

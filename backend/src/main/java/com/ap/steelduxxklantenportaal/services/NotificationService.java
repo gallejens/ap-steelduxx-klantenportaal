@@ -1,12 +1,15 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.ap.steelduxxklantenportaal.repositories.NotificationRepository;
 import com.ap.steelduxxklantenportaal.models.Notification;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class NotificationService {
 
     @Autowired

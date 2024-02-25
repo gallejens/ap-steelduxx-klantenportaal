@@ -6,6 +6,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
+RUN npm pkg set scripts.postinstall="echo no-postinstall"
 RUN npm install
 
 COPY . .

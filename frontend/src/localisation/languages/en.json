@@ -71,7 +71,10 @@
 		"intrisCodeInputPlaceholder": "1234567",
 		"intrisCodeInputError": "Invalid intris code",
 
-		"registerButton": "Request"
+		"registerButton": "Request",
+
+    "accountAlreadyExists": "Account already exists",
+    "accountRegistered": "Account registered"
 	},
 	"notifications": {
 		"genericError": "Something went wrong",

@@ -37,14 +37,14 @@ public class AuthController {
         if (accountValueRepository.findByVatNrAndEmail(accountValuesDTO.getVatNr(),
                 accountValuesDTO.getEmail()).isPresent()) {
 
-            Map<String, Object> responseMap = new HashMap<>();
-            responseMap.put("success", false);
-            responseMap.put("message", "Account request already exists");
-            return new ResponseEntity<>(responseMap, HttpStatus.OK);
+            Map<String, String> responseBody = Collections.singletonMap("message", "registerpage:accountAlreadyExists");
+            return new ResponseEntity<>(responseBody, HttpStatus.OK);
         }
 
-        AccountValue savedAccountValue = accountValueService.add(accountValuesDTO);
-        return new ResponseEntity<>(savedAccountValue, HttpStatus.CREATED);
+        accountValueService.add(accountValuesDTO);
+
+        Map<String, String> responseBody = Collections.singletonMap("message", "registerpage:accountRegistered");
+        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
 
     // @GetMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -112,7 +112,7 @@ export const RegisterForm: FC = () => {
 			return;
 		}
 
-		const result = await doApiAction({
+		const result = await doApiAction<{message: string}>({
 			endpoint: "/auth/register",
 			method: "POST",
 			body: {
@@ -131,13 +131,11 @@ export const RegisterForm: FC = () => {
 			},
 		});
 
-		const response = await doApiAction({
-			endpoint: "/auth/register",
-			method: "GET",
-			body: {},
-		});
+    notifications.add({
+      message: t(result.message),
+      autoClose: 5000
+    });
 
-		console.log(result);
 
 		// TODO: get response from backend if account already exists
 		// 		IF NOT:

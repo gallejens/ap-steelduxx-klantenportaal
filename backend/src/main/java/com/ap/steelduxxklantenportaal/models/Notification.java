@@ -13,19 +13,24 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId; // om users te filteren(voor later)
+    // private Long userId; om users te filteren(voor later)
+
+    private String title;
 
     private String message;
 
-    private Date CreatedAt;
+    private Date createdAt;
+
+    private boolean read;
 
     public Notification() {
     }
 
-    public Notification(Long id, Long userId, String message, Date CreatedAt) {
-        this.userId = userId;
+    public Notification(String title, String message, Date createdAt, boolean read) {
+        this.title = title;
         this.message = message;
-        this.CreatedAt = CreatedAt;
+        this.createdAt = createdAt;
+        this.read = read;
     }
 
     public Long getId() {
@@ -36,12 +41,20 @@ public class Notification {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    // public Long getUserId() {
+    // return userId;
+    // }
+
+    // public void setUserId(Long userId) {
+    // this.userId = userId;
+    // }
+
+    public String getTitle() {
+        return title;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getMessage() {
@@ -53,11 +66,19 @@ public class Notification {
     }
 
     public Date getCreatedAt() {
-        return CreatedAt;
+        return createdAt;
     }
 
     public void setCreatedAt(Date CreatedAt) {
-        this.CreatedAt = CreatedAt;
+        this.createdAt = CreatedAt;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 
 }

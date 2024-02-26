@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/notifications")
+@RequestMapping("/notifications")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -23,7 +23,7 @@ public class NotificationController {
         return notificationService.createNotification(notification);
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/user/{userId}")
     public List<Notification> getNotificationsByUserId(@PathVariable Long userId) {
         return notificationService.getNotificationsByUserId(userId);
     }

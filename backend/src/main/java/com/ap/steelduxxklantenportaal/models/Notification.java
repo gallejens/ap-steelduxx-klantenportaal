@@ -24,7 +24,8 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(String title, String message, Date createdAt) {
+    public Notification(Long userId, String title, String message, Date createdAt) {
+        this.userId = userId;
         this.title = title;
         this.message = message;
         this.createdAt = createdAt;

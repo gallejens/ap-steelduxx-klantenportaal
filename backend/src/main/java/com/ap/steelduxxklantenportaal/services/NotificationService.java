@@ -24,7 +24,6 @@ public class NotificationService {
         notification.setTitle("Test Notification");
         notification.setMessage("This is a test notification.");
         notification.setCreatedAt(new Date());
-        notification.setRead(false);
         return notificationRepository.save(notification);
     }
 }

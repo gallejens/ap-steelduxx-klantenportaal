@@ -30,7 +30,6 @@ const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
   testvaluesRoute,
-  notifRoute
 ]);
 export const router = createRouter({ routeTree });
 

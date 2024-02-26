@@ -5,7 +5,6 @@ import {
 } from '@tanstack/react-router';
 import { LoginPage } from './pages/login';
 import { TestValuesPage } from './pages/testvaluespage';
-import { NotifPage } from './pages/notif/components/Notif';
 
 const rootRoute = createRootRoute();
 
@@ -25,12 +24,6 @@ const testvaluesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/testvalues',
   component: TestValuesPage,
-});
-
-const notifRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/notif',
-  component: NotifPage,
 });
 
 const routeTree = rootRoute.addChildren([

@@ -14,18 +14,14 @@
 		"forgotPassword": "Forgot password",
 		"loginButton": "Login",
 		"noAccountLabel": "Don't have an account?",
-		"registerLink": "Register now"
+		"userrequestLink": "Register now"
 	},
-	"registerpage": {
+	"userrequestpage": {
 		"title": "Request Account",
 		"companyInputTitle": "Company",
 		"companyInputDescription": "Fill in the name of the company here",
 		"companyInputPlaceholder": "Steelduxx",
 		"companyInputError": "Company name is required",
-		"emailInputTitle": "Email",
-		"emailInputDescription": "Fill in the email of the company here",
-		"emailInputPlaceholder": "info@steelduxx.be",
-		"emailInputError": "Invalid email address",
 
 		"phoneNrInputTitle": "Phone number",
 		"phoneNrInputDescription": "Fill in the phone number of the company here",
@@ -66,17 +62,16 @@
 		"lastNameInputPlaceholder": "Doe",
 		"lastNameInputError": "Last name is required",
 
-		"intrisCodeInputTitle": "Intris code",
-		"intrisCodeInputDescription": "Fill in the intris code of the company here",
-		"intrisCodeInputPlaceholder": "1234567",
-		"intrisCodeInputError": "Invalid intris code",
+		"emailInputDescription": "Email",
+		"emailInputPlaceholder": "info@steelduxx.be",
+		"emailInputError": "Invalid email address",
 
-		"registerButton": "Request",
+		"userRequestButton": "Request",
 
-		"accountAlreadyExists": "Account already exists",
-		"accountRegistered": "Account registered",
+		"userRequestAlreadyExists": "Account already exists",
+		"userRequestRequested": "Account requested",
 
-		"accountLabel": "Already have an account?",
+		"userRequestLabel": "Already have an account?",
 		"loginLink": "Log in"
 	},
 	"notifications": {

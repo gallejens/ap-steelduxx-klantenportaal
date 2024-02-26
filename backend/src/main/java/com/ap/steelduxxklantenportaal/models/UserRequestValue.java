@@ -1,17 +1,19 @@
 package com.ap.steelduxxklantenportaal.models;
 
+import com.ap.steelduxxklantenportaal.enums.StatusEnum;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "accounts")
-public class AccountValue {
-    public AccountValue() {
+@Table(name = "user_requests")
+public class UserRequestValue {
+    public UserRequestValue() {
     }
 
-    public AccountValue(String companyName, String email, String phoneNr, String vatNr, String postalCode,
-            String district, String street, String streetNr, String boxNr, String firstName, String lastName) {
+    public UserRequestValue(String companyName, String phoneNr, String vatNr, String postalCode,
+            String district, String street, String streetNr, String boxNr, String firstName, String lastName,
+            String email, Long createdOn, StatusEnum status, String denyMessage) {
         this.companyName = companyName;
-        this.email = email;
         this.phoneNr = phoneNr;
         this.vatNr = vatNr;
         this.postalCode = postalCode;
@@ -21,6 +23,10 @@ public class AccountValue {
         this.boxNr = boxNr;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
+        this.createdOn = createdOn;
+        this.status = status;
+        this.denyMessage = denyMessage;
     }
 
     @Id
@@ -28,8 +34,6 @@ public class AccountValue {
     private Long id;
     @Column(name = "company_name")
     private String companyName;
-    @Column(name = "email")
-    private String email;
     @Column(name = "phone_nr")
     private String phoneNr;
     @Column(name = "vat_nr")
@@ -48,6 +52,14 @@ public class AccountValue {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "created_on")
+    private Long createdOn;
+    @Column(name = "status")
+    private StatusEnum status;
+    @Column(name = "deny_message")
+    private String denyMessage;
 
     public Long getId() {
         return id;
@@ -59,14 +71,6 @@ public class AccountValue {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhoneNr() {
@@ -137,15 +141,47 @@ public class AccountValue {
         return lastName;
     }
 
-    public void setLastNamel(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Long getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Long createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public StatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEnum status) {
+        this.status = status;
+    }
+
+    public String getDenyMessage() {
+        return denyMessage;
+    }
+
+    public void setDenyMessage(String denyMessage) {
+        this.denyMessage = denyMessage;
     }
 
     @Override
     public String toString() {
-        return "AccountValue [id=" + id + ", companyName=" + companyName + ", email=" + email + ", phoneNr=" + phoneNr
-                + ", vatNr=" + vatNr + ", postalCode=" + postalCode + ", district=" + district + ", street=" + street
-                + ", streetNr=" + streetNr + ", boxNr=" + boxNr + ", firstName=" + firstName + ", lastName="
-                + lastName + "]";
+        return "UserRequestValue [id=" + id + ", companyName=" + companyName + ", phoneNr=" + phoneNr + ", vatNr="
+                + vatNr + ", postalCode=" + postalCode + ", district=" + district + ", street=" + street + ", streetNr="
+                + streetNr + ", boxNr=" + boxNr + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
+                + email + ", createdOn=" + createdOn + ", status=" + status + ", denyMessage=" + denyMessage + "]";
     }
 }

@@ -1,8 +1,9 @@
 package com.ap.steelduxxklantenportaal.DTOs;
 
-public class AccountValuesDTO {
+import com.ap.steelduxxklantenportaal.enums.StatusEnum;
+
+public class UserRequestValuesDTO {
     private String companyName;
-    private String email;
     private String phoneNr;
     private String vatNr;
     private String postalCode;
@@ -12,15 +13,18 @@ public class AccountValuesDTO {
     private String boxNr;
     private String firstName;
     private String lastName;
-    // private String intrisCode;
+    private String email;
+    private Long createdOn;
+    private StatusEnum status;
+    private String denyMessage;
 
-    public AccountValuesDTO() {
+    public UserRequestValuesDTO() {
     }
 
-    public AccountValuesDTO(String companyName, String email, String phoneNr, String vatNr, String postalCode,
-            String district, String street, String streetNr, String boxNr, String firstName, String lastName) {
+    public UserRequestValuesDTO(String companyName, String phoneNr, String vatNr, String postalCode,
+            String district, String street, String streetNr, String boxNr, String firstName, String lastName,
+            String email, Long createdOn, StatusEnum status, String denyMessage) {
         this.companyName = companyName;
-        this.email = email;
         this.phoneNr = phoneNr;
         this.vatNr = vatNr;
         this.postalCode = postalCode;
@@ -30,6 +34,10 @@ public class AccountValuesDTO {
         this.boxNr = boxNr;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
+        this.createdOn = createdOn;
+        this.status = status;
+        this.denyMessage = denyMessage;
     }
 
     public String getCompanyName() {
@@ -38,14 +46,6 @@ public class AccountValuesDTO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhoneNr() {
@@ -120,11 +120,44 @@ public class AccountValuesDTO {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Long getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Long createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public StatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEnum status) {
+        this.status = status;
+    }
+
+    public String getDenyMessage() {
+        return denyMessage;
+    }
+
+    public void setDenyMessage(String denyMessage) {
+        this.denyMessage = denyMessage;
+    }
+
     @Override
     public String toString() {
-        return "RegisterValuesDTO [companyName=" + companyName + ", email=" + email + ", phoneNr=" + phoneNr
-                + ", vatNr=" + vatNr + ", postalCode=" + postalCode + ", distric=" + district + ", street=" + street
-                + ", streetNr=" + streetNr + ", boxNr=" + boxNr + ", firstName=" + firstName + ", lastName=" + lastName
-                + "]";
+        return "UserRequestValuesDTO [companyName=" + companyName + ", phoneNr=" + phoneNr + ", vatNr=" + vatNr
+                + ", postalCode=" + postalCode + ", district=" + district + ", street=" + street + ", streetNr="
+                + streetNr + ", boxNr=" + boxNr + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
+                + email + ", createdOn=" + createdOn + ", status=" + status + ", denyMessage=" + denyMessage + "]";
     }
+
 }

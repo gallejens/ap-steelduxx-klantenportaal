@@ -14,18 +14,14 @@
 		"forgotPassword": "Wachtwoord vergeten",
 		"loginButton": "Aanmelden",
 		"noAccountLabel": "Nog geen account?",
-		"registerLink": "Registreer nu"
+		"userrequestLink": "Registreer nu"
 	},
-	"registerpage": {
+	"userrequestpage": {
 		"title": "Vraag Account Aan",
 		"companyInputTitle": "Bedrijf",
 		"companyInputDescription": "Vul hier de naam van het bedrijf",
 		"companyInputPlaceholder": "Steelduxx",
 		"companyInputError": "Bedrijfsnaam is verplicht",
-		"emailInputTitle": "E-mail",
-		"emailInputDescription": "Vul hier de e-mail van het bedrijf",
-		"emailInputPlaceholder": "info@steelduxx.be",
-		"emailInputError": "Ongeldig e-mailadres",
 
 		"phoneNrInputTitle": "Telefoonnummer",
 		"phoneNrInputDesription": "Vul hier de telefoonnummer van het bedrijf",
@@ -66,17 +62,16 @@
 		"lastNameInputPlaceholder": "Doe",
 		"lastNameInputError": "Achternaam is verplicht",
 
-		"intrisCodeInputTitle": "Intris code",
-		"intrisCodeInputDescription": "Vul hier de intris code van het bedrijf",
-		"intrisCodeInputPlaceholder": "1234567",
-		"intrisCodeInputError": "Ongeldige intris code",
+		"emailInputDescription": "E-mail",
+		"emailInputPlaceholder": "info@steelduxx.be",
+		"emailInputError": "Ongeldig e-mailadres",
 
-		"registerButton": "Request",
+		"userRequestButton": "Request",
 
-		"accountAlreadyExists": "Account bestaat al",
-		"accountRegistered": "Account geregistreerd",
+		"userRequestAlreadyExists": "Account bestaat al",
+		"userRequestRequested": "Account geregistreerd",
 
-		"accountLabel": "Heeft u al een account?",
+		"userRequestLabel": "Heeft u al een account?",
 		"loginLink": "Log in"
 	},
 	"notifications": {

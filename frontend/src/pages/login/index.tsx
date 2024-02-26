@@ -27,10 +27,10 @@ export const LoginPage: FC = () => {
 					<Text
 						c="dimmed"
 						onClick={() => {
-							navigate({ to: "/register" });
+							navigate({ to: "/request_account" });
 						}}
-						className={styles.register_link}>
-						{t("loginpage:registerLink")}
+						className={styles.userrequest_link}>
+						{t("loginpage:userrequestLink")}
 					</Text>
 				</div>
 			</div>

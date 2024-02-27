@@ -57,6 +57,7 @@ public class UserRequestValue {
     @Column(name = "created_on")
     private Long createdOn;
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private StatusEnum status;
     @Column(name = "deny_message")
     private String denyMessage;

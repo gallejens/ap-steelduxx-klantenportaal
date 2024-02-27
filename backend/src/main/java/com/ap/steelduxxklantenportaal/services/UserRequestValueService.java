@@ -23,7 +23,6 @@ public class UserRequestValueService {
     public UserRequestValue add(UserRequestValuesDTO userRequestValuesDTO) {
         UserRequestValue userRequestValues = new UserRequestValue(
                 userRequestValuesDTO.getCompanyName(),
-                userRequestValuesDTO.getEmail(),
                 userRequestValuesDTO.getPhoneNr(),
                 userRequestValuesDTO.getVatNr(),
                 userRequestValuesDTO.getPostalCode(),
@@ -33,6 +32,7 @@ public class UserRequestValueService {
                 userRequestValuesDTO.getBoxNr(),
                 userRequestValuesDTO.getFirstName(),
                 userRequestValuesDTO.getLastName(),
+                userRequestValuesDTO.getEmail(),
                 userRequestValuesDTO.getCreatedOn(),
                 StatusEnum.PENDING,
                 "");

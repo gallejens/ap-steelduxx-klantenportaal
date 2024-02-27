@@ -11,7 +11,6 @@ import { FC } from "react";
 
 type UserRequestFormValues = {
 	companyName: string;
-	email: string;
 	phoneNr: string;
 	vatNr: string;
 	postalCode: string;
@@ -21,9 +20,8 @@ type UserRequestFormValues = {
 	boxNr: string;
 	firstName: string;
 	lastName: string;
+	email: string;
 	createdOn: number;
-	status: string;
-	deny_message: string;
 };
 
 export const UserRequestForm: FC = () => {
@@ -33,7 +31,6 @@ export const UserRequestForm: FC = () => {
 	const UserRequestForm = useForm<UserRequestFormValues>({
 		initialValues: {
 			companyName: "",
-			email: "",
 			phoneNr: "",
 			vatNr: "",
 			postalCode: "",
@@ -43,6 +40,7 @@ export const UserRequestForm: FC = () => {
 			boxNr: "",
 			firstName: "",
 			lastName: "",
+			email: "",
 			createdOn: Date.now(),
 		},
 		validate: {

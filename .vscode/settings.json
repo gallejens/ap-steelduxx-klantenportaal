@@ -1,0 +1,10 @@
+{
+  "biome.lspBin": "frontend/node_modules/@biomejs/biome/bin/biome",
+  "cssVariables.lookupFiles": [
+    "**/*.css",
+    "**/*.scss",
+    "**/*.sass",
+    "**/*.less",
+    "frontend/node_modules/@mantine/core/styles.css"
+  ]
+}

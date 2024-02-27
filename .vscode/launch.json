@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-SteelduxxKlantenportaalApplication<steelduxx-klantenportaal>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.ap.steelduxxklantenportaal.SteelduxxKlantenportaalApplication",
+      "projectName": "steelduxx-klantenportaal",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

@@ -18,4 +18,3 @@ export const doApiAction = async <T>(data: {
   if (response.status === 204) return {} as T;
   return response.json();
 };
-

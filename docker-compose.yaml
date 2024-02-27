@@ -1,86 +1,87 @@
-version: "3.8"
+version: '3.8'
 services:
-    traefik:
-        image: traefik:v3.0
-        container_name: traefik
-        env_file: .env
-        command:
-            - --api.dashboard=true
-            - --api.insecure=false
-            - --providers.docker=true
-            - --providers.docker.exposedByDefault=false
-            - --entrypoints.web.address=:80
-            - --entrypoints.web.http.redirections.entrypoint.to=websecure
-            - --entryPoints.web.http.redirections.entrypoint.scheme=https
-            - --entrypoints.websecure.address=:443
-            - --entrypoints.websecure.asDefault=true
-            - --entrypoints.websecure.http.tls.certresolver=myresolver
-            - --certificatesresolvers.myresolver.acme.email=$TRAEFIK_LETSENCRYPT_EMAIL
-            - --certificatesresolvers.myresolver.acme.tlschallenge=true
-            - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
-            - --log.level=INFO
-        ports:
-            - 80:80
-            - 443:443
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - letsencrypt:/letsencrypt
-        labels:
-            - traefik.enable=true
-            - traefik.http.routers.mydashboard.rule=Host(`$TRAEFIK_DASHBOARD_URL`)
-            - traefik.http.routers.mydashboard.service=api@internal
-            - traefik.http.routers.mydashboard.middlewares=myauth
-            - traefik.http.middlewares.myauth.basicauth.users=$TRAEFIK_DASHBOARD_USER/
-    database:
-        image: mysql:8.3.0
-        container_name: database
-        restart: unless-stopped
-        env_file: .env
-        environment:
-            - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
-            - MYSQL_DATABASE=$DB_DATABASE
-            - MYSQL_USER=$DB_USER
-            - MYSQL_PASSWORD=$DB_PASSWORD
-        volumes:
-            - db:/var/lib/mysql
-    backend:
-        container_name: backend
-        build:
-            context: ./backend
-        depends_on:
-            - database
-        restart: on-failure
-        env_file: .env
-        environment:
-            SPRING_APPLICATION_JSON: |
-                {
-                  "spring.datasource.url": "jdbc:mysql://database:$DB_PORT/$DB_DATABASE?allowPublicKeyRetrieval=true&useSSL=false",
-                  "spring.datasource.username": "$DB_USER",
-                  "spring.datasource.password": "$DB_PASSWORD",
-                  "flyway.url": "jdbc:mysql://database:$DB_PORT/$DB_DATABASE",
-                  "flyway.user": "$DB_USER",
-                  "flyway.password": "$DB_PASSWORD"
-                }
-        volumes:
-            - .m2:/root/.m2
-        stdin_open: true
-        tty: true
-        labels:
-            - traefik.enable=true
-            - traefik.http.routers.backend.rule=Host(`$APP_URL`) && PathPrefix(`/api`)
-            - traefik.http.services.backend-service.loadbalancer.server.port=8080
-    frontend:
-        container_name: frontend
-        build:
-            context: ./frontend
-            args:
-                ENV: $FRONTEND_ENVIRONMENT
-        restart: on-failure
-        env_file: .env
-        labels:
-            - traefik.enable=true
-            - traefik.http.routers.frontend.rule=Host(`$APP_URL`)
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    env_file: .env
+    command:
+      - --api.dashboard=true
+      - --api.insecure=false
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entryPoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.asDefault=true
+      - --entrypoints.websecure.http.tls.certresolver=myresolver
+      - --certificatesresolvers.myresolver.acme.email=$TRAEFIK_LETSENCRYPT_EMAIL
+      - --certificatesresolvers.myresolver.acme.tlschallenge=true
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+      - --log.level=INFO
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - letsencrypt:/letsencrypt
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mydashboard.rule=Host(`$TRAEFIK_DASHBOARD_URL`)
+      - traefik.http.routers.mydashboard.service=api@internal
+      - traefik.http.routers.mydashboard.middlewares=myauth
+      - traefik.http.middlewares.myauth.basicauth.users=$TRAEFIK_DASHBOARD_USER/
+  database:
+    image: mysql:8.3.0
+    container_name: database
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$DB_DATABASE
+      - MYSQL_USER=$DB_USER
+      - MYSQL_PASSWORD=$DB_PASSWORD
+    volumes:
+      - db:/var/lib/mysql
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+    depends_on:
+      - database
+    restart: on-failure
+    env_file: .env
+    environment:
+      SPRING_APPLICATION_JSON: |
+        {
+          "spring.datasource.url": "jdbc:mysql://database:$DB_PORT/$DB_DATABASE?allowPublicKeyRetrieval=true&useSSL=false",
+          "spring.datasource.username": "$DB_USER",
+          "spring.datasource.password": "$DB_PASSWORD",
+          "flyway.url": "jdbc:mysql://database:$DB_PORT/$DB_DATABASE",
+          "flyway.user": "$DB_USER",
+          "flyway.password": "$DB_PASSWORD"
+        }
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`$APP_URL`) && PathPrefix(`/api`)
+      - traefik.http.services.backend-service.loadbalancer.server.port=8080
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      args:
+        ENV: $FRONTEND_ENVIRONMENT
+    restart: on-failure
+    env_file: .env
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`$APP_URL`)
 volumes:
-    db:
-    letsencrypt:
-        name: letsencrypt
+  db:
+  letsencrypt:
+    name: letsencrypt
+

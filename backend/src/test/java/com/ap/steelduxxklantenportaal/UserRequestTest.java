@@ -60,7 +60,8 @@ public class UserRequestTest {
     void setup() {
         savedUserRequest = userRequestValueRepository.findByVatNrAndEmail("BE0473416418", "info@test.be");
 
-        savedUserRequest.ifPresent(userRequest -> userRequestValueRepository.delete(userRequest));
+        // savedUserRequest.ifPresent(userRequest ->
+        // userRequestValueRepository.delete(userRequest));
     }
 
     @Test

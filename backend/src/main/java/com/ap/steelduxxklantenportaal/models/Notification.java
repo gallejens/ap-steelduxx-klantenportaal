@@ -24,7 +24,7 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(Long userId, String title, String message, Date createdAt) {
+    public Notification(Long userId, String title, String message, Long createdAt) {
         this.userId = userId;
         this.title = title;
         this.message = message;
@@ -63,11 +63,11 @@ public class Notification {
         this.message = message;
     }
 
-    public Date getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date CreatedAt) {
+    public void setCreatedAt(Long CreatedAt) {
         this.createdAt = CreatedAt;
     }
 }

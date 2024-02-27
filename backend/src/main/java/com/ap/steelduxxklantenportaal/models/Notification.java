@@ -19,7 +19,7 @@ public class Notification {
 
     private String message;
 
-    private Date createdAt = new Date();
+    private Long createdAt = new Date().getTime();
 
     public Notification() {
     }

@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXISTS `notification` (
     `title` VARCHAR(255) NOT NULL,
     `message` VARCHAR(255) NOT NULL,
     `user_id` INT NOT NULL,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    `created_at` BIGINT NOT NULL
 );

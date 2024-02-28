@@ -1,8 +1,14 @@
-build
-coverage
-.m2
-bruno
-dist
-node_modules 
-.*
-Dockerfile
+# Ignore everything
+*
+
+# But not these files...
+!*.ts
+!*.tsx
+!*.js
+!*.jsx
+!*.json
+!*.css
+!*.scss
+
+# And check subdirs
+!*/

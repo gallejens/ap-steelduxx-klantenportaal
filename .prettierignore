@@ -5,3 +5,4 @@ bruno
 dist
 node_modules 
 .*
+Dockerfile

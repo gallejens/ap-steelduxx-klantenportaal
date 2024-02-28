@@ -1,12 +1,12 @@
 package com.ap.steelduxxklantenportaal.DTOs;
 
-public class LoginValuesDTO {
+public class SignInRequestDTO {
     private String email;
     private String password;
 
-    public LoginValuesDTO() {}
+    public SignInRequestDTO() {}
 
-    public LoginValuesDTO(String email, String password) {
+    public SignInRequestDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -36,3 +36,5 @@ public class LoginValuesDTO {
                 '}';
     }
 }
+
+

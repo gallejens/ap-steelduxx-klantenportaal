@@ -54,4 +54,3 @@ By using this structure we can keep the codebase clean and easy to navigate.
   ```
 
 - SCSS is basically CSS but has a few extra features, any plain css is also valid so no need to explicitly use scss features.
-

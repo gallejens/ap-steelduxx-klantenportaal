@@ -84,4 +84,3 @@ volumes:
   db:
   letsencrypt:
     name: letsencrypt
-

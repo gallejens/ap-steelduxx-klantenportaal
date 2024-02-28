@@ -1,8 +1,8 @@
 import { Notification } from '@mantine/core';
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_MAX_NOTIFICATION_ITEMS } from '../constants';
-import { NotificationData, NotificationEvent } from '../lib';
+import { type NotificationData, type NotificationEvent } from '../lib';
 
 import styles from '../styles/notifications.module.scss';
 
@@ -17,8 +17,9 @@ export const Notifications: FC<{ maxItems?: number }> = props => {
     const timeouts = new Set<number>();
     const handler = (e: CustomEventInit<NotificationEvent>) => {
       const eventData = e.detail;
-      if (!eventData)
+      if (!eventData) {
         throw new Error('No event data provided for notification event');
+      }
       switch (eventData.action) {
         case 'add': {
           const id = uuidv4();

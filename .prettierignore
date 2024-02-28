@@ -3,4 +3,5 @@ coverage
 .m2
 bruno
 dist
-node_modules  
+node_modules 
+.*

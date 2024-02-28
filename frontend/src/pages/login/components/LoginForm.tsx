@@ -2,7 +2,7 @@ import { notifications } from '@/components/notifications';
 import { doApiAction } from '@/lib/api';
 import { Button, PasswordInput, Text, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../styles/login.module.scss';
 

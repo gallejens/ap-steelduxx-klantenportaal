@@ -1,7 +1,7 @@
 import { ActionIcon, Divider, Text } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from '@tanstack/react-router';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserRequestForm } from './components/UserRequestForm';
 import styles from './styles/userRequest.module.scss';

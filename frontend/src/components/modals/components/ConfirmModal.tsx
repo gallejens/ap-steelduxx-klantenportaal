@@ -1,5 +1,5 @@
 import { Button, Group, Text } from '@mantine/core';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Modal } from '..';
 
 type Props = {

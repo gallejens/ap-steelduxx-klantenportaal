@@ -1,5 +1,6 @@
 import { SteelLogo } from '@/components/steellogo';
-import { Divider, Text } from '@mantine/core';
+import { doApiAction } from '@/lib/api';
+import { Button, Divider, Text } from '@mantine/core';
 import { useNavigate } from '@tanstack/react-router';
 import { type FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -38,6 +39,28 @@ export const LoginPage: FC = () => {
           </Text>
         </div>
       </div>
+      <Button
+        onClick={async () => {
+          const result = await doApiAction({
+            endpoint: '/auth/testpublic',
+            method: 'GET',
+          });
+          console.log(result);
+        }}
+      >
+        Public
+      </Button>
+      <Button
+        onClick={async () => {
+          const result = await doApiAction({
+            endpoint: '/auth/testprivate',
+            method: 'GET',
+          });
+          console.log(result);
+        }}
+      >
+        Private
+      </Button>
     </div>
   );
 };

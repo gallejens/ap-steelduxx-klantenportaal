@@ -36,7 +36,7 @@ export const LoginForm: FC = () => {
       return;
     }
 
-    const result = await doApiAction({
+    const result = await doApiAction<{ data: string }>({
       endpoint: '/auth/signin',
       method: 'POST',
       body: {
@@ -46,6 +46,11 @@ export const LoginForm: FC = () => {
     });
 
     console.log(result);
+
+    // const jwt = result?.data;
+    // if (!jwt) return;
+
+    // document.cookie = `auth-token=${jwt}`;
   };
 
   const handleResetPassword = () => {

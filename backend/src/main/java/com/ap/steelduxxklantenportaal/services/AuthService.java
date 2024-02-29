@@ -5,8 +5,10 @@ import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.AuthenticationException;
 
 @Service
 public class AuthService {
@@ -20,12 +22,20 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public void signIn(SignInRequestDTO signInRequestDTO) {
+    public String signIn(SignInRequestDTO signInRequestDTO) {
         var authToken = new UsernamePasswordAuthenticationToken(signInRequestDTO.getEmail(), signInRequestDTO.getPassword());
-        var auth = authenticationManager.authenticate(authToken);
+
+        Authentication auth;
+        try {
+            auth = authenticationManager.authenticate(authToken);
+        } catch (AuthenticationException e) {
+            auth = null;
+        }
+
+        if (auth == null || !auth.isAuthenticated()) return null;
 
         var user = userRepository.findByEmail(signInRequestDTO.getEmail()).orElseThrow();
-        String jwt = jwtService.generateToken(user);
+        return jwtService.generateToken(user);
     }
 
 }

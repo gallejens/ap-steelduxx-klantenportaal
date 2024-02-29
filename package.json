@@ -1,0 +1,22 @@
+{
+  "name": "steelduxx-klantenportaal",
+  "scripts": {
+    "format": "npx prettier . --write",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.2",
+    "prettier": "3.2.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*": [
+      "npx prettier --config .prettierrc --write"
+    ]
+  }
+}

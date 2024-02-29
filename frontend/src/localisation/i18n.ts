@@ -1,4 +1,4 @@
-import i18n, { type Resource, ResourceLanguage } from 'i18next';
+import i18n, { type Resource, type ResourceLanguage } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 // We import all the language files in the `languages` directory using some trickery

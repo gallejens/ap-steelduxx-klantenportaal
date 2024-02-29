@@ -4,7 +4,7 @@ import { Button, NumberInput, Text, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
 import { useNavigate } from '@tanstack/react-router';
 import { checkVAT, countries } from 'jsvat';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   isPossiblePhoneNumber,

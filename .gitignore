@@ -1,3 +1,4 @@
 .env
 .m2
 vm
+node_modules

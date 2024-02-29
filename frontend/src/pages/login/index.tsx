@@ -18,7 +18,10 @@ export const LoginPage: FC = () => {
         </div>
         <Divider />
         <div className={styles.body}>
-          <SteelLogo width='35%' className={styles.logo} />
+          <SteelLogo
+            width='35%'
+            className={styles.logo}
+          />
           <LoginForm />
         </div>
         <Divider />

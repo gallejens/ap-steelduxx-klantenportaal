@@ -1,6 +1,6 @@
 import { useModalStore } from '@/stores/useModalStore';
 import { Modal as MantineModal } from '@mantine/core';
-import { FC, PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren } from 'react';
 
 import { ConfirmModal } from './components/ConfirmModal';
 

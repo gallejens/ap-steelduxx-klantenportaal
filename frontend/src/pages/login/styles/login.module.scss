@@ -1,107 +1,107 @@
-@use "../../../styles/variables.scss";
-@use "../../../styles/mixins.scss";
+@use '../../../styles/variables.scss';
+@use '../../../styles/mixins.scss';
 
 .login_page {
-	width: 100%;
+  width: 100%;
 
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-	background-color: var(--mantine-primary-color-6);
+  background-color: var(--mantine-primary-color-6);
 
-	& > .panel {
-		@include mixins.shadow;
+  & > .panel {
+    @include mixins.shadow;
 
-		width: 80vh;
-		background-color: var(--mantine-primary-color-0);
+    width: 80vh;
+    background-color: var(--mantine-primary-color-0);
 
-		padding: var(--mantine-spacing-md) var(--mantine-spacing-xl);
+    padding: var(--mantine-spacing-md) var(--mantine-spacing-xl);
 
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--mantine-spacing-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--mantine-spacing-md);
 
-		border-radius: var(--mantine-radius-default);
+    border-radius: var(--mantine-radius-default);
 
-		// hide logo on mobile
-		@media screen and (max-width: variables.$mobile-breakpoint) {
-			.logo {
-				display: none;
-			}
+    // hide logo on mobile
+    @media screen and (max-width: variables.$mobile-breakpoint) {
+      .logo {
+        display: none;
+      }
 
-			.body {
-				height: 25vh;
-			}
-		}
+      .body {
+        height: 25vh;
+      }
+    }
 
-		& > * {
-			width: 100%;
-			display: flex;
-		}
+    & > * {
+      width: 100%;
+      display: flex;
+    }
 
-		& > .header {
-			justify-content: center;
-			align-items: center;
+    & > .header {
+      justify-content: center;
+      align-items: center;
 
-			& > * {
-				font-size: 2rem;
-				font-weight: 600;
-			}
-		}
+      & > * {
+        font-size: 2rem;
+        font-weight: 600;
+      }
+    }
 
-		& > .body {
-			gap: var(--mantine-spacing-xl);
-		}
+    & > .body {
+      gap: var(--mantine-spacing-xl);
+    }
 
-		& > .footer {
-			align-items: center;
-			justify-content: center;
-			gap: calc(var(--mantine-spacing-xs) / 2);
+    & > .footer {
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--mantine-spacing-xs) / 2);
 
-			& > * {
-				font-size: 0.8rem;
-			}
+      & > * {
+        font-size: 0.8rem;
+      }
 
-			& .userrequest_link {
-				font-weight: 700;
-				text-decoration: underline;
+      & .userrequest_link {
+        font-weight: 700;
+        text-decoration: underline;
 
-				&:hover {
-					cursor: pointer;
-				}
-			}
-		}
-	}
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
 
 .login_form {
-	width: 100%;
+  width: 100%;
 
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-	& > .login_button {
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-	}
+  & > .login_button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
 
-	& div:has(.password_reset) {
-		position: relative;
-	}
+  & div:has(.password_reset) {
+    position: relative;
+  }
 
-	& .password_reset {
-		position: absolute;
-		bottom: -2rem;
-		font-size: 0.8rem;
-		font-weight: 600;
-		text-decoration: underline;
+  & .password_reset {
+    position: absolute;
+    bottom: -2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: underline;
 
-		&:hover {
-			cursor: pointer;
-		}
-	}
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

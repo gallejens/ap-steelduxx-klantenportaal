@@ -6,6 +6,7 @@ import {
 import { LoginPage } from './pages/login';
 import { TestValuesPage } from './pages/testvaluespage';
 import { userRequestPage } from './pages/userrequest';
+import { userRequestListPage } from './pages/userrequestlist/Index';
 
 const rootRoute = createRootRoute();
 
@@ -21,10 +22,16 @@ const loginRoute = createRoute({
   component: LoginPage,
 });
 
-const userrequestRoute = createRoute({
+const userRequestRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/request_account',
   component: userRequestPage,
+});
+
+const userRequestListRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/requests',
+  component: userRequestListPage
 });
 
 const testvaluesRoute = createRoute({
@@ -36,7 +43,8 @@ const testvaluesRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
-  userrequestRoute,
+  userRequestRoute,
+  userRequestListRoute,
   testvaluesRoute,
 ]);
 export const router = createRouter({ routeTree });

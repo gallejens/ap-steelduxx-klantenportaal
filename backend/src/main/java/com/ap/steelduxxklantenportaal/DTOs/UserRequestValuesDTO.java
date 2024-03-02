@@ -3,6 +3,7 @@ package com.ap.steelduxxklantenportaal.DTOs;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 
 public class UserRequestValuesDTO {
+    private Long followId;
     private String companyName;
     private String phoneNr;
     private String vatNr;
@@ -21,9 +22,10 @@ public class UserRequestValuesDTO {
     public UserRequestValuesDTO() {
     }
 
-    public UserRequestValuesDTO(String companyName, String phoneNr, String vatNr, String postalCode,
+    public UserRequestValuesDTO(Long followId, String companyName, String phoneNr, String vatNr, String postalCode,
             String district, String street, String streetNr, String boxNr, String firstName, String lastName,
             String email, Long createdOn, StatusEnum status, String denyMessage) {
+        this.followId = followId;
         this.companyName = companyName;
         this.phoneNr = phoneNr;
         this.vatNr = vatNr;
@@ -38,6 +40,14 @@ public class UserRequestValuesDTO {
         this.createdOn = createdOn;
         this.status = status;
         this.denyMessage = denyMessage;
+    }
+
+    public Long getFollowId() {
+        return followId;
+    }
+
+    public void setFollowId(Long followId) {
+        this.followId = followId;
     }
 
     public String getCompanyName() {
@@ -154,7 +164,8 @@ public class UserRequestValuesDTO {
 
     @Override
     public String toString() {
-        return "UserRequestValuesDTO [companyName=" + companyName + ", phoneNr=" + phoneNr + ", vatNr=" + vatNr
+        return "UserRequestValuesDTO [followId=" + followId + "companyName=" + companyName + ", phoneNr=" + phoneNr
+                + ", vatNr=" + vatNr
                 + ", postalCode=" + postalCode + ", district=" + district + ", street=" + street + ", streetNr="
                 + streetNr + ", boxNr=" + boxNr + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
                 + email + ", createdOn=" + createdOn + ", status=" + status + ", denyMessage=" + denyMessage + "]";

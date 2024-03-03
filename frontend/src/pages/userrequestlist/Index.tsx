@@ -2,5 +2,7 @@ import { FC } from "react"
 import { UserRequestTable } from "./components/UserRequestTable"
 
 export const userRequestListPage: FC = () => {
-    return <UserRequestTable/>
+    return <div>
+        <UserRequestTable/>
+    </div>
 }

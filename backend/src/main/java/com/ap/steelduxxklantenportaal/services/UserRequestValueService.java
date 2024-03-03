@@ -1,7 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,12 +29,14 @@ public class UserRequestValueService {
         dto.setPostalCode(userRequestValue.getPostalCode());
         dto.setDistrict(userRequestValue.getDistrict());
         dto.setStreet(userRequestValue.getStreet());
+        dto.setStreetNr(userRequestValue.getStreetNr());
         dto.setBoxNr(userRequestValue.getBoxNr());
         dto.setFirstName(userRequestValue.getFirstName());
         dto.setLastName(userRequestValue.getLastName());
         dto.setEmail(userRequestValue.getEmail());
         dto.setCreatedOn(userRequestValue.getCreatedOn());
         dto.setStatus(userRequestValue.getStatus());
+        dto.setDenyMessage(userRequestValue.getDenyMessage());
 
         return dto;
     }

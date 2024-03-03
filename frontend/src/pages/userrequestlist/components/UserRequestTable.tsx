@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Table, TableData, Tabs } from '@mantine/core';
+import { Table, Tabs } from '@mantine/core';
 import { doApiAction } from '@/lib/api';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,8 +14,11 @@ type UserRequestListValues = {
   lastName: string;
   status: string;
 };
+interface UserRequestTableProps {
+  pageSize: number;
+}
 
-export const UserRequestTable: FC = () => {
+export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
   const { t } = useTranslation();
   const statuses = ['PENDING', 'APPROVED', 'DENIED'];
 
@@ -55,6 +58,7 @@ export const UserRequestTable: FC = () => {
     head: tableHead,
     body: userRequestListValues
       .filter(userRequestListValue => userRequestListValue.status === status)
+      .slice(0, pageSize)
       .map(userRequestListValue => [
         `#${userRequestListValue.followId}`,
         userRequestListValue.companyName,
@@ -66,7 +70,10 @@ export const UserRequestTable: FC = () => {
   });
 
   return (
-    <Tabs defaultValue={statuses[0]}>
+    <Tabs
+      defaultValue={statuses[0]}
+      variant='outline'
+    >
       <Tabs.List>
         {statuses.map(status => (
           <Tabs.Tab

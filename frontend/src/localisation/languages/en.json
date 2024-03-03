@@ -75,6 +75,7 @@
     "loginLink": "Log in"
   },
   "user_request_list_page": {
+    "newUserRequest": "New Request",
     "tableHeader0": "Follow Id",
     "tableHeader1": "Company Name",
     "tableHeader2": "Date",

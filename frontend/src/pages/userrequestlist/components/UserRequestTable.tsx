@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Table, TableData } from '@mantine/core';
+import { Table, TableData, Tabs } from '@mantine/core';
 import { doApiAction } from '@/lib/api';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ type UserRequestListValues = {
 
 export const UserRequestTable: FC = () => {
   const { t } = useTranslation();
+  const statuses = ['PENDING', 'APPROVED', 'DENIED'];
 
   const {
     data: userRequestListValues,
@@ -32,6 +33,7 @@ export const UserRequestTable: FC = () => {
       }),
   });
 
+  // TODO Fix handling
   if (status === 'pending') {
     return <div>Loading...</div>;
   }
@@ -40,32 +42,57 @@ export const UserRequestTable: FC = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  const tableData: TableData = {
-    head: [
-      t('user_request_list_page:tableHeader0'),
-      t('user_request_list_page:tableHeader1'),
-      t('user_request_list_page:tableHeader2'),
-      t('user_request_list_page:tableHeader3'),
-      t('user_request_list_page:tableHeader4'),
-      t('user_request_list_page:tableHeader5'),
-    ],
-    body: userRequestListValues.map(userRequestListValue => [
-      `#${userRequestListValue.followId}`,
-      userRequestListValue.companyName,
-      dateConverter(userRequestListValue.createdOn),
-      userRequestListValue.vatNr,
-      `${userRequestListValue.firstName} ${userRequestListValue.lastName}`,
-      'Buttons',
-    ]),
-  };
+  const tableHead = [
+    t('user_request_list_page:tableHeader0'),
+    t('user_request_list_page:tableHeader1'),
+    t('user_request_list_page:tableHeader2'),
+    t('user_request_list_page:tableHeader3'),
+    t('user_request_list_page:tableHeader4'),
+    t('user_request_list_page:tableHeader5'),
+  ];
+
+  const generateTableData = (status: string) => ({
+    head: tableHead,
+    body: userRequestListValues
+      .filter(userRequestListValue => userRequestListValue.status === status)
+      .map(userRequestListValue => [
+        `#${userRequestListValue.followId}`,
+        userRequestListValue.companyName,
+        dateConverter(userRequestListValue.createdOn),
+        userRequestListValue.vatNr,
+        `${userRequestListValue.firstName} ${userRequestListValue.lastName}`,
+        'Buttons',
+      ]),
+  });
 
   return (
-    <Table
-      stickyHeader
-      striped
-      horizontalSpacing='xl'
-      verticalSpacing='sm'
-      data={tableData}
-    />
+    <Tabs defaultValue={statuses[0]}>
+      <Tabs.List>
+        {statuses.map(status => (
+          <Tabs.Tab
+            key={status}
+            value={status}
+            leftSection={
+              status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()
+            }
+          />
+        ))}
+      </Tabs.List>
+
+      {statuses.map(status => (
+        <Tabs.Panel
+          key={status}
+          value={status}
+        >
+          <Table
+            stickyHeader
+            striped
+            horizontalSpacing='xl'
+            verticalSpacing='sm'
+            data={generateTableData(status)}
+          />
+        </Tabs.Panel>
+      ))}
+    </Tabs>
   );
 };

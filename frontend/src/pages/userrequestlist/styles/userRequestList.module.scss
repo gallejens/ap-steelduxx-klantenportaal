@@ -1,0 +1,28 @@
+@use '../../../styles/variables.scss';
+@use '../../../styles/mixins.scss';
+
+.userrequest_table_page {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column; // Adjust the flex direction to column if needed
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--mantine-primary-color-0);
+}
+
+.body {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > .userrequest_table {
+    width: 100%;
+    height: 450px;
+    border: 1px red solid;
+  }
+}

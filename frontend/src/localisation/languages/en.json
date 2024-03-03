@@ -74,6 +74,14 @@
     "userRequestLabel": "Already have an account?",
     "loginLink": "Log in"
   },
+  "user_request_list_page": {
+    "tableHeader0": "Follow Id",
+    "tableHeader1": "Company Name",
+    "tableHeader2": "Date",
+    "tableHeader3": "VAT number",
+    "tableHeader4": "Contact Person",
+    "tableHeader5": "Options"
+  },
   "notifications": {
     "genericError": "Something went wrong",
     "invalidForm": "One of the inputs is invalid."

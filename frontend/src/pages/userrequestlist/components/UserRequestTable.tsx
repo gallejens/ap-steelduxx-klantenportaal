@@ -2,28 +2,35 @@ import { useQuery } from '@tanstack/react-query';
 import { Table, TableData } from '@mantine/core';
 import { doApiAction } from '@/lib/api';
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { dateConverter } from '@/lib/util/dateConverter';
 
 type UserRequestListValues = {
-    followId: number;
-    companyName: string;
-    createdOn: number;
-    vatNr: string;
-    firstName: string;
-    lastName: string;
-    status: string;
+  followId: number;
+  companyName: string;
+  createdOn: number;
+  vatNr: string;
+  firstName: string;
+  lastName: string;
+  status: string;
 };
 
 export const UserRequestTable: FC = () => {
+  const { t } = useTranslation();
+
   const {
     data: userRequestListValues,
     status,
-    error
-  } = useQuery({refetchOnWindowFocus: false,
-  queryKey: ['userRequestListValues'],
-  queryFn: () => doApiAction<UserRequestListValues[]>({
-    endpoint: '/user_requests',
-    method: 'GET',
-  })});
+    error,
+  } = useQuery({
+    refetchOnWindowFocus: false,
+    queryKey: ['userRequestListValues'],
+    queryFn: () =>
+      doApiAction<UserRequestListValues[]>({
+        endpoint: '/user_requests',
+        method: 'GET',
+      }),
+  });
 
   if (status === 'pending') {
     return <div>Loading...</div>;
@@ -34,11 +41,18 @@ export const UserRequestTable: FC = () => {
   }
 
   const tableData: TableData = {
-    head: ['Follow ID', 'Company Name', 'Created On', 'VAT Number', 'Contact Person', 'Options'],
-    body: userRequestListValues.map((userRequestListValue) => [
+    head: [
+      t('user_request_list_page:tableHeader0'),
+      t('user_request_list_page:tableHeader1'),
+      t('user_request_list_page:tableHeader2'),
+      t('user_request_list_page:tableHeader3'),
+      t('user_request_list_page:tableHeader4'),
+      t('user_request_list_page:tableHeader5'),
+    ],
+    body: userRequestListValues.map(userRequestListValue => [
       `#${userRequestListValue.followId}`,
       userRequestListValue.companyName,
-      userRequestListValue.createdOn,
+      dateConverter(userRequestListValue.createdOn),
       userRequestListValue.vatNr,
       `${userRequestListValue.firstName} ${userRequestListValue.lastName}`,
       'Buttons',
@@ -46,6 +60,12 @@ export const UserRequestTable: FC = () => {
   };
 
   return (
-      <Table stickyHeader striped data={tableData}/>
+    <Table
+      stickyHeader
+      striped
+      horizontalSpacing='xl'
+      verticalSpacing='sm'
+      data={tableData}
+    />
   );
-}
+};

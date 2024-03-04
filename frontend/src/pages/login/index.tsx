@@ -1,3 +1,4 @@
+import { notifications } from '@/components/notifications';
 import { SteelLogo } from '@/components/steellogo';
 import { doApiAction } from '@/lib/api';
 import { Button, Divider, Text } from '@mantine/core';
@@ -45,7 +46,9 @@ export const LoginPage: FC = () => {
             endpoint: '/auth/testpublic',
             method: 'GET',
           });
-          console.log(result);
+          notifications.add({
+            message: `Public API call ${result !== null ? 'successful' : 'failed'}`,
+          });
         }}
       >
         Public
@@ -56,7 +59,9 @@ export const LoginPage: FC = () => {
             endpoint: '/auth/testprivate',
             method: 'GET',
           });
-          console.log(result);
+          notifications.add({
+            message: `Private API call ${result !== null ? 'successful' : 'failed'}`,
+          });
         }}
       >
         Private

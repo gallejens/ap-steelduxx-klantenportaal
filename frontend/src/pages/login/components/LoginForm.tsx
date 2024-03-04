@@ -1,5 +1,5 @@
 import { notifications } from '@/components/notifications';
-import { doApiAction } from '@/lib/api';
+import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { Button, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import type { FC } from 'react';
@@ -36,7 +36,7 @@ export const LoginForm: FC = () => {
       return;
     }
 
-    const result = await doApiAction<{ data: string }>({
+    const result = await doApiAction<GenericAPIResponse>({
       endpoint: '/auth/signin',
       method: 'POST',
       body: {
@@ -45,12 +45,11 @@ export const LoginForm: FC = () => {
       },
     });
 
-    console.log(result);
-
-    // const jwt = result?.data;
-    // if (!jwt) return;
-
-    // document.cookie = `auth-token=${jwt}`;
+    notifications.add({
+      message:
+        result == null ? t('notifications:genericErro') : t(result.message),
+      autoClose: 5000,
+    });
   };
 
   const handleResetPassword = () => {

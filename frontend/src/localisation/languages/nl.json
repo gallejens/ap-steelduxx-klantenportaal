@@ -14,7 +14,10 @@
     "forgotPassword": "Wachtwoord vergeten",
     "loginButton": "Aanmelden",
     "noAccountLabel": "Nog geen account?",
-    "userrequestLink": "Registreer nu"
+    "userrequestLink": "Registreer nu",
+
+    "loginFailed": "Email of wachtwoord is onjuist",
+    "loginSuccess": "Succesvol ingelogd"
   },
   "userrequestpage": {
     "title": "Vraag Account Aan",

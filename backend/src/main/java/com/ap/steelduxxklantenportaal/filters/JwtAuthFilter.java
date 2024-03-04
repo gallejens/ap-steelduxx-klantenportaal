@@ -27,36 +27,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String cookieToken = null;
-        var cookies = request.getHeader("Cookie");
-        System.out.println(cookies);
-        if (cookies != null ) {
-//            for (Cookie cookie : cookies) {
-//                System.out.println("Cookiename: " + cookie.getName());
-//                if (cookie.getName().equals("auth-token")) {
-//                    cookieToken = cookie.getName();
-//                }
-//            }
-        }
+        String jwtToken = getJwtFromRequest(request);
 
-        if (cookieToken != null) {
-            System.out.println("Authtoken in cookie: " + cookieToken);
-
-        }
-
-        if (cookieToken == null || !cookieToken.startsWith("Bearer ")) {
+        if (jwtToken == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = cookieToken.substring(7);
-        String username = jwtService.extractClaim(token, Claims::getSubject);
+        String username = jwtService.extractClaim(jwtToken, Claims::getSubject);
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         if (username != null && securityContext.getAuthentication() == null) {
             var userDetails = userDetailsService.loadUserByUsername(username);
 
-            if (jwtService.isValid(token, userDetails)) {
+            if (jwtService.isValid(jwtToken, userDetails)) {
                 var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 var authDetails = new WebAuthenticationDetailsSource().buildDetails(request);
                 authToken.setDetails(authDetails);
@@ -65,5 +49,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private String getJwtFromRequest(HttpServletRequest request) {
+        var cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("auth-token")) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }

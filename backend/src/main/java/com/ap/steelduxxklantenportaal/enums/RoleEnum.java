@@ -1,8 +1,9 @@
 package com.ap.steelduxxklantenportaal.enums;
 
+// Prefix with ROLE_
 public enum RoleEnum {
-    HEAD_ADMIN,
-    ADMIN,
-    COMPANY_ADMIN,
-    COMPANY_EMPLOYEE
+    ROLE_HEAD_ADMIN,
+    ROLE_ADMIN,
+    ROLE_COMPANY_ADMIN,
+    ROLE_COMPANY_EMPLOYEE
 }

@@ -1,6 +1,7 @@
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 const API_ENDPOINT: string = import.meta.env.VITE_API_ENDPOINT;
+const IS_DEVELOPMENT = import.meta.env.MODE === 'development';
 
 export const doApiAction = async <T>(data: {
   endpoint: string;
@@ -14,12 +15,17 @@ export const doApiAction = async <T>(data: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      credentials: 'same-origin',
+      credentials: IS_DEVELOPMENT ? 'include' : 'same-origin',
       body: data.body ? JSON.stringify(data.body) : undefined,
     });
-    console.log(response);
     return await response.json();
   } catch (e: unknown) {
     return null;
   }
+};
+
+export type GenericAPIResponse<T = null> = {
+  status: number;
+  message: string;
+  data: T;
 };

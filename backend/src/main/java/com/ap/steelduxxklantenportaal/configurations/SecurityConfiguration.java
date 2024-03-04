@@ -3,6 +3,7 @@ package com.ap.steelduxxklantenportaal.configurations;
 import com.ap.steelduxxklantenportaal.filters.JwtAuthFilter;
 import com.ap.steelduxxklantenportaal.services.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,9 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
+    @Value("${allowed_origin}")
+    private String allowedOrigin;
+
     @Autowired
     private UserDetailsServiceImp userDetailsService;
     @Autowired
@@ -61,6 +65,8 @@ public class SecurityConfiguration {
         var corsConfiguration = new CorsConfiguration();
         corsConfiguration.applyPermitDefaultValues();
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "OPTIONS"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedOrigins(List.of(allowedOrigin));
 
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

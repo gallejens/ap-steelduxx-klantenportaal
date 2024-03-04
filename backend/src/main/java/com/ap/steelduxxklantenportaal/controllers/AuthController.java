@@ -26,28 +26,25 @@ public class AuthController {
     public ResponseEntity<Object> signIn(@RequestBody SignInRequestDTO signInRequestDTO, HttpServletResponse response) {
         String jwt = authService.signIn(signInRequestDTO);
 
-        System.out.println(jwt);
         if (jwt == null) {
-            return ResponseHandler.generateResponse("login_denied", HttpStatus.UNAUTHORIZED, null);
+            return ResponseHandler.generateResponse("loginpage:loginFailed", HttpStatus.UNAUTHORIZED, null);
         }
 
-        ResponseCookie cookie = ResponseCookie.from("auth-token", jwt).httpOnly(true).secure(false).path("/").maxAge(24 * 60 * 60).build();
+        ResponseCookie cookie = ResponseCookie.from("auth-token", jwt).httpOnly(true).secure(true).path("/").maxAge(24 * 60 * 60).sameSite("Lax").build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        return ResponseHandler.generateResponse("login_accepted", HttpStatus.ACCEPTED, jwt);
+        return ResponseHandler.generateResponse("loginpage:loginSuccess", HttpStatus.ACCEPTED, null);
     }
 
     @GetMapping("/testpublic")
     @PreAuthorize("permitAll")
     public ResponseEntity<Object> testpublic() {
         System.out.println("Public endpoint called");
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getDetails());
         return ResponseHandler.generateResponse("success", HttpStatus.ACCEPTED, null);
     }
 
     @GetMapping("/testprivate")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('HEAD_ADMIN')")
     public ResponseEntity<Object> testprivate() {
         System.out.println("Private endpoint called");
         return ResponseHandler.generateResponse("success", HttpStatus.ACCEPTED, null);

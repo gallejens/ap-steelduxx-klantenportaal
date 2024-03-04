@@ -67,7 +67,7 @@ export const TestValuesPage: FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      {testValues.map(testValue => (
+      {testValues?.map(testValue => (
         <TestValue
           key={testValue.id}
           value={testValue.value}

@@ -46,8 +46,7 @@ export const LoginForm: FC = () => {
     });
 
     notifications.add({
-      message:
-        result == null ? t('notifications:genericErro') : t(result.message),
+      message: t(result?.message ?? 'notifications:genericError'),
       autoClose: 5000,
     });
   };

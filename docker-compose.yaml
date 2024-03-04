@@ -59,7 +59,10 @@ services:
           "spring.datasource.password": "$DB_PASSWORD",
           "flyway.url": "jdbc:mysql://database:$DB_PORT/$DB_DATABASE",
           "flyway.user": "$DB_USER",
-          "flyway.password": "$DB_PASSWORD"
+          "flyway.password": "$DB_PASSWORD",
+          "admin_email": "$APP_ADMIN_EMAIL",
+          "admin_password": "$APP_ADMIN_PASSWORD",
+          "allowed_origin": "https://$APP_URL"
         }
     volumes:
       - .m2:/root/.m2

@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.filters;
 
+import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.services.JwtService;
 import com.ap.steelduxxklantenportaal.services.UserDetailsServiceImp;
 import io.jsonwebtoken.Claims;
@@ -35,7 +36,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String username = jwtService.extractClaim(jwtToken, Claims::getSubject);
-
         SecurityContext securityContext = SecurityContextHolder.getContext();
         if (username != null && securityContext.getAuthentication() == null) {
             var userDetails = userDetailsService.loadUserByUsername(username);
@@ -55,7 +55,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         var cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("auth-token")) {
+                if (cookie.getName().equals(AuthService.AUTH_TOKEN_COOKIE_NAME)) {
                     return cookie.getValue();
                 }
             }

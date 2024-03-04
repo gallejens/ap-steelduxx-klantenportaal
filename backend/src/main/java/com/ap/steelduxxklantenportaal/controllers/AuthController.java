@@ -2,16 +2,12 @@ package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
 import com.ap.steelduxxklantenportaal.services.AuthService;
-import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
-import jakarta.servlet.http.Cookie;
+import com.ap.steelduxxklantenportaal.utils.Utils;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,29 +20,20 @@ public class AuthController {
     @PostMapping("/signin")
     @PreAuthorize("permitAll")
     public ResponseEntity<Object> signIn(@RequestBody SignInRequestDTO signInRequestDTO, HttpServletResponse response) {
-        String jwt = authService.signIn(signInRequestDTO);
-
-        if (jwt == null) {
-            return ResponseHandler.generateResponse("loginpage:loginFailed", HttpStatus.UNAUTHORIZED, null);
-        }
-
-        ResponseCookie cookie = ResponseCookie.from("auth-token", jwt).httpOnly(true).secure(true).path("/").maxAge(24 * 60 * 60).sameSite("Lax").build();
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-
-        return ResponseHandler.generateResponse("loginpage:loginSuccess", HttpStatus.ACCEPTED, null);
+        return authService.signIn(signInRequestDTO, response);
     }
 
     @GetMapping("/testpublic")
     @PreAuthorize("permitAll")
     public ResponseEntity<Object> testpublic() {
         System.out.println("Public endpoint called");
-        return ResponseHandler.generateResponse("success", HttpStatus.ACCEPTED, null);
+        return Utils.generateResponse("success", HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/testprivate")
     @PreAuthorize("hasRole('HEAD_ADMIN')")
     public ResponseEntity<Object> testprivate() {
         System.out.println("Private endpoint called");
-        return ResponseHandler.generateResponse("success", HttpStatus.ACCEPTED, null);
+        return Utils.generateResponse("success", HttpStatus.ACCEPTED);
     }
 }

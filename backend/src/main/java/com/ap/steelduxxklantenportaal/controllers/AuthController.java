@@ -2,12 +2,15 @@ package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
 import com.ap.steelduxxklantenportaal.services.AuthService;
+import com.ap.steelduxxklantenportaal.utils.Cookies;
 import com.ap.steelduxxklantenportaal.utils.Utils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +24,19 @@ public class AuthController {
     @PreAuthorize("permitAll")
     public ResponseEntity<Object> signIn(@RequestBody SignInRequestDTO signInRequestDTO, HttpServletResponse response) {
         return authService.signIn(signInRequestDTO, response);
+    }
+
+    @PostMapping("/signout")
+    @PreAuthorize("hasRole('HEAD_ADMIN')")
+    public ResponseEntity<Object> signOut(HttpServletResponse response) {
+        authService.signOut(response);
+        return Utils.generateResponse("logout_successful", HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh")
+    @PreAuthorize("permitAll")
+    public ResponseEntity<Object> refresh(HttpServletRequest request, HttpServletResponse response) {
+        return authService.refresh(request, response);
     }
 
     @GetMapping("/testpublic")

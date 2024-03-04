@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,8 +36,6 @@ public class SecurityConfiguration {
     private UserDetailsServiceImp userDetailsService;
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
-    @Autowired
-    private CustomLogoutHandler logoutHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -62,12 +59,6 @@ public class SecurityConfiguration {
                         e
                                 .accessDeniedHandler((req, res, exc) -> res.setStatus(403))
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .logout(logout ->
-                        logout
-                                .logoutUrl("/auth/signout")
-                                .addLogoutHandler(logoutHandler)
-                                .logoutSuccessHandler((req, res, auth) -> SecurityContextHolder.clearContext())
-                )
                 .build();
     }
 

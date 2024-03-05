@@ -3,7 +3,9 @@ package com.ap.steelduxxklantenportaal.services;
 import com.ap.steelduxxklantenportaal.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.SignatureException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -12,9 +14,16 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+    private final SecretKey accessTokenKey;
+    private final SecretKey refreshTokenKey;
 
-    private final SecretKey accessTokenKey = Jwts.SIG.HS512.key().build();
-    private final SecretKey refreshTokenKey = Jwts.SIG.HS512.key().build();
+    public JwtService(
+            @Value("${jwt_access_token_secret}") String accessTokenSecret,
+            @Value("${jwt_refresh_token_secret}") String refreshTokenSecret
+    ) {
+        accessTokenKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessTokenSecret));
+        refreshTokenKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshTokenSecret));
+    }
 
     private Claims extractAllClaims(String token, SecretKey key) {
         return Jwts

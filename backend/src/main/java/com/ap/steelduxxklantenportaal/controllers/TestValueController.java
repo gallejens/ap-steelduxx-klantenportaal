@@ -1,6 +1,7 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.models.TestValue;
+import com.ap.steelduxxklantenportaal.services.EmailService;
 import com.ap.steelduxxklantenportaal.services.TestValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,9 @@ public class TestValueController {
     @Autowired
     private TestValueService testValueService;
 
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping("/")
     public List<TestValue> getAll() {
         return testValueService.getAll();
@@ -21,6 +25,7 @@ public class TestValueController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/add")
     public TestValue add(@RequestBody TestValue testValue) {
+        emailService.sendSimpleEmail("bayramcapa85@gmail.com", "Nieuwe TestValue Toegevoegd", "Nieuwe TestValue:\n " + testValue.getValue());
         return testValueService.add(testValue);
     }
 

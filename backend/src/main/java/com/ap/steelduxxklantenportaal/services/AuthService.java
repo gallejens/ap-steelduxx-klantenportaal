@@ -8,9 +8,7 @@ import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.repositories.RefreshTokenRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.utils.Cookies;
-import com.ap.steelduxxklantenportaal.utils.PermissionsManager;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
-import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -31,7 +29,7 @@ public class AuthService {
     public static final long ACCESS_TOKEN_COOKIE_MAX_AGE = 5 * 60; // 5 minutes
     public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
     public static final long REFRESH_TOKEN_COOKIE_MAX_AGE = 72 * 60 * 60; // 3 days
-    public static final String REFRESH_TOKEN_COOKIE_PATH = "/api/auth/refresh";
+    public static final String REFRESH_TOKEN_COOKIE_PATH = "/auth/refresh";
 
     @Autowired
     private UserRepository userRepository;
@@ -104,14 +102,14 @@ public class AuthService {
         return userRepository.findByEmail(email).isPresent();
     }
 
-    public void addNewUser(String email, String password, String firstName, String lastName, RoleEnum role) throws UserAlreadyExistsException  {
+    public User addNewUser(String email, String password, String firstName, String lastName, RoleEnum role) throws UserAlreadyExistsException  {
         if (doesUserExist(email)) {
             throw new UserAlreadyExistsException(String.format("User with email %s already exists", email));
         }
 
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User(email, encodedPassword, firstName, lastName, role);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     private void saveRefreshToken(long userId, String token) {

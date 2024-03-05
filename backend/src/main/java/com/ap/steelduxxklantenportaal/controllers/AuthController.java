@@ -41,13 +41,13 @@ public class AuthController {
     @PreAuthorize("permitAll")
     public ResponseEntity<Object> testpublic() {
         System.out.println("Public endpoint called");
-        return ResponseHandler.generate("success", HttpStatus.ACCEPTED);
+        return ResponseHandler.generate("success", HttpStatus.OK);
     }
 
     @GetMapping("/testprivate")
     @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> testprivate() {
         System.out.println("Private endpoint called");
-        return ResponseHandler.generate("success", HttpStatus.ACCEPTED);
+        return ResponseHandler.generate("success", HttpStatus.OK);
     }
 }

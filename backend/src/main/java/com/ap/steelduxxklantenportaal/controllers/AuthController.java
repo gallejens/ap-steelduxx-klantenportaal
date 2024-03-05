@@ -1,6 +1,7 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
+import com.ap.steelduxxklantenportaal.annotations.IsLoggedIn;
 import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.utils.Cookies;
 import com.ap.steelduxxklantenportaal.utils.Utils;
@@ -27,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/signout")
-    @PreAuthorize("hasRole('HEAD_ADMIN')")
+    @IsLoggedIn
     public ResponseEntity<Object> signOut(HttpServletResponse response) {
         authService.signOut(response);
         return Utils.generateResponse("logout_successful", HttpStatus.OK);
@@ -47,7 +48,7 @@ public class AuthController {
     }
 
     @GetMapping("/testprivate")
-    @PreAuthorize("hasRole('HEAD_ADMIN')")
+    @IsLoggedIn
     public ResponseEntity<Object> testprivate() {
         System.out.println("Private endpoint called");
         return Utils.generateResponse("success", HttpStatus.ACCEPTED);

@@ -34,7 +34,7 @@ public class SteelduxxKlantenportaalApplication {
 
 			String encodedPassword = passwordEncoder.encode(adminPassword);
 
-			User adminUser = new User(adminEmail, encodedPassword, "Admin", "Admin", RoleEnum.ROLE_HEAD_ADMIN);
+			User adminUser = new User(adminEmail, encodedPassword, "Admin", "Admin", RoleEnum.ROLE_ADMIN);
 			userRepository.save(adminUser);
 		};
 	}

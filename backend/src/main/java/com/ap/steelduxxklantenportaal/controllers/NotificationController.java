@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
+import com.ap.steelduxxklantenportaal.annotations.IsLoggedIn;
 import com.ap.steelduxxklantenportaal.services.NotificationService;
 import com.ap.steelduxxklantenportaal.models.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class NotificationController {
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("hasRole('HEAD_ADMIN')")
+    @IsLoggedIn
     public List<Notification> getNotificationsByUserId(@PathVariable Long userId) {
         return notificationService.getNotificationsByUserId(userId);
     }

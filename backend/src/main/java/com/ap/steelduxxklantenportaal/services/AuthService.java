@@ -35,8 +35,6 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
     @Autowired
-    private UserDetailsServiceImp userDetailsService;
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     public ResponseEntity<Object> signIn(SignInRequestDTO signInRequestDTO, HttpServletResponse response) {

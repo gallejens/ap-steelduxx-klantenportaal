@@ -3,6 +3,7 @@ package com.ap.steelduxxklantenportaal;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
+import com.ap.steelduxxklantenportaal.services.AuthService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -24,18 +25,16 @@ public class SteelduxxKlantenportaalApplication {
 	}
 
 	@Bean
-	public CommandLineRunner run(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+	public CommandLineRunner run(AuthService authService) {
 		return args -> {
 			if (adminEmail == null || adminPassword == null) {
 				throw new IllegalStateException("Admin credentials could not be found in properties file");
 			}
 
-			if (userRepository.findByEmail(adminEmail).isPresent()) return;
+			if (authService.doesUserExist(adminEmail)) return;
 
-			String encodedPassword = passwordEncoder.encode(adminPassword);
+			authService.addNewUser(adminEmail, adminPassword, "Admin", "Admin", RoleEnum.ROLE_ADMIN);
 
-			User adminUser = new User(adminEmail, encodedPassword, "Admin", "Admin", RoleEnum.ROLE_ADMIN);
-			userRepository.save(adminUser);
 		};
 	}
 }

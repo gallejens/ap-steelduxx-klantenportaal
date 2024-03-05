@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 
-public class Utils {
-    public static ResponseEntity<Object> generateResponse(String message, HttpStatus status, Object responseObject) {
+public class ResponseHandler {
+    public static ResponseEntity<Object> generate(String message, HttpStatus status, Object responseObject) {
         var body = new HashMap<String, Object>();
         body.put("message", message);
         body.put("status", status.value());
@@ -14,7 +14,7 @@ public class Utils {
 
         return new ResponseEntity<>(body, status);
     }
-    public static ResponseEntity<Object> generateResponse(String message, HttpStatus status) {
-        return generateResponse(message, status, null);
+    public static ResponseEntity<Object> generate(String message, HttpStatus status) {
+        return generate(message, status, null);
     }
 }

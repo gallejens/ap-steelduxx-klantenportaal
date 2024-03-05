@@ -1,17 +1,14 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
-import com.ap.steelduxxklantenportaal.annotations.IsLoggedIn;
 import com.ap.steelduxxklantenportaal.services.AuthService;
-import com.ap.steelduxxklantenportaal.utils.Cookies;
-import com.ap.steelduxxklantenportaal.utils.Utils;
+import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,10 +25,10 @@ public class AuthController {
     }
 
     @PostMapping("/signout")
-    @IsLoggedIn
+    @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> signOut(HttpServletResponse response) {
         authService.signOut(response);
-        return Utils.generateResponse("logout_successful", HttpStatus.OK);
+        return ResponseHandler.generate("logout_successful", HttpStatus.OK);
     }
 
     @PostMapping("/refresh")
@@ -44,13 +41,13 @@ public class AuthController {
     @PreAuthorize("permitAll")
     public ResponseEntity<Object> testpublic() {
         System.out.println("Public endpoint called");
-        return Utils.generateResponse("success", HttpStatus.ACCEPTED);
+        return ResponseHandler.generate("success", HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/testprivate")
-    @IsLoggedIn
+    @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> testprivate() {
         System.out.println("Private endpoint called");
-        return Utils.generateResponse("success", HttpStatus.ACCEPTED);
+        return ResponseHandler.generate("success", HttpStatus.ACCEPTED);
     }
 }

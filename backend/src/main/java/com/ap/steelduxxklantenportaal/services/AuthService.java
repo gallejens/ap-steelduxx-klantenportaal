@@ -1,12 +1,16 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
+import com.ap.steelduxxklantenportaal.enums.RoleEnum;
+import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.models.RefreshToken;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.repositories.RefreshTokenRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.utils.Cookies;
-import com.ap.steelduxxklantenportaal.utils.Utils;
+import com.ap.steelduxxklantenportaal.utils.PermissionsManager;
+import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
+import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -18,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,6 +41,8 @@ public class AuthService {
     private JwtService jwtService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<Object> signIn(SignInRequestDTO signInRequestDTO, HttpServletResponse response) {
         var authToken = new UsernamePasswordAuthenticationToken(signInRequestDTO.getEmail(), signInRequestDTO.getPassword());
@@ -48,7 +55,7 @@ public class AuthService {
         }
 
         if (auth == null || !auth.isAuthenticated()) {
-            return Utils.generateResponse("loginpage:loginFailed", HttpStatus.UNAUTHORIZED);
+            return ResponseHandler.generate("loginpage:loginFailed", HttpStatus.UNAUTHORIZED);
         }
 
         var user = userRepository.findByEmail(signInRequestDTO.getEmail()).orElseThrow();
@@ -58,7 +65,7 @@ public class AuthService {
         Cookies.setCookie(response, REFRESH_TOKEN_COOKIE_NAME, refreshToken, REFRESH_TOKEN_COOKIE_MAX_AGE, REFRESH_TOKEN_COOKIE_PATH);
         saveRefreshToken(user.getId(), refreshToken);
 
-        return Utils.generateResponse("loginpage:loginSuccess", HttpStatus.ACCEPTED);
+        return ResponseHandler.generate("loginpage:loginSuccess", HttpStatus.ACCEPTED);
     }
 
     @Transactional // without this the deleteByUserId throws an error
@@ -77,7 +84,7 @@ public class AuthService {
     public ResponseEntity<Object> refresh(HttpServletRequest request, HttpServletResponse response) {
         String token = Cookies.getValue(request, REFRESH_TOKEN_COOKIE_NAME);
         if (token == null || !jwtService.isNonExpiredRefreshToken(token)) {
-            return Utils.generateResponse("refresh_failed", HttpStatus.FORBIDDEN);
+            return ResponseHandler.generate("refresh_failed", HttpStatus.FORBIDDEN);
         }
 
         try {
@@ -87,10 +94,24 @@ public class AuthService {
             String accessToken = jwtService.generateAccessToken(user);
             Cookies.setCookie(response, ACCESS_TOKEN_COOKIE_NAME, accessToken, ACCESS_TOKEN_COOKIE_MAX_AGE);
         } catch (Exception e) {
-            return Utils.generateResponse("refresh_failed", HttpStatus.FORBIDDEN);
+            return ResponseHandler.generate("refresh_failed", HttpStatus.FORBIDDEN);
         }
 
-        return Utils.generateResponse("refresh_successful", HttpStatus.OK);
+        return ResponseHandler.generate("refresh_successful", HttpStatus.OK);
+    }
+
+    public boolean doesUserExist(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    public void addNewUser(String email, String password, String firstName, String lastName, RoleEnum role) throws UserAlreadyExistsException  {
+        if (doesUserExist(email)) {
+            throw new UserAlreadyExistsException(String.format("User with email %s already exists", email));
+        }
+
+        String encodedPassword = passwordEncoder.encode(password);
+        User user = new User(email, encodedPassword, firstName, lastName, role);
+        userRepository.save(user);
     }
 
     private void saveRefreshToken(long userId, String token) {

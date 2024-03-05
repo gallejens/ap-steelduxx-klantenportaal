@@ -1,11 +1,13 @@
 package com.ap.steelduxxklantenportaal.models;
 
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
+import com.ap.steelduxxklantenportaal.utils.PermissionsManager;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,7 +24,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String email, String password, String firstName, String lastName, RoleEnum role) {
         this.email = email;
@@ -114,7 +117,18 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        var rolePermissions = PermissionsManager.getInstance().getRolePermissions(role);
+        authorities.add(new SimpleGrantedAuthority(role.name()));
+        authorities.addAll(
+                rolePermissions
+                        .stream()
+                        .map(p -> new SimpleGrantedAuthority(p.name()))
+                        .toList()
+        );
+
+        return authorities;
     }
 
     // Email acts as username for our system

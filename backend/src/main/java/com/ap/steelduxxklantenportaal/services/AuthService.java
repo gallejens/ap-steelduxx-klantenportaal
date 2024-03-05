@@ -29,7 +29,7 @@ public class AuthService {
     public static final long ACCESS_TOKEN_COOKIE_MAX_AGE = 5 * 60; // 5 minutes
     public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
     public static final long REFRESH_TOKEN_COOKIE_MAX_AGE = 72 * 60 * 60; // 3 days
-    public static final String REFRESH_TOKEN_COOKIE_PATH = "/auth/refresh";
+    public static final String REFRESH_TOKEN_COOKIE_PATH = "/api/auth/refresh";
 
     @Autowired
     private UserRepository userRepository;

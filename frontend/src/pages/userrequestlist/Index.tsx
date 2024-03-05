@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserRequestTable } from './components/UserRequestTable';
 import { Button, Group, Input, Pagination, Select } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+// import { IconSearch } from '@tabler/icons-react';
 import styles from './styles/userRequestList.module.scss';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -48,21 +48,6 @@ export const userRequestListPage: FC = () => {
         <div className={styles.userrequest_table}>
           <UserRequestTable pageSize={pageSize} />
         </div>
-      </div>
-
-      <div className={styles.footer}>
-        <Pagination.Root total={10}>
-          <Group
-            gap={5}
-            justify='center'
-          >
-            <Pagination.First />
-            <Pagination.Previous />
-            <Pagination.Items />
-            <Pagination.Next />
-            <Pagination.Last />
-          </Group>
-        </Pagination.Root>
       </div>
     </div>
   );

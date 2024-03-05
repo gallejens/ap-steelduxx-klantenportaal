@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { Table, Tabs } from '@mantine/core';
+import { Pagination, Table, Tabs } from '@mantine/core';
 import { doApiAction } from '@/lib/api';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { dateConverter } from '@/lib/util/dateConverter';
+import { ceil } from 'lodash';
+import styles from '../styles/userRequestList.module.scss';
 
 type UserRequestListValues = {
   followId: number;
@@ -21,6 +23,11 @@ interface UserRequestTableProps {
 export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
   const { t } = useTranslation();
   const statuses = ['PENDING', 'APPROVED', 'DENIED'];
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const {
     data: userRequestListValues,
@@ -36,13 +43,13 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
       }),
   });
 
-  // TODO Fix handling
-  if (status === 'pending') {
-    return <div>Loading...</div>;
-  }
-
-  if (status === 'error') {
-    return <div>Error: {error.message}</div>;
+  if (status === 'pending' || status === 'error') {
+    return (
+      <div className={styles.table_handling}>
+        {status === 'pending' && t('user_request_list_page:tableLoading')}
+        {status === 'error' && t('user_request_list_page:tableError')}
+      </div>
+    );
   }
 
   const tableHead = [
@@ -58,7 +65,7 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
     head: tableHead,
     body: userRequestListValues
       .filter(userRequestListValue => userRequestListValue.status === status)
-      .slice(0, pageSize)
+      .slice((currentPage - 1) * pageSize, currentPage * pageSize)
       .map(userRequestListValue => [
         `#${userRequestListValue.followId}`,
         userRequestListValue.companyName,
@@ -97,6 +104,19 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
             horizontalSpacing='xl'
             verticalSpacing='sm'
             data={generateTableData(status)}
+          />
+
+          <Pagination
+            className={styles.pagination}
+            total={ceil(
+              userRequestListValues.filter(
+                userRequestListValue => userRequestListValue.status === status
+              ).length / pageSize
+            )}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onChange={handlePageChange}
+            withEdges
           />
         </Tabs.Panel>
       ))}

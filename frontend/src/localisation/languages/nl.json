@@ -76,12 +76,16 @@
   },
   "user_request_list_page": {
     "newUserRequest": "Nieuwe Aanvraag",
+
     "tableHeader0": "Volg Id",
     "tableHeader1": "Bedrijfsnaam",
     "tableHeader2": "Datum",
     "tableHeader3": "Btw-nummer",
     "tableHeader4": "Contact Persoon",
-    "tableHeader5": "Opties"
+    "tableHeader5": "Opties",
+
+    "tableLoading": "Bezig met laden...",
+    "tableError": "Kan aanvragen niet laden"
   },
   "notifications": {
     "genericError": "Er is iets misgegaan",

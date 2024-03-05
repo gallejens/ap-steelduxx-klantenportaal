@@ -54,10 +54,6 @@
   & > .third_column {
     margin-left: auto;
     margin-right: var(--mantine-spacing-xl);
-
-    & > .new_button {
-      /* Specify styles for the new_button */
-    }
   }
 }
 
@@ -71,5 +67,20 @@
   & > .userrequest_table {
     width: 100%;
     height: 475px;
+
+    .table_handling {
+      font-weight: bold;
+      display: flex;
+      margin-top: 25vh;
+      justify-content: center;
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-top: var(--mantine-spacing-xl);
+    }
   }
 }

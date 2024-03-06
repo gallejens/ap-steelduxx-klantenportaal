@@ -10,6 +10,7 @@ import { TestValuesPage } from './pages/testvaluespage';
 import { UserRequestPage } from './pages/userrequest';
 import { UserRequestListPage } from './pages/userrequestlist';
 import { ResetPasswordPage } from './pages/resetpassword';
+import { ChoosePasswordPage } from './pages/choosepassword';
 
 const rootRoute = createRootRoute();
 
@@ -63,12 +64,29 @@ const passwordResetRoute = createRoute({
   component: ResetPasswordPage,
 });
 
+// Choose password route
+const choosePasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: 'choose-password',
+  component: ChoosePasswordPage,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      token:
+        search.token !== undefined && typeof search.token === 'string'
+          ? String(search.token)
+          : undefined,
+    };
+  },
+});
+
+// Creating route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
   userRequestRoute,
   appRoute.addChildren([homePageRoute, testvaluesRoute, userRequestListRoute]),
   passwordResetRoute,
+  choosePasswordRoute,
 ]);
 export const router = createRouter({ routeTree });
 

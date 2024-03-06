@@ -98,5 +98,20 @@
     "passwordInputLabel": "Password",
     "actionButton": "Reset",
     "emailInputError": "Enter a valid email address"
+  },
+  "choosePasswordPage": {
+    "title": "Choose Password",
+    "passwordInputLabel": "Password",
+    "passwordInputLabelError": "Password does not meet the requirements",
+    "confirmPasswordInputLabel": "Confirm Password",
+    "confirmPasswordInputLabelError": "Passwords do not match",
+    "actionButton": "Confirm"
+  },
+  "passwordRequirements": {
+    "length": "Includes at least 8 characters",
+    "lowercase": "Includes lowercase letter",
+    "uppercase": "Includes uppercase letter",
+    "number": "Includes number",
+    "symbol": "Includes special symbol"
   }
 }

@@ -22,9 +22,10 @@ export const LoginForm: FC = () => {
       password: '',
     },
     validate: {
-      email: value => value.length === 0 && t('loginpage:emailInputError'),
+      email: value =>
+        value.length === 0 ? t('loginpage:emailInputError') : null,
       password: value =>
-        value.length === 0 && t('loginpage:passwordInputError'),
+        value.length === 0 ? t('loginpage:passwordInputError') : null,
     },
     validateInputOnBlur: true,
   });

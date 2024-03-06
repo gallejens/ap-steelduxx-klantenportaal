@@ -98,5 +98,20 @@
     "passwordInputLabel": "Wachtwoord",
     "actionButton": "Reset",
     "emailInputError": "Vul een geldig email adres in"
+  },
+  "choosePasswordPage": {
+    "title": "Wachtwoord Kiezen",
+    "passwordInputLabel": "Wachtwoord",
+    "passwordInputLabelError": "Wachtwoord voldoet niet aan de voorwaarden",
+    "confirmPasswordInputLabel": "Herhaal Wachtwoord",
+    "confirmPasswordInputLabelError": "Wachtwoord komt niet overeen",
+    "actionButton": "Bevestig"
+  },
+  "passwordRequirements": {
+    "length": "Bevat minstens 8 karakters",
+    "lowercase": "Bevat kleine letter",
+    "uppercase": "Bevat hoofdletter",
+    "number": "Bevat cijfer",
+    "symbol": "Bevat speciaal karakter"
   }
 }

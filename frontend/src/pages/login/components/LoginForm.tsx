@@ -1,7 +1,7 @@
 import { notifications } from '@/components/notifications';
-import { doApiAction } from '@/lib/api';
+import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { Button, PasswordInput, Text, TextInput } from '@mantine/core';
-import { isEmail, useForm } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../styles/login.module.scss';
@@ -19,7 +19,7 @@ export const LoginForm: FC = () => {
       password: '',
     },
     validate: {
-      email: isEmail(t('loginpage:emailInputError')),
+      email: value => value.length === 0 && t('loginpage:emailInputError'),
       password: value =>
         value.length === 0 && t('loginpage:passwordInputError'),
     },
@@ -36,8 +36,8 @@ export const LoginForm: FC = () => {
       return;
     }
 
-    const result = await doApiAction({
-      endpoint: '/auth/login',
+    const result = await doApiAction<GenericAPIResponse>({
+      endpoint: '/auth/signin',
       method: 'POST',
       body: {
         email: values.email,
@@ -45,7 +45,10 @@ export const LoginForm: FC = () => {
       },
     });
 
-    console.log(result);
+    notifications.add({
+      message: t(result?.message ?? 'notifications:genericError'),
+      autoClose: 5000,
+    });
   };
 
   const handleResetPassword = () => {

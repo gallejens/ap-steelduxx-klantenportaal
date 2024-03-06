@@ -14,7 +14,10 @@
     "forgotPassword": "Forgot password",
     "loginButton": "Login",
     "noAccountLabel": "Don't have an account?",
-    "userrequestLink": "Register now"
+    "userrequestLink": "Register now",
+
+    "loginFailed": "Invalid email or password",
+    "loginSuccess": "Login successful"
   },
   "userrequestpage": {
     "title": "Request Account",

@@ -1,8 +1,7 @@
 import { notifications } from '@/components/notifications';
 import { doApiAction } from '@/lib/api';
-import { Button, NumberInput, Text, TextInput } from '@mantine/core';
+import { Button, NumberInput, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
-import { useNavigate } from '@tanstack/react-router';
 import { checkVAT, countries } from 'jsvat';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +28,6 @@ type UserRequestFormValues = {
 
 export const UserRequestForm: FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const UserRequestForm = useForm<UserRequestFormValues>({
     initialValues: {
@@ -143,7 +141,7 @@ export const UserRequestForm: FC = () => {
 
   return (
     <form
-      className={styles.userrequest_form}
+      className={styles.userrequest_page_form}
       onSubmit={UserRequestForm.onSubmit(values =>
         handleUserRequestButton(values)
       )}
@@ -156,7 +154,6 @@ export const UserRequestForm: FC = () => {
           required
           {...UserRequestForm.getInputProps('companyName')}
         />
-
         <div className={styles.number_fields}>
           <TextInput
             label={t('userrequestpage:phoneNrInputTitle')}
@@ -248,18 +245,6 @@ export const UserRequestForm: FC = () => {
           <Button type='submit'>
             {t('userrequestpage:userRequestButton')}
           </Button>
-        </div>
-        <div className={styles.go_login_text}>
-          <Text c='dimmed'>{t('userrequestpage:userRequestLabel')}</Text>
-          <Text
-            c='dimmed'
-            onClick={() => {
-              navigate({ to: '/login' });
-            }}
-            className={styles.login_link}
-          >
-            {t('userrequestpage:loginLink')}
-          </Text>
         </div>
       </div>
     </form>

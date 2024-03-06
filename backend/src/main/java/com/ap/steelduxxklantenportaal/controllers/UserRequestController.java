@@ -1,7 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.DTOs.UserRequestValuesDTO;
-import com.ap.steelduxxklantenportaal.repositories.UserRequestValueRepository;
 import com.ap.steelduxxklantenportaal.services.UserRequestValueService;
 
 import org.springframework.beans.factory.annotation.Autowired;

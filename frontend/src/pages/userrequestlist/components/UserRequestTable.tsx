@@ -4,7 +4,7 @@ import { doApiAction } from '@/lib/api';
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { dateConverter } from '@/lib/util/dateConverter';
-import { ceil } from 'lodash';
+import { statuses } from '../constants';
 import styles from '../styles/userRequestList.module.scss';
 
 type UserRequestListValues = {
@@ -108,13 +108,12 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
 
           <Pagination
             className={styles.pagination}
-            total={ceil(
+            total={Math.ceil(
               userRequestListValues.filter(
                 userRequestListValue => userRequestListValue.status === status
               ).length / pageSize
             )}
-            currentPage={currentPage}
-            pageSize={pageSize}
+            value={currentPage}
             onChange={handlePageChange}
             withEdges
           />

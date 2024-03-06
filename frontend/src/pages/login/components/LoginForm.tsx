@@ -5,6 +5,8 @@ import { useForm } from '@mantine/form';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../styles/login.module.scss';
+import { useNavigate } from '@tanstack/react-router';
+import { EMAIL_PLACEHOLDER } from '@/constants';
 
 type LoginFormValues = {
   email: string;
@@ -13,6 +15,7 @@ type LoginFormValues = {
 
 export const LoginForm: FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const loginForm = useForm<LoginFormValues>({
     initialValues: {
       email: '',
@@ -51,10 +54,6 @@ export const LoginForm: FC = () => {
     });
   };
 
-  const handleResetPassword = () => {
-    // TODO: Implement password resetting
-  };
-
   return (
     <form
       className={styles.login_page_form}
@@ -62,13 +61,12 @@ export const LoginForm: FC = () => {
     >
       <TextInput
         label={t('loginpage:emailInputTitle')}
-        placeholder={t('loginpage:emailInputPlaceholder')}
+        placeholder={EMAIL_PLACEHOLDER}
         required
         {...loginForm.getInputProps('email')}
       />
       <PasswordInput
         label={t('loginpage:passwordInputTitle')}
-        placeholder={t('loginpage:passwordInputPlaceholder')}
         required
         {...loginForm.getInputProps('password')}
       />
@@ -76,7 +74,11 @@ export const LoginForm: FC = () => {
         <Text
           className={styles.password_reset}
           c='dimmed'
-          onClick={handleResetPassword}
+          onClick={() => {
+            navigate({
+              to: '/reset-password',
+            });
+          }}
         >
           {t('loginpage:forgotPassword')}
         </Text>

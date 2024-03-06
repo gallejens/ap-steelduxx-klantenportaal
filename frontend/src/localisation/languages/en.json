@@ -6,7 +6,6 @@
   "loginpage": {
     "title": "Customer Portal",
     "emailInputTitle": "Email",
-    "emailInputPlaceholder": "john.doe@mail.com",
     "emailInputError": "Invalid email address.",
     "passwordInputTitle": "Password",
     "passwordInputPlaceholder": "******",
@@ -66,7 +65,6 @@
     "lastNameInputError": "Last name is required",
 
     "emailInputDescription": "Email",
-    "emailInputPlaceholder": "info@steelduxx.be",
     "emailInputError": "Invalid email address",
 
     "userRequestButton": "Request",
@@ -93,5 +91,12 @@
   "notifications": {
     "genericError": "Something went wrong",
     "invalidForm": "One of the inputs is invalid."
+  },
+  "resetPasswordPage": {
+    "title": "Reset Password",
+    "emailInputLabel": "Email",
+    "passwordInputLabel": "Password",
+    "actionButton": "Reset",
+    "emailInputError": "Enter a valid email address"
   }
 }

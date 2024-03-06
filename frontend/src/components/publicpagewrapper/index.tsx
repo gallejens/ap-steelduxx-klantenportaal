@@ -6,8 +6,9 @@ import { useRouter } from '@tanstack/react-router';
 
 type Props = {
   title: string;
-  footer: JSX.Element;
-  panelWidth: string;
+  footer?: JSX.Element;
+  panelWidth?: string;
+  hideBackButton?: boolean;
 };
 
 export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
@@ -20,19 +21,25 @@ export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
         style={{ width: props.panelWidth }}
       >
         <div className={styles.header}>
-          <ActionIcon
-            onClick={() => history.go(-1)}
-            className={styles.back_button}
-          >
-            <IconArrowLeft />
-          </ActionIcon>
+          {!props.hideBackButton && (
+            <ActionIcon
+              onClick={() => history.go(-1)}
+              className={styles.back_button}
+            >
+              <IconArrowLeft />
+            </ActionIcon>
+          )}
           <Text>{props.title}</Text>
           {/* TODO: Add language selector */}
         </div>
         <Divider className={styles.divider} />
         {props.children}
-        <Divider className={styles.divider} />
-        {props.footer}
+        {props.footer !== undefined && (
+          <>
+            <Divider className={styles.divider} />
+            {props.footer}
+          </>
+        )}
       </div>
     </div>
   );

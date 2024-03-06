@@ -10,6 +10,7 @@ import {
   isValidPhoneNumber,
 } from 'react-phone-number-input';
 import styles from '../styles/userRequest.module.scss';
+import { EMAIL_PLACEHOLDER } from '@/constants';
 
 type UserRequestFormValues = {
   companyName: string;
@@ -236,7 +237,7 @@ export const UserRequestForm: FC = () => {
           className={styles.email_field}
           label={t(' ')}
           description={t('userrequestpage:emailInputDescription')}
-          placeholder={t('userrequestpage:emailInputPlaceholder')}
+          placeholder={EMAIL_PLACEHOLDER}
           {...UserRequestForm.getInputProps('email', { required: true })}
         />
       </div>

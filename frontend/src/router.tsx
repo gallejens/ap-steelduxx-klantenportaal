@@ -9,6 +9,7 @@ import { LoginPage } from './pages/login';
 import { TestValuesPage } from './pages/testvaluespage';
 import { UserRequestPage } from './pages/userrequest';
 import { UserRequestListPage } from './pages/userrequestlist';
+import { ResetPasswordPage } from './pages/resetpassword';
 
 const rootRoute = createRootRoute();
 
@@ -56,18 +57,24 @@ const userRequestListRoute = createRoute({
   component: UserRequestListPage,
 });
 
-// Build route tree
+const passwordResetRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: 'reset-password',
+  component: ResetPasswordPage,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
   userRequestRoute,
   appRoute.addChildren([homePageRoute, testvaluesRoute, userRequestListRoute]),
+  passwordResetRoute,
 ]);
 export const router = createRouter({ routeTree });
 
 // Make autocomplete work
 declare module '@tanstack/react-router' {
-  interface userrequest {
+  interface Register {
     router: typeof router;
   }
 }

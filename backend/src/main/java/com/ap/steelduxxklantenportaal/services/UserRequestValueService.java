@@ -46,7 +46,7 @@ public class UserRequestValueService {
         List<UserRequestValuesDTO> userRequestValuesDTOList = userRequestValues.stream()
                 .map(userRequestValue -> {
                     UserRequestValuesDTO dto = convertToDTO(userRequestValue);
-                    System.out.println("DTO object: " + dto);
+                    // System.out.println("DTO object: " + dto);
                     return dto;
                 })
                 .collect(Collectors.toList());

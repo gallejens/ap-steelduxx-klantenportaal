@@ -1,14 +1,35 @@
-import { IconHome, IconX } from '@tabler/icons-react';
-
 export const TABS = [
   {
     label: 'Home',
     path: 'home',
-    icon: <IconHome />,
+    img: (
+      <img
+        src='/home-blue.png'
+        alt='home-icon'
+      />
+    ),
+    color: 'blue',
   },
   {
-    label: 'Test',
+    label: 'Orderlist',
     path: 'testvalues',
-    icon: <IconX />,
+    img: (
+      <img
+        src='/lines-green.png'
+        alt='lines-icon'
+      />
+    ),
+    color: 'green',
+  },
+  {
+    label: 'Registrationlist',
+    path: 'request_account',
+    img: (
+      <img
+        src='/list-pink.png'
+        alt='list-icon'
+      />
+    ),
+    color: 'pink',
   },
 ];

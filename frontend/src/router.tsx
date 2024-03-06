@@ -8,8 +8,6 @@ import { HomePage } from './pages/home';
 import { LoginPage } from './pages/login';
 import { TestValuesPage } from './pages/testvaluespage';
 import { userRequestPage } from './pages/userrequest';
-import { HomePage } from './pages/home';
-import { OrderListPage } from './pages/orderlist';
 
 const rootRoute = createRootRoute();
 
@@ -47,18 +45,6 @@ const testvaluesRoute = createRoute({
   getParentRoute: () => appRoute,
   path: '/testvalues',
   component: TestValuesPage,
-});
-
-const homeRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/home',
-  component: HomePage,
-});
-
-const OrderListRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/orderlist',
-  component: OrderListPage,
 });
 
 const routeTree = rootRoute.addChildren([

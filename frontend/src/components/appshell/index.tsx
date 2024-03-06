@@ -40,13 +40,21 @@ export const AppShell: FC = () => {
                   }}
                   className={`${isActive ? styles.active : ''}`}
                 >
-                  {tab.icon}
+                  <div>{tab.img}</div>
                   {tab.label}
                 </div>
               );
             })}
           </div>
-          <div className={styles.user}>Hallo</div>
+          <div className={styles.users}>
+            <img
+              className={styles.userpfp}
+              src='/default-pfp.png'
+              alt='default icon'
+            />
+            <div className={styles.user}>Hallo</div>
+            <div className={styles.user}>Hallo</div>
+          </div>
         </div>
         <div className={styles.route}>
           <Outlet />

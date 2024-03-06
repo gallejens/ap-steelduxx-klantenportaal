@@ -1,0 +1,22 @@
+meta {
+  name: token-request
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://sw11-1.devops-ap.be/authenticate/token
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "group": "SOF3",
+    "apiKey": "SECRET-KEY-SOF3"
+  }
+}
+
+script:post-response {
+  bru.setEnvVar("auth-key", res.body.token)
+}

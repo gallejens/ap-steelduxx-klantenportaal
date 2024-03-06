@@ -57,7 +57,7 @@ export const LoginForm: FC = () => {
 
   return (
     <form
-      className={styles.login_form}
+      className={styles.login_page_form}
       onSubmit={loginForm.onSubmit(values => handleLoginButton(values))}
     >
       <TextInput
@@ -66,13 +66,13 @@ export const LoginForm: FC = () => {
         required
         {...loginForm.getInputProps('email')}
       />
-      <div>
-        <PasswordInput
-          label={t('loginpage:passwordInputTitle')}
-          placeholder={t('loginpage:passwordInputPlaceholder')}
-          required
-          {...loginForm.getInputProps('password')}
-        />
+      <PasswordInput
+        label={t('loginpage:passwordInputTitle')}
+        placeholder={t('loginpage:passwordInputPlaceholder')}
+        required
+        {...loginForm.getInputProps('password')}
+      />
+      <div className={styles.actions}>
         <Text
           className={styles.password_reset}
           c='dimmed'
@@ -80,9 +80,6 @@ export const LoginForm: FC = () => {
         >
           {t('loginpage:forgotPassword')}
         </Text>
-      </div>
-
-      <div className={styles.login_button}>
         <Button type='submit'>{t('loginpage:loginButton')}</Button>
       </div>
     </form>

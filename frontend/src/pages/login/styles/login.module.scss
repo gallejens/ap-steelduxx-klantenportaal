@@ -1,107 +1,56 @@
-@use '../../../styles/variables.scss';
 @use '../../../styles/mixins.scss';
 
 .login_page {
-  width: 100%;
-
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  gap: var(--mantine-spacing-xl);
 
-  background-color: var(--mantine-primary-color-6);
+  &_footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--mantine-spacing-xs) / 2);
 
-  & > .panel {
-    @include mixins.shadow;
+    & > * {
+      font-size: 0.8rem !important;
+    }
 
-    width: 80vh;
-    background-color: var(--mantine-primary-color-0);
+    & .userrequest_link {
+      @include mixins.link;
+    }
+  }
 
-    padding: var(--mantine-spacing-md) var(--mantine-spacing-xl);
+  &_form {
+    width: 100%;
 
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: var(--mantine-spacing-md);
+    gap: var(--mantine-spacing-lg);
 
-    border-radius: var(--mantine-radius-default);
-
-    // hide logo on mobile
-    @media screen and (max-width: variables.$mobile-breakpoint) {
-      .logo {
-        display: none;
-      }
-
-      .body {
-        height: 25vh;
-      }
-    }
-
-    & > * {
-      width: 100%;
+    & > .actions {
       display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
     }
 
-    & > .header {
-      justify-content: center;
-      align-items: center;
-
-      & > * {
-        font-size: 2rem;
-        font-weight: 600;
-      }
+    & div:has(.password_reset) {
+      position: relative;
     }
 
-    & > .body {
-      gap: var(--mantine-spacing-xl);
-    }
-
-    & > .footer {
-      align-items: center;
-      justify-content: center;
-      gap: calc(var(--mantine-spacing-xs) / 2);
-
-      & > * {
-        font-size: 0.8rem;
-      }
-
-      & .userrequest_link {
-        font-weight: 700;
-        text-decoration: underline;
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
+    & .password_reset {
+      @include mixins.link;
+      font-size: 0.8rem;
     }
   }
 }
 
-.login_form {
-  width: 100%;
+// @media screen and (max-width: variables.$mobile-breakpoint) {
+//   .logo {
+//     display: none;
+//   }
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  & > .login_button {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-  }
-
-  & div:has(.password_reset) {
-    position: relative;
-  }
-
-  & .password_reset {
-    position: absolute;
-    bottom: -2rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-decoration: underline;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
+//   .body {
+//     height: 25vh;
+//   }
+// }

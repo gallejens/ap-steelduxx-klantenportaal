@@ -12,7 +12,6 @@ import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,16 +30,19 @@ public class AuthService {
     public static final long REFRESH_TOKEN_COOKIE_MAX_AGE = 72 * 60 * 60; // 3 days
     public static final String REFRESH_TOKEN_COOKIE_PATH = "/api/auth/refresh";
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-    @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthService(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository, JwtService jwtService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public ResponseEntity<Object> signIn(SignInRequestDTO signInRequestDTO, HttpServletResponse response) {
         var authToken = new UsernamePasswordAuthenticationToken(signInRequestDTO.email(), signInRequestDTO.password());

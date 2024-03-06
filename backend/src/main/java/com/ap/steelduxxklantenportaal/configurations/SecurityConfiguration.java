@@ -32,10 +32,13 @@ public class SecurityConfiguration {
     @Value("${allowed_origin}")
     private String allowedOrigin;
 
-    @Autowired
-    private UserDetailsServiceImp userDetailsService;
-    @Autowired
-    private JwtAuthFilter jwtAuthFilter;
+    private final UserDetailsServiceImp userDetailsService;
+    private final JwtAuthFilter jwtAuthFilter;
+
+    public SecurityConfiguration(UserDetailsServiceImp userDetailsService, JwtAuthFilter jwtAuthFilter) {
+        this.userDetailsService = userDetailsService;
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -15,15 +15,17 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private final SecretKey accessTokenKey;
-    private final SecretKey refreshTokenKey;
+    @Value("${jwt_access_token_secret}")
+    private String accessTokenSecret;
+    @Value("${jwt_refresh_token_secret}")
+    private String refreshTokenSecret;
 
-    public JwtService(
-            @Value("${jwt_access_token_secret}") String accessTokenSecret,
-            @Value("${jwt_refresh_token_secret}") String refreshTokenSecret
-    ) {
-        accessTokenKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessTokenSecret));
-        refreshTokenKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshTokenSecret));
+    private SecretKey getAccessTokenKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessTokenSecret));
+    }
+
+    private SecretKey getRefreshTokenKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshTokenSecret));
     }
 
     private Claims extractAllClaims(String token, SecretKey key) {
@@ -41,11 +43,11 @@ public class JwtService {
     }
 
     public <T> T extractClaimFromAccessToken(String token, Function<Claims, T> resolver) {
-        return extractClaim(token, resolver, accessTokenKey);
+        return extractClaim(token, resolver, getAccessTokenKey());
     }
 
     public <T> T extractClaimFromRefreshToken(String token, Function<Claims, T> resolver) {
-        return extractClaim(token, resolver, refreshTokenKey);
+        return extractClaim(token, resolver, getRefreshTokenKey());
     }
 
     private boolean isNonExpired(String token, SecretKey key) {
@@ -54,11 +56,11 @@ public class JwtService {
     }
 
     public boolean isNonExpiredAccessToken(String token) {
-        return isNonExpired(token, accessTokenKey);
+        return isNonExpired(token, getAccessTokenKey());
     }
 
     public boolean isNonExpiredRefreshToken(String token) {
-        return isNonExpired(token, refreshTokenKey);
+        return isNonExpired(token, getRefreshTokenKey());
     }
 
     private String generateToken(User user, SecretKey key, long maxAge) {
@@ -75,10 +77,10 @@ public class JwtService {
     }
 
     public String generateAccessToken(User user) {
-        return generateToken(user, accessTokenKey, AuthService.ACCESS_TOKEN_COOKIE_MAX_AGE);
+        return generateToken(user, getAccessTokenKey(), AuthService.ACCESS_TOKEN_COOKIE_MAX_AGE);
     }
 
     public String generateRefreshToken(User user) {
-        return generateToken(user, refreshTokenKey, AuthService.REFRESH_TOKEN_COOKIE_MAX_AGE);
+        return generateToken(user, getRefreshTokenKey(), AuthService.REFRESH_TOKEN_COOKIE_MAX_AGE);
     }
 }

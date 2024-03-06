@@ -5,7 +5,6 @@ import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+    private final AuthService authService;
 
-    @Autowired
-    private AuthService authService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/signin")
     @PreAuthorize("permitAll")

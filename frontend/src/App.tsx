@@ -11,7 +11,7 @@ import styles from './styles/app.module.scss';
 export const App: FC = () => {
   return (
     <>
-      <div className={styles.app_shell}>
+      <div className={styles.container}>
         <RouterProvider router={router} />
       </div>
       <Notifications />

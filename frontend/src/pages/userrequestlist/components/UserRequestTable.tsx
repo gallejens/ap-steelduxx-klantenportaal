@@ -20,11 +20,9 @@ type UserRequestListValues = {
 interface UserRequestTableProps {
   pageSize: number;
 }
-const statuses = ['PENDING', 'APPROVED', 'DENIED'];
 
 export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
   const { t } = useTranslation();
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const handlePageChange = (page: number) => {

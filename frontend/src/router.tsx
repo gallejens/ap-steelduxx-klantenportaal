@@ -6,7 +6,7 @@ import {
 import { LoginPage } from './pages/login';
 import { TestValuesPage } from './pages/testvaluespage';
 import { userRequestPage } from './pages/userrequest';
-import { userRequestListPage } from './pages/userrequestlist/Index';
+import { userRequestListPage } from './pages/userrequestlist';
 
 const rootRoute = createRootRoute();
 
@@ -31,7 +31,7 @@ const userRequestRoute = createRoute({
 const userRequestListRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/requests',
-  component: userRequestListPage
+  component: userRequestListPage,
 });
 
 const testvaluesRoute = createRoute({

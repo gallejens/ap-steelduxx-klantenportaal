@@ -43,7 +43,7 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<Object> signIn(SignInRequestDTO signInRequestDTO, HttpServletResponse response) {
-        var authToken = new UsernamePasswordAuthenticationToken(signInRequestDTO.getEmail(), signInRequestDTO.getPassword());
+        var authToken = new UsernamePasswordAuthenticationToken(signInRequestDTO.email(), signInRequestDTO.password());
 
         Authentication auth;
         try {
@@ -56,7 +56,7 @@ public class AuthService {
             return ResponseHandler.generate("loginpage:loginFailed", HttpStatus.UNAUTHORIZED);
         }
 
-        var user = userRepository.findByEmail(signInRequestDTO.getEmail()).orElseThrow();
+        var user = userRepository.findByEmail(signInRequestDTO.email()).orElseThrow();
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         Cookies.setCookie(response, ACCESS_TOKEN_COOKIE_NAME, accessToken, ACCESS_TOKEN_COOKIE_MAX_AGE);

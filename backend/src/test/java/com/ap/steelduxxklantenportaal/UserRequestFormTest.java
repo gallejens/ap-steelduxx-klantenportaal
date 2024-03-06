@@ -21,7 +21,7 @@ import com.ap.steelduxxklantenportaal.repositories.UserRequestValueRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserRequestTest {
+public class UserRequestFormTest {
     @Autowired
     private UserRequestController userRequestController;
 

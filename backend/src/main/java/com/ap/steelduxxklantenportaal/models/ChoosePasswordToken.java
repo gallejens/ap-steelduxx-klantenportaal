@@ -10,8 +10,9 @@ import java.util.Date;
 @Entity
 @Table(name = "choose_password_tokens")
 public class ChoosePasswordToken {
-    @Id
+
     private String token;
+    @Id
     @Column(name = "user_id")
     private long userId;
 

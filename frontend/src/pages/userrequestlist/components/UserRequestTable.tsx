@@ -29,11 +29,7 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
     setCurrentPage(page);
   };
 
-  const {
-    data: userRequestListValues,
-    status,
-    error,
-  } = useQuery({
+  const { data: userRequestListValues, status } = useQuery({
     refetchOnWindowFocus: false,
     queryKey: ['userRequestListValues'],
     queryFn: () =>

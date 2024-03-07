@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserRequestTable } from './components/UserRequestTable';
-import { Button, Group, Input, Pagination, Select } from '@mantine/core';
-// import { IconSearch } from '@tabler/icons-react';
+import { Button, Input, Select } from '@mantine/core';
+//import { IconSearch } from '@tabler/icons-react';
 import styles from './styles/userRequestList.module.scss';
 import { useNavigate } from '@tanstack/react-router';
 
-export const userRequestListPage: FC = () => {
+export const UserRequestListPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [pageSize, setPageSize] = useState<number>(10);
@@ -26,7 +26,7 @@ export const userRequestListPage: FC = () => {
         <div className={styles.second_column}>
           <Input
             className={styles.search_bar}
-            // icon={<IconSearch size={18} />}
+            //icon={<IconSearch size={18} />}
             placeholder='Search'
             radius='sm'
           />

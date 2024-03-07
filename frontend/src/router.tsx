@@ -5,8 +5,8 @@ import {
 } from '@tanstack/react-router';
 import { LoginPage } from './pages/login';
 import { TestValuesPage } from './pages/testvaluespage';
-import { userRequestPage } from './pages/userrequest';
-import { userRequestListPage } from './pages/userrequestlist';
+import { UserRequestPage } from './pages/userrequest';
+import { UserRequestListPage } from './pages/userrequestlist';
 
 const rootRoute = createRootRoute();
 
@@ -25,13 +25,13 @@ const loginRoute = createRoute({
 const userRequestRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/request_account',
-  component: userRequestPage,
+  component: UserRequestPage,
 });
 
 const userRequestListRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/requests',
-  component: userRequestListPage,
+  component: UserRequestListPage,
 });
 
 const testvaluesRoute = createRoute({

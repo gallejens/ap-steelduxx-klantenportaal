@@ -106,7 +106,13 @@
     "passwordInputLabelError": "Password does not meet the requirements",
     "confirmPasswordInputLabel": "Confirm Password",
     "confirmPasswordInputLabelError": "Passwords do not match",
-    "actionButton": "Confirm"
+    "actionButton": "Confirm",
+    "tokenEmailFeedback": "Choosing password for: ",
+    "invalidToken": "Invalid link",
+    "response": {
+      "failed": "Something went wrong while setting the password. Please try again.",
+      "success": "Password has been set successfully."
+    }
   },
   "passwordRequirements": {
     "length": "Includes at least 8 characters",

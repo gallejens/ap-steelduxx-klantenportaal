@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
+import com.ap.steelduxxklantenportaal.DTOs.ChoosePasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.ResetPasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
 import com.ap.steelduxxklantenportaal.services.AuthService;
@@ -50,5 +51,11 @@ public class AuthController {
     @PreAuthorize("permitAll")
     public ResponseEntity<Object> getEmailForChoosePasswordToken(@PathVariable String token) {
         return authService.getEmailForChoosePasswordToken(token);
+    }
+
+    @PostMapping("/choose-password")
+    @PreAuthorize("permitAll")
+    public ResponseEntity<Object> choosePassword(@RequestBody ChoosePasswordDto choosePasswordDto) {
+        return authService.choosePassword(choosePasswordDto.token(), choosePasswordDto.password());
     }
 }

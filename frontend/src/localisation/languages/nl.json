@@ -106,7 +106,13 @@
     "passwordInputLabelError": "Wachtwoord voldoet niet aan de voorwaarden",
     "confirmPasswordInputLabel": "Herhaal Wachtwoord",
     "confirmPasswordInputLabelError": "Wachtwoord komt niet overeen",
-    "actionButton": "Bevestig"
+    "actionButton": "Bevestig",
+    "tokenEmailFeedback": "Wachtwoord kiezen voor: ",
+    "invalidToken": "Ongeldige link",
+    "response": {
+      "failed": "Er is iets misgegaan tijdens het instellen van het wachtwoord, gelieve opnieuw te proberen.",
+      "success": "Wachtwoord is succesvol ingesteld."
+    }
   },
   "passwordRequirements": {
     "length": "Bevat minstens 8 karakters",

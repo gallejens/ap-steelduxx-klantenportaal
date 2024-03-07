@@ -7,7 +7,7 @@ const REQUIREMENTS: Record<
 > = {
   length: {
     labelKey: 'passwordRequirements:length',
-    checker: (password: string) => password.length >= 12,
+    checker: (password: string) => password.length >= 8,
   },
   number: {
     labelKey: 'passwordRequirements:number',

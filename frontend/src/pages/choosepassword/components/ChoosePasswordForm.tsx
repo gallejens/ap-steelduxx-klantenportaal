@@ -1,6 +1,6 @@
 import { useForm } from '@mantine/form';
 import styles from '../styles/choosepassword.module.scss';
-import { Button, PasswordInput, Text } from '@mantine/core';
+import { Button, PasswordInput } from '@mantine/core';
 import { notifications } from '@/components/notifications';
 import { useTranslation } from 'react-i18next';
 import type { FC } from 'react';
@@ -13,7 +13,7 @@ type FormValues = {
 };
 
 type Props = {
-  email: string;
+  onSubmit: (password: string) => void;
 };
 
 export const ChoosePasswordForm: FC<Props> = props => {
@@ -35,7 +35,7 @@ export const ChoosePasswordForm: FC<Props> = props => {
     },
   });
 
-  const handleChoosePassword = (values: FormValues) => {
+  const handleChoosePassword = async (values: FormValues) => {
     if (!form.isValid()) {
       notifications.add({
         title: t('notifications:genericError'),
@@ -45,7 +45,7 @@ export const ChoosePasswordForm: FC<Props> = props => {
       return;
     }
 
-    console.log(values);
+    props.onSubmit(values.password);
   };
 
   return (
@@ -53,9 +53,6 @@ export const ChoosePasswordForm: FC<Props> = props => {
       className={styles.choosepassword_page}
       onSubmit={form.onSubmit(values => handleChoosePassword(values))}
     >
-      <Text className={styles.email_text}>
-        Choosing password for: {props.email}
-      </Text>
       <PasswordInputWithRequirements
         label={t('choosePasswordPage:passwordInputLabel')}
         required

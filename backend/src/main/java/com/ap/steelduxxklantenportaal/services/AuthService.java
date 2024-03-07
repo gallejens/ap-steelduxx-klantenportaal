@@ -160,14 +160,42 @@ public class AuthService {
         System.out.println(choosePasswordLink);
     }
 
-    public ResponseEntity<Object> getEmailForChoosePasswordToken(String token) {
+    private User getUserForChoosePasswordToken(String token) {
         Optional<ChoosePasswordToken> choosePasswordToken = choosePasswordTokenRepository.findByToken(token);
         if (choosePasswordToken.isEmpty() || choosePasswordToken.get().isExpired()) {
+            return null;
+        }
+
+        return userRepository.findById(choosePasswordToken.get().getUserId()).orElseThrow();
+    }
+
+    public ResponseEntity<Object> getEmailForChoosePasswordToken(String token) {
+        User user = getUserForChoosePasswordToken(token);
+
+        if (user == null) {
             return ResponseHandler.generate("invalid_token", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        User user = userRepository.findById(choosePasswordToken.get().getUserId()).orElseThrow();
-
         return ResponseHandler.generate("found_email", HttpStatus.OK, Map.of("email", user.getEmail()));
+    }
+
+    @Transactional
+    public ResponseEntity<Object> choosePassword(String token, String password) {
+        User user = getUserForChoosePasswordToken(token);
+        if (user == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NOT_ACCEPTABLE);
+        };
+
+        updatePassword(user, password);
+        refreshTokenRepository.deleteByUserId(user.getId());
+        choosePasswordTokenRepository.deleteByUserId(user.getId());
+
+        return ResponseHandler.generate("success", HttpStatus.OK);
+    }
+
+    private void updatePassword(User user, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
     }
 }

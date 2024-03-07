@@ -14,7 +14,7 @@ export const LoginFooter: FC = () => {
       <Text
         c='dimmed'
         onClick={() => {
-          navigate({ to: '/request_account' });
+          navigate({ to: '/request-account' });
         }}
         className={styles.userrequest_link}
       >

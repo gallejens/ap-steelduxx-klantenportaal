@@ -57,8 +57,10 @@ services:
           "spring.datasource.url": "jdbc:mysql://database:$DB_PORT/$DB_DATABASE?allowPublicKeyRetrieval=true&useSSL=false",
           "spring.datasource.username": "$DB_USER",
           "spring.datasource.password": "$DB_PASSWORD",
-          "admin_email": "$APP_ADMIN_EMAIL",
-          "admin_password": "$APP_ADMIN_PASSWORD",
+          "admin_account.email": "$APP_ADMIN_ACCOUNT_EMAIL",
+          "admin_account.password": "$APP_ADMIN_ACCOUNT_PASSWORD",
+          "admin_account.first_name": "$APP_ADMIN_ACCOUNT_FIRST_NAME",
+          "admin_account.last_name": "$APP_ADMIN_ACCOUNT_LAST_NAME",
           "allowed_origin": "https://$APP_URL"
         }
     volumes:

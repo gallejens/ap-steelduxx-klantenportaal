@@ -1,7 +1,7 @@
 import { notifications } from '@/components/notifications';
 import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { Button, PasswordInput, Text, TextInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { isEmail, useForm } from '@mantine/form';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../styles/login.module.scss';
@@ -22,8 +22,7 @@ export const LoginForm: FC = () => {
       password: '',
     },
     validate: {
-      email: value =>
-        value.length === 0 ? t('loginpage:emailInputError') : null,
+      email: isEmail(t('loginpage:emailInputError')),
       password: value =>
         value.length === 0 ? t('loginpage:passwordInputError') : null,
     },

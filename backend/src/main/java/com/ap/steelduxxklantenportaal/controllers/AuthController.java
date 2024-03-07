@@ -41,8 +41,14 @@ public class AuthController {
 
     @PostMapping("/reset-password")
     @PreAuthorize("permitAll")
-    public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
+    @ResponseStatus(HttpStatus.OK)
+    public void resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
         authService.requestPasswordReset(resetPasswordDto.email());
-        return ResponseHandler.generate("resetPasswordPage:response", HttpStatus.OK);
+    }
+
+    @GetMapping("/choose-password/{token}")
+    @PreAuthorize("permitAll")
+    public ResponseEntity<Object> getEmailForChoosePasswordToken(@PathVariable String token) {
+        return authService.getEmailForChoosePasswordToken(token);
     }
 }

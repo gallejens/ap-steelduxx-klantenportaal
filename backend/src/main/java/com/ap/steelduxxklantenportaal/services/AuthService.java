@@ -26,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -125,7 +126,7 @@ public class AuthService {
         return userRepository.findByEmail(email).isPresent();
     }
 
-    public User addNewUser(String email, String password, String firstName, String lastName, RoleEnum role) throws UserAlreadyExistsException  {
+    public User addNewUser(String email, String password, String firstName, String lastName, RoleEnum role) throws UserAlreadyExistsException {
         if (doesUserExist(email)) {
             throw new UserAlreadyExistsException(String.format("User with email %s already exists", email));
         }
@@ -157,5 +158,16 @@ public class AuthService {
         // TODO: Send mail
         String choosePasswordLink = frontendUrl + "/choose-password?token=" + uuid;
         System.out.println(choosePasswordLink);
+    }
+
+    public ResponseEntity<Object> getEmailForChoosePasswordToken(String token) {
+        Optional<ChoosePasswordToken> choosePasswordToken = choosePasswordTokenRepository.findByToken(token);
+        if (choosePasswordToken.isEmpty() || choosePasswordToken.get().isExpired()) {
+            return ResponseHandler.generate("invalid_token", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        User user = userRepository.findById(choosePasswordToken.get().getUserId()).orElseThrow();
+
+        return ResponseHandler.generate("found_email", HttpStatus.OK, Map.of("email", user.getEmail()));
     }
 }

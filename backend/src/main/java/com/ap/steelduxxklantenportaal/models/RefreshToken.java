@@ -2,37 +2,24 @@ package com.ap.steelduxxklantenportaal.models;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "refresh_tokens")
 public class RefreshToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String token;
     @Column(name = "user_id")
     private long userId;
-    private String token;
+
+    @Column(name = "expiry_date")
+    private long expiryDate;
 
     public RefreshToken() {}
-    public RefreshToken(long id, long userId, String token) {
-        this.id = id;
-        this.userId = userId;
+    public RefreshToken(String token, long userId, long expiryDate) {
         this.token = token;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
         this.userId = userId;
+        this.expiryDate = expiryDate;
     }
 
     public String getToken() {
@@ -43,12 +30,32 @@ public class RefreshToken {
         this.token = token;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public long getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(long expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
     @Override
     public String toString() {
         return "RefreshToken{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
-                ", token='" + token + '\'' +
+                "token='" + token + '\'' +
+                ", userId=" + userId +
+                ", expiryDate=" + expiryDate +
                 '}';
+    }
+
+    public boolean isExpired() {
+        return this.expiryDate < new Date().getTime();
     }
 }

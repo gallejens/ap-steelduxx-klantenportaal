@@ -22,6 +22,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.UUID;
+
 @Service
 public class AuthService {
     public static final String ACCESS_TOKEN_COOKIE_NAME = "access_token";
@@ -59,8 +62,8 @@ public class AuthService {
         }
 
         var user = userRepository.findByEmail(signInRequestDTO.email()).orElseThrow();
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+        String accessToken = jwtService.generateToken(user.getUsername(), ACCESS_TOKEN_COOKIE_MAX_AGE);
+        String refreshToken = UUID.randomUUID().toString();
         Cookies.setCookie(response, ACCESS_TOKEN_COOKIE_NAME, accessToken, ACCESS_TOKEN_COOKIE_MAX_AGE);
         Cookies.setCookie(response, REFRESH_TOKEN_COOKIE_NAME, refreshToken, REFRESH_TOKEN_COOKIE_MAX_AGE, REFRESH_TOKEN_COOKIE_PATH);
         saveRefreshToken(user.getId(), refreshToken);
@@ -83,15 +86,16 @@ public class AuthService {
 
     public ResponseEntity<Object> refresh(HttpServletRequest request, HttpServletResponse response) {
         String token = Cookies.getValue(request, REFRESH_TOKEN_COOKIE_NAME);
-        if (token == null || !jwtService.isNonExpiredRefreshToken(token)) {
-            return ResponseHandler.generate("refresh_failed", HttpStatus.FORBIDDEN);
-        }
 
         try {
+            if (token == null) throw new RuntimeException();
+
             RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow();
+            if (refreshToken.isExpired()) throw new RuntimeException();
+
             User user = userRepository.findById(refreshToken.getUserId()).orElseThrow();
 
-            String accessToken = jwtService.generateAccessToken(user);
+            String accessToken = jwtService.generateToken(user.getUsername(), ACCESS_TOKEN_COOKIE_MAX_AGE);
             Cookies.setCookie(response, ACCESS_TOKEN_COOKIE_NAME, accessToken, ACCESS_TOKEN_COOKIE_MAX_AGE);
         } catch (Exception e) {
             return ResponseHandler.generate("refresh_failed", HttpStatus.FORBIDDEN);
@@ -118,6 +122,9 @@ public class AuthService {
         var refreshToken = new RefreshToken();
         refreshToken.setUserId(userId);
         refreshToken.setToken(token);
+        refreshToken.setExpiryDate(new Date().getTime());
         refreshTokenRepository.save(refreshToken);
     }
+
+
 }

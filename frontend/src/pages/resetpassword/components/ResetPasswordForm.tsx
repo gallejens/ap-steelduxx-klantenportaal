@@ -1,29 +1,33 @@
 import { EMAIL_PLACEHOLDER } from '@/constants';
-import { Button, TextInput } from '@mantine/core';
-import type { FC } from 'react';
+import { type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../styles/resetpassword.module.scss';
-import { useForm } from '@mantine/form';
+import { isEmail, useForm } from '@mantine/form';
 import { notifications } from '@/components/notifications';
+import { doApiAction, type GenericAPIResponse } from '@/lib/api';
+import { TextInput, Button } from '@mantine/core';
 
 type FormValues = {
   email: string;
 };
 
-export const ResetPasswordForm: FC = () => {
+type Props = {
+  onSubmit: () => void;
+};
+
+export const ResetPasswordForm: FC<Props> = props => {
   const { t } = useTranslation();
   const form = useForm<FormValues>({
     initialValues: {
       email: '',
     },
     validate: {
-      email: value =>
-        value.length === 0 ? t('resetPasswordPage:emailInputError') : null,
+      email: isEmail(t('resetPasswordPage:emailInputError')),
     },
     validateInputOnBlur: true,
   });
 
-  const handleResetButton = (values: FormValues) => {
+  const handleResetButton = async (values: FormValues) => {
     if (!form.isValid()) {
       notifications.add({
         title: t('notifications:genericError'),
@@ -33,7 +37,15 @@ export const ResetPasswordForm: FC = () => {
       return;
     }
 
-    console.log(values);
+    await doApiAction<GenericAPIResponse>({
+      method: 'POST',
+      endpoint: '/auth/reset-password',
+      body: {
+        email: values.email,
+      },
+    });
+
+    props.onSubmit();
   };
 
   return (

@@ -97,7 +97,8 @@
     "emailInputLabel": "Email",
     "passwordInputLabel": "Password",
     "actionButton": "Reset",
-    "emailInputError": "Enter a valid email address"
+    "emailInputError": "Enter a valid email address",
+    "feedback": "An email has been sent with a link to reset your password."
   },
   "choosePasswordPage": {
     "title": "Choose Password",

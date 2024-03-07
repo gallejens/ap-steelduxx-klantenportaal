@@ -1,6 +1,4 @@
-DROP TABLE IF EXISTS `refresh_tokens`;
-
-CREATE TABLE IF NOT EXISTS `refresh_tokens` (
+CREATE TABLE IF NOT EXISTS `choose_password_tokens` (
     `token` VARCHAR(36) NOT NULL PRIMARY KEY,
     `user_id` BIGINT NOT NULL,
     `expiry_date` BIGINT NOT NULL,

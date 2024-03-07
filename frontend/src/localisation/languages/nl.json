@@ -97,7 +97,8 @@
     "emailInputLabel": "Email",
     "passwordInputLabel": "Wachtwoord",
     "actionButton": "Reset",
-    "emailInputError": "Vul een geldig email adres in"
+    "emailInputError": "Vul een geldig email adres in",
+    "feedback": "Een email met een link om je wachtwoord te resetten is verzonden."
   },
   "choosePasswordPage": {
     "title": "Wachtwoord Kiezen",

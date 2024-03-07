@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
+import com.ap.steelduxxklantenportaal.DTOs.ResetPasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
 import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
@@ -38,17 +39,10 @@ public class AuthController {
         return authService.refresh(request, response);
     }
 
-    @GetMapping("/testpublic")
+    @PostMapping("/reset-password")
     @PreAuthorize("permitAll")
-    public ResponseEntity<Object> testpublic() {
-        System.out.println("Public endpoint called");
-        return ResponseHandler.generate("success", HttpStatus.OK);
-    }
-
-    @GetMapping("/testprivate")
-    @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Object> testprivate() {
-        System.out.println("Private endpoint called");
-        return ResponseHandler.generate("success", HttpStatus.OK);
+    public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
+        authService.requestPasswordReset(resetPasswordDto.email());
+        return ResponseHandler.generate("resetPasswordPage:response", HttpStatus.OK);
     }
 }

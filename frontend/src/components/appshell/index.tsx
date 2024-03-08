@@ -44,7 +44,7 @@ export const AppShell: FC = () => {
                   className={`${isActive ? styles.active : ''}`}
                 >
                   <div
-                    className={styles.bgimg}
+                    className={styles.navimg}
                     style={{ backgroundColor: tab.color }}
                   >
                     {tab.img}

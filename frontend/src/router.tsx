@@ -6,7 +6,7 @@ import {
 import { LoginPage } from './pages/login';
 import { TestValuesPage } from './pages/testvaluespage';
 import { UserRequestPage } from './pages/userrequest';
-import { UserRequestListPage } from './pages/userrequestlist/explicit';
+import { UserRequestListPage } from './pages/userrequestlist';
 
 const rootRoute = createRootRoute();
 

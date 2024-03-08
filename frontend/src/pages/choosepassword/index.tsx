@@ -62,6 +62,7 @@ export const ChoosePasswordPage: FC = () => {
     <PublicPageWrapper
       title={t('choosePasswordPage:title')}
       panelWidth='55vh'
+      hideBackButton
     >
       {status === 'pending' ? (
         <Loader />

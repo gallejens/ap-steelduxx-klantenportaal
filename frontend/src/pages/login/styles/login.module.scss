@@ -1,6 +1,9 @@
 @use '../../../styles/mixins.scss';
+@use '../../../styles/variables.scss';
 
 .login_page {
+  width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,14 +46,10 @@
       font-size: 0.8rem;
     }
   }
+
+  @media screen and (max-width: variables.$mobile-breakpoint) {
+    .logo {
+      display: none;
+    }
+  }
 }
-
-// @media screen and (max-width: variables.$mobile-breakpoint) {
-//   .logo {
-//     display: none;
-//   }
-
-//   .body {
-//     height: 25vh;
-//   }
-// }

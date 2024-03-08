@@ -34,7 +34,7 @@ export const UserRequestListPage: FC = () => {
           <Button
             type='submit'
             onClick={() => {
-              navigate({ to: '/request_account' }); // TODO: Verander path naar een andere pagina 'new_request'
+              navigate({ to: '/request-account' }); // TODO: Verander path naar een andere pagina 'new_request'
             }}
             className={styles.new_button}
           >

@@ -29,7 +29,7 @@ const loginRoute = createRoute({
 
 const userRequestRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/request_account',
+  path: '/request-account',
   component: UserRequestPage,
 });
 

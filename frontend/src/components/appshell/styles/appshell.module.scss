@@ -1,4 +1,4 @@
-$navbar_top_height: 5rem;
+$navbar_top_height: 4.5rem;
 
 .wrapper {
   width: 100%;
@@ -15,6 +15,7 @@ $navbar_top_height: 5rem;
 
     & > .logo {
       height: 100%;
+      cursor: pointer;
     }
 
     & > .actions {
@@ -44,9 +45,15 @@ $navbar_top_height: 5rem;
         gap: var(--mantine-spacing-md);
         align-items: flex-start;
         justify-content: flex-start;
+        cursor: pointer;
 
         padding: var(--mantine-spacing-sm);
 
+        .bgimg {
+          border-radius: 20%;
+          padding: 0.25rem;
+          margin-right: 1rem;
+        }
         img {
           height: 1.5rem;
           width: 1.5rem;
@@ -61,24 +68,43 @@ $navbar_top_height: 5rem;
           align-items: center;
 
           &:hover {
-            background-color: var(--mantine-color-primary-3);
+            background-color: var(--mantine-color-primary-1);
           }
         }
 
         & > .active {
-          background-color: var(--mantine-color-primary-4);
+          background-color: var(--mantine-color-primary-3);
         }
       }
 
-      .userpfp {
-        height: 2.5rem;
-        width: 3rem;
-        border: 1px solid red;
+      .users {
+        display: flex;
+        width: 100%;
+        border-top: 2px solid var(--mantine-color-primary-6);
+        padding: 1rem 0rem;
       }
 
-      .user {
-        width: 100%;
-        border: 1px solid red;
+      .users:hover {
+        background-color: var(--mantine-color-primary-6);
+        color: white;
+        cursor: pointer;
+      }
+
+      .userpfp {
+        height: 2rem;
+        width: 2.5rem;
+        margin-left: 0.5rem;
+      }
+
+      .userName {
+        margin-left: 1rem;
+        font-size: 1rem;
+      }
+
+      .userMail {
+        margin-left: 1rem;
+        font-size: 0.7rem;
+        color: grey;
       }
     }
 

@@ -8,7 +8,7 @@ export const TABS = [
         alt='home-icon'
       />
     ),
-    color: 'blue',
+    color: 'rgba(142, 150, 255, 0.433)',
   },
   {
     label: 'Orderlist',
@@ -19,7 +19,7 @@ export const TABS = [
         alt='lines-icon'
       />
     ),
-    color: 'green',
+    color: 'rgba(142, 255, 210, 0.433)',
   },
   {
     label: 'Registrationlist',
@@ -30,6 +30,6 @@ export const TABS = [
         alt='list-icon'
       />
     ),
-    color: 'pink',
+    color: 'rgba(255, 142, 247, 0.433)',
   },
 ];

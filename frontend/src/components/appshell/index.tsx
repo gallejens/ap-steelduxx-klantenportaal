@@ -21,6 +21,9 @@ export const AppShell: FC = () => {
           className={styles.logo}
           src='/logo.svg'
           alt='logo'
+          onClick={() => {
+            handleTabClick('home');
+          }}
         />
         <div className={styles.actions}>
           <IconLanguage />
@@ -40,7 +43,12 @@ export const AppShell: FC = () => {
                   }}
                   className={`${isActive ? styles.active : ''}`}
                 >
-                  <div>{tab.img}</div>
+                  <div
+                    className={styles.bgimg}
+                    style={{ backgroundColor: tab.color }}
+                  >
+                    {tab.img}
+                  </div>
                   {tab.label}
                 </div>
               );
@@ -52,8 +60,12 @@ export const AppShell: FC = () => {
               src='/default-pfp.png'
               alt='default icon'
             />
-            <div className={styles.user}>Hallo</div>
-            <div className={styles.user}>Hallo</div>
+            <div className={styles.rightside}>
+              <div className={styles.userName}>Maximilian Duda</div>
+              <div className={styles.userMail}>
+                Maximiliandudajunior@gmail.com
+              </div>
+            </div>
           </div>
         </div>
         <div className={styles.route}>

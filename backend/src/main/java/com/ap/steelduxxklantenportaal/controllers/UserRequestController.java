@@ -1,7 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.DTOs.UserRequestValuesDTO;
-import com.ap.steelduxxklantenportaal.models.UserRequestValue;
 import com.ap.steelduxxklantenportaal.services.UserRequestValueService;
 
 import java.util.List;

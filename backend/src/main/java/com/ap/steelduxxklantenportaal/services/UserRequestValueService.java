@@ -1,7 +1,5 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +12,46 @@ import com.ap.steelduxxklantenportaal.models.UserRequestValue;
 import com.ap.steelduxxklantenportaal.repositories.UserRequestValueRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserRequestValueService {
     @Autowired
     UserRequestValueRepository userRequestValueRepository;
 
-    public List<UserRequestValue> getAll() {
-        return userRequestValueRepository.findAll();
+    public UserRequestValuesDTO convertToDTO(UserRequestValue userRequestValue) {
+        UserRequestValuesDTO dto = new UserRequestValuesDTO();
+
+        dto.setFollowId(userRequestValue.getId());
+        dto.setCompanyName(userRequestValue.getCompanyName());
+        dto.setPhoneNr(userRequestValue.getPhoneNr());
+        dto.setVatNr(userRequestValue.getVatNr());
+        dto.setPostalCode(userRequestValue.getPostalCode());
+        dto.setDistrict(userRequestValue.getDistrict());
+        dto.setStreet(userRequestValue.getStreet());
+        dto.setStreetNr(userRequestValue.getStreetNr());
+        dto.setBoxNr(userRequestValue.getBoxNr());
+        dto.setFirstName(userRequestValue.getFirstName());
+        dto.setLastName(userRequestValue.getLastName());
+        dto.setEmail(userRequestValue.getEmail());
+        dto.setCreatedOn(userRequestValue.getCreatedOn());
+        dto.setStatus(userRequestValue.getStatus());
+        dto.setDenyMessage(userRequestValue.getDenyMessage());
+
+        return dto;
+    }
+
+    public List<UserRequestValuesDTO> getAll() {
+        List<UserRequestValue> userRequestValues = userRequestValueRepository.findAll();
+        List<UserRequestValuesDTO> userRequestValuesDTOList = userRequestValues.stream()
+                .map(userRequestValue -> {
+                    UserRequestValuesDTO dto = convertToDTO(userRequestValue);
+                    // System.out.println("DTO object: " + dto);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        return userRequestValuesDTOList;
     }
 
     public UserRequestValue addRequest(UserRequestValuesDTO userRequestValuesDTO) {

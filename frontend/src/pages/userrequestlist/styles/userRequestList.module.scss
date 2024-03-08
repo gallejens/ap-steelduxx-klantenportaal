@@ -1,0 +1,86 @@
+@use '../../../styles/variables.scss';
+@use '../../../styles/mixins.scss';
+
+.userrequest_table_page {
+  @include mixins.shadow;
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column; // Adjust the flex direction to column if needed
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--mantine-primary-color-0);
+  border-radius: var(--mantine-radius-default);
+}
+
+.header {
+  width: 100%;
+  margin-bottom: var(--mantine-spacing-md);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  & > .first_column,
+  & > .second_column,
+  & > .third_column {
+    display: flex;
+    align-items: center;
+  }
+
+  & > .first_column {
+    margin-right: auto;
+    margin-left: var(--mantine-spacing-xl);
+
+    & > .paging_select {
+      width: 10vh;
+    }
+  }
+
+  & > .second_column {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > .search_bar {
+      min-width: 10vh;
+      max-width: 120vh;
+      width: 100%;
+    }
+  }
+
+  & > .third_column {
+    margin-left: auto;
+    margin-right: var(--mantine-spacing-xl);
+  }
+}
+
+.body {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > .userrequest_table {
+    width: 100%;
+    height: 475px;
+
+    .table_handling {
+      font-weight: bold;
+      display: flex;
+      margin-top: 25vh;
+      justify-content: center;
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-top: var(--mantine-spacing-xl);
+    }
+  }
+}

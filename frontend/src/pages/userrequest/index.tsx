@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { UserRequestForm } from './components/UserRequestForm';
 import styles from './styles/userRequest.module.scss';
 
-export const userRequestPage: FC = () => {
+export const UserRequestPage: FC = () => {
   const { t } = useTranslation();
   const { history } = useRouter();
 

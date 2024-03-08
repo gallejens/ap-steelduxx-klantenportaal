@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +14,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.ap.steelduxxklantenportaal.controllers.AuthController;
+import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.controllers.UserRequestController;
 import com.ap.steelduxxklantenportaal.models.UserRequestValue;
 import com.ap.steelduxxklantenportaal.repositories.UserRequestValueRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserRequestTest {
+public class UserRequestFormTest {
     @Autowired
     private UserRequestController userRequestController;
 
@@ -91,6 +90,18 @@ public class UserRequestTest {
         savedUserRequest.ifPresent(userRequest -> {
             assertThat(userRequest.getCompanyName()).isEqualTo("TestCompanyName");
             assertThat(userRequest.getPhoneNr()).isEqualTo("+32 471 01 78 65");
+            assertThat(userRequest.getVatNr()).isEqualTo("BE0473416418");
+            assertThat(userRequest.getPostalCode()).isEqualTo("2000");
+            assertThat(userRequest.getDistrict()).isEqualTo("TestGemeenten");
+            assertThat(userRequest.getStreet()).isEqualTo("TestStraat");
+            assertThat(userRequest.getStreetNr()).isEqualTo("1");
+            assertThat(userRequest.getBoxNr()).isEqualTo("");
+            assertThat(userRequest.getFirstName()).isEqualTo("TestFirstName");
+            assertThat(userRequest.getLastName()).isEqualTo("TestLastName");
+            assertThat(userRequest.getEmail()).isEqualTo("info@test.be");
+            assertThat(userRequest.getCreatedOn()).isEqualTo(1709034820358L);
+            assertThat(userRequest.getStatus()).isEqualTo(StatusEnum.PENDING);
+            assertThat(userRequest.getDenyMessage()).isEqualTo("");
         });
     }
 }

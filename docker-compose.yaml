@@ -61,7 +61,7 @@ services:
           "admin_account.password": "$APP_ADMIN_ACCOUNT_PASSWORD",
           "admin_account.first_name": "$APP_ADMIN_ACCOUNT_FIRST_NAME",
           "admin_account.last_name": "$APP_ADMIN_ACCOUNT_LAST_NAME",
-          "allowed_origin": "https://$APP_URL"
+          "frontend_url": "https://$APP_URL"
         }
     volumes:
       - .m2:/root/.m2

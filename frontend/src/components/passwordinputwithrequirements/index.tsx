@@ -1,10 +1,5 @@
 import { checkPasswordRequirements } from '@/lib/password';
-import {
-  Divider,
-  PasswordInput,
-  Popover,
-  type PasswordInputProps,
-} from '@mantine/core';
+import { PasswordInput, Popover, type PasswordInputProps } from '@mantine/core';
 import { useState, type FC, type PropsWithChildren } from 'react';
 import { PasswordRequirement } from './components/PasswordRequirement';
 import { useTranslation } from 'react-i18next';

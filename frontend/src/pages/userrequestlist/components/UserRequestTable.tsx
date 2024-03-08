@@ -39,7 +39,11 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
       }),
   });
 
-  if (status === 'pending' || status === 'error') {
+  if (
+    status === 'pending' ||
+    status === 'error' ||
+    userRequestListValues === null
+  ) {
     return (
       <div className={styles.table_handling}>
         {status === 'pending' && t('user_request_list_page:tableLoading')}

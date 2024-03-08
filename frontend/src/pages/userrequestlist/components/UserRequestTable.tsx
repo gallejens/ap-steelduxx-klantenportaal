@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Pagination, Table, Tabs } from '@mantine/core';
 import { doApiAction } from '@/lib/api';
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { dateConverter } from '@/lib/util/dateConverter';
 import { statuses } from '../constants';

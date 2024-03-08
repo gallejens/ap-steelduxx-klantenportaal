@@ -1,4 +1,4 @@
-export function dateConverter(_unixTime: number): String {
+export function dateConverter(_unixTime: number) {
   const unixTime = new Date(_unixTime);
 
   const day = String(unixTime.getUTCDate()).padStart(2, '0');

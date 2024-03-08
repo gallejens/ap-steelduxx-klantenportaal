@@ -36,5 +36,6 @@
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
+    "@typescript-eslint/space-before-function-paren": "off",
   },
 }

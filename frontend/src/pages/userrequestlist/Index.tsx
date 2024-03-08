@@ -1,8 +1,7 @@
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserRequestTable } from './components/UserRequestTable';
 import { Button, Input, Select } from '@mantine/core';
-//import { IconSearch } from '@tabler/icons-react';
 import styles from './styles/userRequestList.module.scss';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -26,7 +25,7 @@ export const UserRequestListPage: FC = () => {
         <div className={styles.second_column}>
           <Input
             className={styles.search_bar}
-            //icon={<IconSearch size={18} />}
+            // icon={<IconSearch size={18} />}
             placeholder='Search'
             radius='sm'
           />

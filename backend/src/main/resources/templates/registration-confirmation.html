@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Confirmation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      color: #333;
+    }
+    p {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+<h1>Registration Confirmation</h1>
+<p>Dear <span th:text="${user.firstName}"></span> <span th:text="${user.lastName}"></span>,</p>
+<p>Thank you for your registration. We have received your request and will keep you informed about the status of your registration.</p>
+<p>Best regards,</p>
+<p>Steelduxx</p>
+</body>
+</html>

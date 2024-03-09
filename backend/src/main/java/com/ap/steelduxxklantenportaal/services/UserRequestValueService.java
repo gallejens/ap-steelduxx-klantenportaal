@@ -2,6 +2,7 @@ package com.ap.steelduxxklantenportaal.services;
 
 import java.util.List;
 
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,14 @@ public class UserRequestValueService {
     @Autowired
     UserRequestValueRepository userRequestValueRepository;
 
+    @Autowired
+    EmailService emailService;
+
     public List<UserRequestValue> getAll() {
         return userRequestValueRepository.findAll();
     }
 
-    public UserRequestValue addRequest(UserRequestValuesDTO userRequestValuesDTO) {
+    public UserRequestValue addRequest(UserRequestValuesDTO userRequestValuesDTO) throws MessagingException {
         UserRequestValue userRequestValues = new UserRequestValue(
                 userRequestValuesDTO.getCompanyName(),
                 userRequestValuesDTO.getPhoneNr(),
@@ -41,10 +45,11 @@ public class UserRequestValueService {
                 StatusEnum.PENDING,
                 "");
 
+        emailService.sendRegistrationConfirmation(userRequestValues);
         return userRequestValueRepository.save(userRequestValues);
     }
 
-    public ResponseEntity<Object> processUserRequest(UserRequestValuesDTO userRequestValuesDTO) {
+    public ResponseEntity<Object> processUserRequest(UserRequestValuesDTO userRequestValuesDTO) throws MessagingException {
         boolean requestExists = userRequestValueRepository
                 .findByVatNrAndEmail(userRequestValuesDTO.getVatNr(), userRequestValuesDTO.getEmail()).isPresent();
         Map<String, String> responseBody;

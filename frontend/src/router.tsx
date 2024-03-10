@@ -12,6 +12,7 @@ import { UserRequestListPage } from './pages/userrequestlist';
 
 const rootRoute = createRootRoute();
 
+// Public routes
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
@@ -30,12 +31,7 @@ const userRequestRoute = createRoute({
   component: UserRequestPage,
 });
 
-const userRequestListRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/requests',
-  component: UserRequestListPage,
-});
-
+// Private routes
 const appRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: 'app',
@@ -54,11 +50,18 @@ const testvaluesRoute = createRoute({
   component: TestValuesPage,
 });
 
+const userRequestListRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: '/requests',
+  component: UserRequestListPage,
+});
+
+// Build route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
-  userrequestRoute,
-  appRoute.addChildren([homePageRoute, testvaluesRoute]),
+  userRequestRoute,
+  appRoute.addChildren([homePageRoute, testvaluesRoute, userRequestListRoute]),
 ]);
 export const router = createRouter({ routeTree });
 

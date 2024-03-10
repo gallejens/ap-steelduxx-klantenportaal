@@ -19,7 +19,7 @@ export const TABS = [
   },
   {
     label: 'Registrationlist',
-    path: 'request_account',
+    path: 'requests',
     icon: <IconList color='rgb(219, 38, 183)' />,
     color: 'rgba(255, 142, 247, 0.433)',
   },

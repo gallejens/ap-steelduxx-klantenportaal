@@ -33,6 +33,26 @@ const userRequestRoute = createRoute({
   component: UserRequestPage,
 });
 
+const passwordResetRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: 'reset-password',
+  component: ResetPasswordPage,
+});
+
+const choosePasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: 'choose-password',
+  component: ChoosePasswordPage,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      token:
+        search.token !== undefined && typeof search.token === 'string'
+          ? String(search.token)
+          : undefined,
+    };
+  },
+});
+
 // Private routes
 const appRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -58,35 +78,14 @@ const userRequestListRoute = createRoute({
   component: UserRequestListPage,
 });
 
-const passwordResetRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: 'reset-password',
-  component: ResetPasswordPage,
-});
-
-// Choose password route
-const choosePasswordRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: 'choose-password',
-  component: ChoosePasswordPage,
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      token:
-        search.token !== undefined && typeof search.token === 'string'
-          ? String(search.token)
-          : undefined,
-    };
-  },
-});
-
 // Creating route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
   userRequestRoute,
-  appRoute.addChildren([homePageRoute, testvaluesRoute, userRequestListRoute]),
   passwordResetRoute,
   choosePasswordRoute,
+  appRoute.addChildren([homePageRoute, testvaluesRoute, userRequestListRoute]),
 ]);
 export const router = createRouter({ routeTree });
 

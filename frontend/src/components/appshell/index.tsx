@@ -47,7 +47,7 @@ export const AppShell: FC = () => {
                     className={styles.navimg}
                     style={{ backgroundColor: tab.color }}
                   >
-                    {tab.img}
+                    {tab.icon}
                   </div>
                   {tab.label}
                 </div>

@@ -3,6 +3,7 @@ package com.ap.steelduxxklantenportaal.controllers;
 import com.ap.steelduxxklantenportaal.DTOs.ChoosePasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.ResetPasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
+import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.mail.MessagingException;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -58,5 +60,18 @@ public class AuthController {
     @PreAuthorize("permitAll")
     public ResponseEntity<Object> choosePassword(@RequestBody ChoosePasswordDto choosePasswordDto) {
         return authService.choosePassword(choosePasswordDto.token(), choosePasswordDto.password());
+    }
+
+    @GetMapping("/info")
+    @PreAuthorize("permitAll")
+    public ResponseEntity<Object> getUserInfo() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        var user = auth.getPrincipal();
+
+        if (!auth.isAuthenticated() || !(user instanceof User)) {
+            return ResponseHandler.generate("no_user_info", HttpStatus.OK);
+        }
+
+        return ResponseHandler.generate("user_info", HttpStatus.OK, ((User) user).getUserInfo());
     }
 }

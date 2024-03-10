@@ -1,5 +1,7 @@
 package com.ap.steelduxxklantenportaal.models;
 
+import com.ap.steelduxxklantenportaal.DTOs.UserInfoDto;
+import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.utils.PermissionsManager;
 import jakarta.persistence.*;
@@ -115,11 +117,15 @@ public class User implements UserDetails {
         return true;
     }
 
+    public List<PermissionEnum> getPermissions() {
+        return PermissionsManager.getInstance().getRolePermissions(role);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        var rolePermissions = PermissionsManager.getInstance().getRolePermissions(role);
+        var rolePermissions = getPermissions();
         authorities.add(new SimpleGrantedAuthority(role.name()));
         authorities.addAll(
                 rolePermissions
@@ -135,5 +141,9 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public UserInfoDto getUserInfo() {
+        return new UserInfoDto(email, firstName, lastName, role, getPermissions());
     }
 }

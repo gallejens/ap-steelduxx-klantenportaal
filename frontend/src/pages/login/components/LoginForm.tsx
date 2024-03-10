@@ -52,6 +52,12 @@ export const LoginForm: FC = () => {
       message: t(result?.message ?? 'notifications:genericError'),
       autoClose: 5000,
     });
+
+    if (result?.status === 202) {
+      navigate({
+        to: '/app',
+      });
+    }
   };
 
   return (

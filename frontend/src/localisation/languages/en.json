@@ -14,7 +14,10 @@
     "forgotPassword": "Forgot password",
     "loginButton": "Login",
     "noAccountLabel": "Don't have an account?",
-    "userrequestLink": "Register now"
+    "userrequestLink": "Register now",
+
+    "loginFailed": "Invalid email or password",
+    "loginSuccess": "Login successful"
   },
   "userrequestpage": {
     "title": "Request Account",
@@ -73,6 +76,19 @@
 
     "userRequestLabel": "Already have an account?",
     "loginLink": "Log in"
+  },
+  "user_request_list_page": {
+    "newUserRequest": "New Request",
+
+    "tableHeader0": "Follow Id",
+    "tableHeader1": "Company Name",
+    "tableHeader2": "Date",
+    "tableHeader3": "VAT number",
+    "tableHeader4": "Contact Person",
+    "tableHeader5": "Options",
+
+    "tableLoading": "Loading...",
+    "tableError": "Can't load requests"
   },
   "notifications": {
     "genericError": "Something went wrong",

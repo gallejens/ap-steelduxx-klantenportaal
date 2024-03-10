@@ -1,0 +1,10 @@
+{
+  "version": "1",
+  "name": "steelduxx-external-api",
+  "type": "collection",
+  "ignore": ["node_modules", ".git"],
+  "presets": {
+    "requestType": "http",
+    "requestUrl": "https://sw11-1.devops-ap.be"
+  }
+}

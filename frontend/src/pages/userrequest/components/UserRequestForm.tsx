@@ -136,7 +136,7 @@ export const UserRequestForm: FC = () => {
     });
 
     notifications.add({
-      message: t(result.message),
+      message: t(result?.message ?? 'notifications:genericError'),
       autoClose: 5000,
     });
   };

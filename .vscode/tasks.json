@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start dev db",
+      "type": "shell",
+      "command": "docker compose -f docker-compose-dev-db.yaml up -d"
+    },
+    {
+      "label": "Stop dev db",
+      "type": "shell",
+      "command": "docker compose -f docker-compose-dev-db.yaml down"
+    }
+  ]
+}

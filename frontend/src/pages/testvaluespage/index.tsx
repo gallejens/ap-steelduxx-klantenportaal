@@ -67,7 +67,7 @@ export const TestValuesPage: FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      {testValues.map(testValue => (
+      {testValues?.map(testValue => (
         <TestValue
           key={testValue.id}
           value={testValue.value}
@@ -128,6 +128,26 @@ export const TestValuesPage: FC = () => {
         }}
       >
         Add Confirm Modal
+      </Button>
+      <Button
+        onClick={() => {
+          doApiAction({
+            method: 'POST',
+            endpoint: '/auth/signout',
+          });
+        }}
+      >
+        Signout
+      </Button>
+      <Button
+        onClick={() => {
+          doApiAction({
+            method: 'POST',
+            endpoint: '/auth/refresh',
+          });
+        }}
+      >
+        Refresh
       </Button>
     </div>
   );

@@ -1,0 +1,117 @@
+$navbar_top_height: 4.5rem;
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+
+  & > .top {
+    height: $navbar_top_height;
+    background-color: var(--mantine-color-primary-6);
+    padding: var(--mantine-spacing-sm);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > .logo {
+      height: 100%;
+      cursor: pointer;
+    }
+
+    & > .actions {
+      display: flex;
+      gap: var(--mantine-spacing-md);
+      margin-right: var(--mantine-spacing-xl);
+    }
+  }
+
+  & > .content {
+    width: 100%;
+    height: calc(100% - $navbar_top_height);
+    display: flex;
+
+    & > .left {
+      height: 100%;
+      width: 20rem;
+      background-color: var(--mantine-color-primary-0);
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      & > .tabs {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mantine-spacing-md);
+        align-items: flex-start;
+        justify-content: flex-start;
+        cursor: pointer;
+
+        padding: var(--mantine-spacing-sm);
+
+        .navimg {
+          border-radius: 0.5rem;
+          padding: 0.15rem 0.3rem;
+          margin-right: 1rem;
+
+          & > * {
+            padding-top: 0.3rem;
+          }
+        }
+
+        & > div {
+          width: 100%;
+          border-radius: 0.5rem;
+          padding: var(--mantine-spacing-xs);
+
+          display: flex;
+          align-items: center;
+
+          &:hover {
+            background-color: var(--mantine-color-primary-1);
+          }
+        }
+
+        & > .active {
+          background-color: var(--mantine-color-primary-3);
+        }
+      }
+
+      .users {
+        display: flex;
+        width: 100%;
+        border-top: 2px solid var(--mantine-color-primary-6);
+        padding: 1rem 0rem;
+      }
+
+      .users:hover {
+        background-color: var(--mantine-color-primary-6);
+        color: var(--mantine-color-primary-0);
+        cursor: pointer;
+      }
+
+      .userpfp {
+        height: 2rem;
+        width: 2.5rem;
+        margin-left: 0.5rem;
+      }
+
+      .userName {
+        margin-left: 1rem;
+        font-size: 1rem;
+      }
+
+      .userMail {
+        margin-left: 1rem;
+        font-size: 0.7rem;
+        color: var(--mantine-color-primary-4);
+      }
+    }
+
+    & > .route {
+      width: 100%;
+      height: 100%;
+      background-color: var(--mantine-color-primary-1);
+    }
+  }
+}

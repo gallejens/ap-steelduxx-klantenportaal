@@ -3,6 +3,8 @@ import {
   createRoute,
   createRouter,
 } from '@tanstack/react-router';
+import { AppShell } from './components/appshell';
+import { HomePage } from './pages/home';
 import { LoginPage } from './pages/login';
 import { TestValuesPage } from './pages/testvaluespage';
 import { UserRequestPage } from './pages/userrequest';
@@ -34,8 +36,20 @@ const userRequestListRoute = createRoute({
   component: UserRequestListPage,
 });
 
-const testvaluesRoute = createRoute({
+const appRoute = createRoute({
   getParentRoute: () => rootRoute,
+  path: 'app',
+  component: AppShell,
+});
+
+const homePageRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: '/home',
+  component: HomePage,
+});
+
+const testvaluesRoute = createRoute({
+  getParentRoute: () => appRoute,
   path: '/testvalues',
   component: TestValuesPage,
 });
@@ -43,9 +57,8 @@ const testvaluesRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
-  userRequestRoute,
-  userRequestListRoute,
-  testvaluesRoute,
+  userrequestRoute,
+  appRoute.addChildren([homePageRoute, testvaluesRoute]),
 ]);
 export const router = createRouter({ routeTree });
 

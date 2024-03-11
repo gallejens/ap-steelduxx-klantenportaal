@@ -1,5 +1,6 @@
 import { Input, NumberInput, PasswordInput, createTheme } from '@mantine/core';
 import styles from './styles/mantine.module.scss';
+import { PASSWORD_PLACEHOLDER } from './constants';
 
 const PRIMARY_COLORS = [
   '#f3f3f1',
@@ -37,6 +38,7 @@ export const theme = createTheme({
         classNames: {
           label: styles.input_label,
         },
+        placeholder: PASSWORD_PLACEHOLDER,
       },
     }),
     NumberInput: NumberInput.extend({

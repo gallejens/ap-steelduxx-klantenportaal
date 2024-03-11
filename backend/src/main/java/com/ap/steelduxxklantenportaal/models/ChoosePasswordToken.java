@@ -1,22 +1,26 @@
 package com.ap.steelduxxklantenportaal.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "refresh_tokens")
-public class RefreshToken {
-    @Id
+@Table(name = "choose_password_tokens")
+public class ChoosePasswordToken {
+
     private String token;
+    @Id
     @Column(name = "user_id")
     private long userId;
 
     @Column(name = "expiry_date")
     private long expiryDate;
 
-    public RefreshToken() {}
-    public RefreshToken(String token, long userId, long expiryDate) {
+    public ChoosePasswordToken() {}
+    public ChoosePasswordToken(String token, long userId, long expiryDate) {
         this.token = token;
         this.userId = userId;
         this.expiryDate = expiryDate;

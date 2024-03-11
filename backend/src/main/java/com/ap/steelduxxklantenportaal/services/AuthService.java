@@ -3,8 +3,10 @@ package com.ap.steelduxxklantenportaal.services;
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
+import com.ap.steelduxxklantenportaal.models.ChoosePasswordToken;
 import com.ap.steelduxxklantenportaal.models.RefreshToken;
 import com.ap.steelduxxklantenportaal.models.User;
+import com.ap.steelduxxklantenportaal.repositories.ChoosePasswordTokenRepository;
 import com.ap.steelduxxklantenportaal.repositories.RefreshTokenRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.utils.Cookies;
@@ -12,6 +14,7 @@ import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +25,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class AuthService {
     public static final String ACCESS_TOKEN_COOKIE_NAME = "access_token";
@@ -29,19 +37,32 @@ public class AuthService {
     public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
     public static final long REFRESH_TOKEN_COOKIE_MAX_AGE = 72 * 60 * 60; // 3 days
     public static final String REFRESH_TOKEN_COOKIE_PATH = "/api/auth/refresh";
+    private final long PASSWORD_RESET_TOKEN_TIME = 30 * 60; // 30 minutes
+
+    @Value("${frontend_url}")
+    private String frontendUrl;
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final ChoosePasswordTokenRepository choosePasswordTokenRepository;
 
-    public AuthService(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository, JwtService jwtService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
+    public AuthService(
+            UserRepository userRepository,
+            RefreshTokenRepository refreshTokenRepository,
+            JwtService jwtService,
+            AuthenticationManager authenticationManager,
+            PasswordEncoder passwordEncoder,
+            ChoosePasswordTokenRepository choosePasswordTokenRepository
+    ) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
+        this.choosePasswordTokenRepository = choosePasswordTokenRepository;
     }
 
     public ResponseEntity<Object> signIn(SignInRequestDTO signInRequestDTO, HttpServletResponse response) {
@@ -59,8 +80,8 @@ public class AuthService {
         }
 
         var user = userRepository.findByEmail(signInRequestDTO.email()).orElseThrow();
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+        String accessToken = jwtService.generateToken(user.getUsername(), ACCESS_TOKEN_COOKIE_MAX_AGE);
+        String refreshToken = UUID.randomUUID().toString();
         Cookies.setCookie(response, ACCESS_TOKEN_COOKIE_NAME, accessToken, ACCESS_TOKEN_COOKIE_MAX_AGE);
         Cookies.setCookie(response, REFRESH_TOKEN_COOKIE_NAME, refreshToken, REFRESH_TOKEN_COOKIE_MAX_AGE, REFRESH_TOKEN_COOKIE_PATH);
         saveRefreshToken(user.getId(), refreshToken);
@@ -83,15 +104,16 @@ public class AuthService {
 
     public ResponseEntity<Object> refresh(HttpServletRequest request, HttpServletResponse response) {
         String token = Cookies.getValue(request, REFRESH_TOKEN_COOKIE_NAME);
-        if (token == null || !jwtService.isNonExpiredRefreshToken(token)) {
-            return ResponseHandler.generate("refresh_failed", HttpStatus.FORBIDDEN);
-        }
 
         try {
+            if (token == null) throw new RuntimeException();
+
             RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow();
+            if (refreshToken.isExpired()) throw new RuntimeException();
+
             User user = userRepository.findById(refreshToken.getUserId()).orElseThrow();
 
-            String accessToken = jwtService.generateAccessToken(user);
+            String accessToken = jwtService.generateToken(user.getUsername(), ACCESS_TOKEN_COOKIE_MAX_AGE);
             Cookies.setCookie(response, ACCESS_TOKEN_COOKIE_NAME, accessToken, ACCESS_TOKEN_COOKIE_MAX_AGE);
         } catch (Exception e) {
             return ResponseHandler.generate("refresh_failed", HttpStatus.FORBIDDEN);
@@ -104,7 +126,7 @@ public class AuthService {
         return userRepository.findByEmail(email).isPresent();
     }
 
-    public User addNewUser(String email, String password, String firstName, String lastName, RoleEnum role) throws UserAlreadyExistsException  {
+    public User addNewUser(String email, String password, String firstName, String lastName, RoleEnum role) throws UserAlreadyExistsException {
         if (doesUserExist(email)) {
             throw new UserAlreadyExistsException(String.format("User with email %s already exists", email));
         }
@@ -118,6 +140,62 @@ public class AuthService {
         var refreshToken = new RefreshToken();
         refreshToken.setUserId(userId);
         refreshToken.setToken(token);
+        refreshToken.setExpiryDate(new Date().getTime() + REFRESH_TOKEN_COOKIE_MAX_AGE * 1000);
         refreshTokenRepository.save(refreshToken);
+    }
+
+    public void requestPasswordReset(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) return;
+
+        var choosePasswordToken = new ChoosePasswordToken();
+        String uuid = UUID.randomUUID().toString();
+        choosePasswordToken.setToken(uuid);
+        choosePasswordToken.setUserId(user.get().getId());
+        choosePasswordToken.setExpiryDate(new Date().getTime() + PASSWORD_RESET_TOKEN_TIME * 1000);
+        choosePasswordTokenRepository.save(choosePasswordToken);
+
+        // TODO: Send mail
+        String choosePasswordLink = frontendUrl + "/choose-password?token=" + uuid;
+        System.out.println(choosePasswordLink);
+    }
+
+    private User getUserForChoosePasswordToken(String token) {
+        Optional<ChoosePasswordToken> choosePasswordToken = choosePasswordTokenRepository.findByToken(token);
+        if (choosePasswordToken.isEmpty() || choosePasswordToken.get().isExpired()) {
+            return null;
+        }
+
+        return userRepository.findById(choosePasswordToken.get().getUserId()).orElseThrow();
+    }
+
+    public ResponseEntity<Object> getEmailForChoosePasswordToken(String token) {
+        User user = getUserForChoosePasswordToken(token);
+
+        if (user == null) {
+            return ResponseHandler.generate("invalid_token", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return ResponseHandler.generate("found_email", HttpStatus.OK, Map.of("email", user.getEmail()));
+    }
+
+    @Transactional
+    public ResponseEntity<Object> choosePassword(String token, String password) {
+        User user = getUserForChoosePasswordToken(token);
+        if (user == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NOT_ACCEPTABLE);
+        };
+
+        updatePassword(user, password);
+        refreshTokenRepository.deleteByUserId(user.getId());
+        choosePasswordTokenRepository.deleteByUserId(user.getId());
+
+        return ResponseHandler.generate("success", HttpStatus.OK);
+    }
+
+    private void updatePassword(User user, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
     }
 }

@@ -9,6 +9,8 @@ import { LoginPage } from './pages/login';
 import { TestValuesPage } from './pages/testvaluespage';
 import { UserRequestPage } from './pages/userrequest';
 import { UserRequestListPage } from './pages/userrequestlist';
+import { ResetPasswordPage } from './pages/resetpassword';
+import { ChoosePasswordPage } from './pages/choosepassword';
 
 const rootRoute = createRootRoute();
 
@@ -27,8 +29,28 @@ const loginRoute = createRoute({
 
 const userRequestRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/request_account',
+  path: '/request-account',
   component: UserRequestPage,
+});
+
+const passwordResetRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: 'reset-password',
+  component: ResetPasswordPage,
+});
+
+const choosePasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: 'choose-password',
+  component: ChoosePasswordPage,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      token:
+        search.token !== undefined && typeof search.token === 'string'
+          ? String(search.token)
+          : undefined,
+    };
+  },
 });
 
 // Private routes
@@ -56,18 +78,20 @@ const userRequestListRoute = createRoute({
   component: UserRequestListPage,
 });
 
-// Build route tree
+// Creating route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
   userRequestRoute,
+  passwordResetRoute,
+  choosePasswordRoute,
   appRoute.addChildren([homePageRoute, testvaluesRoute, userRequestListRoute]),
 ]);
 export const router = createRouter({ routeTree });
 
 // Make autocomplete work
 declare module '@tanstack/react-router' {
-  interface userrequest {
+  interface Register {
     router: typeof router;
   }
 }

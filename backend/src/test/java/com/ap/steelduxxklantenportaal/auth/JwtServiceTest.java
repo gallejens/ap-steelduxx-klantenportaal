@@ -1,6 +1,7 @@
 package com.ap.steelduxxklantenportaal.auth;
 
 import com.ap.steelduxxklantenportaal.models.User;
+import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.services.JwtService;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
@@ -20,62 +21,26 @@ public class JwtServiceTest {
     }
 
     @Test
-    void should_returnToken_when_generatingAccessToken() {
-        User user = new User();
-        user.setEmail("test");
-
-        String token = jwtService.generateAccessToken(user);
+    void should_returnToken_when_generatingToken() {
+        String username = "test";
+        String token = jwtService.generateToken(username, 60);
         assertThat(token).isNotEmpty();
     }
 
     @Test
-    void should_returnToken_when_generatingRefreshToken() {
-        User user = new User();
-        user.setEmail("test");
+    void should_findUsername_when_gettingClaimsFromToken() {
+        String username = "test";
+        String token = jwtService.generateToken(username, 60);
 
-        String token = jwtService.generateRefreshToken(user);
-        assertThat(token).isNotEmpty();
+        String extractedUsername = jwtService.extractClaim(token, Claims::getSubject);
+        assertThat(extractedUsername.equals(username)).isTrue();
     }
 
     @Test
-    void should_findUsername_when_gettingClaimsFromAccessToken() {
-        User user = new User();
-        user.setEmail("test");
+    void expect_newToken_is_notExpired() {
+        String username = "test";
+        String token = jwtService.generateToken(username, 60);
 
-        String token = jwtService.generateAccessToken(user);
-
-        String username = jwtService.extractClaimFromAccessToken(token, Claims::getSubject);
-        assertThat(username.equals(user.getUsername())).isTrue();
-    }
-
-    @Test
-    void should_findUsername_when_gettingClaimsFromRefreshToken() {
-        User user = new User();
-        user.setEmail("test");
-
-        String token = jwtService.generateRefreshToken(user);
-
-        String username = jwtService.extractClaimFromRefreshToken(token, Claims::getSubject);
-        assertThat(username.equals(user.getUsername())).isTrue();
-    }
-
-    @Test
-    void expect_newAccessToken_is_notExpired() {
-        User user = new User();
-        user.setEmail("test");
-
-        String token = jwtService.generateAccessToken(user);
-
-        assertThat(jwtService.isNonExpiredAccessToken(token)).isTrue();
-    }
-
-    @Test
-    void expect_newRefreshToken_is_notExpired() {
-        User user = new User();
-        user.setEmail("test");
-
-        String token = jwtService.generateRefreshToken(user);
-
-        assertThat(jwtService.isNonExpiredRefreshToken(token)).isTrue();
+        assertThat(jwtService.isNonExpired(token)).isTrue();
     }
 }

@@ -20,7 +20,6 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
-
     private final JwtService jwtService;
 
     private final UserDetailsServiceImp userDetailsService;
@@ -39,9 +38,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String username = jwtService.extractClaimFromAccessToken(accessToken, Claims::getSubject);
+        String username = jwtService.extractClaim(accessToken, Claims::getSubject);
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        if (username != null && securityContext.getAuthentication() == null && jwtService.isNonExpiredAccessToken(accessToken)) {
+        if (username != null && securityContext.getAuthentication() == null && jwtService.isNonExpired(accessToken)) {
             var userDetails = userDetailsService.loadUserByUsername(username);
             var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             var authDetails = new WebAuthenticationDetailsSource().buildDetails(request);
@@ -51,6 +50,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
-
 }

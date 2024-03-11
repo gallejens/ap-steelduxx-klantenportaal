@@ -15,72 +15,42 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    @Value("${jwt_access_token_secret}")
-    private String accessTokenSecret;
-    @Value("${jwt_refresh_token_secret}")
-    private String refreshTokenSecret;
+    @Value("${jwt_secret}")
+    private String secret;
 
-    private SecretKey getAccessTokenKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessTokenSecret));
+    private SecretKey getSecretKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
-    private SecretKey getRefreshTokenKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshTokenSecret));
-    }
-
-    private Claims extractAllClaims(String token, SecretKey key) {
+    private Claims extractAllClaims(String token) {
         return Jwts
                 .parser()
-                .verifyWith(key)
+                .verifyWith(getSecretKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> resolver, SecretKey key) {
-        Claims claims = extractAllClaims(token, key);
+    public <T> T extractClaim(String token, Function<Claims, T> resolver) {
+        Claims claims = extractAllClaims(token);
         return resolver.apply(claims);
     }
 
-    public <T> T extractClaimFromAccessToken(String token, Function<Claims, T> resolver) {
-        return extractClaim(token, resolver, getAccessTokenKey());
-    }
-
-    public <T> T extractClaimFromRefreshToken(String token, Function<Claims, T> resolver) {
-        return extractClaim(token, resolver, getRefreshTokenKey());
-    }
-
-    private boolean isNonExpired(String token, SecretKey key) {
-        Date expiryDate = extractClaim(token, Claims::getExpiration, key);
+    public boolean isNonExpired(String token) {
+        Date expiryDate = extractClaim(token, Claims::getExpiration);
         return expiryDate.after(new Date());
     }
 
-    public boolean isNonExpiredAccessToken(String token) {
-        return isNonExpired(token, getAccessTokenKey());
-    }
-
-    public boolean isNonExpiredRefreshToken(String token) {
-        return isNonExpired(token, getRefreshTokenKey());
-    }
-
-    private String generateToken(User user, SecretKey key, long maxAge) {
+    public String generateToken(String subject, long maxAge) {
         var currentTime = System.currentTimeMillis();
 
         return Jwts
                 .builder()
-                .subject(user.getUsername())
+                .subject(subject)
                 .issuedAt(new Date(currentTime))
                 .expiration(new Date(currentTime + maxAge * 1000))
                 .id(UUID.randomUUID().toString())
-                .signWith(key)
+                .signWith(getSecretKey())
                 .compact();
-    }
-
-    public String generateAccessToken(User user) {
-        return generateToken(user, getAccessTokenKey(), AuthService.ACCESS_TOKEN_COOKIE_MAX_AGE);
-    }
-
-    public String generateRefreshToken(User user) {
-        return generateToken(user, getRefreshTokenKey(), AuthService.REFRESH_TOKEN_COOKIE_MAX_AGE);
     }
 }

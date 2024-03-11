@@ -29,8 +29,8 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
-    @Value("${allowed_origin}")
-    private String allowedOrigin;
+    @Value("${frontend_url}")
+    private String frontendUrl;
 
     private final UserDetailsServiceImp userDetailsService;
     private final JwtAuthFilter jwtAuthFilter;
@@ -70,7 +70,7 @@ public class SecurityConfiguration {
         corsConfiguration.applyPermitDefaultValues();
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "OPTIONS"));
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(List.of(allowedOrigin));
+        corsConfiguration.setAllowedOrigins(List.of(frontendUrl));
 
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

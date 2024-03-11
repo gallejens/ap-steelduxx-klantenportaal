@@ -20,6 +20,7 @@ export const doApiAction = async <T>(data: {
     });
     return await response.json();
   } catch (e: unknown) {
+    console.error(e);
     return null;
   }
 };

@@ -3,7 +3,6 @@ package com.ap.steelduxxklantenportaal.controllers;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 @RestController
@@ -12,7 +11,6 @@ public class OrdersController {
 
     private final ExternalApiService externalApiService;
 
-    @Autowired
     public OrdersController(ExternalApiService externalApiService) {
         this.externalApiService = externalApiService;
     }

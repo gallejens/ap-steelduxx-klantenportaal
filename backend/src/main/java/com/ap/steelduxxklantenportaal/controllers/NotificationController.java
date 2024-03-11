@@ -2,7 +2,6 @@ package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.services.NotificationService;
 import com.ap.steelduxxklantenportaal.models.Notification;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,6 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    @Autowired
     public NotificationController(NotificationService notificationService) {
         this.notificationService = notificationService;
     }

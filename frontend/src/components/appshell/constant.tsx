@@ -12,8 +12,8 @@ export const TABS = [
     color: 'rgba(142, 150, 255, 0.433)',
   },
   {
-    labelKey: 'orders',
-    path: 'testvalues',
+    labelKey: 'Orderlist',
+    path: 'orders',
     icon: <IconBaselineDensityMedium color='rgb(36, 244, 112)' />,
     color: 'rgba(142, 255, 210, 0.433)',
   },

@@ -1,0 +1,65 @@
+@use '../../../styles/variables.scss';
+@use '../../../styles/mixins.scss';
+
+.orderlist_table_page {
+  @include mixins.shadow;
+  padding-top: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--mantine-primary-color-0);
+  border-radius: var(--mantine-radius-default);
+}
+
+.header {
+  width: 100%;
+  margin-bottom: var(--mantine-spacing-md);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  & > .first_column,
+  & > .second_column {
+    display: flex;
+    align-items: center;
+  }
+
+  & > .first_column {
+    margin-right: auto;
+    margin-left: var(--mantine-spacing-xl);
+
+    & > .paging_select {
+      width: 10vh;
+    }
+  }
+
+  & > .second_column {
+    flex-grow: 1;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 2rem;
+
+    & > .search_bar {
+      min-width: 10vh;
+      max-width: 80vh;
+      width: 100%;
+    }
+  }
+}
+
+.body {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > .orderlist_table {
+    width: 100%;
+    height: 81vh;
+  }
+}

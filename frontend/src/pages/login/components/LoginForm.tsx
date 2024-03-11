@@ -1,5 +1,4 @@
 import { notifications } from '@/components/notifications';
-import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { Button, PasswordInput, Text, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
 import type { FC } from 'react';
@@ -7,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import styles from '../styles/login.module.scss';
 import { useNavigate } from '@tanstack/react-router';
 import { EMAIL_PLACEHOLDER } from '@/constants';
+import { useAuth } from '@/hooks/useAuth';
 
 type LoginFormValues = {
   email: string;
@@ -28,6 +28,7 @@ export const LoginForm: FC = () => {
     },
     validateInputOnBlur: true,
   });
+  const { signIn } = useAuth();
 
   const handleLoginButton = async (values: LoginFormValues) => {
     if (!loginForm.isValid()) {
@@ -39,23 +40,15 @@ export const LoginForm: FC = () => {
       return;
     }
 
-    const result = await doApiAction<GenericAPIResponse>({
-      endpoint: '/auth/signin',
-      method: 'POST',
-      body: {
-        email: values.email,
-        password: values.password,
-      },
-    });
-
-    notifications.add({
-      message: t(result?.message ?? 'notifications:genericError'),
-      autoClose: 5000,
-    });
-
-    if (result?.status === 202) {
+    const result = await signIn(values.email, values.password);
+    if (result.success) {
       navigate({
-        to: '/app',
+        to: '/app/home',
+      });
+    } else {
+      notifications.add({
+        message: t(result.message),
+        autoClose: 5000,
       });
     }
   };

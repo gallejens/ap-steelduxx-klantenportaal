@@ -133,16 +133,6 @@ export const TestValuesPage: FC = () => {
         onClick={() => {
           doApiAction({
             method: 'POST',
-            endpoint: '/auth/signout',
-          });
-        }}
-      >
-        Signout
-      </Button>
-      <Button
-        onClick={() => {
-          doApiAction({
-            method: 'POST',
             endpoint: '/auth/refresh',
           });
         }}

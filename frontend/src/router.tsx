@@ -18,8 +18,7 @@ const rootRoute = createRootRoute();
 // Unauthorized Only Routes
 const unauthorizedOnlyRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/',
-  component: LoginPage,
+  id: 'unaothorizedOnlyRoute',
   beforeLoad: beforeLoadBuilder({
     mustBeUnauthenticated: true,
   }),

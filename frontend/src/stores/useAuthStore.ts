@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 type AuthState = {
   user: Auth.User | null;
-  loading: Promise<void> | null;
+  loading: boolean;
 };
 
 type AuthStateActions = {
@@ -15,12 +15,19 @@ type AuthStateActions = {
 export const useAuthStore = create<AuthState & AuthStateActions>(
   (set, get) => ({
     user: null,
-    loading: null,
-    setUser: user => set({ user }),
+    loading: true, // default to true for page load
+    setUser: user => set({ user, loading: false }),
     setLoading: loading => set({ loading }),
     getUserInfo: async () => {
-      if (get().loading !== null) {
-        await get().loading;
+      if (get().loading) {
+        await new Promise<void>(resolve => {
+          const t = setInterval(() => {
+            if (!get().loading) {
+              clearInterval(t);
+              resolve();
+            }
+          });
+        });
       }
       return get().user;
     },

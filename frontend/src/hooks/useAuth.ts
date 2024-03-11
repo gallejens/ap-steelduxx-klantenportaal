@@ -6,13 +6,8 @@ export const useAuth = () => {
   const { user, setUser, loading, setLoading } = useAuthStore();
 
   const fetchUserInfo = async () => {
-    let loadingPromiseResolver: () => void = () => {};
-    const loadingPromise = new Promise<void>(resolve => {
-      loadingPromiseResolver = resolve;
-    });
-    setLoading(loadingPromise);
+    setLoading(true);
 
-    console.log('Fetching user info!');
     const user = await doApiAction<GenericAPIResponse<Auth.User>>({
       method: 'GET',
       endpoint: '/auth/info',
@@ -20,22 +15,43 @@ export const useAuth = () => {
 
     const userInfo = user?.data ?? null;
     setUser(userInfo);
-
-    loadingPromiseResolver();
-    setLoading(null);
   };
 
-  const signin = () => {
-    //
+  const signIn = async (
+    email: string,
+    password: string
+  ): Promise<{ success: true } | { success: false; message: string }> => {
+    const result = await doApiAction<GenericAPIResponse>({
+      endpoint: '/auth/signin',
+      method: 'POST',
+      body: {
+        email,
+        password,
+      },
+    });
+
+    if (result?.status === 202) {
+      await fetchUserInfo();
+      return { success: true };
+    } else {
+      return {
+        success: false,
+        message: result?.message ?? 'notifications:genericError',
+      };
+    }
   };
 
-  const signout = () => {
-    //
+  const signOut = async () => {
+    await doApiAction({
+      method: 'POST',
+      endpoint: '/auth/signout',
+    });
+    await fetchUserInfo();
   };
 
   return {
-    signin,
-    signout,
+    signIn,
+    signOut,
     user,
     loading,
     fetchUserInfo,

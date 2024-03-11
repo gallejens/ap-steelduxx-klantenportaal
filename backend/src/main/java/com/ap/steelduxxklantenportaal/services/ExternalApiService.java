@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import com.ap.steelduxxklantenportaal.DTOs.ExternalApiAuthDto;
 import org.springframework.http.*;
 
 @Service
@@ -14,10 +15,10 @@ public class ExternalApiService {
     private final String group = "SOF3";
     private final String apiKey = "SECRET-KEY-SOF3";
 
-    public String getToken() {
-        System.out.println(
-                "Attempting to get token with baseUrl: " + baseUrl + ", group: " + group + ", apiKey: " + apiKey);
+    public ExternalApiService() {
+    }
 
+    public String getToken() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -26,11 +27,11 @@ public class ExternalApiService {
         body.put("apiKey", apiKey);
 
         HttpEntity<Map<String, String>> entity = new HttpEntity<>(body, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl + "/authenticate/token", entity,
-                String.class);
 
-        System.out.println("Token retrieval response: " + response.getBody());
-        return response.getBody();
+        ResponseEntity<ExternalApiAuthDto> response = restTemplate.postForEntity(baseUrl + "/authenticate/token",
+                entity, ExternalApiAuthDto.class);
+
+        return response.getBody().token();
     }
 
     public String getAllOrders() {

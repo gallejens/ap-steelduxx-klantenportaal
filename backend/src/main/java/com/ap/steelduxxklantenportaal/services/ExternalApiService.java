@@ -6,16 +6,22 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.ap.steelduxxklantenportaal.DTOs.ExternalApiAuthDto;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 
 @Service
 public class ExternalApiService {
-    private final RestTemplate restTemplate = new RestTemplate();
-    private final String baseUrl = "https://sw11-1.devops-ap.be";
-    private final String group = "SOF3";
-    private final String apiKey = "SECRET-KEY-SOF3";
+    private final RestTemplate restTemplate;
+    @Value("${external.api.base-url}")
+    private String baseUrl;
+    @Value("${external.api.group}")
+    private String group;
+    @Value("${external.api.key}")
+    private String apiKey;
 
-    public ExternalApiService() {
+    public ExternalApiService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     public String getToken() {

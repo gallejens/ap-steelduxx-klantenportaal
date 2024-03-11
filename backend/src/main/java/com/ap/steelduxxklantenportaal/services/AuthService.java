@@ -11,6 +11,7 @@ import com.ap.steelduxxklantenportaal.repositories.RefreshTokenRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.utils.Cookies;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -48,6 +49,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final ChoosePasswordTokenRepository choosePasswordTokenRepository;
+    private final EmailService emailService;
 
     public AuthService(
             UserRepository userRepository,
@@ -55,7 +57,8 @@ public class AuthService {
             JwtService jwtService,
             AuthenticationManager authenticationManager,
             PasswordEncoder passwordEncoder,
-            ChoosePasswordTokenRepository choosePasswordTokenRepository
+            ChoosePasswordTokenRepository choosePasswordTokenRepository,
+            EmailService emailService
     ) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
@@ -63,6 +66,7 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.choosePasswordTokenRepository = choosePasswordTokenRepository;
+        this.emailService = emailService;
     }
 
     public ResponseEntity<Object> signIn(SignInRequestDTO signInRequestDTO, HttpServletResponse response) {
@@ -144,7 +148,7 @@ public class AuthService {
         refreshTokenRepository.save(refreshToken);
     }
 
-    public void requestPasswordReset(String email) {
+    public void requestPasswordReset(String email) throws MessagingException {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) return;
 
@@ -155,9 +159,8 @@ public class AuthService {
         choosePasswordToken.setExpiryDate(new Date().getTime() + PASSWORD_RESET_TOKEN_TIME * 1000);
         choosePasswordTokenRepository.save(choosePasswordToken);
 
-        // TODO: Send mail
         String choosePasswordLink = frontendUrl + "/choose-password?token=" + uuid;
-        System.out.println(choosePasswordLink);
+        emailService.sendChoosePasswordLink(user.get(), choosePasswordLink);
     }
 
     private User getUserForChoosePasswordToken(String token) {

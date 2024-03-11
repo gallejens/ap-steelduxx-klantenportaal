@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 import com.ap.steelduxxklantenportaal.DTOs.UserRequestValuesDTO;
+import com.ap.steelduxxklantenportaal.models.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -71,4 +72,22 @@ public class EmailService {
         mailSender.send(message);
     }
 
+
+    void sendChoosePasswordLink(User user, String choosePasswordLink) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+
+        message.setFrom(new InternetAddress(mailUsername));
+        message.setRecipients(MimeMessage.RecipientType.TO, user.getEmail());
+        message.setSubject("Steelduxx - Choose your password");
+
+        Context context = new Context();
+        context.setVariable("user", user);
+        context.setVariable("link", choosePasswordLink);
+
+        String htmlContent = templateEngine.process("choose-password", context);
+        message.setContent(htmlContent, "text/html; charset=utf-8");
+
+        System.out.println("sending mail");
+        mailSender.send(message);
+    }
 }

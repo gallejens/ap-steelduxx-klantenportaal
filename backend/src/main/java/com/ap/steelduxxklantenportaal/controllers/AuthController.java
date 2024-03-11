@@ -5,6 +5,7 @@ import com.ap.steelduxxklantenportaal.DTOs.ResetPasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
 import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class AuthController {
     @PostMapping("/reset-password")
     @PreAuthorize("permitAll")
     @ResponseStatus(HttpStatus.OK)
-    public void resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
+    public void resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) throws MessagingException {
         authService.requestPasswordReset(resetPasswordDto.email());
     }
 

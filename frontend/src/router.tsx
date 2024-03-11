@@ -1,4 +1,5 @@
 import {
+  Navigate,
   createRootRoute,
   createRoute,
   createRouter,
@@ -13,7 +14,9 @@ import { ResetPasswordPage } from './pages/resetpassword';
 import { ChoosePasswordPage } from './pages/choosepassword';
 import { beforeLoadBuilder } from './lib/router-helpers';
 
-const rootRoute = createRootRoute();
+const rootRoute = createRootRoute({
+  notFoundComponent: () => <Navigate to='/login' />,
+});
 
 // Unauthorized Only Routes
 const unauthorizedOnlyRoute = createRoute({
@@ -98,7 +101,7 @@ const routeTree = rootRoute.addChildren([
     userRequestListRoute,
   ]),
 ]);
-export const router = createRouter({ routeTree });
+export const router = createRouter({ routeTree, notFoundMode: 'root' });
 
 // Make autocomplete work
 declare module '@tanstack/react-router' {

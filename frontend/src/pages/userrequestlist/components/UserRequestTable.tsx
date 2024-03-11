@@ -136,7 +136,7 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({
         `${userRequestListValue.firstName} ${userRequestListValue.lastName}`,
         <ActionIcon
           onClick={() => {
-            navigate({ to: '/login' }); // TODO: change to review page
+            navigate({ to: '/app/requests/review' });
           }}
           className={styles.delete_button}
         >

@@ -3,12 +3,16 @@ import {
   createRoute,
   createRouter,
 } from '@tanstack/react-router';
+import { AppShell } from './components/appshell';
+import { HomePage } from './pages/home';
 import { LoginPage } from './pages/login';
 import { TestValuesPage } from './pages/testvaluespage';
-import { userRequestPage } from './pages/userrequest';
+import { UserRequestPage } from './pages/userrequest';
+import { UserRequestListPage } from './pages/userrequestlist';
 
 const rootRoute = createRootRoute();
 
+// Public routes
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
@@ -21,23 +25,43 @@ const loginRoute = createRoute({
   component: LoginPage,
 });
 
-const userrequestRoute = createRoute({
+const userRequestRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/request_account',
-  component: userRequestPage,
+  component: UserRequestPage,
+});
+
+// Private routes
+const appRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: 'app',
+  component: AppShell,
+});
+
+const homePageRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: '/home',
+  component: HomePage,
 });
 
 const testvaluesRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => appRoute,
   path: '/testvalues',
   component: TestValuesPage,
 });
 
+const userRequestListRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: '/requests',
+  component: UserRequestListPage,
+});
+
+// Build route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
-  userrequestRoute,
-  testvaluesRoute,
+  userRequestRoute,
+  appRoute.addChildren([homePageRoute, testvaluesRoute, userRequestListRoute]),
 ]);
 export const router = createRouter({ routeTree });
 

@@ -1,0 +1,15 @@
+meta {
+  name: get-all-orders
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://sw11-1.devops-ap.be/order/all
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{auth-key}}
+}

@@ -1,35 +1,66 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import java.util.List;
-
+import com.ap.steelduxxklantenportaal.DTOs.UserRequestValuesDTO;
+import com.ap.steelduxxklantenportaal.enums.StatusEnum;
+import com.ap.steelduxxklantenportaal.models.UserRequestValue;
+import com.ap.steelduxxklantenportaal.repositories.UserRequestValueRepository;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.ap.steelduxxklantenportaal.DTOs.UserRequestValuesDTO;
-import com.ap.steelduxxklantenportaal.enums.StatusEnum;
-import com.ap.steelduxxklantenportaal.models.UserRequestValue;
-
-import com.ap.steelduxxklantenportaal.repositories.UserRequestValueRepository;
-
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class UserRequestValueService {
-    @Autowired
-    UserRequestValueRepository userRequestValueRepository;
 
     @Autowired
-    EmailService emailService;
+    private UserRequestValueRepository userRequestValueRepository;
 
-    public List<UserRequestValue> getAll() {
-        return userRequestValueRepository.findAll();
+    // Assuming you have an EmailService bean defined elsewhere
+    // @Autowired
+    // private EmailService emailService;
+
+    public UserRequestValuesDTO convertToDTO(UserRequestValue userRequestValue) {
+        UserRequestValuesDTO dto = new UserRequestValuesDTO();
+
+        dto.setFollowId(userRequestValue.getId());
+        dto.setCompanyName(userRequestValue.getCompanyName());
+        dto.setPhoneNr(userRequestValue.getPhoneNr());
+        dto.setVatNr(userRequestValue.getVatNr());
+        dto.setPostalCode(userRequestValue.getPostalCode());
+        dto.setDistrict(userRequestValue.getDistrict());
+        dto.setStreet(userRequestValue.getStreet());
+        dto.setStreetNr(userRequestValue.getStreetNr());
+        dto.setBoxNr(userRequestValue.getBoxNr());
+        dto.setFirstName(userRequestValue.getFirstName());
+        dto.setLastName(userRequestValue.getLastName());
+        dto.setEmail(userRequestValue.getEmail());
+        dto.setCreatedOn(userRequestValue.getCreatedOn());
+        dto.setStatus(userRequestValue.getStatus());
+        dto.setDenyMessage(userRequestValue.getDenyMessage());
+
+        return dto;
+    }
+
+    public List<UserRequestValuesDTO> getAll() {
+        List<UserRequestValue> userRequestValues = userRequestValueRepository.findAll();
+        List<UserRequestValuesDTO> userRequestValuesDTOList = userRequestValues.stream()
+                .map(userRequestValue -> convertToDTO(userRequestValue))
+                .collect(Collectors.toList());
+
+        return userRequestValuesDTOList;
     }
 
     public UserRequestValue addRequest(UserRequestValuesDTO userRequestValuesDTO) throws MessagingException {
-        UserRequestValue userRequestValues = new UserRequestValue(
+        // Uncomment the following line if you have an EmailService bean defined
+        // emailService.sendRegistrationConfirmation(userRequestValues);
+
+        return userRequestValueRepository.save(new UserRequestValue(
                 userRequestValuesDTO.getCompanyName(),
                 userRequestValuesDTO.getPhoneNr(),
                 userRequestValuesDTO.getVatNr(),
@@ -43,10 +74,7 @@ public class UserRequestValueService {
                 userRequestValuesDTO.getEmail(),
                 userRequestValuesDTO.getCreatedOn(),
                 StatusEnum.PENDING,
-                "");
-
-        emailService.sendRegistrationConfirmation(userRequestValues);
-        return userRequestValueRepository.save(userRequestValues);
+                ""));
     }
 
     public ResponseEntity<Object> processUserRequest(UserRequestValuesDTO userRequestValuesDTO) throws MessagingException {

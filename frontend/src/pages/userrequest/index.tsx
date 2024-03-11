@@ -12,6 +12,7 @@ export const UserRequestPage: FC = () => {
       title={t('userrequestpage:title')}
       panelWidth='110vh'
       footer={<UserRequestFooter />}
+      hideBackButton
     >
       <UserRequestForm />
     </PublicPageWrapper>

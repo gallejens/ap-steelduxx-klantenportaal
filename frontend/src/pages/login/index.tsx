@@ -14,6 +14,7 @@ export const LoginPage: FC = () => {
       title={t('loginpage:title')}
       footer={<LoginFooter />}
       panelWidth='80vh'
+      hideBackButton
     >
       <div className={styles.login_page}>
         <SteelLogo

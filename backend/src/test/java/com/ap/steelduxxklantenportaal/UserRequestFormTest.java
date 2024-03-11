@@ -67,7 +67,7 @@ public class UserRequestFormTest {
     void returnCreatedStatus_or_OkStatus_when_requestUser_already_exists() throws Exception {
 
         if (savedUserRequest.isPresent()) {
-            assertThat(status().isOk());
+            assertThat(status().isOk()).isEqualTo(true);
         } else {
             mockMvc.perform(
                     post("/user_request")

@@ -120,5 +120,16 @@
     "uppercase": "Bevat hoofdletter",
     "number": "Bevat cijfer",
     "symbol": "Bevat speciaal karakter"
+  },
+  "appshell": {
+    "tabs": {
+      "home": "Home",
+      "orders": "Orders",
+      "requests": "Registraties"
+    },
+    "userOptions": {
+      "logout": "Uitloggen",
+      "changePassword": "Wachtwoord veranderen"
+    }
   }
 }

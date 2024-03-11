@@ -1,52 +1,56 @@
-import type { FC } from 'react';
+import { useState, type FC } from 'react';
 import styles from '../styles/appshell.module.scss';
 import { useAuth } from '@/hooks/useAuth';
-import { Menu, Text } from '@mantine/core';
-import { IconLogout, IconPassword } from '@tabler/icons-react';
+import { Avatar, Text } from '@mantine/core';
+import {
+  IconChevronRight,
+  IconLogout,
+  IconPassword,
+} from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 
 export const UserDisplay: FC = () => {
   const { signOut, user } = useAuth();
+  const [menuOpened, setMenuOpened] = useState(false);
+  const { t } = useTranslation();
 
   if (user === null) return null;
 
+  const handleLogoutOptionClick = () => {
+    signOut();
+  };
+
+  const handleChangePasswordOptionClick = () => {
+    console.log('Change password');
+  };
+
   return (
-    <Menu
-      trigger='click-hover'
-      position='right-end'
-      offset={10}
-      closeDelay={400}
+    <div
+      className={styles.user_display}
+      onClick={() => setMenuOpened(s => !s)}
     >
-      <Menu.Target>
-        <div className={styles.user_display}>
-          <div className={styles.avatar}>
-            <img
-              src='/default-pfp.png'
-              alt='default icon'
-            />
+      <div>
+        <Avatar src={'/default-pfp.png'}></Avatar>
+        <div className={styles.info}>
+          <Text className={styles.name}>
+            {user.firstName} {user.lastName}
+          </Text>
+          <Text className={styles.email}>{user.email}</Text>
+        </div>
+        <IconChevronRight size={16} />
+      </div>
+      {menuOpened && (
+        <div className={styles.options}>
+          <div onClick={handleLogoutOptionClick}>
+            <IconLogout size={19} />
+            <Text>{t('appshell:userOptions:logout')}</Text>
           </div>
-          <div className={styles.info}>
-            <Text className={styles.name}>
-              {user.firstName} {user.lastName}
-            </Text>
-            <Text className={styles.email}>{user.email}</Text>
+          <div onClick={handleChangePasswordOptionClick}>
+            <IconPassword size={19} />
+            <Text>{t('appshell:userOptions:changePassword')}</Text>
           </div>
         </div>
-      </Menu.Target>
-      <Menu.Dropdown>
-        <Menu.Label>Settings</Menu.Label>
-        <Menu.Item
-          leftSection={<IconLogout />}
-          onClick={() => signOut()}
-        >
-          Logout
-        </Menu.Item>
-        <Menu.Item
-          leftSection={<IconPassword />}
-          onClick={() => console.log('Do changepassword gedoe')}
-        >
-          Change Password
-        </Menu.Item>
-      </Menu.Dropdown>
-    </Menu>
+      )}
+    </div>
   );
 };

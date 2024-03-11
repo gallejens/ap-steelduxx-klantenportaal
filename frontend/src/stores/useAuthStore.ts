@@ -26,7 +26,6 @@ export const useAuthStore = create<AuthState & AuthStateActions>(
         endpoint: '/auth/info',
       });
       const user = response?.data ?? null;
-      console.log(`Fetched User Info: ${user !== null ? user.email : 'anon'}`);
       get().setUser(user);
       return user;
     },

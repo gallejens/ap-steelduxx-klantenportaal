@@ -4,10 +4,12 @@ import type { FC } from 'react';
 import { TABS } from './constant';
 import styles from './styles/appshell.module.scss';
 import { UserDisplay } from './components/UserDisplay';
+import { useTranslation } from 'react-i18next';
 
 export const AppShell: FC = () => {
   const navigate = useNavigate();
   const routerState = useRouterState();
+  const { t } = useTranslation();
 
   const handleTabClick = (path: string) => {
     navigate({ to: path });
@@ -48,7 +50,7 @@ export const AppShell: FC = () => {
                   >
                     {tab.icon}
                   </div>
-                  {tab.label}
+                  {t(`appshell:tabs:${tab.labelKey}`)}
                 </div>
               );
             })}

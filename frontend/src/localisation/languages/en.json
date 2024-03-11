@@ -120,5 +120,16 @@
     "uppercase": "Includes uppercase letter",
     "number": "Includes number",
     "symbol": "Includes special symbol"
+  },
+  "appshell": {
+    "tabs": {
+      "home": "Home",
+      "orders": "Orders",
+      "requests": "Registrations"
+    },
+    "userOptions": {
+      "logout": "Logout",
+      "changePassword": "Change password"
+    }
   }
 }

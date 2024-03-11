@@ -11,6 +11,7 @@ import { UserRequestPage } from './pages/userrequest';
 import { UserRequestListPage } from './pages/userrequestlist';
 import { ResetPasswordPage } from './pages/resetpassword';
 import { ChoosePasswordPage } from './pages/choosepassword';
+import { OrderListPage } from './pages/orderlist';
 
 const rootRoute = createRootRoute();
 
@@ -78,6 +79,12 @@ const userRequestListRoute = createRoute({
   component: UserRequestListPage,
 });
 
+const orderListRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: '/orders',
+  component: OrderListPage,
+});
+
 // Creating route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -85,7 +92,7 @@ const routeTree = rootRoute.addChildren([
   userRequestRoute,
   passwordResetRoute,
   choosePasswordRoute,
-  appRoute.addChildren([homePageRoute, testvaluesRoute, userRequestListRoute]),
+  appRoute.addChildren([homePageRoute, orderListRoute, userRequestListRoute]),
 ]);
 export const router = createRouter({ routeTree });
 

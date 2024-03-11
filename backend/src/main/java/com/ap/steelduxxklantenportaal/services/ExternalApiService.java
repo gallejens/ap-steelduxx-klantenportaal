@@ -3,40 +3,33 @@ package com.ap.steelduxxklantenportaal.services;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.*;
 
 @Service
 public class ExternalApiService {
-    private final RestTemplate restTemplate;
-    private final String baseUrl;
-    private final String group;
-    private final String apiKey;
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final String baseUrl = "https://sw11-1.devops-ap.be";
+    private final String group = "SOF3";
+    private final String apiKey = "SECRET-KEY-SOF3";
 
-    public ExternalApiService(RestTemplate restTemplate,
-            @Value("${external.api.base-url}") String baseUrl,
-            @Value("${external.api.group}") String group,
-            @Value("${external.api.key}") String apiKey) {
-        this.restTemplate = restTemplate;
-        this.baseUrl = baseUrl;
-        this.group = group;
-        this.apiKey = apiKey;
-    }
+    public String getToken() {
+        System.out.println(
+                "Attempting to get token with baseUrl: " + baseUrl + ", group: " + group + ", apiKey: " + apiKey);
 
-    private String getToken() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, String> body = new HashMap<>();
-        body.put("group", this.group);
-        body.put("apiKey", this.apiKey);
+        body.put("group", group);
+        body.put("apiKey", apiKey);
 
         HttpEntity<Map<String, String>> entity = new HttpEntity<>(body, headers);
         ResponseEntity<String> response = restTemplate.postForEntity(baseUrl + "/authenticate/token", entity,
                 String.class);
 
+        System.out.println("Token retrieval response: " + response.getBody());
         return response.getBody();
     }
 
@@ -50,6 +43,7 @@ public class ExternalApiService {
         ResponseEntity<String> response = restTemplate.exchange(baseUrl + "/order/all", HttpMethod.GET, entity,
                 String.class);
 
+        System.out.println("getAllOrders response: " + response.getBody());
         return response.getBody();
     }
 
@@ -63,6 +57,7 @@ public class ExternalApiService {
         ResponseEntity<String> response = restTemplate.exchange(baseUrl + "/order/" + orderId, HttpMethod.GET, entity,
                 String.class);
 
+        System.out.println("getOrderDetail response: " + response.getBody());
         return response.getBody();
     }
 }

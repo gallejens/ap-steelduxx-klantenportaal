@@ -106,7 +106,7 @@ const orderListRoute = createRoute({
 
 const userRequestReviewRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
-  path: '/requests/review',
+  path: '/requests/$request_id',
   component: UserRequestReviewPage,
 });
 

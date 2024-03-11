@@ -136,9 +136,12 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({
         `${userRequestListValue.firstName} ${userRequestListValue.lastName}`,
         <ActionIcon
           onClick={() => {
-            navigate({ to: '/app/requests/review' });
+            const request_id = userRequestListValue.followId.toString();
+            navigate({
+              to: '/app/requests/$request_id',
+              params: { request_id },
+            });
           }}
-          className={styles.delete_button}
         >
           <IconArrowRight />
         </ActionIcon>,

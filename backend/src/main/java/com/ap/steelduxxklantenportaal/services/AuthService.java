@@ -34,7 +34,7 @@ import java.util.UUID;
 @Service
 public class AuthService {
     public static final String ACCESS_TOKEN_COOKIE_NAME = "access_token";
-    public static final long ACCESS_TOKEN_COOKIE_MAX_AGE = 5 * 60; // 5 minutes
+    public static final long ACCESS_TOKEN_COOKIE_MAX_AGE = 3 * 60; // 3 minutes
     public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
     public static final long REFRESH_TOKEN_COOKIE_MAX_AGE = 72 * 60 * 60; // 3 days
     public static final String REFRESH_TOKEN_COOKIE_PATH = "/api/auth/refresh";
@@ -120,7 +120,7 @@ public class AuthService {
             String accessToken = jwtService.generateToken(user.getUsername(), ACCESS_TOKEN_COOKIE_MAX_AGE);
             Cookies.setCookie(response, ACCESS_TOKEN_COOKIE_NAME, accessToken, ACCESS_TOKEN_COOKIE_MAX_AGE);
         } catch (Exception e) {
-            return ResponseHandler.generate("refresh_failed", HttpStatus.FORBIDDEN);
+            return ResponseHandler.generate("refresh_failed", HttpStatus.UNAUTHORIZED);
         }
 
         return ResponseHandler.generate("refresh_successful", HttpStatus.OK);

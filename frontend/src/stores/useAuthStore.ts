@@ -1,3 +1,4 @@
+import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import type { Auth } from '@/types/auth';
 import { create } from 'zustand';
 
@@ -9,27 +10,25 @@ type AuthState = {
 type AuthStateActions = {
   setUser: (user: AuthState['user']) => void;
   setLoading: (loading: AuthState['loading']) => void;
-  getUserInfo: () => Promise<AuthState['user']>;
+  fetchUserInfo: () => Promise<AuthState['user']>;
 };
 
 export const useAuthStore = create<AuthState & AuthStateActions>(
   (set, get) => ({
     user: null,
-    loading: true, // default to true for page load
+    loading: false,
     setUser: user => set({ user, loading: false }),
     setLoading: loading => set({ loading }),
-    getUserInfo: async () => {
-      if (get().loading) {
-        await new Promise<void>(resolve => {
-          const t = setInterval(() => {
-            if (!get().loading) {
-              clearInterval(t);
-              resolve();
-            }
-          });
-        });
-      }
-      return get().user;
+    fetchUserInfo: async () => {
+      get().setLoading(true);
+      const response = await doApiAction<GenericAPIResponse<Auth.User>>({
+        method: 'GET',
+        endpoint: '/auth/info',
+      });
+      const user = response?.data ?? null;
+      console.log(`Fetched User Info: ${user !== null ? user.email : 'anon'}`);
+      get().setUser(user);
+      return user;
     },
   })
 );

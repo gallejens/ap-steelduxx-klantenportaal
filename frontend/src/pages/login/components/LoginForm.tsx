@@ -40,17 +40,7 @@ export const LoginForm: FC = () => {
       return;
     }
 
-    const result = await signIn(values.email, values.password);
-    if (result.success) {
-      navigate({
-        to: '/app/home',
-      });
-    } else {
-      notifications.add({
-        message: t(result.message),
-        autoClose: 5000,
-      });
-    }
+    signIn(values.email, values.password);
   };
 
   return (

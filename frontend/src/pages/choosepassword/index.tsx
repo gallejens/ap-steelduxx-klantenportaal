@@ -13,7 +13,7 @@ export const ChoosePasswordPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { token } = useSearch({
-    from: '/choose-password',
+    from: '/unauthorized-only-route/choose-password',
   });
 
   const { data: response, status } = useQuery({

@@ -1,7 +1,46 @@
+import axios, { type AxiosError } from 'axios';
+
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-const API_ENDPOINT: string = import.meta.env.VITE_API_ENDPOINT;
-const IS_DEVELOPMENT = import.meta.env.MODE === 'development';
+const NO_RETRY_HEADER = 'x-no-retry';
+const BASE_URL: string = import.meta.env.VITE_API_ENDPOINT;
+
+const api = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10000,
+  withCredentials: true,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+});
+
+api.interceptors.response.use(undefined, async (error: AxiosError) => {
+  // no need to do anything in these cases so we return the original response
+  if (
+    error.response?.status !== 403 ||
+    error.config === undefined ||
+    error.config.headers[NO_RETRY_HEADER]
+  ) {
+    return error.response;
+  }
+
+  // we add the NO_RETRY_HEADER to the request to ensure we dont get into an infinite loop
+  error.config.headers[NO_RETRY_HEADER] = 'true'; // headers need to be stringvalue
+
+  const result = await api<GenericAPIResponse>({
+    method: 'POST',
+    url: '/auth/refresh',
+  });
+
+  // if refresh succeeds (200/OK), we try the original request again because now we have valid accesstoken
+  // if refresh failed (401/UNAUTHORIZED), no need to try again as result will be same so we return original response
+  if (result.status === 200) {
+    return await api(error.config);
+  } else {
+    return error.response;
+  }
+});
 
 export const doApiAction = async <T>(data: {
   endpoint: string;
@@ -9,18 +48,14 @@ export const doApiAction = async <T>(data: {
   body?: unknown;
 }): Promise<T | null> => {
   try {
-    const response = await fetch(`${API_ENDPOINT}${data.endpoint}`, {
+    const response = await api<T>({
+      url: data.endpoint,
       method: data.method,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      credentials: IS_DEVELOPMENT ? 'include' : 'same-origin',
-      body: data.body ? JSON.stringify(data.body) : undefined,
+      data: data.body,
     });
-    return await response.json();
+    return response.data;
   } catch (e: unknown) {
-    console.error(e);
+    console.error('API Error', e);
     return null;
   }
 };

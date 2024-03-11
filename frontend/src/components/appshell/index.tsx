@@ -3,14 +3,11 @@ import { Outlet, useNavigate, useRouterState } from '@tanstack/react-router';
 import type { FC } from 'react';
 import { TABS } from './constant';
 import styles from './styles/appshell.module.scss';
-import { useAuth } from '@/hooks/useAuth';
+import { UserDisplay } from './components/UserDisplay';
 
 export const AppShell: FC = () => {
   const navigate = useNavigate();
   const routerState = useRouterState();
-  const { signOut } = useAuth();
-
-  console.log(routerState.location.pathname);
 
   const handleTabClick = (path: string) => {
     navigate({ to: path });
@@ -56,27 +53,7 @@ export const AppShell: FC = () => {
               );
             })}
           </div>
-          <div
-            className={styles.users}
-            onClick={async () => {
-              await signOut();
-              navigate({
-                to: '/',
-              });
-            }}
-          >
-            <img
-              className={styles.userpfp}
-              src='/default-pfp.png'
-              alt='default icon'
-            />
-            <div className={styles.rightside}>
-              <div className={styles.userName}>Maximilian Duda</div>
-              <div className={styles.userMail}>
-                Maximiliandudajunior@gmail.com
-              </div>
-            </div>
-          </div>
+          <UserDisplay />
         </div>
         <div className={styles.route}>
           <Outlet />

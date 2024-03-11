@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import {
   Navigate,
   createRootRoute,
   createRoute,
   createRouter,
+  redirect,
 } from '@tanstack/react-router';
 import { AppShell } from './components/appshell';
 import { HomePage } from './pages/home';
@@ -12,7 +14,7 @@ import { UserRequestPage } from './pages/userrequest';
 import { UserRequestListPage } from './pages/userrequestlist';
 import { ResetPasswordPage } from './pages/resetpassword';
 import { ChoosePasswordPage } from './pages/choosepassword';
-import { beforeLoadBuilder } from './lib/router-helpers';
+import { useAuthStore } from './stores/useAuthStore';
 
 const rootRoute = createRootRoute({
   notFoundComponent: () => <Navigate to='/login' />,
@@ -21,10 +23,15 @@ const rootRoute = createRootRoute({
 // Unauthorized Only Routes
 const unauthorizedOnlyRoute = createRoute({
   getParentRoute: () => rootRoute,
-  id: 'unaothorizedOnlyRoute',
-  beforeLoad: beforeLoadBuilder({
-    mustBeUnauthenticated: true,
-  }),
+  id: 'unauthorized-only-route',
+  beforeLoad: async () => {
+    const userInfo = await useAuthStore.getState().fetchUserInfo();
+    if (userInfo !== null) {
+      throw redirect({
+        to: '/app/home',
+      });
+    }
+  },
 });
 
 const loginRoute = createRoute({
@@ -64,9 +71,14 @@ const authorizedOnlyRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: 'app',
   component: AppShell,
-  beforeLoad: beforeLoadBuilder({
-    mustBeAuthenticated: true,
-  }),
+  beforeLoad: async () => {
+    const userInfo = await useAuthStore.getState().fetchUserInfo();
+    if (userInfo === null) {
+      throw redirect({
+        to: '/login',
+      });
+    }
+  },
 });
 
 const homeRoute = createRoute({

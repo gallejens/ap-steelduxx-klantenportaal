@@ -76,42 +76,50 @@ $navbar_top_height: 4.5rem;
           background-color: var(--mantine-color-primary-3);
         }
       }
-
-      .users {
-        display: flex;
-        width: 100%;
-        border-top: 2px solid var(--mantine-color-primary-6);
-        padding: 1rem 0rem;
-      }
-
-      .users:hover {
-        background-color: var(--mantine-color-primary-6);
-        color: var(--mantine-color-primary-0);
-        cursor: pointer;
-      }
-
-      .userpfp {
-        height: 2rem;
-        width: 2.5rem;
-        margin-left: 0.5rem;
-      }
-
-      .userName {
-        margin-left: 1rem;
-        font-size: 1rem;
-      }
-
-      .userMail {
-        margin-left: 1rem;
-        font-size: 0.7rem;
-        color: var(--mantine-color-primary-4);
-      }
     }
 
     & > .route {
       width: 100%;
       height: 100%;
       background-color: var(--mantine-color-primary-1);
+    }
+  }
+
+  & .user_display {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: var(--mantine-spacing-sm);
+
+    border-top: 1px solid var(--mantine-color-default-border);
+    padding: var(--mantine-spacing-sm);
+
+    &:hover {
+      background-color: var(--mantine-color-primary-6);
+      color: var(--mantine-color-primary-0);
+      cursor: pointer;
+    }
+
+    & > .avatar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & > img {
+        height: 2rem;
+      }
+    }
+
+    & > .info {
+      & > .name {
+        font-size: 1rem;
+      }
+
+      & > .email {
+        font-size: 0.7rem;
+        color: var(--mantine-color-primary-4);
+      }
     }
   }
 }

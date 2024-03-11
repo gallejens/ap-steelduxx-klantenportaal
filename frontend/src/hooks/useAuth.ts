@@ -1,26 +1,15 @@
+import { notifications } from '@/components/notifications';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useAuthStore } from '@/stores/useAuthStore';
-import type { Auth } from '@/types/auth';
+import { useNavigate } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 
 export const useAuth = () => {
-  const { user, setUser, loading, setLoading } = useAuthStore();
+  const { user, loading } = useAuthStore();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  const fetchUserInfo = async () => {
-    setLoading(true);
-
-    const user = await doApiAction<GenericAPIResponse<Auth.User>>({
-      method: 'GET',
-      endpoint: '/auth/info',
-    });
-
-    const userInfo = user?.data ?? null;
-    setUser(userInfo);
-  };
-
-  const signIn = async (
-    email: string,
-    password: string
-  ): Promise<{ success: true } | { success: false; message: string }> => {
+  const signIn = async (email: string, password: string): Promise<void> => {
     const result = await doApiAction<GenericAPIResponse>({
       endpoint: '/auth/signin',
       method: 'POST',
@@ -31,13 +20,14 @@ export const useAuth = () => {
     });
 
     if (result?.status === 202) {
-      await fetchUserInfo();
-      return { success: true };
+      navigate({
+        to: '/app/home',
+      });
     } else {
-      return {
-        success: false,
-        message: result?.message ?? 'notifications:genericError',
-      };
+      notifications.add({
+        message: t(result?.message ?? 'notifications:genericError'),
+        autoClose: 5000,
+      });
     }
   };
 
@@ -46,7 +36,9 @@ export const useAuth = () => {
       method: 'POST',
       endpoint: '/auth/signout',
     });
-    await fetchUserInfo();
+    navigate({
+      to: '/',
+    });
   };
 
   return {
@@ -54,6 +46,5 @@ export const useAuth = () => {
     signOut,
     user,
     loading,
-    fetchUserInfo,
   };
 };

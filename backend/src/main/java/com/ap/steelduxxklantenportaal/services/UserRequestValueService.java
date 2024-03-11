@@ -22,8 +22,8 @@ public class UserRequestValueService {
     private UserRequestValueRepository userRequestValueRepository;
 
     // Assuming you have an EmailService bean defined elsewhere
-    // @Autowired
-    // private EmailService emailService;
+    @Autowired
+    private EmailService emailService;
 
     public UserRequestValuesDTO convertToDTO(UserRequestValue userRequestValue) {
         UserRequestValuesDTO dto = new UserRequestValuesDTO();
@@ -58,7 +58,7 @@ public class UserRequestValueService {
 
     public UserRequestValue addRequest(UserRequestValuesDTO userRequestValuesDTO) throws MessagingException {
         // Uncomment the following line if you have an EmailService bean defined
-        // emailService.sendRegistrationConfirmation(userRequestValues);
+        emailService.sendRegistrationConfirmation(userRequestValuesDTO);
 
         return userRequestValueRepository.save(new UserRequestValue(
                 userRequestValuesDTO.getCompanyName(),

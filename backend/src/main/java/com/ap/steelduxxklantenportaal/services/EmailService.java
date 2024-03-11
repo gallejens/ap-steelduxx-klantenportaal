@@ -1,9 +1,8 @@
 package com.ap.steelduxxklantenportaal.services;
-import com.ap.steelduxxklantenportaal.models.UserRequestValue;
+import com.ap.steelduxxklantenportaal.DTOs.UserRequestValuesDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -51,7 +50,7 @@ public class EmailService {
 
         mailSender.send(message);
     }
-    public void sendRegistrationConfirmation(UserRequestValue value) throws MessagingException {
+    public void sendRegistrationConfirmation(UserRequestValuesDTO value) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
 
         message.setFrom(new InternetAddress(mailUsername));

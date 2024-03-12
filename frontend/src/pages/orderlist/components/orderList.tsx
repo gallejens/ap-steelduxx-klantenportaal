@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Pagination, Group } from '@mantine/core';
+import { Table, Pagination, Group, Badge, Text } from '@mantine/core';
+import styles from '../styles/orderList.module.scss';
 
 interface Order {
   referenceNumber: string; // ex: "2646607000",
@@ -16,6 +17,10 @@ interface Order {
   ata: string | null; // ex: null
 }
 
+interface OrderListProps {
+  pageSize: number;
+}
+
 function chunk<T>(array: T[], size: number): T[][] {
   if (!array.length) {
     return [];
@@ -25,7 +30,7 @@ function chunk<T>(array: T[], size: number): T[][] {
   return [head, ...chunk(tail, size)];
 }
 
-export const OrderList: React.FC = () => {
+export const OrderList: React.FC<OrderListProps> = ({ pageSize }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [activePage, setPage] = useState(1);
 
@@ -40,35 +45,69 @@ export const OrderList: React.FC = () => {
       );
   }, []);
 
-  const paginatedOrders = chunk(orders, 5);
+  const paginatedOrders = chunk(orders, pageSize);
 
-  const items = paginatedOrders[activePage - 1]?.map(order => (
+  const rows = paginatedOrders[activePage - 1]?.map(order => (
     <tr key={order.referenceNumber}>
       <td>{order.referenceNumber}</td>
       <td>{order.customerReferenceNumber}</td>
-      <td>{order.state}</td>
-      <td>{order.transportType}</td>
+      <td>
+        <Badge color={getStateColor(order.state)}>{order.state}</Badge>
+      </td>
+      <td>
+        <Badge color={order.transportType === 'IMPORT' ? 'blue' : 'pink'}>
+          {order.transportType}
+        </Badge>
+      </td>
       <td>{order.portOfOriginCode}</td>
       <td>{order.portOfDestinationCode}</td>
       <td>{order.shipName}</td>
-      <td style={{ fontStyle: 'italic', opacity: 0.7 }}>
-        {order.ets || 'N/A'}
+      <td>
+        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
+          {order.ets || 'N/A'}
+        </Text>
       </td>
-      <td style={{ fontStyle: 'italic', opacity: 0.7 }}>
-        {order.ats || 'N/A'}
+      <td>
+        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
+          {order.ats || 'N/A'}
+        </Text>
       </td>
-      <td style={{ fontStyle: 'italic', opacity: 0.7 }}>
-        {order.eta || 'N/A'}
+      <td>
+        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
+          {order.eta || 'N/A'}
+        </Text>
       </td>
-      <td style={{ fontStyle: 'italic', opacity: 0.7 }}>
-        {order.ata || 'N/A'}
+      <td>
+        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
+          {order.ata || 'N/A'}
+        </Text>
       </td>
     </tr>
   ));
 
+  function getStateColor(state: Order['state']): string {
+    switch (state) {
+      case 'SAILING':
+        return 'orange';
+      case 'PLANNED':
+        return 'blue';
+      case 'CREATED':
+        return 'gray';
+      case 'ARRIVED':
+        return 'green';
+      case 'CLOSED':
+        return 'red';
+      case 'LOADED':
+        return 'violet';
+      default:
+        return 'gray';
+    }
+  }
+
   return (
     <>
       <Table
+        className={styles.orderListTable}
         striped
         highlightOnHover
       >
@@ -87,7 +126,7 @@ export const OrderList: React.FC = () => {
             <th>ATA</th>
           </tr>
         </thead>
-        <tbody>{items}</tbody>
+        <tbody>{rows}</tbody>
       </Table>
       <Group style={{ justifyContent: 'center', marginTop: '1rem' }}>
         <Pagination

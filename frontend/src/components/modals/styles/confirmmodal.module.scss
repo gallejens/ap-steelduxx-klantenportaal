@@ -1,0 +1,7 @@
+@use './modalmixins.scss' as *;
+
+.confirm_modal {
+  & > .action_button {
+    @include modal_action_button;
+  }
+}

@@ -42,7 +42,7 @@ api.interceptors.response.use(undefined, async (error: AxiosError) => {
   }
 });
 
-export const doApiAction = async <T>(data: {
+export const doApiAction = async <T = GenericAPIResponse>(data: {
   endpoint: string;
   method: Method;
   body?: unknown;

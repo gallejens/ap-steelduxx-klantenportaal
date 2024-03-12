@@ -1,0 +1,9 @@
+@mixin modal_action_button {
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  margin-top: var(--mantine-spacing-md);
+}

@@ -1,6 +1,8 @@
 import { useModalStore } from '@/stores/useModalStore';
 import { Modal as MantineModal } from '@mantine/core';
 import { type FC, type PropsWithChildren } from 'react';
+import styles from './styles/modal.module.scss';
+import classNames from 'classnames';
 
 import { ConfirmModal } from './components/ConfirmModal';
 
@@ -16,6 +18,7 @@ export const Modal: FC<
   PropsWithChildren & {
     title: string;
     onClose?: () => void;
+    className?: string;
   }
 > = props => {
   const { closeModal } = useModalStore();
@@ -32,7 +35,9 @@ export const Modal: FC<
         props.onClose?.();
       }}
     >
-      {props.children}
+      <div className={classNames(props.className, styles.modal_body)}>
+        {props.children}
+      </div>
     </MantineModal>
   );
 };

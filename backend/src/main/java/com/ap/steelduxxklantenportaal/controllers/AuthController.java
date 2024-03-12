@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
+import com.ap.steelduxxklantenportaal.DTOs.ChangePasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.ChoosePasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.ResetPasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
@@ -32,8 +33,8 @@ public class AuthController {
 
     @PostMapping("/signout")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Object> signOut(HttpServletResponse response) {
-        authService.signOut(response);
+    public ResponseEntity<Object> signOut(HttpServletRequest request, HttpServletResponse response) {
+        authService.signOut(request, response);
         return ResponseHandler.generate("logout_successful", HttpStatus.OK);
     }
 
@@ -65,8 +66,13 @@ public class AuthController {
     @GetMapping("/info")
     @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> getUserInfo() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        var user = (User) auth.getPrincipal();
+        var user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseHandler.generate("", HttpStatus.OK, user.getUserInfo());
+    }
+
+    @PostMapping("/change-password")
+    @PreAuthorize("hasAuthority('ACCESS')")
+    public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDto changePasswordDto, HttpServletResponse response) {
+        return authService.changePassword(changePasswordDto, response);
     }
 }

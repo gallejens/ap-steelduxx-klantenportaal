@@ -8,20 +8,33 @@ import {
   IconPassword,
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { useModalStore } from '@/stores/useModalStore';
+import { ChangePasswordModal } from '@/components/modals/components/ChangePasswordModal';
+import { ConfirmModal } from '@/components/modals';
 
 export const UserDisplay: FC = () => {
   const { signOut, user } = useAuth();
   const [menuOpened, setMenuOpened] = useState(false);
   const { t } = useTranslation();
+  const { openModal, closeModal } = useModalStore();
 
   if (user === null) return null;
 
   const handleLogoutOptionClick = () => {
-    signOut();
+    openModal(
+      <ConfirmModal
+        title={t('appshell:userOptions:logoutConfirmTitle')}
+        text={t('appshell:userOptions:logoutConfirmText')}
+        onConfirm={() => {
+          closeModal();
+          signOut();
+        }}
+      />
+    );
   };
 
   const handleChangePasswordOptionClick = () => {
-    console.log('Change password');
+    openModal(<ChangePasswordModal />);
   };
 
   return (

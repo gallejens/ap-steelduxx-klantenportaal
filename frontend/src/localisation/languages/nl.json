@@ -72,7 +72,19 @@
     "userRequestRequested": "Account geregistreerd",
 
     "userRequestLabel": "Heeft u al een account?",
-    "loginLink": "Log in"
+    "loginLink": "Log in",
+
+    "referenceCodeInputTitle": "Referentie code",
+    "referenceCodeInputDescription": "Vul hier de referentie code in van het bedrijf",
+    "referenceCodeInputPlaceholder": "SRL/BHJ/EXP/PI-154",
+    "referenceCodeInputError": "Referentie code van bedrijf is verplicht",
+
+    "denyMessageInputTitle": "Motivatie",
+    "denyMessageInputDescription": "Vul hier de motivatie voor het afkeuren",
+    "denyMessageInputPlaceholder": "Beschrijving van motivatie",
+    "denyMessageInputError": "Descriptie van motivatie is verplicht",
+
+    "confirmButton": "Bevestigen"
   },
   "user_request_list_page": {
     "newUserRequest": "Nieuwe Aanvraag",
@@ -104,7 +116,9 @@
     "tableError": "Kan aanvragen niet laden"
   },
   "userRequestReviewPage": {
-    "backButton": "Terug Gaan"
+    "backButton": "Terug Gaan",
+    "approveButton": "Goedkeuren",
+    "denyButton": "Afkeuren"
   },
   "notifications": {
     "genericError": "Er is iets misgegaan",

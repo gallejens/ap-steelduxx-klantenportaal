@@ -1,20 +1,30 @@
-import { useNavigate, useParams } from '@tanstack/react-router';
 import { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { UserRequestReviewForm } from './components/UserRequestReviewForm';
 import { UserRequestReviewHandle } from './components/UserRequestReviewHandle';
 import styles from './styles/userRequestReview.module.scss';
 
 export const UserRequestReviewPage: FC = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-
   return (
     <div className={styles.userrequest_review_page}>
       <div className={styles.userrequest_form}>
-        <UserRequestReviewForm />
+        <UserRequestReviewForm
+          companyName={''}
+          email={''}
+          phoneNr={''}
+          vatNr={''}
+          postalCode={''}
+          district={''}
+          street={''}
+          streetNr={''}
+          boxNr={''}
+          firstName={''}
+          lastName={''}
+          status={''}
+        />
       </div>
-      <UserRequestReviewHandle />
+      <div className={styles.userrequest_handle}>
+        <UserRequestReviewHandle />
+      </div>
     </div>
   );
 };

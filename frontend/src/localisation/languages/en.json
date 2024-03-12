@@ -72,7 +72,19 @@
     "userRequestRequested": "Account requested",
 
     "userRequestLabel": "Already have an account?",
-    "loginLink": "Log in"
+    "loginLink": "Log in",
+
+    "referenceCodeInputTitle": "Reference code",
+    "referenceCodeInputDescription": "Fill in the reference code of the company here",
+    "referenceCodeInputPlaceholder": "SRL/BHJ/EXP/PI-154",
+    "referenceCodeInputError": "Reference code of company is required",
+
+    "denyMessageInputTitle": "Motivation",
+    "denyMessageInputDescription": "Fill in the motivation for the rejection here",
+    "denyMessageInputPlaceholder": "Description of motivation",
+    "denyMessageInputError": "Description of motivation is required",
+
+    "confirmButton": "Confirm"
   },
   "user_request_list_page": {
     "newUserRequest": "New Request",
@@ -104,7 +116,9 @@
     "tableError": "Can't load requests"
   },
   "userRequestReviewPage": {
-    "backButton": "Go Back"
+    "backButton": "Go Back",
+    "approveButton": "Approve",
+    "denyButton": "Deny"
   },
   "notifications": {
     "genericError": "Something went wrong",

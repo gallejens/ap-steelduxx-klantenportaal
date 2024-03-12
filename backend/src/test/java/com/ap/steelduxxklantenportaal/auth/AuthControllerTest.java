@@ -38,13 +38,11 @@ public class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private final String loginJson = "{\"email\":\"test@test.com\",\"password\":\"testuser\" }";
-
     private User testUser;
 
     @BeforeEach
     public void setupTest() throws UserAlreadyExistsException {
-        testUser = authService.addNewUser("test@test.com", "testuser", "Test", "Test", RoleEnum.ROLE_USER);
+        testUser = authService.addNewUser(AuthObjectMother.validUserEmail, AuthObjectMother.validUserPassword, "Test", "Test", RoleEnum.ROLE_USER);
     }
 
     @AfterEach
@@ -62,11 +60,10 @@ public class AuthControllerTest {
 
     @Test
     void should_getStatusUnauthorized_when_wrongLoginInfo() throws Exception {
-        String wrongLoginJson = "{\"email\":\"wrong@test.com\",\"password\":\"wrong\" }";
         var resultActions = mockMvc.perform(
                 post("/auth/signin")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(wrongLoginJson));
+                        .content(AuthObjectMother.invalidSignInBody));
         resultActions.andExpect(status().is(401));
     }
 
@@ -75,7 +72,7 @@ public class AuthControllerTest {
         var resultActions = mockMvc.perform(
                 post("/auth/signin")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(loginJson));
+                        .content(AuthObjectMother.validSignInBody));
         resultActions.andExpect(status().is(202));
         resultActions.andExpect(cookie().httpOnly(AuthService.ACCESS_TOKEN_COOKIE_NAME, true));
         resultActions.andExpect(cookie().httpOnly(AuthService.REFRESH_TOKEN_COOKIE_NAME, true));
@@ -86,7 +83,7 @@ public class AuthControllerTest {
         var signinResult = mockMvc.perform(
                         post("/auth/signin")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(loginJson))
+                                .content(AuthObjectMother.validSignInBody))
                 .andReturn();
 
         var authCookies = signinResult.getResponse().getCookies();
@@ -114,7 +111,7 @@ public class AuthControllerTest {
         var signinResult = mockMvc.perform(
                         post("/auth/signin")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(loginJson))
+                                .content(AuthObjectMother.validSignInBody))
                 .andReturn();
 
         var authCookies = signinResult.getResponse().getCookies();
@@ -134,7 +131,7 @@ public class AuthControllerTest {
                 post("/auth/reset-password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(
-                                String.format("{\"email\":\"%s\"}", testUser.getEmail())
+                                String.format("{\"email\":\"%s\"}", AuthObjectMother.validUserEmail)
                         )
         ).andReturn();
 
@@ -151,7 +148,7 @@ public class AuthControllerTest {
         var result = mockMvc.perform(
                 post("/auth/reset-password")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"invalid@test.com\"}")
+                        .content(String.format("{\"email\":\"%s\"}", AuthObjectMother.invalidUserEmail))
         ).andReturn();
 
         assertThat(result.getResponse().getStatus()).isEqualTo(200);
@@ -167,7 +164,7 @@ public class AuthControllerTest {
                 post("/auth/reset-password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(
-                                String.format("{\"email\":\"%s\"}", testUser.getEmail())
+                                String.format("{\"email\":\"%s\"}", AuthObjectMother.validUserEmail)
                         )
         ).andReturn();
 
@@ -196,7 +193,7 @@ public class AuthControllerTest {
                 post("/auth/reset-password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(
-                                String.format("{\"email\":\"%s\"}", testUser.getEmail())
+                                String.format("{\"email\":\"%s\"}", AuthObjectMother.validUserEmail)
                         )
         ).andReturn();
 
@@ -234,5 +231,77 @@ public class AuthControllerTest {
         ).andReturn();
 
         assertThat(result.getResponse().getStatus()).isEqualTo(406);
+    }
+
+    @Test
+    void givenLoggedInUser_whenGettingUserInfo_thenReceiveInfo() throws Exception {
+        var signinResult = mockMvc.perform(
+                        post("/auth/signin")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(AuthObjectMother.validSignInBody))
+                .andReturn();
+
+        var authCookies = signinResult.getResponse().getCookies();
+
+        assertThat(authCookies).isNotNull().isNotEmpty();
+
+        var result = mockMvc.perform(
+                get("/auth/info").cookie(authCookies)
+        ).andReturn();
+
+        assertThat(result.getResponse().getStatus()).isEqualTo(200);
+        assertThat(result.getResponse().getContentAsString().length()).isNotZero().isNotNull();
+    }
+
+    @Test
+    void givenCorrectOldPassword_whenChangingPassword_thenPasswordShouldUpdate() throws Exception {
+        var signinResult = mockMvc.perform(
+                        post("/auth/signin")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(AuthObjectMother.validSignInBody))
+                .andReturn();
+
+        var authCookies = signinResult.getResponse().getCookies();
+
+        assertThat(authCookies).isNotNull().isNotEmpty();
+
+        var result = mockMvc.perform(
+                post("/auth/change-password")
+                        .cookie(authCookies)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.format("{\"oldPassword\":\"%s\",\"newPassword\":\"abc123\"}", AuthObjectMother.validUserPassword))
+        ).andReturn();
+
+        assertThat(result.getResponse().getStatus()).isEqualTo(200);
+
+        String newEncodedPassword = userRepository.findByEmail(testUser.getEmail()).orElseThrow().getPassword();
+
+        assertThat(testUser.getPassword().equals(newEncodedPassword)).isFalse();
+    }
+
+    @Test
+    void givenIncorrectOldPassword_whenChangingPassword_thenPasswordShouldNotUpdate() throws Exception {
+        var signinResult = mockMvc.perform(
+                        post("/auth/signin")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(AuthObjectMother.validSignInBody))
+                .andReturn();
+
+        var authCookies = signinResult.getResponse().getCookies();
+
+        assertThat(authCookies).isNotNull().isNotEmpty();
+
+        var result = mockMvc.perform(
+                post("/auth/change-password")
+                        .cookie(authCookies)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.format("{\"oldPassword\":\"%s\",\"newPassword\":\"abc123\"}", AuthObjectMother.invalidUserPassword))
+        ).andReturn();
+
+        assertThat(result.getResponse().getStatus()).isEqualTo(401);
+
+        String newEncodedPassword = userRepository.findByEmail(testUser.getEmail()).orElseThrow().getPassword();
+
+        assertThat(testUser.getPassword().equals(newEncodedPassword)).isTrue();
     }
 }

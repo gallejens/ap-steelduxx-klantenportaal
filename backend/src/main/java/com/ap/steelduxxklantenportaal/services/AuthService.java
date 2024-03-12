@@ -217,7 +217,7 @@ public class AuthService {
 
         // Check if oldpassword matches actual password
         if (!passwordEncoder.matches(changePasswordDto.oldPassword(), user.getPassword())) {
-            return ResponseHandler.generate("invalidPassword", HttpStatus.OK);
+            return ResponseHandler.generate("invalidPassword", HttpStatus.UNAUTHORIZED);
         }
 
         // Update password, delete all refreshtokens to sign out on every device but generate new refreshtoken current user

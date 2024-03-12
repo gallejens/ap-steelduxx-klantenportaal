@@ -4,7 +4,7 @@ import { OrderList } from './components/orderList';
 import styles from './styles/orderList.module.scss';
 
 export const OrderListPage: FC = () => {
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [pageSize, setPageSize] = useState<number>(7);
 
   return (
     <div className={styles.orderlist_table_page}>
@@ -13,7 +13,7 @@ export const OrderListPage: FC = () => {
           <Select
             className={styles.paging_select}
             value={pageSize.toString() ?? ''}
-            data={['5', '10']}
+            data={['3', '5', '7']}
             onChange={value => setPageSize(parseInt(value ?? '0', 10))}
             allowDeselect={false}
           />
@@ -28,7 +28,7 @@ export const OrderListPage: FC = () => {
       </div>
       <div className={styles.body}>
         <div className={styles.orderlist_table}>
-          <OrderList />
+          <OrderList pageSize={pageSize} />
         </div>
       </div>
     </div>

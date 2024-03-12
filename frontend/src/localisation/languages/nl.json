@@ -161,7 +161,26 @@
     },
     "userOptions": {
       "logout": "Uitloggen",
-      "changePassword": "Wachtwoord veranderen"
+      "changePassword": "Wachtwoord veranderen",
+      "logoutConfirmTitle": "Uitloggen",
+      "logoutConfirmText": "Weet u zeker dat u wilt uitloggen?"
+    }
+  },
+  "modals": {
+    "changePassword": {
+      "title": "Wachtwoord veranderen",
+      "oldPasswordInputLabel": "Oud wachtwoord",
+      "oldPasswordInputLabelerror": "Wachtwoord is vereist",
+      "newPasswordInputLabel": "Nieuw wachtwoord",
+      "newPasswordInputLabelError": "Wachtwoord voldoet niet aan de voorwaarden",
+      "confirmNewPasswordInputLabel": "Herhaal nieuw wachtwoord",
+      "confirmNewPasswordInputLabelError": "Wachtwoord komt niet overeen",
+      "actionButton": "Bevestig",
+      "response": {
+        "invalid": "Oud wachtwoord is onjuist.",
+        "failed": "Er is iets misgegaan tijdens het veranderen van het wachtwoord, gelieve opnieuw te proberen.",
+        "success": "Wachtwoord is succesvol verandered."
+      }
     }
   }
 }

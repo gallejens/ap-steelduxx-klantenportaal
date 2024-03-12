@@ -161,7 +161,26 @@
     },
     "userOptions": {
       "logout": "Logout",
-      "changePassword": "Change password"
+      "changePassword": "Change password",
+      "logoutConfirmTitle": "Logout",
+      "logoutConfirmText": "Are you sure you want to log out?"
+    }
+  },
+  "modals": {
+    "changePassword": {
+      "title": "Change password",
+      "oldPasswordInputLabel": "Old password",
+      "oldPasswordInputLabelerror": "Password is required",
+      "newPasswordInputLabel": "New password",
+      "newPasswordInputLabelError": "Password does not meet the requirements",
+      "confirmNewPasswordInputLabel": "Confirm Password",
+      "confirmNewPasswordInputLabelError": "Passwords do not match",
+      "actionButton": "Confirm",
+      "response": {
+        "invalid": "Old password was not correct.",
+        "failed": "Something went wrong while changing the password. Please try again.",
+        "success": "Password has been set changed."
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
-import { Button, Group, Text } from '@mantine/core';
+import { Button, Text } from '@mantine/core';
 import type { FC } from 'react';
 import { Modal } from '..';
+import styles from '../styles/confirmmodal.module.scss';
 
 type Props = {
   title: string;
@@ -14,19 +15,12 @@ export const ConfirmModal: FC<Props> = props => {
     <Modal
       title={props.title}
       onClose={props.onCancel}
+      className={styles.confirm_modal}
     >
       {props.text && <Text size='sm'>{props.text}</Text>}
-      <Group
-        justify='flex-end'
-        mt='md'
-      >
-        <Button
-          type='submit'
-          onClick={props.onConfirm}
-        >
-          Confirm
-        </Button>
-      </Group>
+      <div className={styles.action_button}>
+        <Button onClick={props.onConfirm}>Confirm</Button>
+      </div>
     </Modal>
   );
 };

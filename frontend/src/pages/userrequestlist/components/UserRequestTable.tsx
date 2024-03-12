@@ -7,6 +7,7 @@ import { dateConverter } from '@/lib/util/dateConverter';
 import { statuses } from '../constants';
 import styles from '../styles/userRequestList.module.scss';
 
+
 type UserRequestListValues = {
   followId: number;
   companyName: string;
@@ -24,11 +25,15 @@ interface UserRequestTableProps {
 export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
+  
+  const handleSortToggle = () => {
+    setSortDirection((prevDirection) => (prevDirection === 'asc' ? 'desc' : 'asc'));
+  };
   const { data: userRequestListValues, status } = useQuery({
     refetchOnWindowFocus: false,
     queryKey: ['userRequestListValues'],
@@ -55,7 +60,12 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
   const tableHead = [
     t('user_request_list_page:tableHeader0'),
     t('user_request_list_page:tableHeader1'),
-    t('user_request_list_page:tableHeader2'),
+    <>
+    {t('user_request_list_page:tableHeader2')}
+    <span onClick={handleSortToggle}>
+      {sortDirection === 'asc' ? '↑' : '↓'}
+    </span>
+  </>,
     t('user_request_list_page:tableHeader3'),
     t('user_request_list_page:tableHeader4'),
     t('user_request_list_page:tableHeader5'),
@@ -64,9 +74,16 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
   const generateTableData = (status: string) => ({
     head: tableHead,
     body: userRequestListValues
-      .filter(userRequestListValue => userRequestListValue.status === status)
+      .filter((userRequestListValue) => userRequestListValue.status === status)
+      .sort((a, b) => {
+        if (sortDirection === 'asc') {
+          return a.createdOn - b.createdOn;
+        } else {
+          return b.createdOn - a.createdOn;
+        }
+      })
       .slice((currentPage - 1) * pageSize, currentPage * pageSize)
-      .map(userRequestListValue => [
+      .map((userRequestListValue) => [
         `#${userRequestListValue.followId}`,
         userRequestListValue.companyName,
         dateConverter(userRequestListValue.createdOn),
@@ -75,6 +92,7 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
         'Buttons',
       ]),
   });
+  
 
   return (
     <Tabs

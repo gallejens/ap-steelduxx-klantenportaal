@@ -24,7 +24,7 @@ type userRequestValue = {
 export const UserRequestReviewForm: FC<userRequestValue> = () => {
   const { t } = useTranslation();
 
-  const { request_id } = useParams({ strict: false });
+  const { request_id } = useParams({ from: '/app/requests/$request_id' });
 
   const { data: userRequestValue } = useQuery({
     refetchOnWindowFocus: false,

@@ -3,12 +3,13 @@ import { Outlet, useNavigate, useRouterState } from '@tanstack/react-router';
 import type { FC } from 'react';
 import { TABS } from './constant';
 import styles from './styles/appshell.module.scss';
+import { UserDisplay } from './components/UserDisplay';
+import { useTranslation } from 'react-i18next';
 
 export const AppShell: FC = () => {
   const navigate = useNavigate();
   const routerState = useRouterState();
-
-  console.log(routerState.location.pathname);
+  const { t } = useTranslation();
 
   const handleTabClick = (path: string) => {
     navigate({ to: path });
@@ -49,24 +50,12 @@ export const AppShell: FC = () => {
                   >
                     {tab.icon}
                   </div>
-                  {tab.label}
+                  {t(`appshell:tabs:${tab.labelKey}`)}
                 </div>
               );
             })}
           </div>
-          <div className={styles.users}>
-            <img
-              className={styles.userpfp}
-              src='/default-pfp.png'
-              alt='default icon'
-            />
-            <div className={styles.rightside}>
-              <div className={styles.userName}>Maximilian Duda</div>
-              <div className={styles.userMail}>
-                Maximiliandudajunior@gmail.com
-              </div>
-            </div>
-          </div>
+          <UserDisplay />
         </div>
         <div className={styles.route}>
           <Outlet />

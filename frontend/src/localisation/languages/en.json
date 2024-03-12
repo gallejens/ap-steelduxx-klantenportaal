@@ -8,7 +8,6 @@
     "emailInputTitle": "Email",
     "emailInputError": "Invalid email address.",
     "passwordInputTitle": "Password",
-    "passwordInputPlaceholder": "******",
     "passwordInputError": "Password is required.",
     "forgotPassword": "Forgot password",
     "loginButton": "Login",
@@ -120,5 +119,16 @@
     "uppercase": "Includes uppercase letter",
     "number": "Includes number",
     "symbol": "Includes special symbol"
+  },
+  "appshell": {
+    "tabs": {
+      "home": "Home",
+      "orders": "Orders",
+      "requests": "Registrations"
+    },
+    "userOptions": {
+      "logout": "Logout",
+      "changePassword": "Change password"
+    }
   }
 }

@@ -61,7 +61,7 @@ public class SecurityConfiguration {
                 .exceptionHandling(e ->
                         e
                                 .accessDeniedHandler((req, res, exc) -> res.setStatus(403))
-                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.FORBIDDEN)))
                 .build();
     }
 

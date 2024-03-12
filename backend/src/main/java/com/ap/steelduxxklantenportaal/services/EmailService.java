@@ -87,7 +87,6 @@ public class EmailService {
         String htmlContent = templateEngine.process("choose-password", context);
         message.setContent(htmlContent, "text/html; charset=utf-8");
 
-        System.out.println("sending mail");
         mailSender.send(message);
     }
 }

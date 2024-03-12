@@ -37,6 +37,7 @@
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
     "@typescript-eslint/space-before-function-paren": "off",
-    "multiline-ternary": "off"
+    "multiline-ternary": "off",
+    "@typescript-eslint/no-namespace": "off"
   },
 }

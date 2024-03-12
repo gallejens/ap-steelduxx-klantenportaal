@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import {
+  Navigate,
   createRootRoute,
   createRoute,
   createRouter,
+  redirect,
 } from '@tanstack/react-router';
 import { AppShell } from './components/appshell';
 import { HomePage } from './pages/home';
@@ -11,36 +14,44 @@ import { UserRequestPage } from './pages/userrequest';
 import { UserRequestListPage } from './pages/userrequestlist';
 import { ResetPasswordPage } from './pages/resetpassword';
 import { ChoosePasswordPage } from './pages/choosepassword';
+import { useAuthStore } from './stores/useAuthStore';
 
 const rootRoute = createRootRoute();
 
-// Public routes
-const indexRoute = createRoute({
+// Unauthorized Only Routes
+const unauthorizedOnlyRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/',
-  component: LoginPage,
+  id: 'unauthorized-only-route',
+  beforeLoad: async () => {
+    const userInfo = await useAuthStore.getState().fetchUserInfo();
+    if (userInfo !== null) {
+      throw redirect({
+        to: '/app/home',
+      });
+    }
+  },
 });
 
 const loginRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/login',
+  getParentRoute: () => unauthorizedOnlyRoute,
+  path: 'login',
   component: LoginPage,
 });
 
 const userRequestRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/request-account',
+  getParentRoute: () => unauthorizedOnlyRoute,
+  path: 'request-account',
   component: UserRequestPage,
 });
 
 const passwordResetRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => unauthorizedOnlyRoute,
   path: 'reset-password',
   component: ResetPasswordPage,
 });
 
 const choosePasswordRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => unauthorizedOnlyRoute,
   path: 'choose-password',
   component: ChoosePasswordPage,
   validateSearch: (search: Record<string, unknown>) => {
@@ -53,41 +64,58 @@ const choosePasswordRoute = createRoute({
   },
 });
 
-// Private routes
-const appRoute = createRoute({
+// Authorized Only Routes
+const authorizedOnlyRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: 'app',
   component: AppShell,
+  beforeLoad: async () => {
+    const userInfo = await useAuthStore.getState().fetchUserInfo();
+    if (userInfo === null) {
+      throw redirect({
+        to: '/login',
+      });
+    }
+  },
 });
 
-const homePageRoute = createRoute({
-  getParentRoute: () => appRoute,
-  path: '/home',
+const homeRoute = createRoute({
+  getParentRoute: () => authorizedOnlyRoute,
+  path: 'home',
   component: HomePage,
 });
 
-const testvaluesRoute = createRoute({
-  getParentRoute: () => appRoute,
-  path: '/testvalues',
+const testValuesRoute = createRoute({
+  getParentRoute: () => authorizedOnlyRoute,
+  path: 'testvalues',
   component: TestValuesPage,
 });
 
 const userRequestListRoute = createRoute({
-  getParentRoute: () => appRoute,
-  path: '/requests',
+  getParentRoute: () => authorizedOnlyRoute,
+  path: 'requests',
   component: UserRequestListPage,
 });
 
 // Creating route tree
 const routeTree = rootRoute.addChildren([
-  indexRoute,
-  loginRoute,
-  userRequestRoute,
-  passwordResetRoute,
-  choosePasswordRoute,
-  appRoute.addChildren([homePageRoute, testvaluesRoute, userRequestListRoute]),
+  unauthorizedOnlyRoute.addChildren([
+    loginRoute,
+    userRequestRoute,
+    passwordResetRoute,
+    choosePasswordRoute,
+  ]),
+  authorizedOnlyRoute.addChildren([
+    homeRoute,
+    testValuesRoute,
+    userRequestListRoute,
+  ]),
 ]);
-export const router = createRouter({ routeTree });
+export const router = createRouter({
+  routeTree,
+  notFoundMode: 'root',
+  defaultNotFoundComponent: () => <Navigate to='/login' />,
+});
 
 // Make autocomplete work
 declare module '@tanstack/react-router' {

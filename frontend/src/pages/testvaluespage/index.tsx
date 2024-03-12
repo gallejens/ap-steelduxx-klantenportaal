@@ -129,26 +129,6 @@ export const TestValuesPage: FC = () => {
       >
         Add Confirm Modal
       </Button>
-      <Button
-        onClick={() => {
-          doApiAction({
-            method: 'POST',
-            endpoint: '/auth/signout',
-          });
-        }}
-      >
-        Signout
-      </Button>
-      <Button
-        onClick={() => {
-          doApiAction({
-            method: 'POST',
-            endpoint: '/auth/refresh',
-          });
-        }}
-      >
-        Refresh
-      </Button>
     </div>
   );
 };

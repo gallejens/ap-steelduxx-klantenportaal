@@ -8,7 +8,6 @@
     "emailInputTitle": "Email",
     "emailInputError": "Ongeldig emailadres",
     "passwordInputTitle": "Wachtwoord",
-    "passwordInputPlaceholder": "******",
     "passwordInputError": "Wachtwoord is vereist",
     "forgotPassword": "Wachtwoord vergeten",
     "loginButton": "Aanmelden",
@@ -120,5 +119,16 @@
     "uppercase": "Bevat hoofdletter",
     "number": "Bevat cijfer",
     "symbol": "Bevat speciaal karakter"
+  },
+  "appshell": {
+    "tabs": {
+      "home": "Home",
+      "orders": "Orders",
+      "requests": "Registraties"
+    },
+    "userOptions": {
+      "logout": "Uitloggen",
+      "changePassword": "Wachtwoord veranderen"
+    }
   }
 }

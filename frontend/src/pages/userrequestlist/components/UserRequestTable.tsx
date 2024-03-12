@@ -23,10 +23,16 @@ interface UserRequestTableProps {
   searchTerm: string;
 }
 
-export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize, searchTerm }) => {
+export const UserRequestTable: FC<UserRequestTableProps> = ({
+  pageSize,
+  searchTerm,
+}) => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
-  const [sort, setSort] = useState<{ column: string; direction: 'asc' | 'desc' }>({
+  const [sort, setSort] = useState<{
+    column: string;
+    direction: 'asc' | 'desc';
+  }>({
     column: 'createdOn',
     direction: 'asc',
   });
@@ -40,20 +46,24 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize, searchTe
         method: 'GET',
       }),
   });
-  
+
   const userRequestListValues = useMemo(() => {
     if (!allUserRequestListValues || !searchTerm) {
       return allUserRequestListValues;
     }
-  
-    return allUserRequestListValues.filter((item) =>
-      Object.values(item).some((value) =>
+
+    return allUserRequestListValues.filter(item =>
+      Object.values(item).some(value =>
         String(value).toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
   }, [allUserRequestListValues, searchTerm]);
-  
-  if (status === 'pending' || status === 'error' || userRequestListValues == null) {
+
+  if (
+    status === 'pending' ||
+    status === 'error' ||
+    userRequestListValues == null
+  ) {
     return (
       <div className={styles.table_handling}>
         {status === 'pending' && t('user_request_list_page:tableLoading')}
@@ -66,14 +76,28 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize, searchTe
     t('user_request_list_page:tableHeader0'),
     <>
       {t('user_request_list_page:tableHeader1')}
-      <span onClick={() => handleSortToggle('companyName')}>
-        {sort.column === 'companyName' ? (sort.direction === 'asc' ? '↑' : '↓') : '↕'}
+      <span
+        onClick={() => handleSortToggle('companyName')}
+        className={styles.pointer}
+      >
+        {sort.column === 'companyName'
+          ? sort.direction === 'asc'
+            ? '↑'
+            : '↓'
+          : '↕'}
       </span>
     </>,
     <>
       {t('user_request_list_page:tableHeader2')}
-      <span onClick={() => handleSortToggle('createdOn')}>
-        {sort.column === 'createdOn' ? (sort.direction === 'asc' ? '↑' : '↓') : '↕'}
+      <span
+        onClick={() => handleSortToggle('createdOn')}
+        className={styles.pointer}
+      >
+        {sort.column === 'createdOn'
+          ? sort.direction === 'asc'
+            ? '↑'
+            : '↓'
+          : '↕'}
       </span>
     </>,
     t('user_request_list_page:tableHeader3'),
@@ -84,7 +108,7 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize, searchTe
   const generateTableData = (status: string) => ({
     head: tableHead,
     body: userRequestListValues
-      .filter((userRequestListValue) => userRequestListValue.status === status)
+      .filter(userRequestListValue => userRequestListValue.status === status)
       .sort((a, b) => {
         const aValue = a[sort.column];
         const bValue = b[sort.column];
@@ -94,13 +118,15 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize, searchTe
         }
 
         if (typeof aValue === 'string' && typeof bValue === 'string') {
-          return sort.direction === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+          return sort.direction === 'asc'
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
         }
 
         return 0;
       })
       .slice((currentPage - 1) * pageSize, currentPage * pageSize)
-      .map((userRequestListValue) => [
+      .map(userRequestListValue => [
         `#${userRequestListValue.followId}`,
         userRequestListValue.companyName,
         dateConverter(userRequestListValue.createdOn),
@@ -115,9 +141,12 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize, searchTe
   };
 
   const handleSortToggle = (column: string) => {
-    setSort((prevSort) => ({
+    setSort(prevSort => ({
       column,
-      direction: prevSort.column === column && prevSort.direction === 'asc' ? 'desc' : 'asc',
+      direction:
+        prevSort.column === column && prevSort.direction === 'asc'
+          ? 'desc'
+          : 'asc',
     }));
   };
 

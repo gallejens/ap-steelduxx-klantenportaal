@@ -27,7 +27,7 @@ export const UserRequestListPage: FC = () => {
           />
         </div>
         <div className={styles.second_column}>
-        <Input
+          <Input
             className={styles.search_bar}
             placeholder='Search'
             radius='sm'
@@ -50,7 +50,10 @@ export const UserRequestListPage: FC = () => {
 
       <div className={styles.body}>
         <div className={styles.userrequest_table}>
-          <UserRequestTable pageSize={pageSize} searchTerm={searchTerm} />
+          <UserRequestTable
+            pageSize={pageSize}
+            searchTerm={searchTerm}
+          />
         </div>
       </div>
     </div>

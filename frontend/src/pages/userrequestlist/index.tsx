@@ -8,8 +8,12 @@ import { useNavigate } from '@tanstack/react-router';
 export const UserRequestListPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [pageSize, setPageSize] = useState<number>(10);
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
   return (
     <div className={styles.userrequest_table_page}>
       <div className={styles.header}>
@@ -23,18 +27,19 @@ export const UserRequestListPage: FC = () => {
           />
         </div>
         <div className={styles.second_column}>
-          <Input
+        <Input
             className={styles.search_bar}
-            // icon={<IconSearch size={18} />}
             placeholder='Search'
             radius='sm'
+            value={searchTerm}
+            onChange={handleSearchChange}
           />
         </div>
         <div className={styles.third_column}>
           <Button
             type='submit'
             onClick={() => {
-              navigate({ to: '/request-account' }); // TODO: Verander path naar een andere pagina 'new_request'
+              navigate({ to: '/request-account' });
             }}
             className={styles.new_button}
           >
@@ -45,7 +50,7 @@ export const UserRequestListPage: FC = () => {
 
       <div className={styles.body}>
         <div className={styles.userrequest_table}>
-          <UserRequestTable pageSize={pageSize} />
+          <UserRequestTable pageSize={pageSize} searchTerm={searchTerm} />
         </div>
       </div>
     </div>

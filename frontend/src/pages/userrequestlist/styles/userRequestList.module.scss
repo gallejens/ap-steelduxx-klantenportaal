@@ -2,18 +2,12 @@
 @use '../../../styles/mixins.scss';
 
 .userrequest_table_page {
-  @include mixins.shadow;
-
   width: 100%;
-  height: 100vh;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  background-color: var(--mantine-primary-color-0);
-  border-radius: var(--mantine-radius-default);
 }
 
 .header {

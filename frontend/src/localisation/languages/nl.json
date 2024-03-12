@@ -8,7 +8,6 @@
     "emailInputTitle": "Email",
     "emailInputError": "Ongeldig emailadres",
     "passwordInputTitle": "Wachtwoord",
-    "passwordInputPlaceholder": "******",
     "passwordInputError": "Wachtwoord is vereist",
     "forgotPassword": "Wachtwoord vergeten",
     "loginButton": "Aanmelden",

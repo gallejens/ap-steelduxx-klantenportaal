@@ -56,6 +56,11 @@ public class UserRequestValueService {
         return userRequestValuesDTOList;
     }
 
+    public UserRequestValuesDTO getUserRequest(Number id) {
+        UserRequestValue userRequestValue = userRequestValueRepository.findById(id);
+        return convertToDTO(userRequestValue);
+    }
+
     public UserRequestValue addRequest(UserRequestValuesDTO userRequestValuesDTO) throws MessagingException {
         // Uncomment the following line if you have an EmailService bean defined
         emailService.sendRegistrationConfirmation(userRequestValuesDTO);
@@ -77,7 +82,8 @@ public class UserRequestValueService {
                 ""));
     }
 
-    public ResponseEntity<Object> processUserRequest(UserRequestValuesDTO userRequestValuesDTO) throws MessagingException {
+    public ResponseEntity<Object> processUserRequest(UserRequestValuesDTO userRequestValuesDTO)
+            throws MessagingException {
         boolean requestExists = userRequestValueRepository
                 .findByVatNrAndEmail(userRequestValuesDTO.getVatNr(), userRequestValuesDTO.getEmail()).isPresent();
         Map<String, String> responseBody;

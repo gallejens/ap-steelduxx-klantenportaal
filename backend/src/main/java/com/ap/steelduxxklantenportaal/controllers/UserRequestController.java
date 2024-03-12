@@ -29,4 +29,10 @@ public class UserRequestController {
     public List<UserRequestValuesDTO> getAllUserRequests() {
         return userRequestValueService.getAll();
     }
+
+    @GetMapping("/user_requests/{id}")
+    public UserRequestValuesDTO getMethodName(@PathVariable String id) {
+        return userRequestValueService.getUserRequest(Integer.parseInt(id));
+    }
+
 }

@@ -84,7 +84,8 @@
     "tableHeader4": "Contact Persoon",
 
     "tableLoading": "Bezig met laden...",
-    "tableError": "Kan aanvragen niet laden"
+    "tableError": "Kan aanvragen niet laden",
+    "tableEmpty": "Geen aanvragen"
   },
   "order_list_page": {
     "tableHeader0": "Referentie Nummer",

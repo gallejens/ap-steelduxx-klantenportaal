@@ -84,7 +84,8 @@
     "tableHeader4": "Contact Person",
 
     "tableLoading": "Loading...",
-    "tableError": "Can't load requests"
+    "tableError": "Can't load requests",
+    "tableEmpty": "No requests"
   },
   "order_list_page": {
     "tableHeader0": "Reference Number",

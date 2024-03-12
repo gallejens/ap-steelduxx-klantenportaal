@@ -1,29 +1,25 @@
-import { useForm } from '@mantine/form';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../styles/userRequestReview.module.scss';
-import { Button, NumberInput, TextInput } from '@mantine/core';
-import { EMAIL_PLACEHOLDER } from '@/constants';
+import { NumberInput, TextInput } from '@mantine/core';
+import { useParams } from '@tanstack/react-router';
+import { useQuery } from '@tanstack/react-query';
+import { doApiAction } from '@/lib/api';
 
-type UserRequestReviewFormValues = {
+type UserRequestListValues = {
+  followId: number;
   companyName: string;
-  phoneNr: string;
+  createdOn: number;
   vatNr: string;
-  postalCode: string;
-  district: string;
-  street: string;
-  streetNr: string;
-  boxNr: string;
   firstName: string;
   lastName: string;
-  email: string;
-  createdOn: number;
+  status: string;
 };
 
 export const UserRequestReviewForm: FC = () => {
   const { t } = useTranslation();
 
-  const UserRequestReviewForm = useForm<UserRequestReviewFormValues>({});
+  //const { request_id } = useParams({ strict: false });
 
   return (
     <form className={styles.userrequest_review_page_form}>

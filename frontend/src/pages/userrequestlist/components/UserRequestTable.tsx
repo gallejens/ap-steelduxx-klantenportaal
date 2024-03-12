@@ -71,6 +71,8 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({
       <div className={styles.table_handling}>
         {status === 'pending' && t('user_request_list_page:tableLoading')}
         {status === 'error' && t('user_request_list_page:tableError')}
+        {userRequestListValues === null &&
+          t('user_request_list_page:tableEmpty')}
       </div>
     );
   }

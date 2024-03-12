@@ -8,4 +8,6 @@ import com.ap.steelduxxklantenportaal.models.UserRequestValue;
 
 public interface UserRequestValueRepository extends JpaRepository<UserRequestValue, Long> {
     Optional<UserRequestValue> findByVatNrAndEmail(String vatNr, String email);
+
+    UserRequestValue findById(Number id);
 }

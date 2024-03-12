@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
-import com.ap.steelduxxklantenportaal.DTOs.UserRequestValuesDTO;
+
+import com.ap.steelduxxklantenportaal.dtos.UserRequestValuesDto;
 import com.ap.steelduxxklantenportaal.models.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -51,11 +52,12 @@ public class EmailService {
 
         mailSender.send(message);
     }
-    public void sendRegistrationConfirmation(UserRequestValuesDTO value) throws MessagingException {
+
+    public void sendRegistrationConfirmation(UserRequestValuesDto value) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
 
         message.setFrom(new InternetAddress(mailUsername));
-        message.setRecipients(MimeMessage.RecipientType.TO, value.getEmail());
+        message.setRecipients(MimeMessage.RecipientType.TO, value.email());
         message.setSubject("Registration Confirmation");
 
         // Create a Thymeleaf context

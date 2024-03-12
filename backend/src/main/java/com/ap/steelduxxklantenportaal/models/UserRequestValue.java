@@ -1,7 +1,6 @@
 package com.ap.steelduxxklantenportaal.models;
 
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -11,8 +10,8 @@ public class UserRequestValue {
     }
 
     public UserRequestValue(String companyName, String phoneNr, String vatNr, String postalCode,
-            String district, String street, String streetNr, String boxNr, String firstName, String lastName,
-            String email, Long createdOn, StatusEnum status, String denyMessage) {
+                            String district, String street, String streetNr, String boxNr, String firstName, String lastName,
+                            String email, Long createdOn, StatusEnum status, String denyMessage) {
         this.companyName = companyName;
         this.phoneNr = phoneNr;
         this.vatNr = vatNr;

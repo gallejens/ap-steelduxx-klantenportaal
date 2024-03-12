@@ -14,6 +14,7 @@ public class ResponseHandler {
 
         return new ResponseEntity<>(body, status);
     }
+
     public static ResponseEntity<Object> generate(String message, HttpStatus status) {
         return generate(message, status, null);
     }

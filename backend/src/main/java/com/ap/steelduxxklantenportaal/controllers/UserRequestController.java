@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.DTOs.UserRequestValuesDTO;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestValuesDto;
 import com.ap.steelduxxklantenportaal.services.UserRequestValueService;
 import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 public class UserRequestController {
-
     private final UserRequestValueService userRequestValueService;
 
     public UserRequestController(UserRequestValueService userRequestValueService) {
@@ -20,18 +19,18 @@ public class UserRequestController {
 
     @PostMapping("/user_request")
     @PreAuthorize("permitAll")
-    public ResponseEntity<Object> saveRequest(@RequestBody UserRequestValuesDTO userRequestValuesDTO)
+    public ResponseEntity<Object> saveRequest(@RequestBody UserRequestValuesDto userRequestValuesDTO)
             throws MessagingException {
         return userRequestValueService.processUserRequest(userRequestValuesDTO);
     }
 
     @GetMapping("/user_requests")
-    public List<UserRequestValuesDTO> getAllUserRequests() {
+    public List<UserRequestValuesDto> getAllUserRequests() {
         return userRequestValueService.getAll();
     }
 
     @GetMapping("/user_requests/{id}")
-    public UserRequestValuesDTO getMethodName(@PathVariable String id) {
+    public UserRequestValuesDto getMethodName(@PathVariable String id) {
         return userRequestValueService.getUserRequest(Integer.parseInt(id));
     }
 

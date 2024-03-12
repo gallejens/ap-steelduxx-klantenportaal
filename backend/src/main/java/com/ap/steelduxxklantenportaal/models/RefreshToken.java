@@ -1,6 +1,9 @@
 package com.ap.steelduxxklantenportaal.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.Date;
 
@@ -15,7 +18,9 @@ public class RefreshToken {
     @Column(name = "expiry_date")
     private long expiryDate;
 
-    public RefreshToken() {}
+    public RefreshToken() {
+    }
+
     public RefreshToken(String token, long userId, long expiryDate) {
         this.token = token;
         this.userId = userId;

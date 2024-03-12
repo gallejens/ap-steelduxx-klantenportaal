@@ -3,11 +3,9 @@ package com.ap.steelduxxklantenportaal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -35,7 +33,7 @@ public class NotificationServiceTest {
         notification.setTitle("Title Notification");
         notification.setMessage("Test Notification");
         notification.setUserId(1L);
-        when(notificationRepository.findByUserId(1L)).thenReturn(Arrays.asList(notification));
+        when(notificationRepository.findByUserId(1L)).thenReturn(List.of(notification));
 
         List<Notification> notifications = notificationService.getNotificationsByUserId(1L);
 

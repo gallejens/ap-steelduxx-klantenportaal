@@ -19,7 +19,9 @@ public class ChoosePasswordToken {
     @Column(name = "expiry_date")
     private long expiryDate;
 
-    public ChoosePasswordToken() {}
+    public ChoosePasswordToken() {
+    }
+
     public ChoosePasswordToken(String token, long userId, long expiryDate) {
         this.token = token;
         this.userId = userId;

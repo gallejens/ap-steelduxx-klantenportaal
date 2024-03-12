@@ -32,7 +32,7 @@ public class UserRequestFormTest {
     private MockMvc mockMvc;
 
     @Test
-    void contextLoads() throws Exception {
+    void contextLoads() {
         assertThat(userRequestController).isNotNull();
     }
 
@@ -58,9 +58,6 @@ public class UserRequestFormTest {
     @BeforeEach
     void setup() {
         savedUserRequest = userRequestValueRepository.findByVatNrAndEmail("BE0473416418", "info@test.be");
-
-        // savedUserRequest.ifPresent(userRequest ->
-        // userRequestValueRepository.delete(userRequest));
     }
 
     @Test

@@ -1,14 +1,13 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import com.ap.steelduxxklantenportaal.DTOs.ExternalApiAuthDto;
-
+import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ExternalApiService {
@@ -50,7 +49,6 @@ public class ExternalApiService {
         ResponseEntity<String> response = restTemplate.exchange(baseUrl + "/order/all", HttpMethod.GET, entity,
                 String.class);
 
-        System.out.println("getAllOrders response: " + response.getBody());
         return response.getBody();
     }
 
@@ -64,7 +62,6 @@ public class ExternalApiService {
         ResponseEntity<String> response = restTemplate.exchange(baseUrl + "/order/" + orderId, HttpMethod.GET, entity,
                 String.class);
 
-        System.out.println("getOrderDetail response: " + response.getBody());
         return response.getBody();
     }
 }

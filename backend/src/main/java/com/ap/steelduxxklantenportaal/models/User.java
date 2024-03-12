@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal.models;
 
-import com.ap.steelduxxklantenportaal.DTOs.UserInfoDto;
+import com.ap.steelduxxklantenportaal.dtos.UserInfoDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.utils.PermissionsManager;

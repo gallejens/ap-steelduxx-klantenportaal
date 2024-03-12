@@ -1,9 +1,9 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.DTOs.ChangePasswordDto;
-import com.ap.steelduxxklantenportaal.DTOs.ChoosePasswordDto;
-import com.ap.steelduxxklantenportaal.DTOs.ResetPasswordDto;
-import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
+import com.ap.steelduxxklantenportaal.dtos.ChangePasswordDto;
+import com.ap.steelduxxklantenportaal.dtos.ChoosePasswordDto;
+import com.ap.steelduxxklantenportaal.dtos.ResetPasswordDto;
+import com.ap.steelduxxklantenportaal.dtos.SignInRequestDto;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
@@ -27,7 +27,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     @PreAuthorize("permitAll")
-    public ResponseEntity<Object> signIn(@RequestBody SignInRequestDTO signInRequestDTO, HttpServletResponse response) {
+    public ResponseEntity<Object> signIn(@RequestBody SignInRequestDto signInRequestDTO, HttpServletResponse response) {
         return authService.signIn(signInRequestDTO, response);
     }
 
@@ -66,7 +66,7 @@ public class AuthController {
     @GetMapping("/info")
     @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> getUserInfo() {
-        var user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseHandler.generate("", HttpStatus.OK, user.getUserInfo());
     }
 

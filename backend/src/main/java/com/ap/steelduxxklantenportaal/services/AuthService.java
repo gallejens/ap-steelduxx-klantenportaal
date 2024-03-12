@@ -1,7 +1,7 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.DTOs.ChangePasswordDto;
-import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
+import com.ap.steelduxxklantenportaal.dtos.ChangePasswordDto;
+import com.ap.steelduxxklantenportaal.dtos.SignInRequestDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.models.ChoosePasswordToken;
@@ -39,7 +39,6 @@ public class AuthService {
     public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
     public static final long REFRESH_TOKEN_COOKIE_MAX_AGE = 72 * 60 * 60; // 3 days
     public static final String REFRESH_TOKEN_COOKIE_PATH = "/api/auth";
-    private final long PASSWORD_RESET_TOKEN_TIME = 30 * 60; // 30 minutes
 
     @Value("${frontend_url}")
     private String frontendUrl;
@@ -70,7 +69,7 @@ public class AuthService {
         this.emailService = emailService;
     }
 
-    public ResponseEntity<Object> signIn(SignInRequestDTO signInRequestDTO, HttpServletResponse response) {
+    public ResponseEntity<Object> signIn(SignInRequestDto signInRequestDTO, HttpServletResponse response) {
         var authToken = new UsernamePasswordAuthenticationToken(signInRequestDTO.email(), signInRequestDTO.password());
 
         Authentication auth;
@@ -164,6 +163,8 @@ public class AuthService {
         String uuid = UUID.randomUUID().toString();
         choosePasswordToken.setToken(uuid);
         choosePasswordToken.setUserId(user.get().getId());
+        // 30 minutes
+        long PASSWORD_RESET_TOKEN_TIME = 30 * 60;
         choosePasswordToken.setExpiryDate(new Date().getTime() + PASSWORD_RESET_TOKEN_TIME * 1000);
         choosePasswordTokenRepository.save(choosePasswordToken);
 

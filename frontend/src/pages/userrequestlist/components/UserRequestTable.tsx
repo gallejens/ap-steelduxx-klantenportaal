@@ -137,11 +137,14 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({
         userRequestListValue.vatNr,
         `${userRequestListValue.firstName} ${userRequestListValue.lastName}`,
         <ActionIcon
+          key={`value_${userRequestListValue.followId}`}
           onClick={() => {
-            const request_id = userRequestListValue.followId.toString();
+            const requestId = userRequestListValue.followId.toString();
             navigate({
               to: '/app/requests/$request_id',
-              params: { request_id },
+              params: {
+                request_id: requestId,
+              },
             });
           }}
         >

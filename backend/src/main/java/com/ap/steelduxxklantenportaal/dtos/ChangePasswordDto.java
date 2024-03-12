@@ -1,4 +1,4 @@
-package com.ap.steelduxxklantenportaal.DTOs;
+package com.ap.steelduxxklantenportaal.dtos;
 
 public record ChangePasswordDto(String oldPassword, String newPassword) {
 }

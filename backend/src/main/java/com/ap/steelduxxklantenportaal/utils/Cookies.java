@@ -1,6 +1,5 @@
 package com.ap.steelduxxklantenportaal.utils;
 
-import com.ap.steelduxxklantenportaal.services.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

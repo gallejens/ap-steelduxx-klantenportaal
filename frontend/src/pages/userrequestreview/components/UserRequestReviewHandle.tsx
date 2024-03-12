@@ -1,10 +1,8 @@
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { Button, TextInput, Textarea } from '@mantine/core';
 import styles from '../styles/userRequestReview.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@mantine/form';
-import { notifications } from '@/components/notifications';
-import { doApiAction } from '@/lib/api';
 
 type UserRequestHandleValues = {
   refernceCode: string;

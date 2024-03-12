@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../styles/userRequestReview.module.scss';
 import { NumberInput, TextInput } from '@mantine/core';
@@ -24,14 +24,16 @@ type userRequestValue = {
 export const UserRequestReviewForm: FC<userRequestValue> = () => {
   const { t } = useTranslation();
 
-  const { request_id } = useParams({ from: '/app/requests/$request_id' });
+  const { request_id: requestId } = useParams({
+    from: '/app/requests/$request_id',
+  });
 
   const { data: userRequestValue } = useQuery({
     refetchOnWindowFocus: false,
     queryKey: ['userRequestValue'],
     queryFn: () =>
       doApiAction<userRequestValue>({
-        endpoint: `/user_requests/${request_id}`,
+        endpoint: `/user_requests/${requestId}`,
         method: 'GET',
       }),
   });

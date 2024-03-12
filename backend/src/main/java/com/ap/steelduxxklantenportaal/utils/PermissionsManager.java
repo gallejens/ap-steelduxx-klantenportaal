@@ -10,7 +10,7 @@ public class PermissionsManager {
     private static PermissionsManager instance;
     private final EnumMap<RoleEnum, List<PermissionEnum>> rolePermissions = new EnumMap<>(RoleEnum.class);
 
-    public PermissionsManager()  {
+    public PermissionsManager() {
         // Head admin permissions
         rolePermissions.put(RoleEnum.ROLE_HEAD_ADMIN,
                 List.of(

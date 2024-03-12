@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.hamcrest.Matchers.*;
@@ -40,7 +41,7 @@ public class NotificationControllerTest {
         notification.setTitle("Title User Notification");
         notification.setMessage("User Notification");
         notification.setUserId(1L);
-        when(notificationService.getNotificationsByUserId(1L)).thenReturn(Arrays.asList(notification));
+        when(notificationService.getNotificationsByUserId(1L)).thenReturn(List.of(notification));
 
         mockMvc = standaloneSetup(notificationController).build();
 

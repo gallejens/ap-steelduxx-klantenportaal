@@ -4,7 +4,6 @@ import com.ap.steelduxxklantenportaal.models.TestValue;
 import com.ap.steelduxxklantenportaal.services.EmailService;
 import com.ap.steelduxxklantenportaal.services.TestValueService;
 import jakarta.mail.MessagingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +12,13 @@ import java.util.List;
 
 @RestController
 public class TestValueController {
-    @Autowired
-    private TestValueService testValueService;
+    private final TestValueService testValueService;
+    private final EmailService emailService;
 
-    @Autowired
-    private EmailService emailService;
+    public TestValueController(TestValueService testValueService, EmailService emailService) {
+        this.testValueService = testValueService;
+        this.emailService = emailService;
+    }
 
     @GetMapping("/")
     @PreAuthorize("permitAll")

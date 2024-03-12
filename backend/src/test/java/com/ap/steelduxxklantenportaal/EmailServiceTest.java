@@ -1,11 +1,7 @@
 package com.ap.steelduxxklantenportaal;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.ap.steelduxxklantenportaal.models.UserRequestValue;
 import com.ap.steelduxxklantenportaal.services.EmailService;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 @ExtendWith(MockitoExtension.class)
 public class EmailServiceTest {

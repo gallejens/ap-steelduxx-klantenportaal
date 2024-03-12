@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { type FC } from 'react';
 import { UserRequestReviewForm } from './components/UserRequestReviewForm';
 import { UserRequestReviewHandle } from './components/UserRequestReviewHandle';
 import styles from './styles/userRequestReview.module.scss';

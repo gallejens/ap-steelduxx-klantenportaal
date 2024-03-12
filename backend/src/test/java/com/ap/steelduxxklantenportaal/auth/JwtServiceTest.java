@@ -1,7 +1,5 @@
 package com.ap.steelduxxklantenportaal.auth;
 
-import com.ap.steelduxxklantenportaal.models.User;
-import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.services.JwtService;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
@@ -16,7 +14,7 @@ public class JwtServiceTest {
     private JwtService jwtService;
 
     @Test
-    void contextLoads() throws Exception {
+    void contextLoads() {
         assertThat(jwtService).isNotNull();
     }
 

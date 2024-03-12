@@ -6,7 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "test_values")
 public class TestValue {
 
-    public TestValue() {}
+    public TestValue() {
+    }
 
     public TestValue(Long id, String value) {
         this.id = id;
@@ -36,9 +37,6 @@ public class TestValue {
 
     @Override
     public String toString() {
-        return "TestValue {" +
-                "id=" + id +
-                ", value=" + value +
-                '}';
+        return "TestValue {" + "id=" + id + ", value=" + value + '}';
     }
 }

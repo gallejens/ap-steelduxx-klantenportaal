@@ -2,7 +2,6 @@ package com.ap.steelduxxklantenportaal.configurations;
 
 import com.ap.steelduxxklantenportaal.filters.JwtAuthFilter;
 import com.ap.steelduxxklantenportaal.services.UserDetailsServiceImp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

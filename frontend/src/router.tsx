@@ -99,8 +99,8 @@ const userRequestListRoute = createRoute({
 });
 
 const orderListRoute = createRoute({
-  getParentRoute: () => unauthorizedOnlyRoute,
-  path: '/orders',
+  getParentRoute: () => authorizedOnlyRoute,
+  path: 'orders',
   component: OrderListPage,
 });
 

@@ -87,6 +87,22 @@
     "tableLoading": "Bezig met laden...",
     "tableError": "Kan aanvragen niet laden"
   },
+  "order_list_page": {
+    "tableHeader0": "Referentie Nummer",
+    "tableHeader1": "Klant Referentie Nummer",
+    "tableHeader2": "Status",
+    "tableHeader3": "Transport Type",
+    "tableHeader4": "Haven van Herkomst",
+    "tableHeader5": "Haven van Bestemming",
+    "tableHeader6": "Schip Naam",
+    "tableHeader7": "ETS",
+    "tableHeader8": "ATS",
+    "tableHeader9": "ETA",
+    "tableHeader10": "ATA",
+
+    "tableLoading": "Bezig met laden...",
+    "tableError": "Kan aanvragen niet laden"
+  },
   "notifications": {
     "genericError": "Er is iets misgegaan",
     "invalidForm": "Een van de ingevulde waarden is ongeldig."

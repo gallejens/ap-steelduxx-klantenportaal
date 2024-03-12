@@ -87,6 +87,22 @@
     "tableLoading": "Loading...",
     "tableError": "Can't load requests"
   },
+  "order_list_page": {
+    "tableHeader0": "Reference Number",
+    "tableHeader1": "Customer Reference Number",
+    "tableHeader2": "State",
+    "tableHeader3": "Transport Type",
+    "tableHeader4": "Port of Origin",
+    "tableHeader5": "Port of Destination",
+    "tableHeader6": "Ship Name",
+    "tableHeader7": "ETS",
+    "tableHeader8": "ATS",
+    "tableHeader9": "ETA",
+    "tableHeader10": "ATA",
+
+    "tableLoading": "Loading...",
+    "tableError": "Can't load requests"
+  },
   "notifications": {
     "genericError": "Something went wrong",
     "invalidForm": "One of the inputs is invalid."

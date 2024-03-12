@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
+import com.ap.steelduxxklantenportaal.DTOs.ChangePasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.ChoosePasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.ResetPasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
@@ -65,8 +66,13 @@ public class AuthController {
     @GetMapping("/info")
     @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> getUserInfo() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        var user = (User) auth.getPrincipal();
+        var user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseHandler.generate("", HttpStatus.OK, user.getUserInfo());
+    }
+
+    @PostMapping("/change-password")
+    @PreAuthorize("hasAuthority('ACCESS')")
+    public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
+        return authService.changePassword(changePasswordDto);
     }
 }

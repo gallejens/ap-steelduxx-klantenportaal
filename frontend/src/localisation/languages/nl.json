@@ -177,7 +177,7 @@
       "confirmNewPasswordInputLabelError": "Wachtwoord komt niet overeen",
       "actionButton": "Bevestig",
       "response": {
-        "invalid": "Oud wachtwoord is onjuist.",
+        "invalidPassword": "Oud wachtwoord is niet correct.",
         "failed": "Er is iets misgegaan tijdens het veranderen van het wachtwoord, gelieve opnieuw te proberen.",
         "success": "Wachtwoord is succesvol verandered."
       }

@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 
+import com.ap.steelduxxklantenportaal.DTOs.ChangePasswordDto;
 import com.ap.steelduxxklantenportaal.DTOs.SignInRequestDTO;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
@@ -200,5 +201,16 @@ public class AuthService {
         String encodedPassword = passwordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);
         userRepository.save(user);
+    }
+
+    public ResponseEntity<Object> changePassword(ChangePasswordDto changePasswordDto) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!passwordEncoder.matches(changePasswordDto.oldPassword(), user.getPassword())) {
+            return ResponseHandler.generate("invalidPassword", HttpStatus.OK);
+        }
+
+
+        return ResponseHandler.generate("success", HttpStatus.OK);
     }
 }

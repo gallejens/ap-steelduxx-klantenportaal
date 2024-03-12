@@ -177,9 +177,9 @@
       "confirmNewPasswordInputLabelError": "Passwords do not match",
       "actionButton": "Confirm",
       "response": {
-        "invalid": "Old password was not correct.",
+        "invalidPassword": "Old password was not correct.",
         "failed": "Something went wrong while changing the password. Please try again.",
-        "success": "Password has been set changed."
+        "success": "Password has been changed successfully."
       }
     }
   }

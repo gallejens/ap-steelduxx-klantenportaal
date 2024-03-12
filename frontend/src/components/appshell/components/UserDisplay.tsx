@@ -34,13 +34,7 @@ export const UserDisplay: FC = () => {
   };
 
   const handleChangePasswordOptionClick = () => {
-    openModal(
-      <ChangePasswordModal
-        onConfirm={() => {
-          closeModal();
-        }}
-      />
-    );
+    openModal(<ChangePasswordModal />);
   };
 
   return (

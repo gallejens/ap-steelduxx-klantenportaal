@@ -1,12 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
-import { Pagination, Table, Tabs } from '@mantine/core';
-import { doApiAction } from '@/lib/api';
-import { type FC, useState } from 'react';
+import { type FC, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { dateConverter } from '@/lib/util/dateConverter';
-import { statuses } from '../constants';
+import { doApiAction } from '@/lib/api';
+import { useQuery } from '@tanstack/react-query';
+import { Pagination, Table, Tabs } from '@mantine/core';
 import styles from '../styles/userRequestList.module.scss';
-
+import { statuses } from '../constants';
 
 type UserRequestListValues = {
   followId: number;
@@ -21,28 +20,18 @@ type UserRequestListValues = {
 
 interface UserRequestTableProps {
   pageSize: number;
+  searchTerm: string;
 }
 
-export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
+export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize, searchTerm }) => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState<{ column: string; direction: 'asc' | 'desc' }>({
     column: 'createdOn',
     direction: 'asc',
-  })
+  });
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-  
-  const handleSortToggle = (column: string) => {
-    setSort((prevSort) => ({
-      column,
-      direction: prevSort.column === column && prevSort.direction === 'asc' ? 'desc' : 'asc',
-    }));
-  };
-
-  const { data: userRequestListValues, status } = useQuery({
+  const { data: allUserRequestListValues, status } = useQuery({
     refetchOnWindowFocus: false,
     queryKey: ['userRequestListValues'],
     queryFn: () =>
@@ -51,12 +40,20 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
         method: 'GET',
       }),
   });
-
-  if (
-    status === 'pending' ||
-    status === 'error' ||
-    userRequestListValues === null
-  ) {
+  
+  const userRequestListValues = useMemo(() => {
+    if (!allUserRequestListValues || !searchTerm) {
+      return allUserRequestListValues;
+    }
+  
+    return allUserRequestListValues.filter((item) =>
+      Object.values(item).some((value) =>
+        String(value).toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [allUserRequestListValues, searchTerm]);
+  
+  if (status === 'pending' || status === 'error' || userRequestListValues == null) {
     return (
       <div className={styles.table_handling}>
         {status === 'pending' && t('user_request_list_page:tableLoading')}
@@ -74,16 +71,15 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
       </span>
     </>,
     <>
-    {t('user_request_list_page:tableHeader2')}
-    <span onClick={() => handleSortToggle('createdOn')}>
-      {sort.column === 'createdOn' ? (sort.direction === 'asc' ? '↑' : '↓') : '↕'}
-    </span>
-  </>,
-t('user_request_list_page:tableHeader3'),
-t('user_request_list_page:tableHeader4'),
-t('user_request_list_page:tableHeader5'),
+      {t('user_request_list_page:tableHeader2')}
+      <span onClick={() => handleSortToggle('createdOn')}>
+        {sort.column === 'createdOn' ? (sort.direction === 'asc' ? '↑' : '↓') : '↕'}
+      </span>
+    </>,
+    t('user_request_list_page:tableHeader3'),
+    t('user_request_list_page:tableHeader4'),
+    t('user_request_list_page:tableHeader5'),
   ];
-  
 
   const generateTableData = (status: string) => ({
     head: tableHead,
@@ -113,7 +109,17 @@ t('user_request_list_page:tableHeader5'),
         'Buttons',
       ]),
   });
-  
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleSortToggle = (column: string) => {
+    setSort((prevSort) => ({
+      column,
+      direction: prevSort.column === column && prevSort.direction === 'asc' ? 'desc' : 'asc',
+    }));
+  };
 
   return (
     <Tabs

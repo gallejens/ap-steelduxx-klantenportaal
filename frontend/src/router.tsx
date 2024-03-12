@@ -115,6 +115,7 @@ const routeTree = rootRoute.addChildren([
     homeRoute,
     orderListRoute,
     userRequestListRoute,
+    testValuesRoute,
   ]),
 ]);
 export const router = createRouter({

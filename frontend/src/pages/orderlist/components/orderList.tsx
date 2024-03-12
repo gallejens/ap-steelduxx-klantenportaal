@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Table, Pagination, Group, Badge, Text } from '@mantine/core';
 import styles from '../styles/orderList.module.scss';
+import { doApiAction } from '@/lib/api';
 
 interface Order {
   referenceNumber: string; // ex: "2646607000",
@@ -30,13 +31,11 @@ export const OrderList: React.FC<OrderListProps> = ({ pageSize }) => {
     error,
   } = useQuery({
     queryKey: ['orders'],
-    queryFn: async () => {
-      const response = await fetch('http://localhost:8080/api/orders/all');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    },
+    queryFn: () =>
+      doApiAction<Order[]>({
+        endpoint: '/orders/all',
+        method: 'GET',
+      }),
   });
 
   function getStateColor(state: Order['state']): string {
@@ -95,25 +94,25 @@ export const OrderList: React.FC<OrderListProps> = ({ pageSize }) => {
         style={{ fontStyle: 'italic', opacity: 0.7 }}
         key={`${order.referenceNumber}-ets`}
       >
-        {order.ets || 'N/A'}
+        {order.ets ?? 'N/A'}
       </Text>,
       <Text
         style={{ fontStyle: 'italic', opacity: 0.7 }}
         key={`${order.referenceNumber}-ats`}
       >
-        {order.ats || 'N/A'}
+        {order.ats ?? 'N/A'}
       </Text>,
       <Text
         style={{ fontStyle: 'italic', opacity: 0.7 }}
         key={`${order.referenceNumber}-eta`}
       >
-        {order.eta || 'N/A'}
+        {order.eta ?? 'N/A'}
       </Text>,
       <Text
         style={{ fontStyle: 'italic', opacity: 0.7 }}
         key={`${order.referenceNumber}-ata`}
       >
-        {order.ata || 'N/A'}
+        {order.ata ?? 'N/A'}
       </Text>,
     ]);
 
@@ -137,7 +136,7 @@ export const OrderList: React.FC<OrderListProps> = ({ pageSize }) => {
       />
       <Group style={{ justifyContent: 'center', marginTop: '1rem' }}>
         <Pagination
-          total={Math.ceil(orders.length / pageSize)}
+          total={Math.ceil((orders ?? []).length / pageSize)}
           value={activePage}
           onChange={page => setPage(page)}
         />

@@ -33,8 +33,8 @@ public class AuthController {
 
     @PostMapping("/signout")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Object> signOut(HttpServletResponse response) {
-        authService.signOut(response);
+    public ResponseEntity<Object> signOut(HttpServletRequest request, HttpServletResponse response) {
+        authService.signOut(request, response);
         return ResponseHandler.generate("logout_successful", HttpStatus.OK);
     }
 

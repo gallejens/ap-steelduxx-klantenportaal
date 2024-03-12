@@ -21,15 +21,6 @@ interface OrderListProps {
   pageSize: number;
 }
 
-function chunk<T>(array: T[], size: number): T[][] {
-  if (!array.length) {
-    return [];
-  }
-  const head = array.slice(0, size);
-  const tail = array.slice(size);
-  return [head, ...chunk(tail, size)];
-}
-
 export const OrderList: React.FC<OrderListProps> = ({ pageSize }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [activePage, setPage] = useState(1);
@@ -44,46 +35,6 @@ export const OrderList: React.FC<OrderListProps> = ({ pageSize }) => {
         console.error('There was an error fetching the orders:', error)
       );
   }, []);
-
-  const paginatedOrders = chunk(orders, pageSize);
-
-  const rows = paginatedOrders[activePage - 1]?.map(order => (
-    <tr key={order.referenceNumber}>
-      <td>{order.referenceNumber}</td>
-      <td>{order.customerReferenceNumber}</td>
-      <td>
-        <Badge color={getStateColor(order.state)}>{order.state}</Badge>
-      </td>
-      <td>
-        <Badge color={order.transportType === 'IMPORT' ? 'blue' : 'pink'}>
-          {order.transportType}
-        </Badge>
-      </td>
-      <td>{order.portOfOriginCode}</td>
-      <td>{order.portOfDestinationCode}</td>
-      <td>{order.shipName}</td>
-      <td>
-        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
-          {order.ets || 'N/A'}
-        </Text>
-      </td>
-      <td>
-        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
-          {order.ats || 'N/A'}
-        </Text>
-      </td>
-      <td>
-        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
-          {order.eta || 'N/A'}
-        </Text>
-      </td>
-      <td>
-        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
-          {order.ata || 'N/A'}
-        </Text>
-      </td>
-    </tr>
-  ));
 
   function getStateColor(state: Order['state']): string {
     switch (state) {
@@ -104,33 +55,59 @@ export const OrderList: React.FC<OrderListProps> = ({ pageSize }) => {
     }
   }
 
+  const transformOrdersToTableData = () => {
+    const head = [
+      'Reference Number',
+      'Customer Reference Number',
+      'State',
+      'Transport Type',
+      'Port of Origin',
+      'Port of Destination',
+      'Ship Name',
+      'ETS',
+      'ATS',
+      'ETA',
+      'ATA',
+    ];
+
+    const body = orders
+      .slice((activePage - 1) * pageSize, activePage * pageSize)
+      .map(order => [
+        order.referenceNumber,
+        order.customerReferenceNumber,
+        <Badge color={getStateColor(order.state)}>{order.state}</Badge>,
+        <Badge color={order.transportType === 'IMPORT' ? 'blue' : 'pink'}>
+          {order.transportType}
+        </Badge>,
+        order.portOfOriginCode,
+        order.portOfDestinationCode,
+        order.shipName,
+        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
+          {order.ets || 'N/A'}
+        </Text>,
+        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
+          {order.ats || 'N/A'}
+        </Text>,
+        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
+          {order.eta || 'N/A'}
+        </Text>,
+        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
+          {order.ata || 'N/A'}
+        </Text>,
+      ]);
+
+    return { head, body };
+  };
+
   return (
     <>
       <Table
         className={styles.orderListTable}
-        striped
-        highlightOnHover
-      >
-        <thead>
-          <tr>
-            <th>Reference Number</th>
-            <th>Customer Reference Number</th>
-            <th>State</th>
-            <th>Transport Type</th>
-            <th>Port of Origin</th>
-            <th>Port of Destination</th>
-            <th>Ship Name</th>
-            <th>ETS</th>
-            <th>ATS</th>
-            <th>ETA</th>
-            <th>ATA</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
+        data={transformOrdersToTableData()}
+      />
       <Group style={{ justifyContent: 'center', marginTop: '1rem' }}>
         <Pagination
-          total={paginatedOrders.length}
+          total={Math.ceil(orders.length / pageSize)}
           value={activePage}
           onChange={page => setPage(page)}
         />

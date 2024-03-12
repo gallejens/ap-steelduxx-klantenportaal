@@ -16,6 +16,7 @@ type UserRequestListValues = {
   firstName: string;
   lastName: string;
   status: string;
+  [key: string]: number | string;
 };
 
 interface UserRequestTableProps {
@@ -25,15 +26,22 @@ interface UserRequestTableProps {
 export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [sort, setSort] = useState<{ column: string; direction: 'asc' | 'desc' }>({
+    column: 'createdOn',
+    direction: 'asc',
+  })
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
   
-  const handleSortToggle = () => {
-    setSortDirection((prevDirection) => (prevDirection === 'asc' ? 'desc' : 'asc'));
+  const handleSortToggle = (column: string) => {
+    setSort((prevSort) => ({
+      column,
+      direction: prevSort.column === column && prevSort.direction === 'asc' ? 'desc' : 'asc',
+    }));
   };
+
   const { data: userRequestListValues, status } = useQuery({
     refetchOnWindowFocus: false,
     queryKey: ['userRequestListValues'],
@@ -59,28 +67,41 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({ pageSize }) => {
 
   const tableHead = [
     t('user_request_list_page:tableHeader0'),
-    t('user_request_list_page:tableHeader1'),
+    <>
+      {t('user_request_list_page:tableHeader1')}
+      <span onClick={() => handleSortToggle('companyName')}>
+        {sort.column === 'companyName' ? (sort.direction === 'asc' ? '↑' : '↓') : '↕'}
+      </span>
+    </>,
     <>
     {t('user_request_list_page:tableHeader2')}
-    <span onClick={handleSortToggle}>
-      {sortDirection === 'asc' ? '↑' : '↓'}
+    <span onClick={() => handleSortToggle('createdOn')}>
+      {sort.column === 'createdOn' ? (sort.direction === 'asc' ? '↑' : '↓') : '↕'}
     </span>
   </>,
-    t('user_request_list_page:tableHeader3'),
-    t('user_request_list_page:tableHeader4'),
-    t('user_request_list_page:tableHeader5'),
+t('user_request_list_page:tableHeader3'),
+t('user_request_list_page:tableHeader4'),
+t('user_request_list_page:tableHeader5'),
   ];
+  
 
   const generateTableData = (status: string) => ({
     head: tableHead,
     body: userRequestListValues
       .filter((userRequestListValue) => userRequestListValue.status === status)
       .sort((a, b) => {
-        if (sortDirection === 'asc') {
-          return a.createdOn - b.createdOn;
-        } else {
-          return b.createdOn - a.createdOn;
+        const aValue = a[sort.column];
+        const bValue = b[sort.column];
+
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return sort.direction === 'asc' ? aValue - bValue : bValue - aValue;
         }
+
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          return sort.direction === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+        }
+
+        return 0;
       })
       .slice((currentPage - 1) * pageSize, currentPage * pageSize)
       .map((userRequestListValue) => [

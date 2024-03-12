@@ -123,6 +123,7 @@ const routeTree = rootRoute.addChildren([
     orderListRoute,
     userRequestListRoute,
     testValuesRoute,
+    userRequestReviewRoute,
   ]),
 ]);
 export const router = createRouter({

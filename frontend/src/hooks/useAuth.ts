@@ -37,7 +37,7 @@ export const useAuth = () => {
       endpoint: '/auth/signout',
     });
     navigate({
-      to: '/',
+      to: '/login',
     });
   };
 

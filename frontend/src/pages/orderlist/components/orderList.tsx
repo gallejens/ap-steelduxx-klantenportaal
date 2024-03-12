@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Table, Pagination, Group, Badge, Text } from '@mantine/core';
 import styles from '../styles/orderList.module.scss';
 
@@ -22,19 +22,22 @@ interface OrderListProps {
 }
 
 export const OrderList: React.FC<OrderListProps> = ({ pageSize }) => {
-  const [orders, setOrders] = useState<Order[]>([]);
   const [activePage, setPage] = useState(1);
 
-  useEffect(() => {
-    axios
-      .get<Order[]>('http://localhost:8080/api/orders/all')
-      .then(response => {
-        setOrders(response.data);
-      })
-      .catch(error =>
-        console.error('There was an error fetching the orders:', error)
-      );
-  }, []);
+  const {
+    data: orders,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['orders'],
+    queryFn: async () => {
+      const response = await fetch('http://localhost:8080/api/orders/all');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    },
+  });
 
   function getStateColor(state: Order['state']): string {
     switch (state) {
@@ -55,7 +58,7 @@ export const OrderList: React.FC<OrderListProps> = ({ pageSize }) => {
     }
   }
 
-  const transformOrdersToTableData = () => {
+  const transformOrdersToTableData = (orders: Order[]) => {
     const head = [
       'Reference Number',
       'Customer Reference Number',
@@ -70,40 +73,67 @@ export const OrderList: React.FC<OrderListProps> = ({ pageSize }) => {
       'ATA',
     ];
 
-    const body = orders
-      .slice((activePage - 1) * pageSize, activePage * pageSize)
-      .map(order => [
-        order.referenceNumber,
-        order.customerReferenceNumber,
-        <Badge color={getStateColor(order.state)}>{order.state}</Badge>,
-        <Badge color={order.transportType === 'IMPORT' ? 'blue' : 'pink'}>
-          {order.transportType}
-        </Badge>,
-        order.portOfOriginCode,
-        order.portOfDestinationCode,
-        order.shipName,
-        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
-          {order.ets || 'N/A'}
-        </Text>,
-        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
-          {order.ats || 'N/A'}
-        </Text>,
-        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
-          {order.eta || 'N/A'}
-        </Text>,
-        <Text style={{ fontStyle: 'italic', opacity: 0.7 }}>
-          {order.ata || 'N/A'}
-        </Text>,
-      ]);
+    const body = orders.map(order => [
+      order.referenceNumber,
+      order.customerReferenceNumber,
+      <Badge
+        color={getStateColor(order.state)}
+        key={order.state}
+      >
+        {order.state}
+      </Badge>,
+      <Badge
+        color={order.transportType === 'IMPORT' ? 'blue' : 'pink'}
+        key={order.transportType}
+      >
+        {order.transportType}
+      </Badge>,
+      order.portOfOriginCode,
+      order.portOfDestinationCode,
+      order.shipName,
+      <Text
+        style={{ fontStyle: 'italic', opacity: 0.7 }}
+        key={`${order.referenceNumber}-ets`}
+      >
+        {order.ets || 'N/A'}
+      </Text>,
+      <Text
+        style={{ fontStyle: 'italic', opacity: 0.7 }}
+        key={`${order.referenceNumber}-ats`}
+      >
+        {order.ats || 'N/A'}
+      </Text>,
+      <Text
+        style={{ fontStyle: 'italic', opacity: 0.7 }}
+        key={`${order.referenceNumber}-eta`}
+      >
+        {order.eta || 'N/A'}
+      </Text>,
+      <Text
+        style={{ fontStyle: 'italic', opacity: 0.7 }}
+        key={`${order.referenceNumber}-ata`}
+      >
+        {order.ata || 'N/A'}
+      </Text>,
+    ]);
 
     return { head, body };
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error instanceof Error) return <div>Error: {error.message}</div>;
+
+  const tableData = orders
+    ? transformOrdersToTableData(
+        orders.slice((activePage - 1) * pageSize, activePage * pageSize)
+      )
+    : { head: [], body: [] };
 
   return (
     <>
       <Table
         className={styles.orderListTable}
-        data={transformOrdersToTableData()}
+        data={tableData}
       />
       <Group style={{ justifyContent: 'center', marginTop: '1rem' }}>
         <Pagination

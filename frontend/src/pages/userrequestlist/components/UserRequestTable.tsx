@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { dateConverter } from '@/lib/util/dateConverter';
 import { doApiAction } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
-import { Pagination, Table, Tabs } from '@mantine/core';
+import { ActionIcon, Pagination, Table, Tabs } from '@mantine/core';
 import styles from '../styles/userRequestList.module.scss';
 import { statuses } from '../constants';
+import { IconArrowRight } from '@tabler/icons-react';
+import { useNavigate } from '@tanstack/react-router';
 
 type UserRequestListValues = {
   followId: number;
@@ -28,6 +30,7 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({
   searchTerm,
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState<{
     column: string;
@@ -68,6 +71,8 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({
       <div className={styles.table_handling}>
         {status === 'pending' && t('user_request_list_page:tableLoading')}
         {status === 'error' && t('user_request_list_page:tableError')}
+        {userRequestListValues === null &&
+          t('user_request_list_page:tableEmpty')}
       </div>
     );
   }
@@ -102,7 +107,6 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({
     </>,
     t('user_request_list_page:tableHeader3'),
     t('user_request_list_page:tableHeader4'),
-    t('user_request_list_page:tableHeader5'),
   ];
 
   const generateTableData = (status: string) => ({
@@ -132,7 +136,17 @@ export const UserRequestTable: FC<UserRequestTableProps> = ({
         dateConverter(userRequestListValue.createdOn),
         userRequestListValue.vatNr,
         `${userRequestListValue.firstName} ${userRequestListValue.lastName}`,
-        'Buttons',
+        <ActionIcon
+          onClick={() => {
+            const request_id = userRequestListValue.followId.toString();
+            navigate({
+              to: '/app/requests/$request_id',
+              params: { request_id },
+            });
+          }}
+        >
+          <IconArrowRight />
+        </ActionIcon>,
       ]),
   });
 

@@ -16,6 +16,7 @@ import { ResetPasswordPage } from './pages/resetpassword';
 import { ChoosePasswordPage } from './pages/choosepassword';
 import { useAuthStore } from './stores/useAuthStore';
 import { OrderListPage } from './pages/orderlist';
+import { UserRequestReviewPage } from './pages/userrequestreview';
 
 const rootRoute = createRootRoute();
 
@@ -103,6 +104,12 @@ const orderListRoute = createRoute({
   component: OrderListPage,
 });
 
+const userRequestReviewRoute = createRoute({
+  getParentRoute: () => authorizedOnlyRoute,
+  path: '/requests/$request_id',
+  component: UserRequestReviewPage,
+});
+
 // Creating route tree
 const routeTree = rootRoute.addChildren([
   unauthorizedOnlyRoute.addChildren([
@@ -116,6 +123,7 @@ const routeTree = rootRoute.addChildren([
     orderListRoute,
     userRequestListRoute,
     testValuesRoute,
+    userRequestReviewRoute,
   ]),
 ]);
 export const router = createRouter({

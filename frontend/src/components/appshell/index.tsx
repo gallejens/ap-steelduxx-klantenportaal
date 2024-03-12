@@ -1,10 +1,11 @@
-import { IconLanguage, IconMessage } from '@tabler/icons-react';
+import { IconArrowLeft, IconLanguage, IconMessage } from '@tabler/icons-react';
 import { Outlet, useNavigate, useRouterState } from '@tanstack/react-router';
 import type { FC } from 'react';
 import { TABS } from './constant';
 import styles from './styles/appshell.module.scss';
 import { UserDisplay } from './components/UserDisplay';
 import { useTranslation } from 'react-i18next';
+import { ActionIcon } from '@mantine/core';
 
 export const AppShell: FC = () => {
   const navigate = useNavigate();
@@ -18,6 +19,13 @@ export const AppShell: FC = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.top}>
+        <ActionIcon
+          onClick={() => history.go(-1)}
+          className={styles.back_button}
+          variant='transparent'
+        >
+          <IconArrowLeft />
+        </ActionIcon>
         <img
           className={styles.logo}
           src='/logo.svg'

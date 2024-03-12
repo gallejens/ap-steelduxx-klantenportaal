@@ -72,7 +72,7 @@ public class AuthController {
 
     @PostMapping("/change-password")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
-        return authService.changePassword(changePasswordDto);
+    public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDto changePasswordDto, HttpServletResponse response) {
+        return authService.changePassword(changePasswordDto, response);
     }
 }

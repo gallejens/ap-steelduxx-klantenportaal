@@ -86,10 +86,9 @@ public class AuthService {
 
         var user = userRepository.findByEmail(signInRequestDTO.email()).orElseThrow();
         String accessToken = jwtService.generateToken(user.getUsername(), ACCESS_TOKEN_COOKIE_MAX_AGE);
-        String refreshToken = UUID.randomUUID().toString();
         Cookies.setCookie(response, ACCESS_TOKEN_COOKIE_NAME, accessToken, ACCESS_TOKEN_COOKIE_MAX_AGE);
-        Cookies.setCookie(response, REFRESH_TOKEN_COOKIE_NAME, refreshToken, REFRESH_TOKEN_COOKIE_MAX_AGE, REFRESH_TOKEN_COOKIE_PATH);
-        saveRefreshToken(user.getId(), refreshToken);
+
+        generateRefreshTokenForUser(user, response);
 
         return ResponseHandler.generate("loginpage:loginSuccess", HttpStatus.ACCEPTED);
     }
@@ -141,12 +140,17 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    private void saveRefreshToken(long userId, String token) {
-        var refreshToken = new RefreshToken();
-        refreshToken.setUserId(userId);
+    // This function generates a refreshtoken for a user, saves it and adds it to cookies
+    private void generateRefreshTokenForUser(User user, HttpServletResponse response) {
+        String token = UUID.randomUUID().toString();
+
+        RefreshToken refreshToken = new RefreshToken();
+        refreshToken.setUserId(user.getId());
         refreshToken.setToken(token);
         refreshToken.setExpiryDate(new Date().getTime() + REFRESH_TOKEN_COOKIE_MAX_AGE * 1000);
         refreshTokenRepository.save(refreshToken);
+
+        Cookies.setCookie(response, REFRESH_TOKEN_COOKIE_NAME, token, REFRESH_TOKEN_COOKIE_MAX_AGE, REFRESH_TOKEN_COOKIE_PATH);
     }
 
     public void requestPasswordReset(String email) throws MessagingException {
@@ -203,13 +207,20 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public ResponseEntity<Object> changePassword(ChangePasswordDto changePasswordDto) {
+
+    // When changing password, we also delete all refreshtokens but instantly create a new refreshtoken for the user
+    // this way the user does not need to re authenticate but on other devices he will need to
+    @Transactional
+    public ResponseEntity<Object> changePassword(ChangePasswordDto changePasswordDto, HttpServletResponse response) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (!passwordEncoder.matches(changePasswordDto.oldPassword(), user.getPassword())) {
             return ResponseHandler.generate("invalidPassword", HttpStatus.OK);
         }
 
+        updatePassword(user, changePasswordDto.newPassword());
+        refreshTokenRepository.deleteByUserId(user.getId());
+        generateRefreshTokenForUser(user, response);
 
         return ResponseHandler.generate("success", HttpStatus.OK);
     }

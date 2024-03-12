@@ -10,7 +10,10 @@ import { ActionIcon } from '@mantine/core';
 export const AppShell: FC = () => {
   const navigate = useNavigate();
   const routerState = useRouterState();
-  const { t } = useTranslation();
+  const {
+    t,
+    i18n: { changeLanguage, language },
+  } = useTranslation();
 
   const handleTabClick = (path: string) => {
     navigate({ to: path });
@@ -35,7 +38,14 @@ export const AppShell: FC = () => {
           }}
         />
         <div className={styles.actions}>
-          <IconLanguage />
+          <ActionIcon
+            onClick={() => {
+              changeLanguage(language === 'en' ? 'nl' : 'en');
+            }}
+            variant='transparent'
+          >
+            <IconLanguage />
+          </ActionIcon>
           <IconMessage />
         </div>
       </div>

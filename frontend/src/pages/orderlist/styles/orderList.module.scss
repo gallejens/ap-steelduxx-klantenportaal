@@ -1,19 +1,6 @@
 @use '../../../styles/variables.scss';
 @use '../../../styles/mixins.scss';
 
-.orderlist_table_page {
-  @include mixins.shadow;
-  padding-top: 1rem;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  background-color: var(--mantine-primary-color-0);
-  border-radius: var(--mantine-radius-default);
-}
-
 .header {
   width: 100%;
   margin-bottom: var(--mantine-spacing-md);
@@ -60,7 +47,6 @@
 
   & > .orderlist_table {
     width: 100%;
-    height: 81.5vh;
   }
 }
 

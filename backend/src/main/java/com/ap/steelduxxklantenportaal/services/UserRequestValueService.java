@@ -80,19 +80,18 @@ public class UserRequestValueService {
         );
     }
 
-    public ResponseEntity<Object> processUserRequest(UserRequestValuesDto userRequestValuesDTO)
+    public ResponseEntity<Object> processUserRequest(UserRequestValuesDto userRequestValuesDto)
             throws MessagingException {
         boolean requestExists = userRequestValueRepository
-                .findByVatNrAndEmail(userRequestValuesDTO.vatNr(), userRequestValuesDTO.email()).isPresent();
-        Map<String, String> responseBody;
+                .findByVatNrAndEmail(userRequestValuesDto.vatNr(), userRequestValuesDto.email()).isPresent();
 
         if (requestExists) {
-            responseBody = Collections.singletonMap("message", "userrequestpage:userRequestAlreadyExists");
+            Map<String, String> responseBody = Collections.singletonMap("message", "userRequestForm:userRequestAlreadyExists");
             return new ResponseEntity<>(responseBody, HttpStatus.OK);
         } else {
-            addRequest(userRequestValuesDTO);
+            addRequest(userRequestValuesDto);
 
-            responseBody = Collections.singletonMap("message", "userrequestpage:userRequestRequested");
+            Map<String, String> responseBody = Collections.singletonMap("message", "userRequestForm:userRequestRequested");
             return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
         }
     }

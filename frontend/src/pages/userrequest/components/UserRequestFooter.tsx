@@ -10,7 +10,7 @@ export const UserRequestFooter: FC = () => {
 
   return (
     <div className={styles.userrequest_page_footer}>
-      <Text c='dimmed'>{t('userrequestpage:userRequestLabel')}</Text>
+      <Text c='dimmed'>{t('userRequestForm:userRequestLabel')}</Text>
       <Text
         c='dimmed'
         onClick={() => {
@@ -18,7 +18,7 @@ export const UserRequestFooter: FC = () => {
         }}
         className={styles.login_link}
       >
-        {t('userrequestpage:loginLink')}
+        {t('userRequestForm:loginLink')}
       </Text>
     </div>
   );

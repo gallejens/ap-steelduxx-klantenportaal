@@ -11,6 +11,7 @@ $navbar_left_width: 17rem;
     height: $navbar_top_height;
     background-color: var(--mantine-color-primary-6);
     padding: var(--mantine-spacing-sm);
+    padding-left: var(--mantine-spacing-xl);
 
     display: flex;
     justify-content: space-between;

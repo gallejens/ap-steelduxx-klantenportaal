@@ -9,7 +9,7 @@ export const UserRequestPage: FC = () => {
 
   return (
     <PublicPageWrapper
-      title={t('userrequestpage:title')}
+      title={t('userRequestForm:title')}
       panelWidth='110vh'
       footer={<UserRequestFooter />}
       hideBackButton

@@ -17,7 +17,7 @@
     "loginFailed": "Email of wachtwoord is onjuist",
     "loginSuccess": "Succesvol ingelogd"
   },
-  "userrequestpage": {
+  "userRequestForm": {
     "title": "Vraag Account Aan",
     "companyInputTitle": "Bedrijf",
     "companyInputDescription": "Vul hier de naam van het bedrijf",
@@ -101,6 +101,9 @@
 
     "tableLoading": "Bezig met laden...",
     "tableError": "Kan aanvragen niet laden"
+  },
+  "userRequestReviewPage": {
+    "backButton": "Terug Gaan"
   },
   "notifications": {
     "genericError": "Er is iets misgegaan",

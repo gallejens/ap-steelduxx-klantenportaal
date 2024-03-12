@@ -48,57 +48,57 @@ export const UserRequestForm: FC = () => {
     validate: {
       companyName: value => {
         if (!value) {
-          return t('userrequestpage:companyInputError');
+          return t('userRequestForm:companyInputError');
         }
       },
-      email: isEmail(t('userrequestpage:emailInputError')),
+      email: isEmail(t('userRequestForm:emailInputError')),
       phoneNr: value => {
         if (
           !value ||
           !isPossiblePhoneNumber(value) ||
           !isValidPhoneNumber(value)
         ) {
-          return t('userrequestpage:phoneNrInputError');
+          return t('userRequestForm:phoneNrInputError');
         }
       },
       vatNr: value => {
         if (!value || !checkVAT(value, countries)?.isValid) {
-          return t('userrequestpage:vatNrInputError');
+          return t('userRequestForm:vatNrInputError');
         }
       },
       postalCode: value => {
         if (!value) {
-          return t('userrequestpage:postalCodeInputError');
+          return t('userRequestForm:postalCodeInputError');
         }
       },
       district: value => {
         if (!value) {
-          return t('userrequestpage:districtInputError');
+          return t('userRequestForm:districtInputError');
         }
       },
       street: value => {
         if (!value) {
-          return t('userrequestpage:streetInputError');
+          return t('userRequestForm:streetInputError');
         }
       },
       streetNr: value => {
         if (!value && value !== '0') {
-          return t('userrequestpage:streetNrInputError');
+          return t('userRequestForm:streetNrInputError');
         }
       },
       boxNr: value => {
         if (value === '0') {
-          return t('userrequestpage:boxNrInputError');
+          return t('userRequestForm:boxNrInputError');
         }
       },
       firstName: value => {
         if (!value) {
-          return t('userrequestpage:firstNameInputError');
+          return t('userRequestForm:firstNameInputError');
         }
       },
       lastName: value => {
         if (!value) {
-          return t('userrequestpage:lastNameInputError');
+          return t('userRequestForm:lastNameInputError');
         }
       },
     },
@@ -149,33 +149,34 @@ export const UserRequestForm: FC = () => {
     >
       <div className={styles.company_detail_fields}>
         <TextInput
-          label={t('userrequestpage:companyInputTitle')}
-          description={t('userrequestpage:companyInputDescription')}
-          placeholder={t('userrequestpage:companyInputPlaceholder')}
+          className={styles.company_field}
+          label={t('userRequestForm:companyInputTitle')}
+          description={t('userRequestForm:companyInputDescription')}
+          placeholder={t('userRequestForm:companyInputPlaceholder')}
           required
           {...UserRequestForm.getInputProps('companyName')}
         />
         <div className={styles.number_fields}>
           <TextInput
-            label={t('userrequestpage:phoneNrInputTitle')}
-            description={t('userrequestpage:phoneNrInputDescription')}
-            placeholder={t('userrequestpage:phoneNrInputPlaceholder')}
+            label={t('userRequestForm:phoneNrInputTitle')}
+            description={t('userRequestForm:phoneNrInputDescription')}
+            placeholder={t('userRequestForm:phoneNrInputPlaceholder')}
             required
             {...UserRequestForm.getInputProps('phoneNr')}
           />
           <TextInput
-            label={t('userrequestpage:vatNrInputTitle')}
-            description={t('userrequestpage:vatNrInputDescription')}
-            placeholder={t('userrequestpage:vatNrInputPlaceholder')}
+            label={t('userRequestForm:vatNrInputTitle')}
+            description={t('userRequestForm:vatNrInputDescription')}
+            placeholder={t('userRequestForm:vatNrInputPlaceholder')}
             required
             {...UserRequestForm.getInputProps('vatNr')}
           />
         </div>
         <div className={styles.place_fields}>
           <NumberInput
-            label={t('userrequestpage:postalCodeInputTitle')}
-            description={t('userrequestpage:postalCodeInputDescription')}
-            placeholder={t('userrequestpage:postalCodeInputPlaceholder')}
+            label={t('userRequestForm:postalCodeInputTitle')}
+            description={t('userRequestForm:postalCodeInputDescription')}
+            placeholder={t('userRequestForm:postalCodeInputPlaceholder')}
             hideControls
             allowNegative={false}
             allowDecimal={false}
@@ -183,33 +184,33 @@ export const UserRequestForm: FC = () => {
             {...UserRequestForm.getInputProps('postalCode')}
           />
           <TextInput
-            label={t('userrequestpage:districtInputTitle')}
-            description={t('userrequestpage:districtInputDescription')}
-            placeholder={t('userrequestpage:districtInputPlaceholder')}
+            label={t('userRequestForm:districtInputTitle')}
+            description={t('userRequestForm:districtInputDescription')}
+            placeholder={t('userRequestForm:districtInputPlaceholder')}
             required
             {...UserRequestForm.getInputProps('district')}
           />
         </div>
         <div className={styles.street_fields}>
           <TextInput
-            label={t('userrequestpage:streetInputTitle')}
-            description={t('userrequestpage:streetInputDescription')}
-            placeholder={t('userrequestpage:streetInputPlaceholder')}
+            label={t('userRequestForm:streetInputTitle')}
+            description={t('userRequestForm:streetInputDescription')}
+            placeholder={t('userRequestForm:streetInputPlaceholder')}
             required
             {...UserRequestForm.getInputProps('street')}
           />
           <TextInput
-            label={t('userrequestpage:streetNrInputTitle')}
-            description={t('userrequestpage:streetNrInputDescription')}
-            placeholder={t('userrequestpage:streetNrInputPlaceholder')}
+            label={t('userRequestForm:streetNrInputTitle')}
+            description={t('userRequestForm:streetNrInputDescription')}
+            placeholder={t('userRequestForm:streetNrInputPlaceholder')}
             maxLength={4}
             required
             {...UserRequestForm.getInputProps('streetNr')}
           />
           <NumberInput
-            label={t('userrequestpage:boxNrInputTitle')}
-            description={t('userrequestpage:boxNrInputDescription')}
-            placeholder={t('userrequestpage:boxNrInputPlaceholder')}
+            label={t('userRequestForm:boxNrInputTitle')}
+            description={t('userRequestForm:boxNrInputDescription')}
+            placeholder={t('userRequestForm:boxNrInputPlaceholder')}
             hideControls
             allowNegative={false}
             allowDecimal={false}
@@ -220,23 +221,23 @@ export const UserRequestForm: FC = () => {
       </div>
       <div className={styles.name_fields}>
         <TextInput
-          label={t('userrequestpage:firstNameInputTitle')}
-          description={t('userrequestpage:firstNameInputDescription')}
-          placeholder={t('userrequestpage:firstNameInputPlaceholder')}
+          label={t('userRequestForm:firstNameInputTitle')}
+          description={t('userRequestForm:firstNameInputDescription')}
+          placeholder={t('userRequestForm:firstNameInputPlaceholder')}
           required
           {...UserRequestForm.getInputProps('firstName')}
         />
         <TextInput
           className={styles.lastname_field}
           label={' '}
-          description={t('userrequestpage:lastNameInputDescription')}
-          placeholder={t('userrequestpage:lastNameInputPlaceholder')}
+          description={t('userRequestForm:lastNameInputDescription')}
+          placeholder={t('userRequestForm:lastNameInputPlaceholder')}
           {...UserRequestForm.getInputProps('lastName', { required: true })}
         />
         <TextInput
           className={styles.email_field}
           label={t(' ')}
-          description={t('userrequestpage:emailInputDescription')}
+          description={t('userRequestForm:emailInputDescription')}
           placeholder={EMAIL_PLACEHOLDER}
           {...UserRequestForm.getInputProps('email', { required: true })}
         />
@@ -244,7 +245,7 @@ export const UserRequestForm: FC = () => {
       <div className={styles.go_login_userrequest_button}>
         <div className={styles.userrequest_button}>
           <Button type='submit'>
-            {t('userrequestpage:userRequestButton')}
+            {t('userRequestForm:userRequestButton')}
           </Button>
         </div>
       </div>

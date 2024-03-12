@@ -10,8 +10,10 @@ export const UserRequestReviewPage: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={styles.container}>
-      <UserRequestReviewForm />
+    <div className={styles.userrequest_review_page}>
+      <div className={styles.userrequest_form}>
+        <UserRequestReviewForm />
+      </div>
       <UserRequestReviewHandle />
     </div>
   );

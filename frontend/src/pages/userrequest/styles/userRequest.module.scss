@@ -36,7 +36,7 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding-top: 20px;
+        margin-top: var(--mantine-spacing-md);
 
         & > div {
           width: calc(0.95 / 2 * 100%);
@@ -50,8 +50,8 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding-top: 20px;
-        padding-bottom: 20px;
+        margin-top: var(--mantine-spacing-md);
+        margin-bottom: var(--mantine-spacing-md);
 
         & > div:first-child {
           width: calc(1.9 / 3 * 100%);
@@ -74,18 +74,18 @@
 
       & > .lastname_field {
         margin-top: 5px; // Align field with others because of no asterix in title
-        padding-top: 20px;
+        padding-top: var(--mantine-spacing-md);
       }
 
       & > .email_field {
         margin-top: 5px; // Align field with others because of no asterix in title
-        padding-top: 20px;
+        padding-top: var(--mantine-spacing-md);
       }
     }
 
     & > .go_login_userrequest_button {
       position: absolute;
-      bottom: 20px;
+      bottom: var(--mantine-spacing-md);
       right: 0;
 
       & > .userrequest_button {

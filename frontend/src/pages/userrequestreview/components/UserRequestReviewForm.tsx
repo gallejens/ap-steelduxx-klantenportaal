@@ -26,52 +26,51 @@ export const UserRequestReviewForm: FC = () => {
   const UserRequestReviewForm = useForm<UserRequestReviewFormValues>({});
 
   return (
-    <form className={styles.userrequest_page_form}>
+    <form className={styles.userrequest_review_page_form}>
       <div className={styles.company_detail_fields}>
         <TextInput
-          label={t('userrequestpage:companyInputTitle')}
-          placeholder={t('userrequestpage:companyInputPlaceholder')}
+          className={styles.company_field}
+          label={t('userRequestForm:companyInputTitle')}
           disabled
         />
+        <TextInput
+          className={styles.email_field}
+          label={t('userRequestForm:emailInputDescription')}
+          disabled
+        />
+
         <div className={styles.number_fields}>
           <TextInput
-            label={t('userrequestpage:phoneNrInputTitle')}
-            placeholder={t('userrequestpage:phoneNrInputPlaceholder')}
+            label={t('userRequestForm:phoneNrInputTitle')}
             disabled
           />
           <TextInput
-            label={t('userrequestpage:vatNrInputTitle')}
-            placeholder={t('userrequestpage:vatNrInputPlaceholder')}
+            label={t('userRequestForm:vatNrInputTitle')}
             disabled
           />
         </div>
         <div className={styles.place_fields}>
           <NumberInput
-            label={t('userrequestpage:postalCodeInputTitle')}
-            placeholder={t('userrequestpage:postalCodeInputPlaceholder')}
+            label={t('userRequestForm:postalCodeInputTitle')}
             hideControls
             disabled
           />
           <TextInput
-            label={t('userrequestpage:districtInputTitle')}
-            placeholder={t('userrequestpage:districtInputPlaceholder')}
+            label={t('userRequestForm:districtInputTitle')}
             disabled
           />
         </div>
         <div className={styles.street_fields}>
           <TextInput
-            label={t('userrequestpage:streetInputTitle')}
-            placeholder={t('userrequestpage:streetInputPlaceholder')}
+            label={t('userRequestForm:streetInputTitle')}
             disabled
           />
           <TextInput
-            label={t('userrequestpage:streetNrInputTitle')}
-            placeholder={t('userrequestpage:streetNrInputPlaceholder')}
+            label={t('userRequestForm:streetNrInputTitle')}
             disabled
           />
           <NumberInput
-            label={t('userrequestpage:boxNrInputTitle')}
-            placeholder={t('userrequestpage:boxNrInputPlaceholder')}
+            label={t('userRequestForm:boxNrInputTitle')}
             hideControls
             disabled
           />
@@ -79,32 +78,16 @@ export const UserRequestReviewForm: FC = () => {
       </div>
       <div className={styles.name_fields}>
         <TextInput
-          label={t('userrequestpage:firstNameInputTitle')}
-          placeholder={t('userrequestpage:firstNameInputPlaceholder')}
+          label={t('userRequestForm:firstNameInputTitle')}
+          description={t('userRequestForm:firstNameInputDescription')}
           disabled
         />
         <TextInput
           className={styles.lastname_field}
           label={' '}
-          placeholder={t('userrequestpage:lastNameInputPlaceholder')}
+          description={t('userRequestForm:lastNameInputDescription')}
           disabled
         />
-        <TextInput
-          className={styles.email_field}
-          label={t(' ')}
-          placeholder={EMAIL_PLACEHOLDER}
-          disabled
-        />
-      </div>
-      <div className={styles.back_button}>
-        <div className={styles.userrequest_button}>
-          <Button
-            onClick={() => history.go(-1)}
-            className={styles.back_button}
-          >
-            {t('userrequestreviewpage:userRequestButton')}
-          </Button>
-        </div>
       </div>
     </form>
   );

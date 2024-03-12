@@ -17,7 +17,7 @@
     "loginFailed": "Invalid email or password",
     "loginSuccess": "Login successful"
   },
-  "userrequestpage": {
+  "userRequestForm": {
     "title": "Request Account",
     "companyInputTitle": "Company",
     "companyInputDescription": "Fill in the name of the company here",
@@ -101,6 +101,9 @@
 
     "tableLoading": "Loading...",
     "tableError": "Can't load requests"
+  },
+  "userRequestReviewPage": {
+    "backButton": "Go Back"
   },
   "notifications": {
     "genericError": "Something went wrong",

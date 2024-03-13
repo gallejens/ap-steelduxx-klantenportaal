@@ -26,9 +26,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
   });
 
   const columnRefs = useRef<Partial<Record<T, HTMLDivElement | null>>>({});
-  const [currentResizingColumn, setCurrentResizingColumn] = useState<T | null>(
-    null
-  );
+  const [resizingColumnKey, setResizingColumnKey] = useState<T | null>(null);
 
   const columnKeyToIndex = props.columns.reduce(
     (acc, c, i) => {
@@ -113,34 +111,46 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
   }, []);
 
   useEffect(() => {
-    if (currentResizingColumn === null || columnRefs.current === null) return;
+    if (resizingColumnKey === null || columnRefs.current === null) return;
 
-    const columnRef = columnRefs.current[currentResizingColumn];
+    const columnRef = columnRefs.current[resizingColumnKey];
     const lastColumnRef =
       columnRefs.current[props.columns[props.columns.length - 1].key];
     if (!columnRef || !lastColumnRef) return;
 
+    const columnMinimumWidth =
+      props.columns[columnKeyToIndex[resizingColumnKey]]?.minimumWidth ??
+      DEFAULT_WIDTHS.min;
+
     const mouseUpHandler = () => {
-      setCurrentResizingColumn(null);
+      setResizingColumnKey(null);
     };
 
     const mouseMoveHandler = (e: MouseEvent) => {
-      const lastColumnWidth = lastColumnRef.getBoundingClientRect().width;
-      const originalWidth = columnRef.getBoundingClientRect().width;
+      const siblingRef = columnRef.nextSibling as HTMLDivElement | null;
+      if (!siblingRef) throw new Error('No sibling found');
 
-      const newWidth = Math.max(originalWidth + e.movementX);
+      const originalWidth = columnRef.getBoundingClientRect().width;
+      const originalSiblingWidth = siblingRef.getBoundingClientRect().width;
+      const originalLastColumnWidth =
+        lastColumnRef.getBoundingClientRect().width;
+
+      // do nothing if newwidth is less than minimum
+      const newWidth = originalWidth + e.movementX;
+      if (newWidth < columnMinimumWidth) return;
+
       const actualDiff = newWidth - originalWidth;
 
-      const newLastColumnWidth = lastColumnWidth - actualDiff;
-      if (
-        newLastColumnWidth <=
-        (props.columns[columnKeyToIndex[currentResizingColumn]]?.minimumWidth ??
-          DEFAULT_WIDTHS.min)
-      ) {
-        return;
+      // if sibling width is minimum & last is at minimum, do nothing
+      if (originalSiblingWidth - actualDiff < DEFAULT_WIDTHS.min) {
+        const newLastColumnWidth = originalLastColumnWidth - actualDiff;
+        if (newLastColumnWidth < columnMinimumWidth) {
+          return;
+        }
       }
 
       columnRef.style.width = `${newWidth}px`;
+      siblingRef.style.width = `${originalSiblingWidth - actualDiff}px`;
     };
 
     window.addEventListener('mouseup', mouseUpHandler);
@@ -169,7 +179,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
         );
       }
     };
-  }, [currentResizingColumn]);
+  }, [resizingColumnKey]);
 
   return (
     <div className={styles.table_wrapper}>
@@ -221,7 +231,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
               <div
                 className={styles.resize_handle}
                 onMouseDown={() => {
-                  setCurrentResizingColumn(column.key);
+                  setResizingColumnKey(column.key);
                   applyResizeHandlerDraggingStyles(true);
                 }}
               />

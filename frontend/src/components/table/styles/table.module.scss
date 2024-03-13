@@ -9,7 +9,7 @@ $cell_height: 2.5rem;
   justify-content: space-between;
   gap: var(--mantine-spacing-md);
 
-  // user-select: text;
+  user-select: auto;
 
   & > .body {
     width: 100%;
@@ -19,6 +19,8 @@ $cell_height: 2.5rem;
     overflow: hidden;
 
     & > .table {
+      width: 100%;
+
       position: absolute;
       left: 0;
       top: 0;
@@ -26,7 +28,7 @@ $cell_height: 2.5rem;
       display: flex;
 
       & > .column {
-        width: auto;
+        position: relative;
 
         & > .cell {
           height: $cell_height;
@@ -42,10 +44,29 @@ $cell_height: 2.5rem;
         & > :nth-child(odd) {
           background-color: var(--mantine-color-custom-0);
         }
+
+        & > .resize_handle {
+          width: 0.4rem;
+          height: 100%;
+
+          position: absolute;
+
+          cursor: ew-resize;
+
+          top: 0;
+          right: -0.2rem;
+        }
       }
 
-      & > :not(:last-child) {
+      & > div:not(:last-child) {
+        flex-shrink: 0;
         border-right: 1px solid var(--mantine-color-default-border);
+      }
+
+      & > div:last-child {
+        flex-grow: 1;
+        min-width: 0;
+        overflow: hidden;
       }
     }
   }
@@ -61,22 +82,6 @@ $cell_height: 2.5rem;
 
 .sort_button {
   margin-left: 3px;
-}
-
-.resizeable_div {
-  position: relative;
-
-  & > .overlay {
-    width: 0.4rem;
-    height: 100%;
-
-    position: absolute;
-
-    cursor: ew-resize;
-
-    top: 0;
-    right: -0.2rem;
-  }
 }
 
 :export {

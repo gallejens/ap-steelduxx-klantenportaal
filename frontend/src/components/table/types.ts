@@ -5,9 +5,9 @@ export namespace NTable {
     disallowSorting?: boolean;
     defaultSort?: boolean; // if true, rows will be sorted on this column by default
     transform?: (value: any) => JSX.Element;
-    width?: string; // width of the column in pixels
-    minimumWidth?: string; // minimum width of the column in pixels
-    maximumWidth?: string; // maximum width of the column in pixels
+    initialWidth?: number; // width of the column in pixels
+    minimumWidth?: number; // minimum width of the column in pixels
+    maximumWidth?: number; // maximum width of the column in pixels
   };
 
   export type Row<T extends string> = Record<T, string | null | undefined>;

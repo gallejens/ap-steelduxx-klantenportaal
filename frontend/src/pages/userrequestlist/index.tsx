@@ -1,9 +1,10 @@
 import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserRequestTable } from './components/UserRequestTable';
-import { Button, Input, Select } from '@mantine/core';
+import { Button, Select, TextInput } from '@mantine/core';
 import styles from './styles/userRequestList.module.scss';
 import { useNavigate } from '@tanstack/react-router';
+import { IconSearch } from '@tabler/icons-react';
 
 export const UserRequestListPage: FC = () => {
   const { t } = useTranslation();
@@ -27,10 +28,10 @@ export const UserRequestListPage: FC = () => {
           />
         </div>
         <div className={styles.second_column}>
-          <Input
+          <TextInput
             className={styles.search_bar}
             placeholder='Search'
-            radius='sm'
+            leftSection={<IconSearch />}
             value={searchTerm}
             onChange={handleSearchChange}
           />

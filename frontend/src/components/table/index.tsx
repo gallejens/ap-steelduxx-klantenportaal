@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/table.module.scss';
-import { Pagination } from '@mantine/core';
+import { Pagination, Text } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
-import { usePxPerRem } from '@/hooks/useRemToPx';
-import { ROW_HEIGHT } from './constants';
+import { useRemToPx } from '@/hooks/useRemToPx';
+import { DEFAULT_EMPTY_CELL_PLACEHOLDER } from './constants';
 
 type Column<T extends string> = {
   key: T;
@@ -27,34 +27,58 @@ export const Table = <T extends string>(props: Props<T>) => {
   const { t } = useTranslation();
   const [activePage, setPage] = useState<number>(1);
   const { ref: tableRef, height: tableHeight } = useElementSize();
-  const pxPerRem = usePxPerRem();
+  const cellHeightInPx = useRemToPx(styles.cell_height);
 
-  const pageSize = Math.floor(tableHeight / (pxPerRem * ROW_HEIGHT)) - 1;
+  // calculate amount of rows per page based on available space
+  const pageSize = Math.floor(tableHeight / cellHeightInPx) - 1; // offset for header
+  const totalPages = Math.ceil((props.data ?? []).length / pageSize);
+
   const visibleData = props.data.slice(
     (activePage - 1) * pageSize,
     activePage * pageSize
   );
 
+  const emptyCellPlaceholder =
+    props.emptyCellPlaceholder ?? DEFAULT_EMPTY_CELL_PLACEHOLDER;
+
   return (
     <div className={styles.table_wrapper}>
       <div
-        className={styles.table}
+        className={styles.body}
         ref={tableRef}
       >
-        {visibleData.map((r, idx) => {
-          return (
+        <div className={styles.table}>
+          {props.columns.map(column => (
             <div
-              key={`table_row_${idx}`}
-              style={{ height: `${ROW_HEIGHT}rem` }}
+              key={`column_${column.key}`}
+              className={styles.column}
             >
-              {Object.values(r).join(', ')}
+              <div>
+                <Text
+                  truncate='end'
+                  size='sm'
+                  fw={700}
+                >
+                  {t(`${props.translationKey}:${column.key}`)}
+                </Text>
+              </div>
+              {visibleData.map((row, idx) => (
+                <div key={`cell_${column.key}_${idx}`}>
+                  <Text
+                    truncate='end'
+                    size='xs'
+                  >
+                    {row[column.key] ?? emptyCellPlaceholder}
+                  </Text>
+                </div>
+              ))}
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
-      <div className={styles.pagination}>
+      <div className={styles.footer}>
         <Pagination
-          total={Math.ceil((props.data ?? []).length / pageSize)}
+          total={totalPages}
           value={activePage}
           onChange={page => setPage(page)}
         />

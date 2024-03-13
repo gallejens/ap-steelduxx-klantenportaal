@@ -1,1 +1,1 @@
-export const ROW_HEIGHT = 3; // in REM!
+export const DEFAULT_EMPTY_CELL_PLACEHOLDER = '-';

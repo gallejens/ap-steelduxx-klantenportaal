@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 
-export const usePxPerRem = () => {
-  const [pxPerRem, setPxPerRem] = useState<number>(0);
+export const useRemToPx = (rem: string) => {
+  const [px, setPx] = useState<number>(0);
 
   useEffect(() => {
     const fontSize = getComputedStyle(document.documentElement).fontSize;
 
-    const px = parseInt(fontSize);
-    if (Number.isNaN(px)) return;
+    const fontSizePx = parseFloat(fontSize);
+    if (Number.isNaN(fontSizePx)) return;
 
-    setPxPerRem(px);
-  }, []);
+    const remValue = parseFloat(rem);
+    if (Number.isNaN(remValue)) return;
 
-  return pxPerRem;
+    setPx(fontSizePx * remValue);
+  }, [rem]);
+
+  return px;
 };

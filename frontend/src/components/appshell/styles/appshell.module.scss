@@ -92,6 +92,11 @@ $navbar_left_width: 17rem;
 
       padding: var(--mantine-spacing-xl);
       background-color: var(--mantine-primary-color-0);
+
+      overflow: hidden;
+      & > div {
+        overflow: hidden;
+      }
     }
   }
 

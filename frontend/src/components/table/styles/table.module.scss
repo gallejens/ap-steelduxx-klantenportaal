@@ -30,15 +30,24 @@ $cell_height: 2.5rem;
 
         & > div {
           height: $cell_height;
+          width: 10rem;
 
           display: flex;
           align-items: center;
+          justify-content: space-between;
+          text-align: center;
 
           padding: 0 var(--mantine-spacing-xs);
         }
 
         & > :nth-child(odd) {
           background-color: var(--mantine-color-custom-0);
+        }
+
+        & > .header_cell {
+          & > .sort_button {
+            margin-left: 3px;
+          }
         }
       }
 

@@ -1,15 +1,22 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/table.module.scss';
-import { Pagination, Text } from '@mantine/core';
+import { ActionIcon, Pagination, Text } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 import { useRemToPx } from '@/hooks/useRemToPx';
 import { DEFAULT_EMPTY_CELL_PLACEHOLDER } from './constants';
+import {
+  IconArrowNarrowDown,
+  IconArrowNarrowUp,
+  IconArrowsSort,
+} from '@tabler/icons-react';
 
 type Column<T extends string> = {
   key: T;
   excludeFromSearch?: boolean; // if true, do not use this column for search
   transform?: (value: any) => JSX.Element;
+  disallowSorting?: boolean;
+  defaultSort?: boolean; // if true, rows will be sorted on this column by default
 };
 
 type Row<T extends string> = Record<T, string | null | undefined>;
@@ -25,40 +32,72 @@ type Props<T extends string> = {
 
 export const Table = <T extends string>(props: Props<T>) => {
   const { t } = useTranslation();
+
   const [activePage, setPage] = useState<number>(1);
   const { ref: tableRef, height: tableHeight } = useElementSize();
   const cellHeightInPx = useRemToPx(styles.cell_height);
 
-  // search logic
-  const filteredData = useMemo(() => {
+  const [sort, setSort] = useState<{
+    column: T;
+    direction: 'asc' | 'desc';
+  }>({
+    column:
+      props.columns.find(c => c.defaultSort)?.key ?? props.columns[0]?.key,
+    direction: 'asc',
+  });
+
+  const handleSortIconClick = (column: T) => {
+    setSort(s => ({
+      column,
+      direction: s.column === column && s.direction === 'asc' ? 'desc' : 'asc',
+    }));
+  };
+
+  useEffect(() => {
+    console.log(sort);
+  }, [sort]);
+
+  // search & sort logic
+  const processedRows = useMemo(() => {
     const searchValue = props.searchValue?.toLowerCase();
-    if (searchValue === undefined || searchValue.length === 0) {
-      return props.data;
+    let filteredRows = props.data;
+    if (searchValue !== undefined && searchValue.length !== 0) {
+      filteredRows = props.data.filter(row => {
+        for (const columnId of Object.keys(row) as T[]) {
+          if (props.columns.find(c => c.key === columnId)?.excludeFromSearch) {
+            continue;
+          }
+          if (row[columnId]?.toLowerCase().includes(searchValue)) {
+            return true;
+          }
+        }
+        return false;
+      });
     }
 
-    return props.data.filter(row => {
-      for (const columnId of Object.keys(row) as T[]) {
-        if (props.columns.find(c => c.key === columnId)?.excludeFromSearch) {
-          continue;
-        }
-        if (row[columnId]?.toLowerCase().includes(searchValue)) {
-          return true;
-        }
-      }
-      return false;
+    return [...filteredRows].sort((a, b) => {
+      const aValue = a[sort.column];
+      const bValue = b[sort.column];
+
+      if (aValue === null || aValue === undefined) return 1;
+      if (bValue === null || bValue === undefined) return -1;
+
+      return sort.direction === 'asc'
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
     });
-  }, [props.data, props.searchValue, props.columns]);
+  }, [props.data, props.searchValue, props.columns, sort]);
 
   // calculate amount of rows per page based on available space and amount of rows
   const pageSize = Math.floor(tableHeight / cellHeightInPx) - 1; // offset for header
-  const totalPages = Math.ceil((filteredData ?? []).length / pageSize);
+  const totalPages = Math.ceil((processedRows ?? []).length / pageSize);
 
   // placeholder for empty cells
   const emptyCellPlaceholder =
     props.emptyCellPlaceholder ?? DEFAULT_EMPTY_CELL_PLACEHOLDER;
 
   // get rows on current page
-  const visibleData = filteredData.slice(
+  const visibleData = processedRows.slice(
     (activePage - 1) * pageSize,
     activePage * pageSize
   );
@@ -75,7 +114,7 @@ export const Table = <T extends string>(props: Props<T>) => {
               key={`column_${column.key}`}
               className={styles.column}
             >
-              <div>
+              <div className={styles.header_cell}>
                 <Text
                   truncate='end'
                   size='sm'
@@ -83,6 +122,26 @@ export const Table = <T extends string>(props: Props<T>) => {
                 >
                   {t(`${props.translationKey}:${column.key}`)}
                 </Text>
+                {!column.disallowSorting && (
+                  <ActionIcon
+                    variant='transparent'
+                    size='xs'
+                    onClick={() => {
+                      handleSortIconClick(column.key);
+                    }}
+                    className={styles.sort_button}
+                  >
+                    {sort.column === column.key ? (
+                      sort.direction === 'asc' ? (
+                        <IconArrowNarrowDown />
+                      ) : (
+                        <IconArrowNarrowUp />
+                      )
+                    ) : (
+                      <IconArrowsSort />
+                    )}
+                  </ActionIcon>
+                )}
               </div>
               {visibleData.map((row, idx) => (
                 <div key={`cell_${column.key}_${idx}`}>

@@ -99,21 +99,22 @@
     "tableError": "Kan aanvragen niet laden",
     "tableEmpty": "Geen aanvragen"
   },
-  "order_list_page": {
-    "tableHeader0": "Referentie Nummer",
-    "tableHeader1": "Klant Referentie Nummer",
-    "tableHeader2": "Status",
-    "tableHeader3": "Transport Type",
-    "tableHeader4": "Haven van Herkomst",
-    "tableHeader5": "Haven van Bestemming",
-    "tableHeader6": "Schip Naam",
-    "tableHeader7": "ETS",
-    "tableHeader8": "ATS",
-    "tableHeader9": "ETA",
-    "tableHeader10": "ATA",
-
-    "tableLoading": "Bezig met laden...",
-    "tableError": "Kan aanvragen niet laden"
+  "orderListPage": {
+    "table": {
+      "referenceNumber": "Referentienummer",
+      "customerReferenceNumber": "Klanten Referentienummer",
+      "state": "Status",
+      "transportType": "Transport Type",
+      "portOfOrigin": "Haven van Herkomst",
+      "portOfDestination": "Haven van Bestemming",
+      "shipName": "Scheepsnaam",
+      "ets": "ETS",
+      "ats": "ATS",
+      "eta": "ETA",
+      "ata": "ATA"
+    },
+    "loading": "Aan het laden...",
+    "error": "Kan orders niet laten"
   },
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",

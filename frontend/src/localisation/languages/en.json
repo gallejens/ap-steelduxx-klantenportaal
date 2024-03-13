@@ -99,21 +99,22 @@
     "tableError": "Can't load requests",
     "tableEmpty": "No requests"
   },
-  "order_list_page": {
-    "tableHeader0": "Reference Number",
-    "tableHeader1": "Customer Reference Number",
-    "tableHeader2": "State",
-    "tableHeader3": "Transport Type",
-    "tableHeader4": "Port of Origin",
-    "tableHeader5": "Port of Destination",
-    "tableHeader6": "Ship Name",
-    "tableHeader7": "ETS",
-    "tableHeader8": "ATS",
-    "tableHeader9": "ETA",
-    "tableHeader10": "ATA",
-
-    "tableLoading": "Loading...",
-    "tableError": "Can't load requests"
+  "orderListPage": {
+    "table": {
+      "referenceNumber": "Reference Number",
+      "customerReferenceNumber": "Customer Reference Number",
+      "state": "State",
+      "transportType": "Transport Type",
+      "portOfOrigin": "Port of Origin",
+      "portOfDestination": "Port of Destination",
+      "shipName": "Ship Name",
+      "ets": "ETS",
+      "ats": "ATS",
+      "eta": "ETA",
+      "ata": "ATA"
+    },
+    "loading": "Loading...",
+    "error": "Can't load orders"
   },
   "userRequestReviewPage": {
     "backButton": "Go Back",

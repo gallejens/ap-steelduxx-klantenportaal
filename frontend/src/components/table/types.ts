@@ -1,10 +1,12 @@
+import type { ReactNode } from 'react';
+
 export namespace NTable {
   export type Column<T extends string> = {
     key: T;
     excludeFromSearch?: boolean; // if true, do not use this column for search
     disallowSorting?: boolean;
     defaultSort?: boolean; // if true, rows will be sorted on this column by default
-    transform?: (value: any) => JSX.Element;
+    transform?: (value: any) => ReactNode;
     initialWidth?: number; // width of the column in pixels
     minimumWidth?: number; // minimum width of the column in pixels
     maximumWidth?: number; // maximum width of the column in pixels

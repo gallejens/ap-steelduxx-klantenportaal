@@ -220,12 +220,16 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                     key={`cell_${column.key}_${idx}`}
                     className={styles.cell}
                   >
-                    <Text
-                      truncate='end'
-                      size='xs'
-                    >
-                      {row[column.key] ?? emptyCellPlaceholder}
-                    </Text>
+                    {column.transform ? (
+                      column.transform(row[column.key])
+                    ) : (
+                      <Text
+                        truncate='end'
+                        size='xs'
+                      >
+                        {row[column.key] ?? emptyCellPlaceholder}
+                      </Text>
+                    )}
                   </div>
                 ))}
                 <div

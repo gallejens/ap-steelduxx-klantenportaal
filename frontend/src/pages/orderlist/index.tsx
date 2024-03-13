@@ -64,6 +64,7 @@ export const OrderListPage: FC = () => {
         <Table
           storageKey='table.orderlist'
           translationKey='orderListPage:table'
+          searchValue={searchValue}
           columns={[
             {
               key: 'referenceNumber',

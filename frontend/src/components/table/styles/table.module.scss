@@ -1,4 +1,4 @@
-$cell_height: 3rem;
+$cell_height: 2.5rem;
 
 .table_wrapper {
   width: 100%;
@@ -38,7 +38,7 @@ $cell_height: 3rem;
         }
 
         & > :nth-child(odd) {
-          background-color: #f8f9fa;
+          background-color: var(--mantine-color-custom-0);
         }
       }
 

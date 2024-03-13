@@ -15,10 +15,24 @@ const PRIMARY_COLORS = [
   '#241f20',
 ] as const;
 
+const CUSTOM_COLORS = [
+  '#f8f9fa', // custom color for alternate rows in table
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+] as const;
+
 export const theme = createTheme({
   defaultRadius: 'xs',
   colors: {
     primary: PRIMARY_COLORS,
+    custom: CUSTOM_COLORS,
   },
   primaryColor: 'primary',
   primaryShade: 9,

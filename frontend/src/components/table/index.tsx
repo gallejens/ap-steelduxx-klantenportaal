@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/table.module.scss';
 import { Pagination, Text } from '@mantine/core';
@@ -29,17 +29,39 @@ export const Table = <T extends string>(props: Props<T>) => {
   const { ref: tableRef, height: tableHeight } = useElementSize();
   const cellHeightInPx = useRemToPx(styles.cell_height);
 
-  // calculate amount of rows per page based on available space
-  const pageSize = Math.floor(tableHeight / cellHeightInPx) - 1; // offset for header
-  const totalPages = Math.ceil((props.data ?? []).length / pageSize);
+  // search logic
+  const filteredData = useMemo(() => {
+    const searchValue = props.searchValue?.toLowerCase();
+    if (searchValue === undefined || searchValue.length === 0) {
+      return props.data;
+    }
 
-  const visibleData = props.data.slice(
+    return props.data.filter(row => {
+      for (const columnId of Object.keys(row) as T[]) {
+        if (props.columns.find(c => c.key === columnId)?.excludeFromSearch) {
+          continue;
+        }
+        if (row[columnId]?.toLowerCase().includes(searchValue)) {
+          return true;
+        }
+      }
+      return false;
+    });
+  }, [props.data, props.searchValue, props.columns]);
+
+  // calculate amount of rows per page based on available space and amount of rows
+  const pageSize = Math.floor(tableHeight / cellHeightInPx) - 1; // offset for header
+  const totalPages = Math.ceil((filteredData ?? []).length / pageSize);
+
+  // placeholder for empty cells
+  const emptyCellPlaceholder =
+    props.emptyCellPlaceholder ?? DEFAULT_EMPTY_CELL_PLACEHOLDER;
+
+  // get rows on current page
+  const visibleData = filteredData.slice(
     (activePage - 1) * pageSize,
     activePage * pageSize
   );
-
-  const emptyCellPlaceholder =
-    props.emptyCellPlaceholder ?? DEFAULT_EMPTY_CELL_PLACEHOLDER;
 
   return (
     <div className={styles.table_wrapper}>

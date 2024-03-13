@@ -62,7 +62,7 @@ export const OrderListPage: FC = () => {
       </div>
       <div className={styles.body}>
         <Table
-          storageKey='table.orderlist'
+          storageKey='table_orderlist'
           translationKey='orderListPage:table'
           searchValue={searchValue}
           columns={[

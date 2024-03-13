@@ -9,7 +9,7 @@ $cell_height: 2.5rem;
   justify-content: space-between;
   gap: var(--mantine-spacing-md);
 
-  user-select: text;
+  // user-select: text;
 
   & > .body {
     width: 100%;
@@ -28,9 +28,8 @@ $cell_height: 2.5rem;
       & > .column {
         width: auto;
 
-        & > div {
+        & > .cell {
           height: $cell_height;
-          width: 10rem;
 
           display: flex;
           align-items: center;
@@ -42,12 +41,6 @@ $cell_height: 2.5rem;
 
         & > :nth-child(odd) {
           background-color: var(--mantine-color-custom-0);
-        }
-
-        & > .header_cell {
-          & > .sort_button {
-            margin-left: 3px;
-          }
         }
       }
 
@@ -63,6 +56,26 @@ $cell_height: 2.5rem;
 
     display: flex;
     justify-content: center;
+  }
+}
+
+.sort_button {
+  margin-left: 3px;
+}
+
+.resizeable_div {
+  position: relative;
+
+  & > .overlay {
+    width: 0.4rem;
+    height: 100%;
+
+    position: absolute;
+
+    cursor: ew-resize;
+
+    top: 0;
+    right: -0.2rem;
   }
 }
 

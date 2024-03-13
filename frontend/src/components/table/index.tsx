@@ -1,46 +1,22 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/table.module.scss';
-import { ActionIcon, Pagination, Text } from '@mantine/core';
+import { Pagination, Text } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 import { useRemToPx } from '@/hooks/useRemToPx';
 import { DEFAULT_EMPTY_CELL_PLACEHOLDER } from './constants';
-import {
-  IconArrowNarrowDown,
-  IconArrowNarrowUp,
-  IconArrowsSort,
-} from '@tabler/icons-react';
+import { SortButton } from './components/SortButton';
+import type { NTable } from './types';
+import { ResizeableDiv } from './components/ResizeableDiv';
 
-type Column<T extends string> = {
-  key: T;
-  excludeFromSearch?: boolean; // if true, do not use this column for search
-  transform?: (value: any) => JSX.Element;
-  disallowSorting?: boolean;
-  defaultSort?: boolean; // if true, rows will be sorted on this column by default
-};
-
-type Row<T extends string> = Record<T, string | null | undefined>;
-
-type Props<T extends string> = {
-  columns: Column<T>[];
-  data: Row<NoInfer<T>>[];
-  storageKey?: string; // if provided, the column widths will be saved to local storage
-  translationKey: string; // localizations will be gotten from that key using the column keys
-  emptyCellPlaceholder?: string; // placeholder to place in empty cells (default: '-')
-  searchValue?: string | null; // searchvalue to filter the table
-};
-
-export const Table = <T extends string>(props: Props<T>) => {
+export const Table = <T extends string>(props: NTable.Props<T>) => {
   const { t } = useTranslation();
 
   const [activePage, setPage] = useState<number>(1);
   const { ref: tableRef, height: tableHeight } = useElementSize();
   const cellHeightInPx = useRemToPx(styles.cell_height);
 
-  const [sort, setSort] = useState<{
-    column: T;
-    direction: 'asc' | 'desc';
-  }>({
+  const [sort, setSort] = useState<NTable.Sort<T>>({
     column:
       props.columns.find(c => c.defaultSort)?.key ?? props.columns[0]?.key,
     direction: 'asc',
@@ -52,10 +28,6 @@ export const Table = <T extends string>(props: Props<T>) => {
       direction: s.column === column && s.direction === 'asc' ? 'desc' : 'asc',
     }));
   };
-
-  useEffect(() => {
-    console.log(sort);
-  }, [sort]);
 
   // search & sort logic
   const processedRows = useMemo(() => {
@@ -109,12 +81,21 @@ export const Table = <T extends string>(props: Props<T>) => {
         ref={tableRef}
       >
         <div className={styles.table}>
-          {props.columns.map(column => (
-            <div
-              key={`column_${column.key}`}
+          {props.columns.map((column, idx) => (
+            <ResizeableDiv
               className={styles.column}
+              key={`column_${column.key}`}
+              storageKey={
+                props.storageKey !== undefined
+                  ? `${props.storageKey}${column.key}`
+                  : undefined
+              }
+              initialWidth={column.width ?? '200px'}
+              minWidth={column.maximumWidth ?? '75px'}
+              maxWidth={column.minimumWidth ?? '750px'}
+              disable={idx === props.columns.length - 1} // we disable on last column
             >
-              <div className={styles.header_cell}>
+              <div className={styles.cell}>
                 <Text
                   truncate='end'
                   size='sm'
@@ -123,28 +104,18 @@ export const Table = <T extends string>(props: Props<T>) => {
                   {t(`${props.translationKey}:${column.key}`)}
                 </Text>
                 {!column.disallowSorting && (
-                  <ActionIcon
-                    variant='transparent'
-                    size='xs'
-                    onClick={() => {
-                      handleSortIconClick(column.key);
-                    }}
-                    className={styles.sort_button}
-                  >
-                    {sort.column === column.key ? (
-                      sort.direction === 'asc' ? (
-                        <IconArrowNarrowDown />
-                      ) : (
-                        <IconArrowNarrowUp />
-                      )
-                    ) : (
-                      <IconArrowsSort />
-                    )}
-                  </ActionIcon>
+                  <SortButton
+                    onClick={handleSortIconClick}
+                    columnKey={column.key}
+                    sort={sort}
+                  />
                 )}
               </div>
               {visibleData.map((row, idx) => (
-                <div key={`cell_${column.key}_${idx}`}>
+                <div
+                  key={`cell_${column.key}_${idx}`}
+                  className={styles.cell}
+                >
                   <Text
                     truncate='end'
                     size='xs'
@@ -153,7 +124,7 @@ export const Table = <T extends string>(props: Props<T>) => {
                   </Text>
                 </div>
               ))}
-            </div>
+            </ResizeableDiv>
           ))}
         </div>
       </div>

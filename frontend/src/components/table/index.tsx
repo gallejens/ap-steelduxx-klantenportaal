@@ -17,7 +17,7 @@ import { IconEyeOff } from '@tabler/icons-react';
 export const Table = <T extends string>(props: NTable.Props<T>) => {
   const { t } = useTranslation();
 
-  const [activePage, setPage] = useState<number>(1);
+  const [activePage, setActivePage] = useState<number>(1);
   const { ref: bodyRef, height: tableHeight } = useElementSize();
   const cellHeightInPx = useRemToPx(styles.cell_height);
 
@@ -84,6 +84,13 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
   // calculate amount of rows per page based on available space and amount of rows
   const pageSize = Math.floor(tableHeight / cellHeightInPx) - 1; // offset for header
   const totalPages = Math.ceil((processedRows ?? []).length / pageSize);
+
+  // if active page is greater than total pages after resizing window, set it to last page
+  useEffect(() => {
+    if (activePage > totalPages && totalPages > 0) {
+      setActivePage(totalPages);
+    }
+  }, [totalPages]);
 
   // placeholder for empty cells
   const emptyCellPlaceholder =
@@ -248,7 +255,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
         <Pagination
           total={totalPages}
           value={activePage}
-          onChange={page => setPage(page)}
+          onChange={page => setActivePage(page)}
         />
         <div className={styles.right_side}>
           <Button

@@ -1,1 +1,1 @@
-export const STATUSES = ['PENDING', 'APPROVED', 'DENIED'];
+export const STATUSES = ['PENDING', 'APPROVED', 'DENIED'] as const;

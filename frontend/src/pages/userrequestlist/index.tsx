@@ -10,14 +10,14 @@ import { useQuery } from '@tanstack/react-query';
 import { dateConverter } from '@/lib/util/dateConverter';
 import { STATUSES } from './constants';
 
-type UserRequestListValues = {
+type UserRequest = {
   followId: number;
   companyName: string;
   createdOn: number;
   vatNr: string;
   firstName: string;
   lastName: string;
-  status: string;
+  status: 'PENDING' | 'APPROVED' | 'DENIED';
 };
 
 export const UserRequestListPage: FC = () => {
@@ -29,7 +29,7 @@ export const UserRequestListPage: FC = () => {
     refetchOnWindowFocus: false,
     queryKey: ['userRequestListValues'],
     queryFn: () =>
-      doApiAction<UserRequestListValues[]>({
+      doApiAction<UserRequest[]>({
         endpoint: '/user_requests',
         method: 'GET',
       }),
@@ -45,28 +45,46 @@ export const UserRequestListPage: FC = () => {
     );
   }
 
-  const tableData = userRequests.map(userRequest => ({
-    followId: `#${userRequest.followId}`,
-    companyName: userRequest.companyName,
-    createdOn: dateConverter(userRequest.createdOn),
-    vatNr: userRequest.vatNr,
-    contactPerson: `${userRequest.firstName} ${userRequest.lastName}`,
-    buttons: (
-      <ActionIcon
-        key={`value_${userRequest.followId}`}
-        onClick={() => {
-          navigate({
-            to: '/app/requests/$request_id',
-            params: {
-              request_id: userRequest.followId.toString(),
-            },
-          });
-        }}
+  const tableData = userRequests.reduce<
+    Partial<
+      Record<
+        UserRequest['status'],
+        {
+          followId: string;
+          companyName: string;
+          createdOn: string;
+          vatNr: string;
+          contactPerson: string;
+          buttons: JSX.Element;
+        }[]
       >
-        <IconArrowRight />
-      </ActionIcon>
-    ),
-  }));
+    >
+  >((acc, userRequest) => {
+    const requestsForStatus = (acc[userRequest.status] ??= []);
+    requestsForStatus.push({
+      followId: `#${userRequest.followId}`,
+      companyName: userRequest.companyName,
+      createdOn: dateConverter(userRequest.createdOn),
+      vatNr: userRequest.vatNr,
+      contactPerson: `${userRequest.firstName} ${userRequest.lastName}`,
+      buttons: (
+        <ActionIcon
+          key={`value_${userRequest.followId}`}
+          onClick={() => {
+            navigate({
+              to: '/app/requests/$request_id',
+              params: {
+                request_id: userRequest.followId.toString(),
+              },
+            });
+          }}
+        >
+          <IconArrowRight />
+        </ActionIcon>
+      ),
+    });
+    return acc;
+  }, {});
 
   return (
     <div className={styles.userrequest_list_page}>
@@ -140,7 +158,7 @@ export const UserRequestListPage: FC = () => {
                   disableResizing: true,
                 },
               ]}
-              data={tableData}
+              data={tableData[status] ?? []}
             />
           </Tabs.Panel>
         ))}

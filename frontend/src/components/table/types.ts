@@ -9,7 +9,6 @@ export namespace NTable {
     transform?: (value: any) => ReactNode;
     initialWidth?: number; // width of the column in pixels
     minimumWidth?: number; // minimum width of the column in pixels
-    maximumWidth?: number; // maximum width of the column in pixels
     emptyHeader?: boolean; // if true, the header will be empty
     disableResizing?: boolean; // if true, the column will not be resizable
   };

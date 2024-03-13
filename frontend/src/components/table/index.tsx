@@ -216,7 +216,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                       }
                     : {
                         width: column.initialWidth ?? DEFAULT_WIDTHS.initial,
-                        minWidth: column.maximumWidth ?? DEFAULT_WIDTHS.min,
+                        minWidth: column.minimumWidth ?? DEFAULT_WIDTHS.min,
                       }
                 }
               >

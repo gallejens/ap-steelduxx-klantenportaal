@@ -85,7 +85,6 @@ export const OrderListPage: FC = () => {
       <div className={styles.header}>
         <TextInput
           leftSection={<IconSearch />}
-          placeholder='Search'
           value={searchValue}
           onChange={e => setSearchValue(e.currentTarget.value)}
         />

@@ -10,9 +10,14 @@ export namespace NTable {
     initialWidth?: number; // width of the column in pixels
     minimumWidth?: number; // minimum width of the column in pixels
     maximumWidth?: number; // maximum width of the column in pixels
+    emptyHeader?: boolean; // if true, the header will be empty
+    disableResizing?: boolean; // if true, the column will not be resizable
   };
 
-  export type Row<T extends string> = Record<T, string | null | undefined>;
+  export type Row<T extends string> = Record<
+    T,
+    string | number | JSX.Element | null | undefined
+  >;
 
   export type Props<T extends string> = {
     columns: Column<T>[];

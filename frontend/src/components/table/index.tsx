@@ -60,7 +60,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
           if (props.columns[columnKeyToIndex[columnKey]].excludeFromSearch) {
             continue;
           }
-          if (row[columnKey]?.toLowerCase().includes(searchValue)) {
+          if (row[columnKey]?.toString().toLowerCase().includes(searchValue)) {
             return true;
           }
         }
@@ -75,9 +75,17 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
       if (aValue === null || aValue === undefined) return 1;
       if (bValue === null || bValue === undefined) return -1;
 
-      return sort.direction === 'asc'
-        ? aValue.localeCompare(bValue)
-        : bValue.localeCompare(aValue);
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return sort.direction === 'asc' ? aValue - bValue : bValue - aValue;
+      }
+
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return sort.direction === 'asc'
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      }
+
+      return 0;
     });
   }, [props.data, props.searchValue, props.columns, sort]);
 
@@ -201,10 +209,16 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                 ref={ref => (columnRefs.current[column.key] = ref)}
                 key={`column_${column.key}`}
                 className={styles.column}
-                style={{
-                  width: column.initialWidth ?? DEFAULT_WIDTHS.initial,
-                  minWidth: column.maximumWidth ?? DEFAULT_WIDTHS.min,
-                }}
+                style={
+                  column.disableResizing
+                    ? {
+                        width: 'auto',
+                      }
+                    : {
+                        width: column.initialWidth ?? DEFAULT_WIDTHS.initial,
+                        minWidth: column.maximumWidth ?? DEFAULT_WIDTHS.min,
+                      }
+                }
               >
                 <div className={styles.cell}>
                   <Text
@@ -212,7 +226,9 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                     size='sm'
                     fw={700}
                   >
-                    {t(`${props.translationKey}:${column.key}`)}
+                    {column.emptyHeader
+                      ? ''
+                      : t(`${props.translationKey}:${column.key}`)}
                   </Text>
                   {!column.disallowSorting && (
                     <SortButton
@@ -239,13 +255,15 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                     )}
                   </div>
                 ))}
-                <div
-                  className={styles.resize_handle}
-                  onMouseDown={() => {
-                    setResizingColumnKey(column.key);
-                    applyResizeHandlerDraggingStyles(true);
-                  }}
-                />
+                {!column.disableResizing && (
+                  <div
+                    className={styles.resize_handle}
+                    onMouseDown={() => {
+                      setResizingColumnKey(column.key);
+                      applyResizeHandlerDraggingStyles(true);
+                    }}
+                  />
+                )}
               </div>
             );
           })}

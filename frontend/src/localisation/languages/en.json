@@ -86,15 +86,15 @@
 
     "confirmButton": "Confirm"
   },
-  "user_request_list_page": {
+  "userRequestListPage": {
     "newUserRequest": "New Request",
-
-    "tableHeader0": "Follow Id",
-    "tableHeader1": "Company Name",
-    "tableHeader2": "Date",
-    "tableHeader3": "VAT number",
-    "tableHeader4": "Contact Person",
-
+    "table": {
+      "followId": "Volg ID",
+      "companyName": "Bedrijfsnaam",
+      "createdOn": "Datum",
+      "vatNr": "BTW-nummer",
+      "contactPerson": "Contactpersoon"
+    },
     "tableLoading": "Loading...",
     "tableError": "Can't load requests",
     "tableEmpty": "No requests"

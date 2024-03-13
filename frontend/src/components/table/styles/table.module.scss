@@ -46,7 +46,7 @@ $cell_height: 2.5rem;
           padding: 0 var(--mantine-spacing-xs);
         }
 
-        & > :nth-child(odd) {
+        & > .cell:nth-child(even) {
           background-color: var(--mantine-color-custom-0);
         }
 

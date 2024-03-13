@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/table.module.scss';
-import { Pagination, Text } from '@mantine/core';
+import { Button, Pagination, Text } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 import { useRemToPx } from '@/hooks/useRemToPx';
 import { DEFAULT_EMPTY_CELL_PLACEHOLDER, DEFAULT_WIDTHS } from './constants';
@@ -11,6 +11,8 @@ import {
   applyResizeHandlerDraggingStyles,
   buildColumnSizeStorageKey,
 } from './util';
+import { ColumnSelector } from './components/ColumnSelector';
+import { IconEyeOff } from '@tabler/icons-react';
 
 export const Table = <T extends string>(props: NTable.Props<T>) => {
   const { t } = useTranslation();
@@ -27,6 +29,9 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
 
   const columnRefs = useRef<Partial<Record<T, HTMLDivElement | null>>>({});
   const [resizingColumnKey, setResizingColumnKey] = useState<T | null>(null);
+
+  const [columnSelectorOpen, setColumnSelectorOpen] = useState(false);
+  const [disabledColumns, setDisabledColumns] = useState<T[]>([]);
 
   const columnKeyToIndex = props.columns.reduce(
     (acc, c, i) => {
@@ -181,6 +186,12 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
     };
   }, [resizingColumnKey]);
 
+  const toggleDisableColumn = (column: T) => {
+    setDisabledColumns(s =>
+      s.includes(column) ? [...s.filter(c => c !== column)] : [...s, column]
+    );
+  };
+
   return (
     <div className={styles.table_wrapper}>
       <div
@@ -188,55 +199,57 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
         ref={tableRef}
       >
         <div className={styles.table}>
-          {props.columns.map(column => (
-            <div
-              ref={ref => (columnRefs.current[column.key] = ref)}
-              key={`column_${column.key}`}
-              className={styles.column}
-              style={{
-                width: column.initialWidth ?? DEFAULT_WIDTHS.initial,
-                minWidth: column.maximumWidth ?? DEFAULT_WIDTHS.min,
-                maxWidth: column.minimumWidth ?? DEFAULT_WIDTHS.max,
-              }}
-            >
-              <div className={styles.cell}>
-                <Text
-                  truncate='end'
-                  size='sm'
-                  fw={700}
-                >
-                  {t(`${props.translationKey}:${column.key}`)}
-                </Text>
-                {!column.disallowSorting && (
-                  <SortButton
-                    onClick={handleSortIconClick}
-                    columnKey={column.key}
-                    sort={sort}
-                  />
-                )}
-              </div>
-              {rows.map((row, idx) => (
-                <div
-                  key={`cell_${column.key}_${idx}`}
-                  className={styles.cell}
-                >
+          {props.columns.map(column => {
+            if (disabledColumns.includes(column.key)) return null;
+            return (
+              <div
+                ref={ref => (columnRefs.current[column.key] = ref)}
+                key={`column_${column.key}`}
+                className={styles.column}
+                style={{
+                  width: column.initialWidth ?? DEFAULT_WIDTHS.initial,
+                  minWidth: column.maximumWidth ?? DEFAULT_WIDTHS.min,
+                }}
+              >
+                <div className={styles.cell}>
                   <Text
                     truncate='end'
-                    size='xs'
+                    size='sm'
+                    fw={700}
                   >
-                    {row[column.key] ?? emptyCellPlaceholder}
+                    {t(`${props.translationKey}:${column.key}`)}
                   </Text>
+                  {!column.disallowSorting && (
+                    <SortButton
+                      onClick={handleSortIconClick}
+                      columnKey={column.key}
+                      sort={sort}
+                    />
+                  )}
                 </div>
-              ))}
-              <div
-                className={styles.resize_handle}
-                onMouseDown={() => {
-                  setResizingColumnKey(column.key);
-                  applyResizeHandlerDraggingStyles(true);
-                }}
-              />
-            </div>
-          ))}
+                {rows.map((row, idx) => (
+                  <div
+                    key={`cell_${column.key}_${idx}`}
+                    className={styles.cell}
+                  >
+                    <Text
+                      truncate='end'
+                      size='xs'
+                    >
+                      {row[column.key] ?? emptyCellPlaceholder}
+                    </Text>
+                  </div>
+                ))}
+                <div
+                  className={styles.resize_handle}
+                  onMouseDown={() => {
+                    setResizingColumnKey(column.key);
+                    applyResizeHandlerDraggingStyles(true);
+                  }}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className={styles.footer}>
@@ -245,6 +258,27 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
           value={activePage}
           onChange={page => setPage(page)}
         />
+        <div className={styles.right_side}>
+          <Button
+            onClick={() => {
+              setColumnSelectorOpen(s => !s);
+            }}
+            leftSection={<IconEyeOff />}
+            size='xs'
+          >
+            {t('table:columnSelectorButton')}
+          </Button>
+          {columnSelectorOpen && (
+            <ColumnSelector
+              columns={props.columns.map(c => ({
+                label: t(`${props.translationKey}:${c.key}`),
+                key: c.key,
+                disabled: disabledColumns.includes(c.key),
+              }))}
+              onClick={toggleDisableColumn}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

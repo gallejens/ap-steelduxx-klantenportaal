@@ -1,3 +1,4 @@
+@use '../../../styles//mixins.scss';
 $cell_height: 2.5rem;
 
 .table_wrapper {
@@ -72,16 +73,71 @@ $cell_height: 2.5rem;
   }
 
   & > .footer {
+    position: relative;
+
     width: 100%;
     height: auto;
 
     display: flex;
     justify-content: center;
+
+    & > .right_side {
+      position: absolute;
+      right: 0;
+    }
   }
 }
 
 .sort_button {
   margin-left: 3px;
+}
+
+.column_selector {
+  @include mixins.shadow;
+
+  z-index: 100;
+
+  background-color: var(--mantine-color-primary-0);
+  border-radius: var(--mantine-radius-default);
+
+  display: flex;
+  flex-direction: column;
+
+  padding: var(--mantine-spacing-xs);
+  margin: var(--mantine-spacing-xs);
+
+  position: absolute;
+  bottom: 2rem;
+  right: 0;
+
+  width: 20rem;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--mantine-spacing-sm);
+
+    height: 2rem;
+
+    padding: 0 var(--mantine-spacing-xs);
+
+    border-radius: var(--mantine-radius-default);
+
+    &:hover {
+      background-color: var(--mantine-color-primary-1);
+      cursor: pointer;
+    }
+
+    & > p {
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+  }
+
+  & > div:not(:last-child) {
+    border-bottom: 1px solid var(--mantine-color-default-border);
+  }
 }
 
 :export {

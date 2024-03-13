@@ -183,5 +183,8 @@
         "success": "Password has been changed successfully."
       }
     }
+  },
+  "table": {
+    "columnSelectorButton": "Columns"
   }
 }

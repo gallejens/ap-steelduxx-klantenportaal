@@ -183,5 +183,8 @@
         "success": "Wachtwoord is succesvol verandered."
       }
     }
+  },
+  "table": {
+    "columnSelectorButton": "Kolommen"
   }
 }

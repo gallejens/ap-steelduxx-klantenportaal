@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type WheelEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/table.module.scss';
 import { Button, Pagination, Text } from '@mantine/core';
@@ -18,7 +18,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
   const { t } = useTranslation();
 
   const [activePage, setPage] = useState<number>(1);
-  const { ref: tableRef, height: tableHeight } = useElementSize();
+  const { ref: bodyRef, height: tableHeight } = useElementSize();
   const cellHeightInPx = useRemToPx(styles.cell_height);
 
   const [sort, setSort] = useState<NTable.Sort<T>>({
@@ -32,6 +32,8 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
 
   const [columnSelectorOpen, setColumnSelectorOpen] = useState(false);
   const [disabledColumns, setDisabledColumns] = useState<T[]>([]);
+
+  const tableRef = useRef<HTMLDivElement | null>(null);
 
   const columnKeyToIndex = props.columns.reduce(
     (acc, c, i) => {
@@ -123,39 +125,14 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
       columnRefs.current[props.columns[props.columns.length - 1].key];
     if (!columnRef || !lastColumnRef) return;
 
-    const columnMinimumWidth =
-      props.columns[columnKeyToIndex[resizingColumnKey]]?.minimumWidth ??
-      DEFAULT_WIDTHS.min;
-
     const mouseUpHandler = () => {
       setResizingColumnKey(null);
     };
 
     const mouseMoveHandler = (e: MouseEvent) => {
-      const siblingRef = columnRef.nextSibling as HTMLDivElement | null;
-      if (!siblingRef) throw new Error('No sibling found');
-
       const originalWidth = columnRef.getBoundingClientRect().width;
-      const originalSiblingWidth = siblingRef.getBoundingClientRect().width;
-      const originalLastColumnWidth =
-        lastColumnRef.getBoundingClientRect().width;
-
-      // do nothing if newwidth is less than minimum
       const newWidth = originalWidth + e.movementX;
-      if (newWidth < columnMinimumWidth) return;
-
-      const actualDiff = newWidth - originalWidth;
-
-      // if sibling width is minimum & last is at minimum, do nothing
-      if (originalSiblingWidth - actualDiff < DEFAULT_WIDTHS.min) {
-        const newLastColumnWidth = originalLastColumnWidth - actualDiff;
-        if (newLastColumnWidth < columnMinimumWidth) {
-          return;
-        }
-      }
-
       columnRef.style.width = `${newWidth}px`;
-      siblingRef.style.width = `${originalSiblingWidth - actualDiff}px`;
     };
 
     window.addEventListener('mouseup', mouseUpHandler);
@@ -192,13 +169,24 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
     );
   };
 
+  const handleScrollEvent = (e: WheelEvent) => {
+    if (e.deltaY === 0 || tableRef.current === null) return;
+    e.preventDefault();
+
+    tableRef.current.scrollLeft += e.deltaY;
+  };
+
   return (
     <div className={styles.table_wrapper}>
       <div
         className={styles.body}
-        ref={tableRef}
+        ref={bodyRef}
       >
-        <div className={styles.table}>
+        <div
+          className={styles.table}
+          ref={tableRef}
+          onWheel={handleScrollEvent}
+        >
           {props.columns.map(column => {
             if (disabledColumns.includes(column.key)) return null;
             return (

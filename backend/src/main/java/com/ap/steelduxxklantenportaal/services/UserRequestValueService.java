@@ -29,6 +29,7 @@ public class UserRequestValueService {
         return new UserRequestValuesDto(
                 userRequestValue.getId(),
                 userRequestValue.getCompanyName(),
+                userRequestValue.getCountry(),
                 userRequestValue.getPhoneNr(),
                 userRequestValue.getVatNr(),
                 userRequestValue.getPostalCode(),
@@ -36,13 +37,13 @@ public class UserRequestValueService {
                 userRequestValue.getStreet(),
                 userRequestValue.getStreetNr(),
                 userRequestValue.getBoxNr(),
+                userRequestValue.getExtraInfo(),
                 userRequestValue.getFirstName(),
                 userRequestValue.getLastName(),
                 userRequestValue.getEmail(),
                 userRequestValue.getCreatedOn(),
                 userRequestValue.getStatus(),
-                userRequestValue.getDenyMessage()
-        );
+                userRequestValue.getDenyMessage());
     }
 
     public List<UserRequestValuesDto> getAll() {
@@ -64,6 +65,7 @@ public class UserRequestValueService {
 
         userRequestValueRepository.save(new UserRequestValue(
                 userRequestValuesDTO.companyName(),
+                userRequestValuesDTO.country(),
                 userRequestValuesDTO.phoneNr(),
                 userRequestValuesDTO.vatNr(),
                 userRequestValuesDTO.postalCode(),
@@ -71,27 +73,29 @@ public class UserRequestValueService {
                 userRequestValuesDTO.street(),
                 userRequestValuesDTO.streetNr(),
                 userRequestValuesDTO.boxNr(),
+                userRequestValuesDTO.extraInfo(),
                 userRequestValuesDTO.firstName(),
                 userRequestValuesDTO.lastName(),
                 userRequestValuesDTO.email(),
                 userRequestValuesDTO.createdOn(),
                 StatusEnum.PENDING,
-                "")
-        );
+                ""));
     }
 
     public ResponseEntity<Object> processUserRequest(UserRequestValuesDto userRequestValuesDto)
             throws MessagingException {
         boolean requestExists = userRequestValueRepository
-                .findByVatNrAndEmail(userRequestValuesDto.vatNr(), userRequestValuesDto.email()).isPresent();
+                .findByVatNrOrEmail(userRequestValuesDto.vatNr(), userRequestValuesDto.email()).isPresent();
 
         if (requestExists) {
-            Map<String, String> responseBody = Collections.singletonMap("message", "userRequestForm:userRequestAlreadyExists");
+            Map<String, String> responseBody = Collections.singletonMap("message",
+                    "userRequestForm:userRequestAlreadyExists");
             return new ResponseEntity<>(responseBody, HttpStatus.OK);
         } else {
             addRequest(userRequestValuesDto);
 
-            Map<String, String> responseBody = Collections.singletonMap("message", "userRequestForm:userRequestRequested");
+            Map<String, String> responseBody = Collections.singletonMap("message",
+                    "userRequestForm:userRequestRequested");
             return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
         }
     }

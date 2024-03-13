@@ -9,10 +9,12 @@ public class UserRequestValue {
     public UserRequestValue() {
     }
 
-    public UserRequestValue(String companyName, String phoneNr, String vatNr, String postalCode,
-                            String district, String street, String streetNr, String boxNr, String firstName, String lastName,
-                            String email, Long createdOn, StatusEnum status, String denyMessage) {
+    public UserRequestValue(String companyName, String country, String phoneNr, String vatNr, String postalCode,
+            String district, String street, String streetNr, String boxNr, String extraInfo, String firstName,
+            String lastName,
+            String email, Long createdOn, StatusEnum status, String denyMessage) {
         this.companyName = companyName;
+        this.country = country;
         this.phoneNr = phoneNr;
         this.vatNr = vatNr;
         this.postalCode = postalCode;
@@ -20,6 +22,7 @@ public class UserRequestValue {
         this.street = street;
         this.streetNr = streetNr;
         this.boxNr = boxNr;
+        this.extraInfo = extraInfo;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -33,6 +36,8 @@ public class UserRequestValue {
     private Long id;
     @Column(name = "company_name")
     private String companyName;
+    @Column(name = "country")
+    private String country;
     @Column(name = "phone_nr")
     private String phoneNr;
     @Column(name = "vat_nr")
@@ -47,6 +52,8 @@ public class UserRequestValue {
     private String streetNr;
     @Column(name = "box_nr")
     private String boxNr;
+    @Column(name = "extra_info")
+    private String extraInfo;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -71,6 +78,14 @@ public class UserRequestValue {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getPhoneNr() {
@@ -123,6 +138,14 @@ public class UserRequestValue {
 
     public String getBoxNr() {
         return boxNr;
+    }
+
+    public String getExtraInfo() {
+        return extraInfo;
+    }
+
+    public void setExtraInfo(String extraInfo) {
+        this.extraInfo = extraInfo;
     }
 
     public void setBoxNr(String boxNr) {
@@ -179,9 +202,11 @@ public class UserRequestValue {
 
     @Override
     public String toString() {
-        return "UserRequestValue [id=" + id + ", companyName=" + companyName + ", phoneNr=" + phoneNr + ", vatNr="
-                + vatNr + ", postalCode=" + postalCode + ", district=" + district + ", street=" + street + ", streetNr="
-                + streetNr + ", boxNr=" + boxNr + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
-                + email + ", createdOn=" + createdOn + ", status=" + status + ", denyMessage=" + denyMessage + "]";
+        return "UserRequestValue [id=" + id + ", companyName=" + companyName + ", country=" + country + ", phoneNr="
+                + phoneNr + ", vatNr=" + vatNr + ", postalCode=" + postalCode + ", district=" + district + ", street="
+                + street + ", streetNr=" + streetNr + ", boxNr=" + boxNr + ", extraInfo=" + extraInfo + ", firstName="
+                + firstName + ", lastName=" + lastName + ", email=" + email + ", createdOn=" + createdOn + ", status="
+                + status + ", denyMessage=" + denyMessage + "]";
     }
+
 }

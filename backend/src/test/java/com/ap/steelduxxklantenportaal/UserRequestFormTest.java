@@ -45,6 +45,7 @@ public class UserRequestFormTest {
             + "\"street\":\"TestStraat\","
             + "\"streetNr\":\"1\","
             + "\"boxNr\":\"\","
+            + "\"extraInfo\":\","
             + "\"firstName\":\"TestFirstName\","
             + "\"lastName\":\"TestLastName\","
             + "\"email\":\"info@test.be\","
@@ -93,6 +94,7 @@ public class UserRequestFormTest {
             assertThat(userRequest.getStreet()).isEqualTo("TestStraat");
             assertThat(userRequest.getStreetNr()).isEqualTo("1");
             assertThat(userRequest.getBoxNr()).isEqualTo("");
+            assertThat(userRequest.getExtraInfo()).isEqualTo("");
             assertThat(userRequest.getFirstName()).isEqualTo("TestFirstName");
             assertThat(userRequest.getLastName()).isEqualTo("TestLastName");
             assertThat(userRequest.getEmail()).isEqualTo("info@test.be");

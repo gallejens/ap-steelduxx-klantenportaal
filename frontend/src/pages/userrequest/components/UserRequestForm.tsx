@@ -1,5 +1,5 @@
 import { notifications } from '@/components/notifications';
-import { doApiAction } from '@/lib/api';
+import { GenericAPIResponse, doApiAction } from '@/lib/api';
 import { Button, NumberInput, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
 import { checkVAT, countries } from 'jsvat';
@@ -14,6 +14,7 @@ import { EMAIL_PLACEHOLDER } from '@/constants';
 
 type UserRequestFormValues = {
   companyName: string;
+  country: string;
   phoneNr: string;
   vatNr: string;
   postalCode: string;
@@ -21,18 +22,24 @@ type UserRequestFormValues = {
   street: string;
   streetNr: string;
   boxNr: string;
+  extraInfo: string;
   firstName: string;
   lastName: string;
   email: string;
   createdOn: number;
 };
 
-export const UserRequestForm: FC = () => {
+type Props = {
+  onSubmit: () => void;
+};
+
+export const UserRequestForm: FC<Props> = props => {
   const { t } = useTranslation();
 
   const UserRequestForm = useForm<UserRequestFormValues>({
     initialValues: {
       companyName: '',
+      country: '',
       phoneNr: '',
       vatNr: '',
       postalCode: '',
@@ -40,6 +47,7 @@ export const UserRequestForm: FC = () => {
       street: '',
       streetNr: '',
       boxNr: '',
+      extraInfo: '',
       firstName: '',
       lastName: '',
       email: '',
@@ -49,6 +57,11 @@ export const UserRequestForm: FC = () => {
       companyName: value => {
         if (!value) {
           return t('userRequestForm:companyInputError');
+        }
+      },
+      country: value => {
+        if (!value) {
+          return t('userRequestForm:countryInputError');
         }
       },
       email: isEmail(t('userRequestForm:emailInputError')),
@@ -62,7 +75,7 @@ export const UserRequestForm: FC = () => {
         }
       },
       vatNr: value => {
-        if (!value || !checkVAT(value, countries)?.isValid) {
+        if (value && !checkVAT(value, countries)?.isValid) {
           return t('userRequestForm:vatNrInputError');
         }
       },
@@ -115,11 +128,12 @@ export const UserRequestForm: FC = () => {
       return;
     }
 
-    const result = await doApiAction<{ message: string }>({
+    const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
       endpoint: '/user_request',
       method: 'POST',
       body: {
         companyName: values.companyName,
+        country: values.country,
         email: values.email,
         phoneNr: values.phoneNr,
         vatNr: values.vatNr,
@@ -128,6 +142,7 @@ export const UserRequestForm: FC = () => {
         street: values.street,
         streetNr: values.streetNr,
         boxNr: values.boxNr,
+        extraInfo: values.extraInfo,
         firstName: values.firstName,
         lastName: values.lastName,
         createdOn: values.createdOn,
@@ -138,6 +153,8 @@ export const UserRequestForm: FC = () => {
       message: t(result?.message ?? 'notifications:genericError'),
       autoClose: 5000,
     });
+
+    props.onSubmit();
   };
 
   return (
@@ -148,14 +165,23 @@ export const UserRequestForm: FC = () => {
       )}
     >
       <div className={styles.company_detail_fields}>
-        <TextInput
-          className={styles.company_field}
-          label={t('userRequestForm:companyInputTitle')}
-          description={t('userRequestForm:companyInputDescription')}
-          placeholder={t('userRequestForm:companyInputPlaceholder')}
-          required
-          {...UserRequestForm.getInputProps('companyName')}
-        />
+        <div className={styles.company_fields}>
+          <TextInput
+            label={t('userRequestForm:companyInputTitle')}
+            description={t('userRequestForm:companyInputDescription')}
+            placeholder={t('userRequestForm:companyInputPlaceholder')}
+            required
+            {...UserRequestForm.getInputProps('companyName')}
+          />
+          <TextInput
+            label={t('userRequestForm:countryInputTitle')}
+            description={t('userRequestForm:countryInputDescription')}
+            placeholder={t('userRequestForm:countryInputPlaceholder')}
+            required
+            {...UserRequestForm.getInputProps('country')}
+          />
+        </div>
+
         <div className={styles.number_fields}>
           <TextInput
             label={t('userRequestForm:phoneNrInputTitle')}
@@ -168,7 +194,6 @@ export const UserRequestForm: FC = () => {
             label={t('userRequestForm:vatNrInputTitle')}
             description={t('userRequestForm:vatNrInputDescription')}
             placeholder={t('userRequestForm:vatNrInputPlaceholder')}
-            required
             {...UserRequestForm.getInputProps('vatNr')}
           />
         </div>
@@ -200,15 +225,16 @@ export const UserRequestForm: FC = () => {
             {...UserRequestForm.getInputProps('street')}
           />
           <TextInput
-            label={t('userRequestForm:streetNrInputTitle')}
+            className={styles.street_nr_input}
+            label={t(' ')}
             description={t('userRequestForm:streetNrInputDescription')}
             placeholder={t('userRequestForm:streetNrInputPlaceholder')}
             maxLength={4}
-            required
-            {...UserRequestForm.getInputProps('streetNr')}
+            {...UserRequestForm.getInputProps('streetNr', { required: true })}
           />
           <NumberInput
-            label={t('userRequestForm:boxNrInputTitle')}
+            className={styles.bus_nr_input}
+            label={t(' ')}
             description={t('userRequestForm:boxNrInputDescription')}
             placeholder={t('userRequestForm:boxNrInputPlaceholder')}
             hideControls
@@ -218,6 +244,12 @@ export const UserRequestForm: FC = () => {
             {...UserRequestForm.getInputProps('boxNr')}
           />
         </div>
+        <TextInput
+          className={styles.extra_info_input}
+          description={t('userRequestForm:extraInfoInputDescription')}
+          placeholder={t('userRequestForm:extraInfoInputPlaceholder')}
+          {...UserRequestForm.getInputProps('extraInfo')}
+        />
       </div>
       <div className={styles.name_fields}>
         <TextInput

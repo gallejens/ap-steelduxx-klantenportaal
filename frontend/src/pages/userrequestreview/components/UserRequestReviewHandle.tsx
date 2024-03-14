@@ -78,7 +78,7 @@ export const UserRequestReviewHandle: FC = () => {
         <Button
           className={styles.approve_button}
           variant={isApproved ? 'filled' : 'light'}
-          color='#3F784C'
+          color='#1F9254'
           size='lg'
           onClick={handleApproveClick}
         >
@@ -88,7 +88,7 @@ export const UserRequestReviewHandle: FC = () => {
         <Button
           className={styles.deny_button}
           variant={isDenied ? 'filled' : 'light'}
-          color='#E15554'
+          color='#A30D11'
           size='lg'
           onClick={handleDenyClick}
         >

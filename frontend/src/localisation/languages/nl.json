@@ -89,11 +89,11 @@
   "userRequestListPage": {
     "newUserRequest": "Nieuwe Aanvraag",
     "table": {
-      "followId": "Follow ID",
-      "companyName": "Company Name",
-      "createdOn": "Date",
-      "vatNr": "VAT Number",
-      "contactPerson": "Contact Person"
+      "followId": "Volg ID",
+      "companyName": "Bedrijfsnaam",
+      "createdOn": "Datum",
+      "vatNr": "BTW-nummer",
+      "contactPerson": "Contactpersoon"
     },
     "tableLoading": "Bezig met laden...",
     "tableError": "Kan aanvragen niet laden",

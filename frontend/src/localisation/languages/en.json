@@ -89,11 +89,11 @@
   "userRequestListPage": {
     "newUserRequest": "New Request",
     "table": {
-      "followId": "Volg ID",
-      "companyName": "Bedrijfsnaam",
-      "createdOn": "Datum",
-      "vatNr": "BTW-nummer",
-      "contactPerson": "Contactpersoon"
+      "followId": "Follow ID",
+      "companyName": "Company Name",
+      "createdOn": "Date",
+      "vatNr": "VAT Number",
+      "contactPerson": "Contact Person"
     },
     "tableLoading": "Loading...",
     "tableError": "Can't load requests",

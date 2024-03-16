@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.ap.steelduxxklantenportaal.dtos.UserRequestValuesDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
 import com.ap.steelduxxklantenportaal.controllers.UserRequestController;
 
 @SpringBootTest
@@ -23,7 +23,7 @@ public class UserRequestListTest {
 
     @Test
     public void return_GetAll_userRequests() {
-        List<UserRequestValuesDto> savedUserRequests = userRequestController.getAllUserRequests();
+        List<UserRequestDto> savedUserRequests = userRequestController.getAllUserRequests();
 
         System.out.println("Total user requests found: " + savedUserRequests.size());
         assertThat(savedUserRequests.size()).isEqualTo(6); // Check console to see how many items there are in database

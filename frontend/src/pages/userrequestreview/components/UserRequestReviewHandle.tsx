@@ -3,14 +3,24 @@ import { Button, TextInput, Textarea } from '@mantine/core';
 import styles from '../styles/userRequestReview.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@mantine/form';
+import { notifications } from '@/components/notifications';
+import { GenericAPIResponse, doApiAction } from '@/lib/api';
+import { useParams } from '@tanstack/react-router';
 
 type UserRequestHandleValues = {
   refernceCode: string;
   denyMessage: string;
 };
 
-export const UserRequestReviewHandle: FC = () => {
+type Props = {
+  onSubmit: () => void;
+};
+
+export const UserRequestReviewHandle: FC<Props> = props => {
   const { t } = useTranslation();
+  const { request_id: requestId } = useParams({
+    from: '/app/requests/$request_id',
+  });
 
   const [isApproved, setIsApproved] = useState(true);
   const [isDenied, setIsDenied] = useState(false);
@@ -45,32 +55,50 @@ export const UserRequestReviewHandle: FC = () => {
     setIsApproved(false);
   };
 
-  // const handleUserRequestReviewButton = async (
-  //   values: UserRequestHandleValues
-  // ) => {
-  //   if (!UserRequestReviewForm.isValid()) {
-  //     notifications.add({
-  //       title: t('notifications: genericError'),
-  //       message: t('notifications:invalidForm'),
-  //       color: 'red',
-  //     });
-  //     return;
-  //   }
+  const handleUserRequestReviewButton = async (
+    values: UserRequestHandleValues
+  ) => {
+    if (!UserRequestReviewForm.isValid()) {
+      notifications.add({
+        title: t('notifications: genericError'),
+        message: t('notifications:invalidForm'),
+        color: 'red',
+      });
+      return;
+    }
 
-  //   const result = await doApiAction<{ message: string }>({
-  //     endpoint: '/user_reviews',
-  //     method: 'POST',
-  //     body: {
-  //       referenceCode: values.refernceCode,
-  //       denyMessage: values.denyMessage,
-  //     },
-  //   });
+    const resultApprove = await doApiAction<
+      GenericAPIResponse<{ message: string }>
+    >({
+      endpoint: `/user_requests/${requestId}/approve`,
+      method: 'POST',
+      body: {
+        referenceCode: values.refernceCode,
+      },
+    });
 
-  //   notifications.add({
-  //     message: t(result?.message ?? 'notifications:genericError'),
-  //     autoClose: 5000,
-  //   });
-  // };
+    notifications.add({
+      message: t(resultApprove?.message ?? 'notifications:genericError'),
+      autoClose: 5000,
+    });
+
+    const resultDeny = await doApiAction<
+      GenericAPIResponse<{ message: string }>
+    >({
+      endpoint: `/user_requests/${requestId}/deny`,
+      method: 'POST',
+      body: {
+        denyMessage: values.denyMessage,
+      },
+    });
+
+    notifications.add({
+      message: t(resultDeny?.message ?? 'notifications:genericError'),
+      autoClose: 5000,
+    });
+
+    props.onSubmit();
+  };
 
   return (
     <>
@@ -98,9 +126,9 @@ export const UserRequestReviewHandle: FC = () => {
 
       <div className={styles.handle_container}>
         <form
-        // onSubmit={UserRequestReviewForm.onSubmit(values =>
-        //   handleUserRequestReviewButton(values)
-        // )}
+          onSubmit={UserRequestReviewForm.onSubmit(values =>
+            handleUserRequestReviewButton(values)
+          )}
         >
           {isApproved ? (
             <TextInput
@@ -126,11 +154,10 @@ export const UserRequestReviewHandle: FC = () => {
               {...UserRequestReviewForm.getInputProps('denyMessage')}
             />
           ) : null}
+          <div className={styles.confirm_button}>
+            <Button type='submit'>{t('userRequestForm:confirmButton')}</Button>
+          </div>
         </form>
-      </div>
-
-      <div className={styles.confirm_button}>
-        <Button type='submit'>{t('userRequestForm:confirmButton')}</Button>
       </div>
     </>
   );

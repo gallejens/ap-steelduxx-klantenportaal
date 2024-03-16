@@ -5,32 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user_requests")
-public class UserRequestValue {
-    public UserRequestValue() {
-    }
-
-    public UserRequestValue(String companyName, String country, String phoneNr, String vatNr, String postalCode,
-            String district, String street, String streetNr, String boxNr, String extraInfo, String firstName,
-            String lastName,
-            String email, Long createdOn, StatusEnum status, String denyMessage) {
-        this.companyName = companyName;
-        this.country = country;
-        this.phoneNr = phoneNr;
-        this.vatNr = vatNr;
-        this.postalCode = postalCode;
-        this.district = district;
-        this.street = street;
-        this.streetNr = streetNr;
-        this.boxNr = boxNr;
-        this.extraInfo = extraInfo;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.createdOn = createdOn;
-        this.status = status;
-        this.denyMessage = denyMessage;
-    }
-
+public class UserRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -67,6 +42,31 @@ public class UserRequestValue {
     private StatusEnum status;
     @Column(name = "deny_message")
     private String denyMessage;
+
+    public UserRequest() {
+    }
+
+    public UserRequest(String companyName, String country, String phoneNr, String vatNr, String postalCode,
+            String district, String street, String streetNr, String boxNr, String extraInfo, String firstName,
+            String lastName,
+            String email, Long createdOn, StatusEnum status, String denyMessage) {
+        this.companyName = companyName;
+        this.country = country;
+        this.phoneNr = phoneNr;
+        this.vatNr = vatNr;
+        this.postalCode = postalCode;
+        this.district = district;
+        this.street = street;
+        this.streetNr = streetNr;
+        this.boxNr = boxNr;
+        this.extraInfo = extraInfo;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.createdOn = createdOn;
+        this.status = status;
+        this.denyMessage = denyMessage;
+    }
 
     public Long getId() {
         return id;

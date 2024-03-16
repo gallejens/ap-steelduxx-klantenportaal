@@ -16,8 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.controllers.UserRequestController;
-import com.ap.steelduxxklantenportaal.models.UserRequestValue;
-import com.ap.steelduxxklantenportaal.repositories.UserRequestValueRepository;
+import com.ap.steelduxxklantenportaal.models.UserRequest;
+import com.ap.steelduxxklantenportaal.repositories.UserRequestRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -26,7 +26,7 @@ public class UserRequestFormTest {
     private UserRequestController userRequestController;
 
     @Autowired
-    private UserRequestValueRepository userRequestValueRepository;
+    private UserRequestRepository userRequestValueRepository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -55,7 +55,7 @@ public class UserRequestFormTest {
             + "\"denyMessage\":\"\""
             + "}";
 
-    private Optional<UserRequestValue> savedUserRequest;
+    private Optional<UserRequest> savedUserRequest;
 
     @BeforeEach
     void setup() {

@@ -154,7 +154,11 @@
   "userRequestReviewPage": {
     "backButton": "Go Back",
     "approveButton": "Approve",
-    "denyButton": "Deny"
+    "denyButton": "Deny",
+    "response": {
+      "succes": "Request approved!",
+      "exists": "Request with reference code already exists"
+    }
   },
   "notifications": {
     "genericError": "Something went wrong",

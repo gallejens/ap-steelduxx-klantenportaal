@@ -154,7 +154,11 @@
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",
     "approveButton": "Goedkeuren",
-    "denyButton": "Afkeuren"
+    "denyButton": "Afkeuren",
+    "response": {
+      "succes": "Aanvraag goedgekeurd!",
+      "exists": "Aanvraag met referentie nummer bestaat al"
+    }
   },
   "notifications": {
     "genericError": "Er is iets misgegaan",

@@ -38,10 +38,9 @@ public class UserRequestController {
     }
 
     @PostMapping("/user_requests/{id}/approve")
-    public ResponseEntity<Object> approveRequest(@PathVariable Number id, @RequestBody CompanyDto companyDto,
-            UserInfoDto userDto)
+    public ResponseEntity<Object> approveRequest(@PathVariable Number id, @RequestBody CompanyDto companyDto)
             throws MessagingException, UserAlreadyExistsException {
-        return userRequestValueService.approveUserRequest(id, companyDto, userDto);
+        return userRequestValueService.approveUserRequest(id, companyDto);
     }
 
 }

@@ -121,41 +121,51 @@ public class UserRequestService {
                 }
         }
 
-        public ResponseEntity<Object> approveUserRequest(Number id, CompanyDto companyDto, UserInfoDto userDto)
+        public ResponseEntity<Object> approveUserRequest(Number id, CompanyDto companyDto)
                         throws MessagingException, UserAlreadyExistsException {
+                boolean requestForCompanyExists = companyRepository.findByReferenceCode(companyDto.referenceCode())
+                                .isPresent();
+                if (requestForCompanyExists) {
+                        Map<String, String> responseBody = Collections.singletonMap("message",
+                                        "userRequestReviewPage:response:exists");
+                        return new ResponseEntity<>(responseBody, HttpStatus.OK);
+                } else {
+                        // Send email to set password
 
-                // Send email to set password
+                        // Set user values in DB
+                        UserRequestDto userRequestDto = getUserRequest(id);
 
-                // Set user values in DB
-                UserRequestDto userRequestDto = getUserRequest(id);
+                        var user = authService.addNewUser(
+                                        userRequestDto.email(),
+                                        UUID.randomUUID().toString(),
+                                        userRequestDto.firstName(),
+                                        userRequestDto.lastName(),
+                                        RoleEnum.ROLE_HEAD_USER);
 
-                authService.addNewUser(
-                                userRequestDto.email(),
-                                UUID.randomUUID().toString(),
-                                userRequestDto.firstName(),
-                                userRequestDto.lastName(),
-                                RoleEnum.ROLE_HEAD_USER);
+                        // Set company values in DB
+                        var company = companyRepository.save(new Company(
+                                        userRequestDto.companyName(),
+                                        userRequestDto.country(),
+                                        userRequestDto.phoneNr(),
+                                        userRequestDto.vatNr(),
+                                        userRequestDto.postalCode(),
+                                        userRequestDto.district(),
+                                        userRequestDto.street(),
+                                        userRequestDto.streetNr(),
+                                        userRequestDto.boxNr(),
+                                        userRequestDto.extraInfo(),
+                                        companyDto.referenceCode()));
 
-                // Set company values in DB
-                // Check if company already exists
-                companyRepository.save(new Company(
-                                userRequestDto.companyName(),
-                                userRequestDto.country(),
-                                userRequestDto.phoneNr(),
-                                userRequestDto.vatNr(),
-                                userRequestDto.postalCode(),
-                                userRequestDto.district(),
-                                userRequestDto.street(),
-                                userRequestDto.streetNr(),
-                                userRequestDto.boxNr(),
-                                userRequestDto.extraInfo(),
-                                companyDto.referenceCode()));
+                        // Set link values in DB
+                        userCompanyRepository.save(new UserCompany(
+                                        user.getId(),
+                                        company.getId()));
 
-                // Set link values in DB
-                userCompanyRepository.save(new UserCompany(
-                                userDto.id(),
-                                companyDto.id()));
+                        Map<String, String> responseBody = Collections.singletonMap("message",
+                                        "userRequestReviewPage:response:succes");
 
-                return new ResponseEntity<>(HttpStatus.CREATED);
+                        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+                }
+
         }
 }

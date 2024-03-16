@@ -8,7 +8,7 @@ import { GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
 
 type UserRequestHandleValues = {
-  refernceCode: string;
+  referenceCode: string;
   denyMessage: string;
 };
 
@@ -27,11 +27,11 @@ export const UserRequestReviewHandle: FC<Props> = props => {
 
   const UserRequestReviewForm = useForm<UserRequestHandleValues>({
     initialValues: {
-      refernceCode: '',
+      referenceCode: '',
       denyMessage: '',
     },
     validate: {
-      refernceCode: value => {
+      referenceCode: value => {
         if (!value) {
           return t('userRequestForm:referenceCodeInputError');
         }
@@ -73,7 +73,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
       endpoint: `/user_requests/${requestId}/approve`,
       method: 'POST',
       body: {
-        referenceCode: values.refernceCode,
+        referenceCode: values.referenceCode,
       },
     });
 

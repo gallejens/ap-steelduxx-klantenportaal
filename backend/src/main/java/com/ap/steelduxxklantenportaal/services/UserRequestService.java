@@ -121,7 +121,7 @@ public class UserRequestService {
                 }
         }
 
-        public ResponseEntity<Object> approveUserRequest(Number id, CompanyDto companyDto)
+        public ResponseEntity<Object> approveUserRequest(Number id, CompanyDto companyDto, UserInfoDto userDto)
                         throws MessagingException, UserAlreadyExistsException {
 
                 // Send email to set password
@@ -137,6 +137,7 @@ public class UserRequestService {
                                 RoleEnum.ROLE_HEAD_USER);
 
                 // Set company values in DB
+                // Check if company already exists
                 companyRepository.save(new Company(
                                 userRequestDto.companyName(),
                                 userRequestDto.country(),
@@ -152,7 +153,7 @@ public class UserRequestService {
 
                 // Set link values in DB
                 userCompanyRepository.save(new UserCompany(
-                                userRequestDto.followId(),
+                                userDto.id(),
                                 companyDto.id()));
 
                 return new ResponseEntity<>(HttpStatus.CREATED);

@@ -1,6 +1,7 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.dtos.CompanyDto;
+import com.ap.steelduxxklantenportaal.dtos.UserInfoDto;
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.services.UserRequestService;
@@ -37,9 +38,10 @@ public class UserRequestController {
     }
 
     @PostMapping("/user_requests/{id}/approve")
-    public ResponseEntity<Object> approveRequest(@PathVariable("id") Number id, @RequestBody CompanyDto companyDto)
+    public ResponseEntity<Object> approveRequest(@PathVariable Number id, @RequestBody CompanyDto companyDto,
+            UserInfoDto userDto)
             throws MessagingException, UserAlreadyExistsException {
-        return userRequestValueService.approveUserRequest(id, companyDto);
+        return userRequestValueService.approveUserRequest(id, companyDto, userDto);
     }
 
 }

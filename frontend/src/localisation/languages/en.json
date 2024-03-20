@@ -23,6 +23,10 @@
     "companyInputDescription": "Fill in the name of the company here",
     "companyInputPlaceholder": "Steelduxx",
     "companyInputError": "Company name is required",
+    "countryInputTitle": "Country",
+    "countryInputDescription": "Fill in the country of the company here",
+    "countryInputPlaceholder": "Belgium",
+    "countryInputError": "Country is required",
 
     "phoneNrInputTitle": "Phone number",
     "phoneNrInputDescription": "Fill in the phone number of the company here",
@@ -42,18 +46,18 @@
     "districtInputPlaceholder": "Antwerp",
     "districtInputError": "District is required",
 
-    "streetInputTitle": "Street",
-    "streetInputDescription": "Fill in the street of the company here",
+    "streetInputTitle": "Address",
+    "streetInputDescription": "Street",
     "streetInputPlaceholder": "Duboisstraat",
     "streetInputError": "Street is required",
-    "streetNrInputTitle": "Nr.",
     "streetNrInputDescription": "Street number",
     "streetNrInputPlaceholder": "50",
     "streetNrInputError": "Nr is required",
-    "boxNrInputTitle": "Bus",
     "boxNrInputDescription": "Bus number",
     "boxNrInputPlaceholder": "1",
     "boxNrInputError": "Invalid bus",
+    "extraInfoInputDescription": "Extra",
+    "extraInfoInputPlaceholder": "Zone A",
 
     "firstNameInputTitle": "Contact person",
     "firstNameInputDescription": "First name",
@@ -84,7 +88,8 @@
     "denyMessageInputPlaceholder": "Description of motivation",
     "denyMessageInputError": "Description of motivation is required",
 
-    "confirmButton": "Confirm"
+    "confirmButton": "Confirm",
+    "succes": "Request has been send succesfully."
   },
   "userRequestListPage": {
     "newUserRequest": "New Request",

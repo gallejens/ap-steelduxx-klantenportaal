@@ -38,6 +38,7 @@ public class UserRequestFormTest {
 
     final String jsonRequest = "{"
             + "\"companyName\":\"TestCompanyName\","
+            + "\"country\":\"TestCountry\","
             + "\"phoneNr\":\"+32 471 01 78 65\","
             + "\"vatNr\":\"BE0473416418\","
             + "\"postalCode\":2000,"
@@ -45,6 +46,7 @@ public class UserRequestFormTest {
             + "\"street\":\"TestStraat\","
             + "\"streetNr\":\"1\","
             + "\"boxNr\":\"\","
+            + "\"extraInfo\":\","
             + "\"firstName\":\"TestFirstName\","
             + "\"lastName\":\"TestLastName\","
             + "\"email\":\"info@test.be\","
@@ -57,7 +59,7 @@ public class UserRequestFormTest {
 
     @BeforeEach
     void setup() {
-        savedUserRequest = userRequestValueRepository.findByVatNrAndEmail("BE0473416418", "info@test.be");
+        savedUserRequest = userRequestValueRepository.findByVatNrOrEmail("BE0473416418", "info@test.be");
     }
 
     @Test
@@ -86,6 +88,7 @@ public class UserRequestFormTest {
 
         savedUserRequest.ifPresent(userRequest -> {
             assertThat(userRequest.getCompanyName()).isEqualTo("TestCompanyName");
+            assertThat(userRequest.getCountry()).isEqualTo("TestCountry");
             assertThat(userRequest.getPhoneNr()).isEqualTo("+32 471 01 78 65");
             assertThat(userRequest.getVatNr()).isEqualTo("BE0473416418");
             assertThat(userRequest.getPostalCode()).isEqualTo("2000");
@@ -93,6 +96,7 @@ public class UserRequestFormTest {
             assertThat(userRequest.getStreet()).isEqualTo("TestStraat");
             assertThat(userRequest.getStreetNr()).isEqualTo("1");
             assertThat(userRequest.getBoxNr()).isEqualTo("");
+            assertThat(userRequest.getExtraInfo()).isEqualTo("");
             assertThat(userRequest.getFirstName()).isEqualTo("TestFirstName");
             assertThat(userRequest.getLastName()).isEqualTo("TestLastName");
             assertThat(userRequest.getEmail()).isEqualTo("info@test.be");

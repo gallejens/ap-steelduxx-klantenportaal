@@ -31,6 +31,20 @@
       justify-content: space-between;
       width: calc(1.6 / 3 * 100%);
 
+      & > .company_fields {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        & > div {
+          width: calc(0.95 / 2 * 100%);
+        }
+
+        & > div:last-child {
+          width: calc(0.95 / 2 * 100%);
+        }
+      }
+
       & > .number_fields,
       .place_fields {
         display: flex;
@@ -56,11 +70,13 @@
         & > div:first-child {
           width: calc(1.9 / 3 * 100%);
         }
-        & > div {
+        & > .street_nr_input {
           width: calc(0.5 / 3 * 100%);
+          margin-top: 7px; // Align field with others because of no asterix in title
         }
-        & > div:last-child {
+        & > .bus_nr_input {
           width: calc(0.5 / 3 * 100%);
+          margin-top: 7px; // Align field with others because of no asterix in title
         }
       }
     }

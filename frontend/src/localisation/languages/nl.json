@@ -86,34 +86,35 @@
 
     "confirmButton": "Bevestigen"
   },
-  "user_request_list_page": {
+  "userRequestListPage": {
     "newUserRequest": "Nieuwe Aanvraag",
-
-    "tableHeader0": "Volg Id",
-    "tableHeader1": "Bedrijfsnaam",
-    "tableHeader2": "Datum",
-    "tableHeader3": "Btw-nummer",
-    "tableHeader4": "Contact Persoon",
-
+    "table": {
+      "followId": "Volg ID",
+      "companyName": "Bedrijfsnaam",
+      "createdOn": "Datum",
+      "vatNr": "BTW-nummer",
+      "contactPerson": "Contactpersoon"
+    },
     "tableLoading": "Bezig met laden...",
     "tableError": "Kan aanvragen niet laden",
     "tableEmpty": "Geen aanvragen"
   },
-  "order_list_page": {
-    "tableHeader0": "Referentie Nummer",
-    "tableHeader1": "Klant Referentie Nummer",
-    "tableHeader2": "Status",
-    "tableHeader3": "Transport Type",
-    "tableHeader4": "Haven van Herkomst",
-    "tableHeader5": "Haven van Bestemming",
-    "tableHeader6": "Schip Naam",
-    "tableHeader7": "ETS",
-    "tableHeader8": "ATS",
-    "tableHeader9": "ETA",
-    "tableHeader10": "ATA",
-
-    "tableLoading": "Bezig met laden...",
-    "tableError": "Kan aanvragen niet laden"
+  "orderListPage": {
+    "table": {
+      "referenceNumber": "Referentienummer",
+      "customerReferenceNumber": "Klanten Referentienummer",
+      "state": "Status",
+      "transportType": "Transport Type",
+      "portOfOriginCode": "Haven van Herkomst",
+      "portOfDestinationCode": "Haven van Bestemming",
+      "shipName": "Scheepsnaam",
+      "ets": "ETS",
+      "ats": "ATS",
+      "eta": "ETA",
+      "ata": "ATA"
+    },
+    "loading": "Aan het laden...",
+    "error": "Kan orders niet laten"
   },
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",
@@ -182,5 +183,8 @@
         "success": "Wachtwoord is succesvol verandered."
       }
     }
+  },
+  "table": {
+    "columnSelectorButton": "Kolommen"
   }
 }

@@ -86,34 +86,35 @@
 
     "confirmButton": "Confirm"
   },
-  "user_request_list_page": {
+  "userRequestListPage": {
     "newUserRequest": "New Request",
-
-    "tableHeader0": "Follow Id",
-    "tableHeader1": "Company Name",
-    "tableHeader2": "Date",
-    "tableHeader3": "VAT number",
-    "tableHeader4": "Contact Person",
-
+    "table": {
+      "followId": "Follow ID",
+      "companyName": "Company Name",
+      "createdOn": "Date",
+      "vatNr": "VAT Number",
+      "contactPerson": "Contact Person"
+    },
     "tableLoading": "Loading...",
     "tableError": "Can't load requests",
     "tableEmpty": "No requests"
   },
-  "order_list_page": {
-    "tableHeader0": "Reference Number",
-    "tableHeader1": "Customer Reference Number",
-    "tableHeader2": "State",
-    "tableHeader3": "Transport Type",
-    "tableHeader4": "Port of Origin",
-    "tableHeader5": "Port of Destination",
-    "tableHeader6": "Ship Name",
-    "tableHeader7": "ETS",
-    "tableHeader8": "ATS",
-    "tableHeader9": "ETA",
-    "tableHeader10": "ATA",
-
-    "tableLoading": "Loading...",
-    "tableError": "Can't load requests"
+  "orderListPage": {
+    "table": {
+      "referenceNumber": "Reference Number",
+      "customerReferenceNumber": "Customer Reference Number",
+      "state": "State",
+      "transportType": "Transport Type",
+      "portOfOriginCode": "Port of Origin",
+      "portOfDestinationCode": "Port of Destination",
+      "shipName": "Ship Name",
+      "ets": "ETS",
+      "ats": "ATS",
+      "eta": "ETA",
+      "ata": "ATA"
+    },
+    "loading": "Loading...",
+    "error": "Can't load orders"
   },
   "userRequestReviewPage": {
     "backButton": "Go Back",
@@ -182,5 +183,8 @@
         "success": "Password has been changed successfully."
       }
     }
+  },
+  "table": {
+    "columnSelectorButton": "Columns"
   }
 }

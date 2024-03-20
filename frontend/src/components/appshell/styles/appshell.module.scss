@@ -92,6 +92,11 @@ $navbar_left_width: 17rem;
 
       padding: var(--mantine-spacing-xl);
       background-color: var(--mantine-primary-color-0);
+
+      overflow: hidden;
+      & > div {
+        overflow: hidden;
+      }
     }
   }
 
@@ -148,6 +153,8 @@ $navbar_left_width: 17rem;
     & > .options {
       @include mixins.shadow;
 
+      z-index: 100;
+
       position: absolute;
       bottom: 0;
       left: $navbar_left_width;
@@ -169,6 +176,8 @@ $navbar_left_width: 17rem;
         gap: var(--mantine-spacing-sm);
 
         padding: var(--mantine-spacing-xs);
+
+        border-radius: var(--mantine-radius-default);
 
         &:hover {
           background-color: var(--mantine-color-primary-1);

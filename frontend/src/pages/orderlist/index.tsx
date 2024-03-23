@@ -1,5 +1,6 @@
 import { useState, type FC } from 'react';
 import { Badge, TextInput } from '@mantine/core';
+import { useNavigate } from '@tanstack/react-router'; // extra
 import styles from './styles/orderList.module.scss';
 import { IconSearch } from '@tabler/icons-react';
 import { doApiAction } from '@/lib/api';
@@ -13,12 +14,16 @@ type Order = {
   state: 'SAILING' | 'PLANNED' | 'CREATED' | 'ARRIVED' | 'CLOSED' | 'LOADED';
   transportType: 'IMPORT' | 'EXPORT';
   portOfOriginCode: string; // ex: "INMUN",
+  portOfOriginName: string; // ex: "Mundra, India",
   portOfDestinationCode: string; // ex: "BEANR",
+  portOfDestinationName: string; //ex: "Antwerp, Belgium",
   shipName: string; // ex: "EDISON",
   ets: string | null; // ex: "07-03-2024 11:58",
   ats: string | null; // ex: "07-03-2024 23:58",
   eta: string | null; // ex: "27-03-2024 11:58",
   ata: string | null; // ex: null
+  totalWeight: number; // ex: 57960000,
+  totalContainers: number; // ex: 4,
 };
 
 const getStateColor = (state: Order['state']) => {
@@ -54,6 +59,7 @@ const getTransportTypeColor = (state: Order['transportType']) => {
 export const OrderListPage: FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const { t } = useTranslation();
+  const navigate = useNavigate(); //extra
 
   const {
     data: orders,
@@ -67,6 +73,12 @@ export const OrderListPage: FC = () => {
         method: 'GET',
       }),
   });
+
+  const handleOrderClick = (referenceNumber: string) => {
+    navigate({
+      to: `/app/orders/${referenceNumber}`,
+    });
+  };
 
   if (status === 'pending') {
     return <div>{t('orderListPage:loading')}</div>;
@@ -94,6 +106,7 @@ export const OrderListPage: FC = () => {
           storageKey='table_orderlist'
           translationKey='orderListPage:table'
           searchValue={searchValue}
+          onRowClick={(order: Order) => handleOrderClick(order.referenceNumber)} // extra
           columns={[
             {
               key: 'referenceNumber',

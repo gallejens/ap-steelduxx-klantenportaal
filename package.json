@@ -18,5 +18,8 @@
     "*": [
       "npx prettier --config .prettierrc --write"
     ]
+  },
+  "dependencies": {
+    "react-router-dom": "^6.22.3"
   }
 }

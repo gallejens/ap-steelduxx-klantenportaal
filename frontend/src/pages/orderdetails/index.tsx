@@ -1,8 +1,9 @@
 import { FC } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import './styles/orderDetails.module.scss';
+import { doApiAction } from '@/lib/api';
 
 interface OrderDetail {
   referenceNumber: string; // ex: "2646607000",
@@ -39,21 +40,21 @@ interface Product {
 }
 
 export const OrderDetailsPage: FC = () => {
-  const { referenceNumber } = useParams<'referenceNumber'>();
   const { t } = useTranslation();
+  const { order_id: orderId } = useParams({
+    from: '/app/orders/$order_id',
+  });
 
   const {
     data: orderDetail,
     status,
     error,
-  } = useQuery<OrderDetail>({
-    queryKey: ['orderDetail', referenceNumber],
+  } = useQuery({
+    queryKey: ['orderDetail', orderId],
     queryFn: () =>
-      fetch(`/orders/${referenceNumber}`).then(res => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
+      doApiAction<OrderDetail>({
+        endpoint: `/orders/${orderId}`,
+        method: 'GET',
       }),
   });
 
@@ -71,20 +72,20 @@ export const OrderDetailsPage: FC = () => {
 
   return (
     <div className='order-details'>
-      <h1>Order Details: {orderDetail.referenceNumber}</h1>
+      <h1>Order Details: {orderDetail?.referenceNumber}</h1>
       <section>
         <h2>General Information</h2>
-        <p>Customer Reference: {orderDetail.customerReferenceNumber}</p>
-        <p>State: {orderDetail.state}</p>
-        <p>Transport Type: {orderDetail.transportType}</p>
+        <p>Customer Reference: {orderDetail?.customerReferenceNumber}</p>
+        <p>State: {orderDetail?.state}</p>
+        <p>Transport Type: {orderDetail?.transportType}</p>
       </section>
 
       <section>
         <h2>Ship Information</h2>
-        <p>Name: {orderDetail.shipName}</p>
-        <p>IMO: {orderDetail.shipIMO}</p>
-        <p>MMSI: {orderDetail.shipMMSI}</p>
-        <p>Type: {orderDetail.shipType}</p>
+        <p>Name: {orderDetail?.shipName}</p>
+        <p>IMO: {orderDetail?.shipIMO}</p>
+        <p>MMSI: {orderDetail?.shipMMSI}</p>
+        <p>Type: {orderDetail?.shipType}</p>
       </section>
 
       <section>

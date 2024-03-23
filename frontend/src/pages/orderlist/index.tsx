@@ -1,6 +1,6 @@
 import { useState, type FC } from 'react';
 import { Badge, TextInput } from '@mantine/core';
-import { useNavigate } from '@tanstack/react-router'; // extra
+import { useNavigate } from '@tanstack/react-router';
 import styles from './styles/orderList.module.scss';
 import { IconSearch } from '@tabler/icons-react';
 import { doApiAction } from '@/lib/api';
@@ -59,7 +59,7 @@ const getTransportTypeColor = (state: Order['transportType']) => {
 export const OrderListPage: FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const { t } = useTranslation();
-  const navigate = useNavigate(); //extra
+  const navigate = useNavigate();
 
   const {
     data: orders,
@@ -76,7 +76,10 @@ export const OrderListPage: FC = () => {
 
   const handleOrderClick = (referenceNumber: string) => {
     navigate({
-      to: `/app/orders/${referenceNumber}`,
+      to: '/app/orders/$order_id',
+      params: {
+        order_id: referenceNumber,
+      },
     });
   };
 

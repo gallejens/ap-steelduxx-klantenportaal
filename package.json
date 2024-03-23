@@ -20,6 +20,6 @@
     ]
   },
   "dependencies": {
-    "react-router-dom": "^6.22.3"
+    "@tanstack/react-router": "^1.22.3"
   }
 }

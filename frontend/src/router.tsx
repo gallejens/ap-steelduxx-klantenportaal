@@ -107,7 +107,7 @@ const orderListRoute = createRoute({
 
 const orderDetailsRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
-  path: 'orders/:referenceNumber',
+  path: '/orders/$order_id',
   component: OrderDetailsPage,
 });
 

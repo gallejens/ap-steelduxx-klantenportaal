@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import './styles/orderDetails.module.scss';
+import styles from './styles/orderDetails.module.scss';
 import { doApiAction } from '@/lib/api';
 
 interface OrderDetail {
@@ -71,34 +71,112 @@ export const OrderDetailsPage: FC = () => {
   }
 
   return (
-    <div className='order-details'>
-      <h1>Order Details: {orderDetail?.referenceNumber}</h1>
-      <section>
-        <h2>General Information</h2>
-        <p>Customer Reference: {orderDetail?.customerReferenceNumber}</p>
-        <p>State: {orderDetail?.state}</p>
-        <p>Transport Type: {orderDetail?.transportType}</p>
-      </section>
+    // <div className={styles.orderdetails}>
+    //   <h1>Order Details: {orderDetail?.referenceNumber}</h1>
+    //   <section>
+    //     <h2>General Information</h2>
+    //     <p>Customer Reference: {orderDetail?.customerReferenceNumber}</p>
+    //     <p>State: {orderDetail?.state}</p>
+    //     <p>Transport Type: {orderDetail?.transportType}</p>
+    //   </section>
 
-      <section>
-        <h2>Ship Information</h2>
-        <p>Name: {orderDetail?.shipName}</p>
-        <p>IMO: {orderDetail?.shipIMO}</p>
-        <p>MMSI: {orderDetail?.shipMMSI}</p>
-        <p>Type: {orderDetail?.shipType}</p>
-      </section>
+    //   <section>
+    //     <h2>Port Information</h2>
+    //     <p>Origin: {orderDetail?.portOfOriginName} - {orderDetail?.portOfOriginCode}</p>
+    //     <p>Destination: {orderDetail?.portOfDestinationName} - {orderDetail?.portOfDestinationCode}</p>
+    //   </section>
 
-      <section>
-        <h2>Products</h2>
-        <ul>
-          {orderDetail?.products.map((product: Product, index: number) => (
-            <li key={index}>
-              {product.name} - Quantity: {product.quantity}, Weight:{' '}
-              {product.weight} kg
-            </li>
-          ))}
-        </ul>
-      </section>
+    //   <section>
+    //     <h2>Time Information</h2>
+    //     <p>ETS: {orderDetail?.ets}</p>
+    //     <p>ATS: {orderDetail?.ats}</p>
+    //     <p>ETA: {orderDetail?.eta}</p>
+    //     <p>ATA: {orderDetail?.ata}</p>
+    //     <p>Estimated Time Cargo On Quay: {orderDetail?.estimatedTimeCargoOnQuay}</p>
+    //     <p>Actual Time Cargo Loaded: {orderDetail?.actualTimeCargoLoaded}</p>
+    //   </section>
+
+    //   <section>
+    //     <h2>Ship Information</h2>
+    //     <p>Name: {orderDetail?.shipName}</p>
+    //     <p>IMO: {orderDetail?.shipIMO}</p>
+    //     <p>MMSI: {orderDetail?.shipMMSI}</p>
+    //     <p>Type: {orderDetail?.shipType}</p>
+    //   </section>
+
+    //   <section>
+    //     <h2>Products</h2>
+    //     <ul>
+    //       {orderDetail?.products.map((product: Product, index: number) => (
+    //         <li key={index}>
+    //           HsCode: {product.hsCode} - {product.name} - Quantity: {product.quantity},{' '}
+    //           {product.weight} kg - Container: {product.containerNumber}
+    //         </li>
+    //       ))}
+    //     </ul>
+    //   </section>
+    // </div>
+
+    <div className={styles.order_details_wrapper}>
+      <div className={styles.order_details_header}>
+        <h1>Order Details: {orderDetail?.referenceNumber}</h1>
+      </div>
+      <div className={styles.order_details_content}>
+        <div className={styles.leftcolumn}>
+          <section>
+            <h2>General Information</h2>
+            <p>Customer Reference: {orderDetail?.customerReferenceNumber}</p>
+            <p>State: {orderDetail?.state}</p>
+            <p>Transport Type: {orderDetail?.transportType}</p>
+          </section>
+          <section>
+            <h2>Port Information</h2>
+            <p>
+              Origin: {orderDetail?.portOfOriginName} -{' '}
+              {orderDetail?.portOfOriginCode}
+            </p>
+            <p>
+              Destination: {orderDetail?.portOfDestinationName} -{' '}
+              {orderDetail?.portOfDestinationCode}
+            </p>
+          </section>
+          <section>
+            <h2>Time Information</h2>
+            <p>ETS: {orderDetail?.ets}</p>
+            <p>ATS: {orderDetail?.ats}</p>
+            <p>ETA: {orderDetail?.eta}</p>
+            <p>ATA: {orderDetail?.ata}</p>
+            <p>
+              Estimated Time Cargo On Quay:{' '}
+              {orderDetail?.estimatedTimeCargoOnQuay}
+            </p>
+            <p>
+              Actual Time Cargo Loaded: {orderDetail?.actualTimeCargoLoaded}
+            </p>
+          </section>
+        </div>
+        <div className={styles.rightcolumn}>
+          <section>
+            <h2>Ship Information</h2>
+            <p>Name: {orderDetail?.shipName}</p>
+            <p>IMO: {orderDetail?.shipIMO}</p>
+            <p>MMSI: {orderDetail?.shipMMSI}</p>
+            <p>Type: {orderDetail?.shipType}</p>
+          </section>
+          <section>
+            <h2>Products</h2>
+            <ul>
+              {orderDetail?.products.map((product: Product, index: number) => (
+                <li key={index}>
+                  HsCode: {product.hsCode} - {product.name} - Quantity:{' '}
+                  {product.quantity}, {product.weight} kg - Container:{' '}
+                  {product.containerNumber}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </div>
     </div>
   );
 };

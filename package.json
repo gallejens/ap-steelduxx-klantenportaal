@@ -18,8 +18,5 @@
     "*": [
       "npx prettier --config .prettierrc --write"
     ]
-  },
-  "dependencies": {
-    "@tanstack/react-router": "^1.22.3"
   }
 }

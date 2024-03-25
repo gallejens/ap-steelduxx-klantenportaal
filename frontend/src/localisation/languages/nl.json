@@ -110,13 +110,17 @@
       "customerReferenceNumber": "Klanten Referentienummer",
       "state": "Status",
       "transportType": "Transport Type",
-      "portOfOriginCode": "Haven van Herkomst",
-      "portOfDestinationCode": "Haven van Bestemming",
+      "portOfOriginCode": "Haven van Herkomst Code",
+      "portOfOriginName": "Haven van Herkomst Name",
+      "portOfDestinationCode": "Haven van Bestemming Code",
+      "portOfDestinationName": "Haven van Bestemming Name",
       "shipName": "Scheepsnaam",
       "ets": "ETS",
       "ats": "ATS",
       "eta": "ETA",
-      "ata": "ATA"
+      "ata": "ATA",
+      "totalWeight": "Totaal Gewicht",
+      "totalContainers": "Aantal Containers"
     },
     "loading": "Aan het laden...",
     "error": "Kan orders niet laten"

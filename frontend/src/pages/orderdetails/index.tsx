@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { type FC } from 'react';
 import { useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -122,8 +122,8 @@ export const OrderDetailsPage: FC = () => {
             <ul>
               {orderDetail?.products.map((product: Product, index: number) => (
                 <li key={index}>
-                  HsCode: {product.hsCode} - {product.name} - Quantity:{' '}
-                  {product.quantity}, {product.weight} kg - Container:{' '}
+                  HsCode: {product.hsCode} - {product.name} - Quantity:
+                  {product.quantity}, {product.weight} kg - Container:
                   {product.containerNumber}
                 </li>
               ))}

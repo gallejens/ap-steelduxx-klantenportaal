@@ -110,13 +110,17 @@
       "customerReferenceNumber": "Customer Reference Number",
       "state": "State",
       "transportType": "Transport Type",
-      "portOfOriginCode": "Port of Origin",
-      "portOfDestinationCode": "Port of Destination",
+      "portOfOriginCode": "Port of Origin Code",
+      "portOfOriginName": "Port of Origin Name",
+      "portOfDestinationCode": "Port of Destination Code",
+      "portOfDestinationName": "Port of Destination Name",
       "shipName": "Ship Name",
       "ets": "ETS",
       "ats": "ATS",
       "eta": "ETA",
-      "ata": "ATA"
+      "ata": "ATA",
+      "totalWeight": "Total Weight",
+      "totalContainers": "Total Containers"
     },
     "loading": "Loading...",
     "error": "Can't load orders"

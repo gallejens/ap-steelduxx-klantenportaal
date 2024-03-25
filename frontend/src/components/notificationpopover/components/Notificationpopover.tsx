@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { List, Popover, ThemeIcon, rem } from '@mantine/core';
 import { IconCircleCheck, IconMessage } from '@tabler/icons-react';
+import { useAuth } from '@/hooks/useAuth';
 
 export function NotificationPopover() {
   type NotificationData = {
@@ -15,14 +16,16 @@ export function NotificationPopover() {
   };
 
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
+  const { user } = useAuth();
 
   useEffect(() => {
-    fetchNotifications();
-  }, []);
+    if (user) {
+      fetchNotifications(user.id);
+    }
+  }, [user]);
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = async (userId: number) => {
     try {
-      const userId = 1;
       const response = await fetch(`/api/notifications/user/${userId}`);
       if (response.ok) {
         const data = await response.json();
@@ -37,7 +40,9 @@ export function NotificationPopover() {
   };
 
   const handleIconClick = () => {
-    fetchNotifications();
+    if (user) {
+      fetchNotifications(user.id);
+    }
   };
 
   return (

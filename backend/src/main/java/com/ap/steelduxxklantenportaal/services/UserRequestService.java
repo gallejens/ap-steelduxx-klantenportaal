@@ -132,6 +132,8 @@ public class UserRequestService {
                 } else {
                         // Send email to set password
 
+                        // Edit status to APPROVED
+
                         // Set user values in DB
                         UserRequestDto userRequestDto = getUserRequest(id);
 

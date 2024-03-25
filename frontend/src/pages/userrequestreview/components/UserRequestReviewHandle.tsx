@@ -7,8 +7,11 @@ import { notifications } from '@/components/notifications';
 import { GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
 
-type UserRequestHandleValues = {
+type UserRequestApproveValues = {
   referenceCode: string;
+};
+
+type UserRequestDenyValues = {
   denyMessage: string;
 };
 
@@ -25,10 +28,9 @@ export const UserRequestReviewHandle: FC<Props> = props => {
   const [isApproved, setIsApproved] = useState(true);
   const [isDenied, setIsDenied] = useState(false);
 
-  const UserRequestReviewForm = useForm<UserRequestHandleValues>({
+  const approveForm = useForm<UserRequestApproveValues>({
     initialValues: {
       referenceCode: '',
-      denyMessage: '',
     },
     validate: {
       referenceCode: value => {
@@ -36,6 +38,15 @@ export const UserRequestReviewHandle: FC<Props> = props => {
           return t('userRequestForm:referenceCodeInputError');
         }
       },
+    },
+    validateInputOnBlur: true,
+  });
+
+  const denyForm = useForm<UserRequestDenyValues>({
+    initialValues: {
+      denyMessage: '',
+    },
+    validate: {
       denyMessage: value => {
         if (!value) {
           return t('userRequestForm:denyMessageInputError');
@@ -45,59 +56,70 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     validateInputOnBlur: true,
   });
 
-  const handleApproveClick = () => {
-    setIsApproved(true);
-    setIsDenied(false);
-  };
-
-  const handleDenyClick = () => {
-    setIsDenied(true);
-    setIsApproved(false);
-  };
-
-  const handleUserRequestReviewButton = async (
-    values: UserRequestHandleValues
+  const approveUserRequestReviewButton = async (
+    values: UserRequestApproveValues
   ) => {
-    if (!UserRequestReviewForm.isValid()) {
+    if (!approveForm.isValid()) {
       notifications.add({
         title: t('notifications: genericError'),
         message: t('notifications:invalidForm'),
         color: 'red',
       });
-      return;
+
+      const resultApprove = await doApiAction<
+        GenericAPIResponse<{ message: string }>
+      >({
+        endpoint: `/user_requests/${requestId}/approve`,
+        method: 'POST',
+        body: {
+          referenceCode: values.referenceCode,
+        },
+      });
+
+      notifications.add({
+        message: t(resultApprove?.message ?? 'notifications:genericError'),
+        autoClose: 5000,
+      });
+
+      props.onSubmit();
     }
+  };
 
-    const resultApprove = await doApiAction<
-      GenericAPIResponse<{ message: string }>
-    >({
-      endpoint: `/user_requests/${requestId}/approve`,
-      method: 'POST',
-      body: {
-        referenceCode: values.referenceCode,
-      },
-    });
+  const handleApproveClick = () => {
+    setIsApproved(true);
+    setIsDenied(false);
+  };
 
-    notifications.add({
-      message: t(resultApprove?.message ?? 'notifications:genericError'),
-      autoClose: 5000,
-    });
+  const denyUserRequestReviewButton = async (values: UserRequestDenyValues) => {
+    if (!denyForm.isValid()) {
+      notifications.add({
+        title: t('notifications: genericError'),
+        message: t('notifications:invalidForm'),
+        color: 'red',
+      });
 
-    const resultDeny = await doApiAction<
-      GenericAPIResponse<{ message: string }>
-    >({
-      endpoint: `/user_requests/${requestId}/deny`,
-      method: 'POST',
-      body: {
-        denyMessage: values.denyMessage,
-      },
-    });
+      const resultDeny = await doApiAction<
+        GenericAPIResponse<{ message: string }>
+      >({
+        endpoint: `/user_requests/${requestId}/deny`,
+        method: 'POST',
+        body: {
+          denyMessage: values.denyMessage,
+        },
+      });
 
-    notifications.add({
-      message: t(resultDeny?.message ?? 'notifications:genericError'),
-      autoClose: 5000,
-    });
+      notifications.add({
+        message: t(resultDeny?.message ?? 'notifications:genericError'),
+        autoClose: 5000,
+      });
 
-    props.onSubmit();
+      props.onSubmit();
+    }
+  };
+
+  const handleDenyClick = () => {
+    setIsDenied(true);
+    setIsApproved(false);
   };
 
   return (
@@ -125,22 +147,34 @@ export const UserRequestReviewHandle: FC<Props> = props => {
       </div>
 
       <div className={styles.handle_container}>
-        <form
-          onSubmit={UserRequestReviewForm.onSubmit(values =>
-            handleUserRequestReviewButton(values)
-          )}
-        >
-          {isApproved ? (
+        {isApproved ? (
+          <form
+            onSubmit={approveForm.onSubmit(values =>
+              approveUserRequestReviewButton(values)
+            )}
+          >
             <TextInput
               label={t('userRequestForm:referenceCodeInputTitle')}
               withAsterisk
               description={t('userRequestForm:referenceCodeInputDescription')}
               placeholder={t('userRequestForm:referenceCodeInputPlaceholder')}
               required
-              {...UserRequestReviewForm.getInputProps('refernceCode')}
+              {...approveForm.getInputProps('referenceCode')}
             />
-          ) : null}
-          {isDenied ? (
+            <div className={styles.confirm_button}>
+              <Button type='submit'>
+                {t('userRequestForm:confirmButton')}
+              </Button>
+            </div>
+          </form>
+        ) : null}
+
+        {isDenied ? (
+          <form
+            onSubmit={denyForm.onSubmit(values =>
+              denyUserRequestReviewButton(values)
+            )}
+          >
             <Textarea
               className={styles.deny_input}
               withAsterisk
@@ -151,13 +185,15 @@ export const UserRequestReviewHandle: FC<Props> = props => {
               description={t('userRequestForm:denyMessageInputDescription')}
               placeholder={t('userRequestForm:denyMessageInputPlaceholder')}
               required
-              {...UserRequestReviewForm.getInputProps('denyMessage')}
+              {...denyForm.getInputProps('denyMessage')}
             />
-          ) : null}
-          <div className={styles.confirm_button}>
-            <Button type='submit'>{t('userRequestForm:confirmButton')}</Button>
-          </div>
-        </form>
+            <div className={styles.confirm_button}>
+              <Button type='submit'>
+                {t('userRequestForm:confirmButton')}
+              </Button>
+            </div>
+          </form>
+        ) : null}
       </div>
     </>
   );

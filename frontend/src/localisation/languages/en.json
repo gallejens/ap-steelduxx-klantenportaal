@@ -126,6 +126,7 @@
     "error": "Can't load orders"
   },
   "orderDetailPage": {
+    "orderDetails": "Order Details",
     "generalInfo": "General Info",
     "customerReference": "Customer Reference",
     "state": "State",

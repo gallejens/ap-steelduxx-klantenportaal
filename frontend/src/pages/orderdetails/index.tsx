@@ -73,58 +73,86 @@ export const OrderDetailsPage: FC = () => {
   return (
     <div className={styles.order_details_wrapper}>
       <div className={styles.order_details_header}>
-        <h1>Order Details: {orderDetail?.referenceNumber}</h1>
+        <h1>
+          {t('orderDetailPage:orderDetails')}: {orderDetail?.referenceNumber}
+        </h1>
       </div>
       <div className={styles.order_details_content}>
         <div className={styles.leftcolumn}>
           <section>
-            <h2>General Information</h2>
-            <p>Customer Reference: {orderDetail?.customerReferenceNumber}</p>
-            <p>State: {orderDetail?.state}</p>
-            <p>Transport Type: {orderDetail?.transportType}</p>
+            <h2>{t('orderDetailPage:generalInfo')}</h2>
+            <p>
+              {t('orderDetailPage:customerReference')}:{' '}
+              {orderDetail?.customerReferenceNumber}
+            </p>
+            <p>
+              {t('orderDetailPage:state')}: {orderDetail?.state}
+            </p>
+            <p>
+              {t('orderDetailPage:transportType')}: {orderDetail?.transportType}
+            </p>
           </section>
           <section>
-            <h2>Port Information</h2>
+            <h2>{t('orderDetailPage:portInformation')}</h2>
             <p>
-              Origin: {orderDetail?.portOfOriginName} -{' '}
+              {t('orderDetailPage:origin')}: {orderDetail?.portOfOriginName} -{' '}
               {orderDetail?.portOfOriginCode}
             </p>
             <p>
-              Destination: {orderDetail?.portOfDestinationName} -{' '}
+              {t('orderDetailPage:destination')}:{' '}
+              {orderDetail?.portOfDestinationName} -{' '}
               {orderDetail?.portOfDestinationCode}
             </p>
           </section>
           <section>
-            <h2>Time Information</h2>
-            <p>ETS: {orderDetail?.ets}</p>
-            <p>ATS: {orderDetail?.ats}</p>
-            <p>ETA: {orderDetail?.eta}</p>
-            <p>ATA: {orderDetail?.ata}</p>
+            <h2>{t('orderDetailPage:timeInformation')}</h2>
             <p>
-              Estimated Time Cargo On Quay:{' '}
+              {t('orderDetailPage:ets')}: {orderDetail?.ets}
+            </p>
+            <p>
+              {t('orderDetailPage:ats')}: {orderDetail?.ats}
+            </p>
+            <p>
+              {t('orderDetailPage:eta')}: {orderDetail?.eta}
+            </p>
+            <p>
+              {t('orderDetailPage:ata')}: {orderDetail?.ata}
+            </p>
+            <p>
+              {t('orderDetailPage:estimatedTimeCargoOnQuay')}:{' '}
               {orderDetail?.estimatedTimeCargoOnQuay}
             </p>
             <p>
-              Actual Time Cargo Loaded: {orderDetail?.actualTimeCargoLoaded}
+              {t('orderDetailPage:actualTimeCargoLoaded')}:{' '}
+              {orderDetail?.actualTimeCargoLoaded}
             </p>
           </section>
         </div>
         <div className={styles.rightcolumn}>
           <section>
-            <h2>Ship Information</h2>
-            <p>Name: {orderDetail?.shipName}</p>
-            <p>IMO: {orderDetail?.shipIMO}</p>
-            <p>MMSI: {orderDetail?.shipMMSI}</p>
-            <p>Type: {orderDetail?.shipType}</p>
+            <h2>{t('orderDetailPage:shipInformation')}</h2>
+            <p>
+              {t('orderDetailPage:name')}: {orderDetail?.shipName}
+            </p>
+            <p>
+              {t('orderDetailPage:imo')}: {orderDetail?.shipIMO}
+            </p>
+            <p>
+              {t('orderDetailPage:mmsi')}: {orderDetail?.shipMMSI}
+            </p>
+            <p>
+              {t('orderDetailPage:type')}: {orderDetail?.shipType}
+            </p>
           </section>
           <section>
-            <h2>Products</h2>
+            <h2>{t('orderDetailPage:products')}</h2>
             <ul>
               {orderDetail?.products.map((product: Product, index: number) => (
                 <li key={index}>
-                  HsCode: {product.hsCode} - {product.name} - Quantity:
-                  {product.quantity}, {product.weight} kg - Container:
-                  {product.containerNumber}
+                  {t('orderDetailPage:hsCode')}: {product.hsCode} -{' '}
+                  {product.name} - {t('orderDetailPage:quantity')}:{' '}
+                  {product.quantity}, {product.weight} kg -{' '}
+                  {t('orderDetailPage:container')}: {product.containerNumber}
                 </li>
               ))}
             </ul>

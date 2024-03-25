@@ -126,6 +126,7 @@
     "error": "Kan orders niet laten"
   },
   "orderDetailPage": {
+    "orderDetails": "Bestelling Details",
     "generalInfo": "Algemeen Informatie",
     "customerReference": "Klanten Referentie",
     "state": "Status",

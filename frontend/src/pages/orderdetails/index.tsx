@@ -71,52 +71,6 @@ export const OrderDetailsPage: FC = () => {
   }
 
   return (
-    // <div className={styles.orderdetails}>
-    //   <h1>Order Details: {orderDetail?.referenceNumber}</h1>
-    //   <section>
-    //     <h2>General Information</h2>
-    //     <p>Customer Reference: {orderDetail?.customerReferenceNumber}</p>
-    //     <p>State: {orderDetail?.state}</p>
-    //     <p>Transport Type: {orderDetail?.transportType}</p>
-    //   </section>
-
-    //   <section>
-    //     <h2>Port Information</h2>
-    //     <p>Origin: {orderDetail?.portOfOriginName} - {orderDetail?.portOfOriginCode}</p>
-    //     <p>Destination: {orderDetail?.portOfDestinationName} - {orderDetail?.portOfDestinationCode}</p>
-    //   </section>
-
-    //   <section>
-    //     <h2>Time Information</h2>
-    //     <p>ETS: {orderDetail?.ets}</p>
-    //     <p>ATS: {orderDetail?.ats}</p>
-    //     <p>ETA: {orderDetail?.eta}</p>
-    //     <p>ATA: {orderDetail?.ata}</p>
-    //     <p>Estimated Time Cargo On Quay: {orderDetail?.estimatedTimeCargoOnQuay}</p>
-    //     <p>Actual Time Cargo Loaded: {orderDetail?.actualTimeCargoLoaded}</p>
-    //   </section>
-
-    //   <section>
-    //     <h2>Ship Information</h2>
-    //     <p>Name: {orderDetail?.shipName}</p>
-    //     <p>IMO: {orderDetail?.shipIMO}</p>
-    //     <p>MMSI: {orderDetail?.shipMMSI}</p>
-    //     <p>Type: {orderDetail?.shipType}</p>
-    //   </section>
-
-    //   <section>
-    //     <h2>Products</h2>
-    //     <ul>
-    //       {orderDetail?.products.map((product: Product, index: number) => (
-    //         <li key={index}>
-    //           HsCode: {product.hsCode} - {product.name} - Quantity: {product.quantity},{' '}
-    //           {product.weight} kg - Container: {product.containerNumber}
-    //         </li>
-    //       ))}
-    //     </ul>
-    //   </section>
-    // </div>
-
     <div className={styles.order_details_wrapper}>
       <div className={styles.order_details_header}>
         <h1>Order Details: {orderDetail?.referenceNumber}</h1>

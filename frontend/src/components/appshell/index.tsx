@@ -1,4 +1,4 @@
-import { IconArrowLeft, IconLanguage, IconMessage } from '@tabler/icons-react';
+import { IconArrowLeft, IconLanguage } from '@tabler/icons-react';
 import { Outlet, useNavigate, useRouterState } from '@tanstack/react-router';
 import type { FC } from 'react';
 import { TABS } from './constant';
@@ -6,6 +6,7 @@ import styles from './styles/appshell.module.scss';
 import { UserDisplay } from './components/UserDisplay';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon } from '@mantine/core';
+import { NotificationPopover } from '../notificationpopover';
 
 export const AppShell: FC = () => {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ export const AppShell: FC = () => {
           >
             <IconLanguage />
           </ActionIcon>
-          <IconMessage />
+          <NotificationPopover></NotificationPopover>
         </div>
       </div>
       <div className={styles.content}>

@@ -24,7 +24,7 @@ public class NotificationController {
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("hasAuthority('ACCESS')")
+    @PreAuthorize("permitAll")
     public List<Notification> getNotificationsByUserId(@PathVariable Long userId) {
         return notificationService.getNotificationsByUserId(userId);
     }

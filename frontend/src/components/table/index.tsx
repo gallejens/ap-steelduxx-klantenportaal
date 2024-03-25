@@ -241,7 +241,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                 {rows.map((row, idx) => (
                   <div
                     key={`cell_${column.key}_${idx}`}
-                    className={`${styles.cell} ${props.isRowClickable ? styles.cellPointer : ''}`}
+                    className={`${styles.cell} ${props.onRowClick ? styles.cellPointer : ''}`}
                     onClick={() => props.onRowClick?.(row)}
                   >
                     {column.transform ? (

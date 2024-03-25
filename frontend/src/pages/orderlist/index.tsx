@@ -16,7 +16,7 @@ type Order = {
   portOfOriginCode: string; // ex: "INMUN",
   portOfOriginName: string; // ex: "Mundra, India",
   portOfDestinationCode: string; // ex: "BEANR",
-  portOfDestinationName: string; //ex: "Antwerp, Belgium",
+  portOfDestinationName: string; // ex: "Antwerp, Belgium",
   shipName: string; // ex: "EDISON",
   ets: string | null; // ex: "07-03-2024 11:58",
   ats: string | null; // ex: "07-03-2024 23:58",
@@ -109,7 +109,6 @@ export const OrderListPage: FC = () => {
           storageKey='table_orderlist'
           translationKey='orderListPage:table'
           searchValue={searchValue}
-          isRowClickable={true}
           onRowClick={(order: Order) => handleOrderClick(order.referenceNumber)}
           columns={[
             {
@@ -137,7 +136,13 @@ export const OrderListPage: FC = () => {
               key: 'portOfOriginCode',
             },
             {
+              key: 'portOfOriginName',
+            },
+            {
               key: 'portOfDestinationCode',
+            },
+            {
+              key: 'portOfDestinationName',
             },
             {
               key: 'shipName',
@@ -157,6 +162,12 @@ export const OrderListPage: FC = () => {
             {
               key: 'ata',
               excludeFromSearch: true,
+            },
+            {
+              key: 'totalWeight',
+            },
+            {
+              key: 'totalContainers',
             },
           ]}
           data={orders ?? []}

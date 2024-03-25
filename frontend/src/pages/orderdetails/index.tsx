@@ -13,7 +13,7 @@ interface OrderDetail {
   portOfOriginCode: string; // ex: "INMUN",
   portOfOriginName: string; // ex: "Mundra, India",
   portOfDestinationCode: string; // ex: "BEANR",
-  portOfDestinationName: string; //ex: "Antwerp, Belgium",
+  portOfDestinationName: string; // ex: "Antwerp, Belgium",
   shipName: string; // ex: "EDISON",
   shipIMO: string; // ex: "9463011",
   shipMMSI: string; // ex: "235082896",

@@ -46,6 +46,10 @@ $cell_height: 2.5rem;
           padding: 0 var(--mantine-spacing-xs);
         }
 
+        & > .cellPointer {
+          cursor: pointer;
+        }
+
         & > .cell:nth-child(even) {
           background-color: var(--mantine-color-custom-0);
         }

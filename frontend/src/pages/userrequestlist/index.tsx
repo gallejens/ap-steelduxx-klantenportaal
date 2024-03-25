@@ -131,6 +131,7 @@ export const UserRequestListPage: FC = () => {
               searchValue={searchValue}
               storageKey='userrequest_list'
               translationKey='userRequestListPage:table'
+              isRowClickable={false}
               columns={[
                 {
                   key: 'followId',

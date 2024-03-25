@@ -109,7 +109,8 @@ export const OrderListPage: FC = () => {
           storageKey='table_orderlist'
           translationKey='orderListPage:table'
           searchValue={searchValue}
-          onRowClick={(order: Order) => handleOrderClick(order.referenceNumber)} // extra
+          isRowClickable={true}
+          onRowClick={(order: Order) => handleOrderClick(order.referenceNumber)}
           columns={[
             {
               key: 'referenceNumber',

@@ -9,6 +9,7 @@ export const UserRequestReviewPage: FC = () => {
       <div className={styles.userrequest_form}>
         <UserRequestReviewForm
           companyName={''}
+          country={''}
           email={''}
           phoneNr={''}
           vatNr={''}
@@ -17,13 +18,18 @@ export const UserRequestReviewPage: FC = () => {
           street={''}
           streetNr={''}
           boxNr={''}
+          extraInfo={''}
           firstName={''}
           lastName={''}
           status={''}
         />
       </div>
       <div className={styles.userrequest_handle}>
-        <UserRequestReviewHandle />
+        <UserRequestReviewHandle
+          onSubmit={function (): void {
+            throw new Error('Function not implemented.');
+          }}
+        />
       </div>
     </div>
   );

@@ -49,7 +49,7 @@ services:
       context: ./backend
     depends_on:
       - database
-    restart: on-failure
+    restart: "no"
     env_file: .env
     environment:
       SPRING_APPLICATION_JSON: |

@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.CompanyDto;
+import com.ap.steelduxxklantenportaal.dtos.CompanyApproveDto;
 import com.ap.steelduxxklantenportaal.dtos.UserInfoDto;
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
@@ -121,7 +121,7 @@ public class UserRequestService {
                 }
         }
 
-        public ResponseEntity<Object> approveUserRequest(Number id, CompanyDto companyDto)
+        public ResponseEntity<Object> approveUserRequest(Number id, CompanyApproveDto companyDto)
                         throws MessagingException, UserAlreadyExistsException {
                 boolean requestForCompanyExists = companyRepository.findByReferenceCode(companyDto.referenceCode())
                                 .isPresent();

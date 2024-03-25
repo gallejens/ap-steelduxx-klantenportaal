@@ -3,12 +3,12 @@ package com.ap.steelduxxklantenportaal.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "company")
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "comapny_name")
+    @Column(name = "company_name")
     private String companyName;
     @Column(name = "country")
     private String country;

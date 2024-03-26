@@ -1,83 +1,49 @@
-import React, { useState, useEffect } from 'react';
 import { Popover } from '@mantine/core';
 import { IconMessage } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
 import CustomCard from './Notificationcard';
+import { NotificationData } from '../types/notificationdata';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { doApiAction } from '@/lib/api';
 
 export function NotificationPopover() {
-  type NotificationData = {
-    id: number;
-    createdAt: any;
-    color?: string;
-    icon?: React.ReactNode;
-    title?: string;
-    message: string;
-    loading?: boolean;
-    hideCloseButton?: boolean;
-    autoClose?: number;
-    isRead: boolean;
-  };
-
-  const [notifications, setNotifications] = useState<NotificationData[]>([]);
-  const [newNotifications, setNewNotifications] = useState<boolean>(false);
   const { user } = useAuth();
+  const client = useQueryClient();
 
-  useEffect(() => {
-    if (user) {
-      fetchNotifications();
-      const interval = setInterval(fetchNotifications, 2000);
-      return () => clearInterval(interval);
-    }
-  }, [user]);
+  const {
+    data: notifications,
+    status,
+    error,
+  } = useQuery({
+    refetchOnWindowFocus: false,
+    queryKey: ['notifications', user?.id],
+    queryFn: () =>
+      doApiAction<NotificationData[]>({
+        endpoint: `notifications/user/new/${user?.id}`,
+        method: 'GET',
+      }),
+  });
 
-  useEffect(() => {
-    // Bepaal of er nieuwe notificaties zijn die niet zijn gemarkeerd als gelezen
-    const hasUnreadNotifications = notifications.some(
-      notification => !notification.isRead
-    );
-    setNewNotifications(hasUnreadNotifications);
-  }, [notifications]);
+  const readMutation = useMutation({
+    mutationFn: (id: number) => {
+      return doApiAction({
+        endpoint: `/notifications/${id}/read`,
+        method: 'PUT',
+        body: { isRead: true },
+      });
+    },
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ['notifications'] });
+    },
+  });
 
-  const fetchNotifications = async () => {
-    try {
-      const response = await fetch(`/api/notifications/user/new/${user?.id}`);
-      if (response.ok) {
-        const data = await response.json();
-        setNotifications(data);
-      } else {
-        console.error('Failed to fetch notifications');
-      }
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    }
-  };
+  if (status === 'pending') {
+    return <div>Loading...</div>;
+  }
 
-  const handleIconClick = async (notificationId: number) => {
-    try {
-      const response = await fetch(
-        `/api/notifications/${notificationId}/read`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ isRead: true }),
-        }
-      );
-      if (response.ok) {
-        // Verwijder de notificatie uit de lijst nadat deze is gemarkeerd als gelezen
-        setNotifications(prevNotifications =>
-          prevNotifications.filter(
-            notification => notification.id !== notificationId
-          )
-        );
-      } else {
-        console.error('Failed to mark notification as read');
-      }
-    } catch (error) {
-      console.error('Error marking notification as read:', error);
-    }
-  };
+  if (status === 'error') {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <Popover
@@ -88,20 +54,20 @@ export function NotificationPopover() {
       offset={{ mainAxis: 10, crossAxis: -50 }}
     >
       <Popover.Target>
-        <div onClick={fetchNotifications}>
-          <IconMessage color={newNotifications ? 'red' : 'white'} />
+        <div>
+          <IconMessage />
         </div>
       </Popover.Target>
       <Popover.Dropdown bg='var(--mantine-color-body)'>
         <div>
-          {notifications.map(
+          {notifications?.map(
             (notification: NotificationData, index: number) => (
               <div key={index}>
                 <CustomCard
                   title={notification.title}
                   message={notification.message}
                   datetime={notification.createdAt}
-                  onClick={() => handleIconClick(notification.id)}
+                  onClick={() => readMutation.mutate(notification.id)}
                 />
               </div>
             )

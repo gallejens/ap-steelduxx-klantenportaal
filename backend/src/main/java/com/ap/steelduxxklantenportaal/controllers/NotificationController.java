@@ -25,19 +25,19 @@ public class NotificationController {
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("permitAll")
+    @PreAuthorize("hasAuthority('ACCESS')")
     public List<Notification> getNotificationsByUserId(@PathVariable Long userId) {
         return notificationService.getNotificationsByUserId(userId);
     }
 
     @GetMapping("/user/new/{userId}")
-    @PreAuthorize("permitAll")
+    @PreAuthorize("hasAuthority('ACCESS')")
     public List<Notification> getNewNotificationsByUserId(@PathVariable Long userId) {
         return notificationService.getUnreadNotificationsByUserId(userId);
     }
 
     @PutMapping("/{notificationId}/read")
-    @PreAuthorize("permitAll")
+    @PreAuthorize("hasAuthority('ACCESS')")
     public void markNotificationAsRead(@PathVariable Long notificationId, @RequestBody Map<String, Boolean> isReadData) {
         boolean isRead = isReadData.get("isRead");
         notificationService.markNotificationAsRead(notificationId, isRead);

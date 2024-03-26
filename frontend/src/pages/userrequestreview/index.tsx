@@ -26,8 +26,9 @@ export const UserRequestReviewPage: FC = () => {
       </div>
       <div className={styles.userrequest_handle}>
         <UserRequestReviewHandle
-          onSubmit={function (): void {
-            throw new Error('Function not implemented.');
+          onSubmit={() => {}}
+          onSucces={() => {
+            window.history.back();
           }}
         />
       </div>

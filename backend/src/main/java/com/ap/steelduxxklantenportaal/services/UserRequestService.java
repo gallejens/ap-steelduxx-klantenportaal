@@ -1,19 +1,18 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.CompanyApproveDto;
-import com.ap.steelduxxklantenportaal.dtos.UserInfoDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.models.UserRequest;
 import com.ap.steelduxxklantenportaal.models.Company;
-import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.models.UserCompany;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserCompanyRepository;
-import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRequestRepository;
+import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserRequestService {
-
         @Autowired
         private UserRequestRepository userRequestRepository;
 
@@ -68,16 +66,16 @@ public class UserRequestService {
         }
 
         public List<UserRequestDto> getAll() {
-                List<UserRequest> userRequestValues = userRequestRepository.findAll();
+                List<UserRequest> userRequest = userRequestRepository.findAll();
 
-                return userRequestValues.stream()
+                return userRequest.stream()
                                 .map(this::convertUserRequestToDTO)
                                 .collect(Collectors.toList());
         }
 
         public UserRequestDto getUserRequest(Number id) {
-                UserRequest userRequestValue = userRequestRepository.findById(id);
-                return convertUserRequestToDTO(userRequestValue);
+                UserRequest userRequest = userRequestRepository.findById(id);
+                return convertUserRequestToDTO(userRequest);
         }
 
         public void addRequest(UserRequestDto userRequestDTO) throws MessagingException {
@@ -109,33 +107,30 @@ public class UserRequestService {
                                 .findByVatNrOrEmail(userRequestDto.vatNr(), userRequestDto.email()).isPresent();
 
                 if (requestExists) {
-                        Map<String, String> responseBody = Collections.singletonMap("message",
-                                        "userRequestForm:userRequestAlreadyExists");
-                        return new ResponseEntity<>(responseBody, HttpStatus.OK);
+                        return ResponseHandler.generate("userRequestForm:userRequestAlreadyExists", HttpStatus.OK);
                 } else {
                         addRequest(userRequestDto);
-
-                        Map<String, String> responseBody = Collections.singletonMap("message",
-                                        "userRequestForm:userRequestRequested");
-                        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+                        return ResponseHandler.generate("userRequestForm:userRequestRequested", HttpStatus.CREATED);
                 }
         }
 
-        public ResponseEntity<Object> approveUserRequest(Number id, CompanyApproveDto companyDto)
+        public ResponseEntity<Object> approveUserRequest(Number id, CompanyApproveDto companyApproveDto)
                         throws MessagingException, UserAlreadyExistsException {
-                boolean requestForCompanyExists = companyRepository.findByReferenceCode(companyDto.referenceCode())
+                boolean requestForCompanyExists = companyRepository
+                                .findByReferenceCode(companyApproveDto.referenceCode())
                                 .isPresent();
                 if (requestForCompanyExists) {
                         Map<String, String> responseBody = Collections.singletonMap("message",
                                         "userRequestReviewPage:response:exists");
                         return new ResponseEntity<>(responseBody, HttpStatus.OK);
                 } else {
-                        // Send email to set password
+                        UserRequestDto userRequestDto = getUserRequest(id);
+                        UserRequest userRequest = userRequestRepository.findById(id);
 
                         // Edit status to APPROVED
+                        userRequest.setStatus(StatusEnum.APPROVED);
 
                         // Set user values in DB
-                        UserRequestDto userRequestDto = getUserRequest(id);
 
                         var user = authService.addNewUser(
                                         userRequestDto.email(),
@@ -156,12 +151,16 @@ public class UserRequestService {
                                         userRequestDto.streetNr(),
                                         userRequestDto.boxNr(),
                                         userRequestDto.extraInfo(),
-                                        companyDto.referenceCode()));
+                                        companyApproveDto.referenceCode()));
 
                         // Set link values in DB
                         userCompanyRepository.save(new UserCompany(
                                         user.getId(),
                                         company.getId()));
+
+                        // Send email to set password
+                        var expireTime = 3 * 30 * 24 * 60;
+                        authService.requestChoosePasswordMail(userRequestDto.email(), expireTime);
 
                         Map<String, String> responseBody = Collections.singletonMap("message",
                                         "userRequestReviewPage:response:succes");
@@ -169,5 +168,32 @@ public class UserRequestService {
                         return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
                 }
 
+        }
+
+        public ResponseEntity<Object> denyUserRequest(Number id, UserRequestDenyDto userRequestDenyDto)
+                        throws MessagingException {
+                UserRequest userRequest = userRequestRepository.findById(id);
+
+                // Edit status to DENIED
+                userRequest.setStatus(StatusEnum.DENIED);
+
+                // Edit denyMessage
+                userRequest.setDenyMessage(userRequestDenyDto.denyMessage());
+
+                userRequestRepository.save(userRequest);
+
+                Map<String, String> responseBody = Collections.singletonMap("message",
+                                "userRequestReviewPage:response:denied");
+
+                return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+        }
+
+        public ResponseEntity<Object> deleteUserRequest(Number id) throws MessagingException {
+
+                userRequestRepository.deleteById(id);
+
+                Map<String, String> responseBody = Collections.singletonMap("message",
+                                "userRequestReviewPage:response:deleted");
+                return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
         }
 }

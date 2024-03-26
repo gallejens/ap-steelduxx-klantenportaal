@@ -11,4 +11,6 @@ public interface UserRequestRepository extends JpaRepository<UserRequest, Long> 
     Optional<UserRequest> findByVatNrOrEmail(String vatNr, String email);
 
     UserRequest findById(Number id);
+
+    void deleteById(Number id);
 }

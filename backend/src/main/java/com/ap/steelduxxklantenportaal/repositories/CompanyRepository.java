@@ -10,4 +10,6 @@ import com.ap.steelduxxklantenportaal.models.Company;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     Optional<Company> findByReferenceCode(String referenceCode);
+
+    Optional<Company> findById(Long id);
 }

@@ -1,7 +1,8 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.dtos.CompanyApproveDto;
-import com.ap.steelduxxklantenportaal.dtos.UserInfoDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestDeleteDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.services.UserRequestService;
@@ -38,9 +39,22 @@ public class UserRequestController {
     }
 
     @PostMapping("/user_requests/{id}/approve")
-    public ResponseEntity<Object> approveRequest(@PathVariable Number id, @RequestBody CompanyApproveDto companyDto)
+    public ResponseEntity<Object> approveRequest(@PathVariable Number id,
+            @RequestBody CompanyApproveDto companyApproveDto)
             throws MessagingException, UserAlreadyExistsException {
-        return userRequestValueService.approveUserRequest(id, companyDto);
+        return userRequestValueService.approveUserRequest(id, companyApproveDto);
     }
 
+    @PostMapping("/user_requests/{id}/deny")
+    public ResponseEntity<Object> denyRequest(@PathVariable Number id,
+            @RequestBody UserRequestDenyDto userRequestDenyDto)
+            throws MessagingException {
+        return userRequestValueService.denyUserRequest(id, userRequestDenyDto);
+    }
+
+    @DeleteMapping("/user_requests/delete")
+    public ResponseEntity<Object> deleteRequest(@RequestBody UserRequestDeleteDto userRequestDeleteDto)
+            throws MessagingException {
+        return userRequestValueService.deleteUserRequest(userRequestDeleteDto.id());
+    }
 }

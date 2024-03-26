@@ -6,6 +6,7 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@/components/notifications';
 import { GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
+import { HttpStatusCode } from 'axios';
 
 type UserRequestApproveValues = {
   referenceCode: string;
@@ -17,6 +18,7 @@ type UserRequestDenyValues = {
 
 type Props = {
   onSubmit: () => void;
+  onSucces: () => void;
 };
 
 export const UserRequestReviewHandle: FC<Props> = props => {
@@ -65,23 +67,27 @@ export const UserRequestReviewHandle: FC<Props> = props => {
         message: t('notifications:invalidForm'),
         color: 'red',
       });
+    }
 
-      const resultApprove = await doApiAction<
-        GenericAPIResponse<{ message: string }>
-      >({
-        endpoint: `/user_requests/${requestId}/approve`,
-        method: 'POST',
-        body: {
-          referenceCode: values.referenceCode,
-        },
-      });
+    const resultApprove = await doApiAction<
+      GenericAPIResponse<{ message: string }>
+    >({
+      endpoint: `/user_requests/${requestId}/approve`,
+      method: 'POST',
+      body: {
+        referenceCode: values.referenceCode,
+      },
+    });
 
-      notifications.add({
-        message: t(resultApprove?.message ?? 'notifications:genericError'),
-        autoClose: 5000,
-      });
+    notifications.add({
+      message: t(resultApprove?.message ?? 'notifications:genericError'),
+      autoClose: 5000,
+    });
 
-      props.onSubmit();
+    props.onSubmit();
+
+    if (resultApprove?.status === HttpStatusCode.Created) {
+      props.onSucces();
     }
   };
 
@@ -97,23 +103,27 @@ export const UserRequestReviewHandle: FC<Props> = props => {
         message: t('notifications:invalidForm'),
         color: 'red',
       });
+    }
 
-      const resultDeny = await doApiAction<
-        GenericAPIResponse<{ message: string }>
-      >({
-        endpoint: `/user_requests/${requestId}/deny`,
-        method: 'POST',
-        body: {
-          denyMessage: values.denyMessage,
-        },
-      });
+    const resultDeny = await doApiAction<
+      GenericAPIResponse<{ message: string }>
+    >({
+      endpoint: `/user_requests/${requestId}/deny`,
+      method: 'POST',
+      body: {
+        denyMessage: values.denyMessage,
+      },
+    });
 
-      notifications.add({
-        message: t(resultDeny?.message ?? 'notifications:genericError'),
-        autoClose: 5000,
-      });
+    notifications.add({
+      message: t(resultDeny?.message ?? 'notifications:genericError'),
+      autoClose: 5000,
+    });
 
-      props.onSubmit();
+    props.onSubmit();
+
+    if (resultDeny?.status === HttpStatusCode.Created) {
+      props.onSucces();
     }
   };
 

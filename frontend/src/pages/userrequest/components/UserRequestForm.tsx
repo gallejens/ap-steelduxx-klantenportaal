@@ -11,6 +11,7 @@ import {
 } from 'react-phone-number-input';
 import styles from '../styles/userRequest.module.scss';
 import { EMAIL_PLACEHOLDER } from '@/constants';
+import { HttpStatusCode } from 'axios';
 
 type UserRequestFormValues = {
   companyName: string;
@@ -31,6 +32,7 @@ type UserRequestFormValues = {
 
 type Props = {
   onSubmit: () => void;
+  onSuccess: () => void;
 };
 
 export const UserRequestForm: FC<Props> = props => {
@@ -149,12 +151,18 @@ export const UserRequestForm: FC<Props> = props => {
       },
     });
 
+    const isSuccess = result?.status === HttpStatusCode.Created;
+
     notifications.add({
       message: t(result?.message ?? 'notifications:genericError'),
-      autoClose: 5000,
+      autoClose: isSuccess ? undefined : 5000,
     });
 
     props.onSubmit();
+
+    if (isSuccess) {
+      props.onSuccess();
+    }
   };
 
   return (

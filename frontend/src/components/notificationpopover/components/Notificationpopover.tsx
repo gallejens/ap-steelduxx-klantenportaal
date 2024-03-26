@@ -55,7 +55,7 @@ export function NotificationPopover() {
     >
       <Popover.Target>
         <div>
-          <IconMessage />
+          <IconMessage color={notifications?.length ? 'red' : 'white'} />
         </div>
       </Popover.Target>
       <Popover.Dropdown bg='var(--mantine-color-body)'>

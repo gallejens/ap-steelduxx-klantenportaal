@@ -1,0 +1,31 @@
+.card {
+  padding: 10px;
+  position: relative;
+  border-bottom: 1px solid #ccc;
+
+  .title {
+    font-size: 10px;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  .message {
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+
+  .datetime {
+    font-size: 6px;
+    color: #888;
+    margin-bottom: 2px;
+  }
+
+  .check-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: green;
+  }
+}

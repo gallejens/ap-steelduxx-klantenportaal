@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { List, Popover, ThemeIcon, rem } from '@mantine/core';
-import { IconCircleCheck, IconMessage } from '@tabler/icons-react';
+import { Popover } from '@mantine/core';
+import { IconMessage } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
+import CustomCard from './Notificationcard';
 
 export function NotificationPopover() {
   type NotificationData = {
+    id: number;
     createdAt: any;
     color?: string;
     icon?: React.ReactNode;
@@ -13,24 +15,28 @@ export function NotificationPopover() {
     loading?: boolean;
     hideCloseButton?: boolean;
     autoClose?: number;
+    isRead: boolean;
   };
 
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
+  const [newNotifications, setNewNotifications] = useState<boolean>(false);
   const { user } = useAuth();
 
   useEffect(() => {
     if (user) {
-      fetchNotifications(user.id);
+      fetchNotifications();
+      const interval = setInterval(fetchNotifications, 2000);
+      return () => clearInterval(interval);
     }
   }, [user]);
 
-  const fetchNotifications = async (userId: number) => {
+  const fetchNotifications = async () => {
     try {
-      const response = await fetch(`/api/notifications/user/${userId}`);
+      const response = await fetch(`/api/notifications/user/new/${user?.id}`);
       if (response.ok) {
         const data = await response.json();
-        const latestNotifications = data.slice(0, 5);
-        setNotifications(latestNotifications);
+        setNotifications(data);
+        setNewNotifications(data.length > 0);
       } else {
         console.error('Failed to fetch notifications');
       }
@@ -39,9 +45,31 @@ export function NotificationPopover() {
     }
   };
 
-  const handleIconClick = () => {
-    if (user) {
-      fetchNotifications(user.id);
+  const handleIconClick = async (notificationId: number) => {
+    try {
+      const response = await fetch(
+        `/api/notifications/${notificationId}/read`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ isRead: true }),
+        }
+      );
+      if (response.ok) {
+        // Remove the notification from the list once marked as read
+        setNotifications(prevNotifications =>
+          prevNotifications.filter(
+            notification => notification.id !== notificationId
+          )
+        );
+        setNewNotifications(false);
+      } else {
+        console.error('Failed to mark notification as read');
+      }
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
     }
   };
 
@@ -54,31 +82,25 @@ export function NotificationPopover() {
       offset={{ mainAxis: 10, crossAxis: -50 }}
     >
       <Popover.Target>
-        <div onClick={handleIconClick}>
-          <IconMessage />
+        <div onClick={fetchNotifications}>
+          <IconMessage color={newNotifications ? 'red' : 'white'} />{' '}
         </div>
       </Popover.Target>
       <Popover.Dropdown bg='var(--mantine-color-body)'>
-        <List
-          spacing='xs'
-          size='sm'
-          center
-          icon={
-            <ThemeIcon
-              color='teal'
-              size={24}
-              radius='xl'
-            >
-              <IconCircleCheck style={{ width: rem(16), height: rem(16) }} />
-            </ThemeIcon>
-          }
-        >
+        <div>
           {notifications.map(
             (notification: NotificationData, index: number) => (
-              <List.Item key={index}>{notification.message}</List.Item>
+              <div key={index}>
+                <CustomCard
+                  title={notification.title}
+                  message={notification.message}
+                  datetime={notification.createdAt}
+                  onClick={() => handleIconClick(notification.id)}
+                />
+              </div>
             )
           )}
-        </List>
+        </div>
       </Popover.Dropdown>
     </Popover>
   );

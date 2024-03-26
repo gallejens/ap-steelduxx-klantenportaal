@@ -22,6 +22,9 @@ public class Notification {
 
     private Long createdAt = new Date().getTime();
 
+    private boolean isRead = false;
+
+
     public Notification() {
     }
 
@@ -70,5 +73,13 @@ public class Notification {
 
     public void setCreatedAt(Long CreatedAt) {
         this.createdAt = CreatedAt;
+    }
+    
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
     }
 }

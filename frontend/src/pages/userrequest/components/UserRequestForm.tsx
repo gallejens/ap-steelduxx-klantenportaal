@@ -1,5 +1,5 @@
 import { notifications } from '@/components/notifications';
-import { GenericAPIResponse, doApiAction } from '@/lib/api';
+import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { Button, NumberInput, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
 import { checkVAT, countries } from 'jsvat';

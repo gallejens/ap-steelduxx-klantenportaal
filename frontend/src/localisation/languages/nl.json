@@ -211,6 +211,14 @@
     "deleteRequestConfirmation": {
       "deleteConfirmTitle": "Aanvraag verwijderen",
       "deleteConfirmText": "Weet je zeker dat je deze aanvraag wilt verwijderen?"
+    },
+    "approveRequestConfirmation": {
+      "approveConfirmTitle": "Aanvraag goedkeuren",
+      "approveConfirmText": "Weet je zeker dat je deze aanvraag wilt goedkeuren?"
+    },
+    "denyRequestConfirmation": {
+      "denyConfirmTitle": "Aanvraag afwijzen",
+      "denyConfirmText": "Weet je zeker dat je deze aanvraag wilt afwijzen?"
     }
   },
   "modals": {

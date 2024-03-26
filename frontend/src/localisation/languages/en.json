@@ -211,6 +211,14 @@
     "deleteRequestConfirmation": {
       "deleteConfirmTitle": "Delete request",
       "deleteConfirmText": "Are you sure you want to delete this request?"
+    },
+    "approveRequestConfirmation": {
+      "approveConfirmTitle": "Approve request",
+      "approveConfirmText": "Are you sure you want to approve this request?"
+    },
+    "denyRequestConfirmation": {
+      "denyConfirmTitle": "Deny request",
+      "denyConfirmText": "Are you sure you want to deny this request?"
     }
   },
   "modals": {

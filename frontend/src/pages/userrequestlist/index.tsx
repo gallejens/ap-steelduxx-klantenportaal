@@ -2,11 +2,11 @@ import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon, Button, Tabs, TextInput } from '@mantine/core';
 import styles from './styles/userRequestList.module.scss';
-import { useNavigate, useParams } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { IconArrowRight, IconSearch, IconTrash } from '@tabler/icons-react';
 import { Table } from '@/components/table';
 import { doApiAction, GenericAPIResponse } from '@/lib/api';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { dateConverter } from '@/lib/util/dateConverter';
 import { STATUSES } from './constants';
 import { notifications } from '@/components/notifications';
@@ -26,6 +26,7 @@ export const UserRequestListPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>('');
+  const client = useQueryClient();
 
   const { data: userRequests, status } = useQuery({
     refetchOnWindowFocus: false,
@@ -46,6 +47,23 @@ export const UserRequestListPage: FC = () => {
       </div>
     );
   }
+
+  const handleDeleteClick = async (userRequest: UserRequest) => {
+    const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
+      endpoint: `/user_requests/delete`,
+      method: 'DELETE',
+      body: {
+        id: userRequest.followId,
+      },
+    });
+
+    notifications.add({
+      message: t(result?.message ?? 'notifications:genericError'),
+      autoClose: 5000,
+    });
+
+    client.invalidateQueries({ queryKey: ['userRequestListValues'] });
+  };
 
   const tableData = userRequests.reduce<
     Partial<
@@ -75,23 +93,8 @@ export const UserRequestListPage: FC = () => {
         userRequest.status === 'APPROVED' || userRequest.status === 'DENIED' ? (
           <ActionIcon
             key={`denied_${userRequest.followId}`}
-            onClick={async () => {
-              const result = await doApiAction<
-                GenericAPIResponse<{ message: string }>
-              >({
-                endpoint: `/user_requests/delete`,
-                method: 'DELETE',
-                body: {
-                  id: userRequest.followId,
-                },
-              });
-
-              notifications.add({
-                message: t(result?.message ?? 'notifications:genericError'),
-                autoClose: 5000,
-              });
-
-              window.location.reload();
+            onClick={() => {
+              handleDeleteClick(userRequest);
             }}
           >
             <IconTrash />

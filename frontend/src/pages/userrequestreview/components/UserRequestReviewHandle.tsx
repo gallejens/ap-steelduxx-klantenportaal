@@ -17,8 +17,8 @@ type UserRequestDenyValues = {
 };
 
 type Props = {
-  onSubmit: () => void;
-  onSucces: () => void;
+  onSubmit?: () => void;
+  onSucces?: () => void;
 };
 
 export const UserRequestReviewHandle: FC<Props> = props => {
@@ -84,10 +84,10 @@ export const UserRequestReviewHandle: FC<Props> = props => {
       autoClose: 5000,
     });
 
-    props.onSubmit();
+    props.onSubmit!();
 
     if (resultApprove?.status === HttpStatusCode.Created) {
-      props.onSucces();
+      props.onSucces!();
     }
   };
 
@@ -120,10 +120,10 @@ export const UserRequestReviewHandle: FC<Props> = props => {
       autoClose: 5000,
     });
 
-    props.onSubmit();
+    props.onSubmit!();
 
     if (resultDeny?.status === HttpStatusCode.Created) {
-      props.onSucces();
+      props.onSucces!();
     }
   };
 

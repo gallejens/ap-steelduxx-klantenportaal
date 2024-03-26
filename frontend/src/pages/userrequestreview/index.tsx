@@ -2,8 +2,11 @@ import { type FC } from 'react';
 import { UserRequestReviewForm } from './components/UserRequestReviewForm';
 import { UserRequestReviewHandle } from './components/UserRequestReviewHandle';
 import styles from './styles/userRequestReview.module.scss';
+import { useNavigate } from '@tanstack/react-router';
 
 export const UserRequestReviewPage: FC = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.userrequest_review_page}>
       <div className={styles.userrequest_form}>
@@ -26,9 +29,8 @@ export const UserRequestReviewPage: FC = () => {
       </div>
       <div className={styles.userrequest_handle}>
         <UserRequestReviewHandle
-          onSubmit={() => {}}
           onSucces={() => {
-            window.history.back();
+            navigate({ to: '/app/requests' });
           }}
         />
       </div>

@@ -207,6 +207,10 @@
       "changePassword": "Change password",
       "logoutConfirmTitle": "Logout",
       "logoutConfirmText": "Are you sure you want to log out?"
+    },
+    "deleteRequestConfirmation": {
+      "deleteConfirmTitle": "Delete request",
+      "deleteConfirmText": "Are you sure you want to delete this request?"
     }
   },
   "modals": {

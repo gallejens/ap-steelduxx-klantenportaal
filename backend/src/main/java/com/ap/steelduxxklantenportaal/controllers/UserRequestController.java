@@ -1,9 +1,9 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.dtos.CompanyApproveDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestDeleteDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.CompanyApproveDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDeleteDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.services.UserRequestService;
 import jakarta.mail.MessagingException;
@@ -34,7 +34,7 @@ public class UserRequestController {
     }
 
     @GetMapping("/user_requests/{id}")
-    public UserRequestDto getMethodName(@PathVariable String id) {
+    public UserRequestDto getUserRequestById(@PathVariable String id) {
         return userRequestValueService.getUserRequest(Integer.parseInt(id));
     }
 

@@ -1,8 +1,8 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.CompanyApproveDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.CompanyApproveDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;

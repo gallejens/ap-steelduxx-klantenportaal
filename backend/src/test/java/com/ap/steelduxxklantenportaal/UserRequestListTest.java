@@ -22,7 +22,7 @@ public class UserRequestListTest {
     }
 
     @Test
-    public void return_GetAll_userRequests() {
+    public void return_getAll_userRequests() {
         List<UserRequestDto> savedUserRequests = userRequestController.getAllUserRequests();
 
         System.out.println("Total user requests found: " + savedUserRequests.size());

@@ -30,13 +30,20 @@ export function NotificationPopover() {
     }
   }, [user]);
 
+  useEffect(() => {
+    // Bepaal of er nieuwe notificaties zijn die niet zijn gemarkeerd als gelezen
+    const hasUnreadNotifications = notifications.some(
+      notification => !notification.isRead
+    );
+    setNewNotifications(hasUnreadNotifications);
+  }, [notifications]);
+
   const fetchNotifications = async () => {
     try {
       const response = await fetch(`/api/notifications/user/new/${user?.id}`);
       if (response.ok) {
         const data = await response.json();
         setNotifications(data);
-        setNewNotifications(data.length > 0);
       } else {
         console.error('Failed to fetch notifications');
       }
@@ -58,13 +65,12 @@ export function NotificationPopover() {
         }
       );
       if (response.ok) {
-        // Remove the notification from the list once marked as read
+        // Verwijder de notificatie uit de lijst nadat deze is gemarkeerd als gelezen
         setNotifications(prevNotifications =>
           prevNotifications.filter(
             notification => notification.id !== notificationId
           )
         );
-        setNewNotifications(false);
       } else {
         console.error('Failed to mark notification as read');
       }
@@ -83,7 +89,7 @@ export function NotificationPopover() {
     >
       <Popover.Target>
         <div onClick={fetchNotifications}>
-          <IconMessage color={newNotifications ? 'red' : 'white'} />{' '}
+          <IconMessage color={newNotifications ? 'red' : 'white'} />
         </div>
       </Popover.Target>
       <Popover.Dropdown bg='var(--mantine-color-body)'>

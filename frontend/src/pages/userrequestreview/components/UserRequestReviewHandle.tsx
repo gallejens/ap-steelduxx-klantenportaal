@@ -120,10 +120,10 @@ export const UserRequestReviewHandle: FC<Props> = props => {
       autoClose: 5000,
     });
 
-    props.onSubmit!();
+    props.onSubmit?.();
 
     if (resultDeny?.status === HttpStatusCode.Created) {
-      props.onSucces!();
+      props.onSucces?.();
     }
   };
 

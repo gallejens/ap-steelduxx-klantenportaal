@@ -158,10 +158,10 @@ export const UserRequestForm: FC<Props> = props => {
       autoClose: isSuccess ? undefined : 5000,
     });
 
-    props.onSubmit!();
+    props.onSubmit?.();
 
     if (isSuccess) {
-      props.onSuccess!();
+      props.onSuccess?.();
     }
   };
 

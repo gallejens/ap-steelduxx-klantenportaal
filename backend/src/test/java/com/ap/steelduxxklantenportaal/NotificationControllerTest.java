@@ -4,8 +4,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Mockito.*;
 import static org.hamcrest.Matchers.*;
@@ -68,5 +69,39 @@ public class NotificationControllerTest {
                 .content(notificationJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Create Test")));
+    }
+
+
+    @Test
+    public void testGetNewNotificationsByUserId() throws Exception {
+        Notification notification = new Notification();
+        notification.setTitle("New Title User Notification");
+        notification.setMessage("New User Notification");
+        notification.setUserId(1L);
+        when(notificationService.getUnreadNotificationsByUserId(1L)).thenReturn(List.of(notification));
+
+        mockMvc = standaloneSetup(notificationController).build();
+
+        mockMvc.perform(get("/notifications/user/new/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].message", is("New User Notification")));
+    }
+
+
+    @Test
+    public void testMarkNotificationAsRead() throws Exception {
+        mockMvc = standaloneSetup(notificationController).build();
+
+        Long notificationId = 1L;
+        Map<String, Boolean> requestBody = new HashMap<>();
+        requestBody.put("isRead", true);
+        String requestBodyJson = new ObjectMapper().writeValueAsString(requestBody);
+
+        mockMvc.perform(put("/notifications/{notificationId}/read", notificationId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBodyJson))
+                .andExpect(status().isOk());
+
+        verify(notificationService, times(1)).markNotificationAsRead(notificationId, true);
     }
 }

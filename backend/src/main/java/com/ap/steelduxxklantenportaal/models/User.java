@@ -131,8 +131,7 @@ public class User implements UserDetails {
                 rolePermissions
                         .stream()
                         .map(p -> new SimpleGrantedAuthority(p.name()))
-                        .toList()
-        );
+                        .toList());
 
         return authorities;
     }
@@ -144,6 +143,6 @@ public class User implements UserDetails {
     }
 
     public UserInfoDto getUserInfo() {
-        return new UserInfoDto(id,email, firstName, lastName, role, getPermissions());
+        return new UserInfoDto(id, email, firstName, lastName, role, getPermissions());
     }
 }

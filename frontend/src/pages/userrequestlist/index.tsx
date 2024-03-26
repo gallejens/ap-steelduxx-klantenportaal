@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { ActionIcon, Button, Tabs, TextInput } from '@mantine/core';
 import styles from './styles/userRequestList.module.scss';
 import { useNavigate } from '@tanstack/react-router';
-import { IconArrowRight, IconSearch } from '@tabler/icons-react';
+import { IconArrowRight, IconSearch, IconTrash } from '@tabler/icons-react';
 import { Table } from '@/components/table';
-import { doApiAction } from '@/lib/api';
-import { useQuery } from '@tanstack/react-query';
+import { doApiAction, GenericAPIResponse } from '@/lib/api';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { dateConverter } from '@/lib/util/dateConverter';
 import { STATUSES } from './constants';
+import { notifications } from '@/components/notifications';
 
 type UserRequest = {
   followId: number;
@@ -17,6 +18,7 @@ type UserRequest = {
   vatNr: string;
   firstName: string;
   lastName: string;
+  denyMessage: string;
   status: 'PENDING' | 'APPROVED' | 'DENIED';
 };
 
@@ -24,6 +26,7 @@ export const UserRequestListPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>('');
+  const client = useQueryClient();
 
   const { data: userRequests, status } = useQuery({
     refetchOnWindowFocus: false,
@@ -45,6 +48,23 @@ export const UserRequestListPage: FC = () => {
     );
   }
 
+  const handleDeleteClick = async (userRequest: UserRequest) => {
+    const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
+      endpoint: `/user_requests/delete`,
+      method: 'DELETE',
+      body: {
+        id: userRequest.followId,
+      },
+    });
+
+    notifications.add({
+      message: t(result?.message ?? 'notifications:genericError'),
+      autoClose: 5000,
+    });
+
+    client.invalidateQueries({ queryKey: ['userRequestListValues'] });
+  };
+
   const tableData = userRequests.reduce<
     Partial<
       Record<
@@ -55,6 +75,7 @@ export const UserRequestListPage: FC = () => {
           createdOn: string;
           vatNr: string;
           contactPerson: string;
+          denyMessage: string;
           buttons: JSX.Element;
         }[]
       >
@@ -67,21 +88,32 @@ export const UserRequestListPage: FC = () => {
       createdOn: dateConverter(userRequest.createdOn),
       vatNr: userRequest.vatNr,
       contactPerson: `${userRequest.firstName} ${userRequest.lastName}`,
-      buttons: (
-        <ActionIcon
-          key={`value_${userRequest.followId}`}
-          onClick={() => {
-            navigate({
-              to: '/app/requests/$request_id',
-              params: {
-                request_id: userRequest.followId.toString(),
-              },
-            });
-          }}
-        >
-          <IconArrowRight />
-        </ActionIcon>
-      ),
+      denyMessage: `${userRequest.denyMessage}`,
+      buttons:
+        userRequest.status === 'APPROVED' || userRequest.status === 'DENIED' ? (
+          <ActionIcon
+            key={`denied_${userRequest.followId}`}
+            onClick={() => {
+              handleDeleteClick(userRequest);
+            }}
+          >
+            <IconTrash />
+          </ActionIcon>
+        ) : (
+          <ActionIcon
+            key={`value_${userRequest.followId}`}
+            onClick={() => {
+              navigate({
+                to: '/app/requests/$request_id',
+                params: {
+                  request_id: userRequest.followId.toString(),
+                },
+              });
+            }}
+          >
+            <IconArrowRight />
+          </ActionIcon>
+        ),
     });
     return acc;
   }, {});
@@ -127,39 +159,80 @@ export const UserRequestListPage: FC = () => {
             value={status}
             className={styles.userrequest_table}
           >
-            <Table
-              searchValue={searchValue}
-              storageKey='userrequest_list'
-              translationKey='userRequestListPage:table'
-              columns={[
-                {
-                  key: 'followId',
-                  defaultSort: true,
-                },
-                {
-                  key: 'companyName',
-                  initialWidth: 300,
-                },
-                {
-                  key: 'createdOn',
-                  initialWidth: 300,
-                },
-                {
-                  key: 'vatNr',
-                },
-                {
-                  key: 'contactPerson',
-                  initialWidth: 300,
-                },
-                {
-                  key: 'buttons',
-                  emptyHeader: true,
-                  disallowSorting: true,
-                  disableResizing: true,
-                },
-              ]}
-              data={tableData[status] ?? []}
-            />
+            {status === 'DENIED' && (
+              <Table
+                searchValue={searchValue}
+                storageKey='userrequest_list'
+                translationKey='userRequestListPage:table'
+                columns={[
+                  {
+                    key: 'followId',
+                    defaultSort: true,
+                  },
+                  {
+                    key: 'companyName',
+                    initialWidth: 300,
+                  },
+                  {
+                    key: 'createdOn',
+                    initialWidth: 300,
+                  },
+                  {
+                    key: 'vatNr',
+                  },
+                  {
+                    key: 'contactPerson',
+                    initialWidth: 200,
+                  },
+                  {
+                    key: 'denyMessage',
+                    initialWidth: 300,
+                  },
+                  {
+                    key: 'buttons',
+                    emptyHeader: true,
+                    disallowSorting: true,
+                    disableResizing: true,
+                  },
+                ]}
+                data={tableData[status] ?? []}
+              />
+            )}
+            {status !== 'DENIED' && (
+              <Table
+                searchValue={searchValue}
+                storageKey='userrequest_list'
+                translationKey='userRequestListPage:table'
+                columns={[
+                  {
+                    key: 'followId',
+                    defaultSort: true,
+                  },
+                  {
+                    key: 'companyName',
+                    initialWidth: 300,
+                  },
+                  {
+                    key: 'createdOn',
+                    initialWidth: 300,
+                  },
+                  {
+                    key: 'vatNr',
+                  },
+                  {
+                    key: 'contactPerson',
+                    initialWidth: 200,
+                  },
+                  {
+                    key: 'buttons',
+                    emptyHeader: true,
+                    disallowSorting: true,
+                    disableResizing: true,
+                  },
+                ]}
+                data={tableData[status] ?? []}
+              />
+            )}
           </Tabs.Panel>
         ))}
       </Tabs>

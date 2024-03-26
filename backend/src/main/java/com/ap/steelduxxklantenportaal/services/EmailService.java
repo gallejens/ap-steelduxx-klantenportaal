@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.UserRequestValuesDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
 import com.ap.steelduxxklantenportaal.models.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -36,7 +36,6 @@ public class EmailService {
         mailSender.send(message);
     }
 
-
     public void sendHtmlEmail(String to, String subject, String body) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
 
@@ -53,7 +52,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendRegistrationConfirmation(UserRequestValuesDto value) throws MessagingException {
+    public void sendRegistrationConfirmation(UserRequestDto value) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
 
         message.setFrom(new InternetAddress(mailUsername));
@@ -73,7 +72,6 @@ public class EmailService {
         // Send the email
         mailSender.send(message);
     }
-
 
     void sendChoosePasswordLink(User user, String choosePasswordLink) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();

@@ -19,7 +19,7 @@ export const UserRequestPage: FC = () => {
         <Text>{t('userRequestForm:succes')}</Text>
       ) : (
         <UserRequestForm
-          onSubmit={() => {
+          onSuccess={() => {
             setSubmitted(true);
           }}
         />

@@ -98,7 +98,8 @@
       "companyName": "Bedrijfsnaam",
       "createdOn": "Datum",
       "vatNr": "BTW-nummer",
-      "contactPerson": "Contactpersoon"
+      "contactPerson": "Contactpersoon",
+      "denyMessage": "Afkeur Bericht"
     },
     "tableLoading": "Bezig met laden...",
     "tableError": "Kan aanvragen niet laden",
@@ -154,7 +155,13 @@
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",
     "approveButton": "Goedkeuren",
-    "denyButton": "Afkeuren"
+    "denyButton": "Afkeuren",
+    "response": {
+      "succes": "Aanvraag goedgekeurd!",
+      "denied": "Aanvraag afgekeurd!",
+      "deleted": "Aanvraag verwijderd!",
+      "exists": "Aanvraag met referentie nummer bestaat al"
+    }
   },
   "notifications": {
     "genericError": "Er is iets misgegaan",

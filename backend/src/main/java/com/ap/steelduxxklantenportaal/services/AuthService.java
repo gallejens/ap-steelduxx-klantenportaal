@@ -58,8 +58,7 @@ public class AuthService {
             AuthenticationManager authenticationManager,
             PasswordEncoder passwordEncoder,
             ChoosePasswordTokenRepository choosePasswordTokenRepository,
-            EmailService emailService
-    ) {
+            EmailService emailService) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.jwtService = jwtService;
@@ -95,7 +94,8 @@ public class AuthService {
 
     @Transactional
     public void signOut(HttpServletRequest request, HttpServletResponse response) {
-        // Delete current refreshtoken from db, we dont delete all by userid to prevent other devices also logging out
+        // Delete current refreshtoken from db, we dont delete all by userid to prevent
+        // other devices also logging out
         String currentRefreshToken = Cookies.getValue(request, REFRESH_TOKEN_COOKIE_NAME);
         if (currentRefreshToken != null) {
             refreshTokenRepository.deleteById(currentRefreshToken);
@@ -111,10 +111,12 @@ public class AuthService {
         String token = Cookies.getValue(request, REFRESH_TOKEN_COOKIE_NAME);
 
         try {
-            if (token == null) throw new RuntimeException();
+            if (token == null)
+                throw new RuntimeException();
 
             RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow();
-            if (refreshToken.isExpired()) throw new RuntimeException();
+            if (refreshToken.isExpired())
+                throw new RuntimeException();
 
             User user = userRepository.findById(refreshToken.getUserId()).orElseThrow();
 
@@ -131,7 +133,8 @@ public class AuthService {
         return userRepository.findByEmail(email).isPresent();
     }
 
-    public User addNewUser(String email, String password, String firstName, String lastName, RoleEnum role) throws UserAlreadyExistsException {
+    public User addNewUser(String email, String password, String firstName, String lastName, RoleEnum role)
+            throws UserAlreadyExistsException {
         if (doesUserExist(email)) {
             throw new UserAlreadyExistsException(String.format("User with email %s already exists", email));
         }
@@ -151,14 +154,17 @@ public class AuthService {
         refreshToken.setExpiryDate(new Date().getTime() + REFRESH_TOKEN_COOKIE_MAX_AGE * 1000);
         refreshTokenRepository.save(refreshToken);
 
-        Cookies.setCookie(response, REFRESH_TOKEN_COOKIE_NAME, token, REFRESH_TOKEN_COOKIE_MAX_AGE, REFRESH_TOKEN_COOKIE_PATH);
+        Cookies.setCookie(response, REFRESH_TOKEN_COOKIE_NAME, token, REFRESH_TOKEN_COOKIE_MAX_AGE,
+                REFRESH_TOKEN_COOKIE_PATH);
     }
 
     public void requestPasswordReset(String email) throws MessagingException {
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isEmpty()) return;
+        if (user.isEmpty())
+            return;
 
-        // Generate choosepasswordtoken, save it and email it as searchparam in link to user
+        // Generate choosepasswordtoken, save it and email it as searchparam in link to
+        // user
         var choosePasswordToken = new ChoosePasswordToken();
         String uuid = UUID.randomUUID().toString();
         choosePasswordToken.setToken(uuid);
@@ -166,6 +172,24 @@ public class AuthService {
         // 30 minutes
         long PASSWORD_RESET_TOKEN_TIME = 30 * 60;
         choosePasswordToken.setExpiryDate(new Date().getTime() + PASSWORD_RESET_TOKEN_TIME * 1000);
+        choosePasswordTokenRepository.save(choosePasswordToken);
+
+        String choosePasswordLink = frontendUrl + "/choose-password?token=" + uuid;
+        emailService.sendChoosePasswordLink(user.get(), choosePasswordLink);
+    }
+
+    public void requestChoosePasswordMail(String email, long expiryTime) throws MessagingException {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty())
+            return;
+
+        // Generate choosepasswordtoken, save it and email it as searchparam in link to
+        // user
+        var choosePasswordToken = new ChoosePasswordToken();
+        String uuid = UUID.randomUUID().toString();
+        choosePasswordToken.setToken(uuid);
+        choosePasswordToken.setUserId(user.get().getId());
+        choosePasswordToken.setExpiryDate(new Date().getTime() + expiryTime * 1000);
         choosePasswordTokenRepository.save(choosePasswordToken);
 
         String choosePasswordLink = frontendUrl + "/choose-password?token=" + uuid;
@@ -198,7 +222,8 @@ public class AuthService {
             return ResponseHandler.generate("failed", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        // When choosing password (after review or reset) we delete all refreshtokens & update password
+        // When choosing password (after review or reset) we delete all refreshtokens &
+        // update password
         updatePassword(user, password);
         refreshTokenRepository.deleteByUserId(user.getId());
         choosePasswordTokenRepository.deleteByUserId(user.getId());
@@ -221,7 +246,8 @@ public class AuthService {
             return ResponseHandler.generate("invalidPassword", HttpStatus.UNAUTHORIZED);
         }
 
-        // Update password, delete all refreshtokens to sign out on every device but generate new refreshtoken current user
+        // Update password, delete all refreshtokens to sign out on every device but
+        // generate new refreshtoken current user
         updatePassword(user, changePasswordDto.newPassword());
         refreshTokenRepository.deleteByUserId(user.getId());
         generateRefreshTokenForUser(user, response);

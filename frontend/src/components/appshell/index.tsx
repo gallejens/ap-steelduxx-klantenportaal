@@ -54,7 +54,9 @@ export const AppShell: FC = () => {
         <div className={styles.left}>
           <div className={styles.tabs}>
             {TABS.map(tab => {
-              const isActive = routerState.location.pathname.endsWith(tab.path);
+              const isActive = routerState.location.pathname.startsWith(
+                `/app/${tab.path}`
+              );
               return (
                 <div
                   key={`tab_${tab.path}`}

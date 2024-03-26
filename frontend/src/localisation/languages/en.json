@@ -98,7 +98,8 @@
       "companyName": "Company Name",
       "createdOn": "Date",
       "vatNr": "VAT Number",
-      "contactPerson": "Contact Person"
+      "contactPerson": "Contact Person",
+      "denyMessage": "Deny Message"
     },
     "tableLoading": "Loading...",
     "tableError": "Can't load requests",
@@ -154,7 +155,13 @@
   "userRequestReviewPage": {
     "backButton": "Go Back",
     "approveButton": "Approve",
-    "denyButton": "Deny"
+    "denyButton": "Deny",
+    "response": {
+      "succes": "Request approved!",
+      "denied": "Request denied!",
+      "deleted": "Request deleted!",
+      "exists": "Request with reference code already exists"
+    }
   },
   "notifications": {
     "genericError": "Something went wrong",

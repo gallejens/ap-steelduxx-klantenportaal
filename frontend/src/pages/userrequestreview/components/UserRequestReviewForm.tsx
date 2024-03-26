@@ -8,6 +8,7 @@ import { doApiAction } from '@/lib/api';
 
 type userRequestValue = {
   companyName: string;
+  country: string;
   email: string;
   phoneNr: string;
   vatNr: string;
@@ -16,6 +17,7 @@ type userRequestValue = {
   street: string;
   streetNr: string;
   boxNr: string;
+  extraInfo: string;
   firstName: string;
   lastName: string;
   status: string;
@@ -41,12 +43,21 @@ export const UserRequestReviewForm: FC<userRequestValue> = () => {
   return (
     <form className={styles.userrequest_review_page_form}>
       <div className={styles.company_detail_fields}>
-        <TextInput
-          className={styles.company_field}
-          label={t('userRequestForm:companyInputTitle')}
-          value={userRequestValue?.companyName}
-          disabled
-        />
+        <div className={styles.company_fields}>
+          <TextInput
+            className={styles.companyName_field}
+            label={t('userRequestForm:companyInputTitle')}
+            value={userRequestValue?.companyName}
+            disabled
+          />
+          <TextInput
+            className={styles.country_field}
+            label={t('userRequestForm:countryInputTitle')}
+            value={userRequestValue?.country}
+            disabled
+          />
+        </div>
+
         <TextInput
           className={styles.email_field}
           label={t('userRequestForm:emailInputDescription')}
@@ -81,22 +92,31 @@ export const UserRequestReviewForm: FC<userRequestValue> = () => {
         </div>
         <div className={styles.street_fields}>
           <TextInput
-            label={t('userRequestForm:streetInputTitle')}
+            className={styles.street_field}
+            label={t('userRequestForm:streetInputDescription')}
             value={userRequestValue?.street}
             disabled
           />
           <TextInput
-            label={t('userRequestForm:streetNrInputTitle')}
+            className={styles.streetNr_field}
+            label={t('userRequestForm:streetNrInputDescription')}
             value={userRequestValue?.streetNr}
             disabled
           />
           <NumberInput
-            label={t('userRequestForm:boxNrInputTitle')}
+            className={styles.boxNr_field}
+            label={t('userRequestForm:boxNrInputDescription')}
             value={userRequestValue?.boxNr}
             hideControls
             disabled
           />
         </div>
+        <TextInput
+          className={styles.extraInfo_field}
+          label={t('userRequestForm:extraInfoInputDescription')}
+          value={userRequestValue?.extraInfo}
+          disabled
+        />
       </div>
       <div className={styles.name_fields}>
         <TextInput

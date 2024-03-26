@@ -144,6 +144,6 @@ public class User implements UserDetails {
     }
 
     public UserInfoDto getUserInfo() {
-        return new UserInfoDto(email, firstName, lastName, role, getPermissions());
+        return new UserInfoDto(id,email, firstName, lastName, role, getPermissions());
     }
 }

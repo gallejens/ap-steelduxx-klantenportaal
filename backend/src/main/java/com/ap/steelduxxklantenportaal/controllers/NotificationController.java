@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/notifications")
@@ -27,5 +28,18 @@ public class NotificationController {
     @PreAuthorize("hasAuthority('ACCESS')")
     public List<Notification> getNotificationsByUserId(@PathVariable Long userId) {
         return notificationService.getNotificationsByUserId(userId);
+    }
+
+    @GetMapping("/user/new/{userId}")
+    @PreAuthorize("hasAuthority('ACCESS')")
+    public List<Notification> getNewNotificationsByUserId(@PathVariable Long userId) {
+        return notificationService.getUnreadNotificationsByUserId(userId);
+    }
+
+    @PutMapping("/{notificationId}/read")
+    @PreAuthorize("hasAuthority('ACCESS')")
+    public void markNotificationAsRead(@PathVariable Long notificationId, @RequestBody Map<String, Boolean> isReadData) {
+        boolean isRead = isReadData.get("isRead");
+        notificationService.markNotificationAsRead(notificationId, isRead);
     }
 }

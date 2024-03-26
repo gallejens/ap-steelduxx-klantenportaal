@@ -17,6 +17,7 @@ export function NotificationPopover() {
   } = useQuery({
     refetchOnWindowFocus: false,
     queryKey: ['notifications', user?.id],
+    refetchInterval: 2000,
     queryFn: () =>
       doApiAction<NotificationData[]>({
         endpoint: `notifications/user/new/${user?.id}`,

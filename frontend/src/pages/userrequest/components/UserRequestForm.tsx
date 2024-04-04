@@ -63,7 +63,7 @@ export const UserRequestForm: FC<Props> = props => {
         }
       },
       country: value => {
-        if (!value) {
+        if (value) {
           return t('userRequestForm:countryInputError');
         }
       },
@@ -178,6 +178,7 @@ export const UserRequestForm: FC<Props> = props => {
       <div className={styles.company_detail_fields}>
         <div className={styles.company_fields}>
           <TextInput
+            className={styles.company_name_input}
             label={t('userRequestForm:companyInputTitle')}
             description={t('userRequestForm:companyInputDescription')}
             placeholder={t('userRequestForm:companyInputPlaceholder')}
@@ -185,13 +186,12 @@ export const UserRequestForm: FC<Props> = props => {
             {...UserRequestForm.getInputProps('companyName')}
           />
           <Select
+            className={styles.company_country_input}
             label={t('userRequestForm:countryInputTitle')}
             description={t('userRequestForm:countryInputDescription')}
             placeholder={t('userRequestForm:countryInputPlaceholder')}
-            //TODO
             data={countries_en}
             searchable
-            required
             {...UserRequestForm.getInputProps('country')}
           />
         </div>

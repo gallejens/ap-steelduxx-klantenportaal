@@ -36,12 +36,13 @@
         flex-direction: row;
         justify-content: space-between;
 
-        & > div {
+        & > .company_name_input {
           width: calc(0.95 / 2 * 100%);
         }
 
-        & > div:last-child {
+        & > .company_country_input {
           width: calc(0.95 / 2 * 100%);
+          margin-top: 7px; // Align field with others because of no asterix in title
         }
       }
 

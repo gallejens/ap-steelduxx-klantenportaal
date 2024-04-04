@@ -1,9 +1,12 @@
 package com.ap.steelduxxklantenportaal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.CompanyApproveDto;
+import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDeleteDto;
 import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
@@ -35,11 +39,11 @@ import com.ap.steelduxxklantenportaal.controllers.UserRequestController;
 @SpringBootTest
 public class UserRequestDetailsTest {
 
-    @Autowired
-    private UserRequestController userRequestController;
-
-    @MockBean
+    @Mock
     private UserRequestService userRequestService;
+
+    @InjectMocks
+    private UserRequestController userRequestController;
 
     @Test
     void contextLoads() {
@@ -62,68 +66,49 @@ public class UserRequestDetailsTest {
 
     @Test
     void check_userRequest_is_approved() throws MessagingException, UserAlreadyExistsException {
-        CompanyApproveDto companyApproveDto = mock(CompanyApproveDto.class);
+        Number id = 1;
+        CompanyApproveDto companyApproveDto = new CompanyApproveDto("referenceCode");
 
-        when(companyApproveDto.referenceCode()).thenReturn("SOF1");
+        Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:succes", "status",
+                HttpStatus.CREATED.toString());
+        when(userRequestService.approveUserRequest(eq(id), eq(companyApproveDto)))
+                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
 
-        UserRequestDto mockUserRequestDto = new UserRequestDto(1, "Steelduxx", "Belgium", "+32471017865",
-                "BE 0425.069.935", "2000", "Antwerp", "Duboisstraat", "50", null, null, "Raf", "Vanhoegearden",
-                "info@steelduxx.eu", 1709034820358L,
-                StatusEnum.PENDING, null);
+        ResponseEntity<Object> response = userRequestController.approveRequest(id, companyApproveDto);
 
-        when(userRequestService.getUserRequest(1)).thenReturn(mockUserRequestDto);
-
-        userRequestController.approveRequest(mockUserRequestDto.followId(), companyApproveDto);
-
-        assertEquals(StatusEnum.APPROVED, mockUserRequestDto.status());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(expectedResponse, response.getBody());
     }
 
     @Test
-    void check_userRequest_is_denied() throws MessagingException, UserAlreadyExistsException {
-        UserRequestDenyDto userRequestDenyDto = mock(UserRequestDenyDto.class);
+    void check_userRequest_is_denied() throws MessagingException {
+        Number id = 2;
+        UserRequestDenyDto userRequestDenyDto = new UserRequestDenyDto("Denial reason");
 
-        UserRequestDto mockUserRequestDto = new UserRequestDto(1, "Steelduxx", "Belgium", "+32471017865",
-                "BE 0425.069.935", "2000", "Antwerp", "Duboisstraat", "50", null, null, "Raf", "Vanhoegearden",
-                "info@steelduxx.eu", 1709034820358L,
-                StatusEnum.PENDING, null);
+        Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:denied", "status",
+                HttpStatus.CREATED.toString());
+        when(userRequestService.denyUserRequest(eq(id), eq(userRequestDenyDto)))
+                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
 
-        when(userRequestService.getUserRequest(1)).thenReturn(mockUserRequestDto);
+        ResponseEntity<Object> response = userRequestController.denyRequest(id, userRequestDenyDto);
 
-        userRequestController.denyRequest(mockUserRequestDto.followId(), userRequestDenyDto);
-
-        assertEquals(StatusEnum.DENIED, mockUserRequestDto.status());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(expectedResponse, response.getBody());
     }
 
     @Test
-    void testDeleteUserRequest() throws MessagingException {
-        // Mocking dependencies
-        UserRequestRepository userRequestRepository = mock(UserRequestRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        CompanyRepository companyRepository = mock(CompanyRepository.class);
-        UserCompanyRepository userCompanyRepository = mock(UserCompanyRepository.class);
+    void check_userRequest_is_deleted() throws MessagingException {
+        Long id = 3L;
+        UserRequestDeleteDto userRequestDeleteDto = new UserRequestDeleteDto(id);
 
-        // Create a user request with status APPROVED
-        UserRequest userRequest = new UserRequest();
-        userRequest.setId((long) 1);
-        userRequest.setStatus(StatusEnum.APPROVED);
+        Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:deleted");
+        when(userRequestService.deleteUserRequest(eq(id)))
+                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
 
-        // Stubbing repository methods
-        when(userRequestRepository.findById(1)).thenReturn(userRequest);
+        ResponseEntity<Object> response = userRequestController.deleteRequest(userRequestDeleteDto);
 
-        // Create an instance of the service
-        UserRequestService userRequestService = new UserRequestService();
-
-        // Call the method under test
-        ResponseEntity<Object> responseEntity = userRequestService.deleteUserRequest(1);
-
-        // Verify that repository methods were called appropriately
-        verify(userRequestRepository).deleteById(1);
-        verify(userRepository).deleteById(1);
-        verify(companyRepository).deleteById(1);
-        verify(userCompanyRepository).deleteById(1);
-
-        // Verify the response entity
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(expectedResponse, response.getBody());
     }
 
 }

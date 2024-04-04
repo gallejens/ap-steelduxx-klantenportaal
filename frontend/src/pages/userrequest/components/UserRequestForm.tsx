@@ -1,6 +1,6 @@
 import { notifications } from '@/components/notifications';
 import { type GenericAPIResponse, doApiAction } from '@/lib/api';
-import { Button, NumberInput, TextInput } from '@mantine/core';
+import { Button, NumberInput, Select, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
 import { checkVAT, countries } from 'jsvat';
 import type { FC } from 'react';
@@ -12,6 +12,7 @@ import {
 import styles from '../styles/userRequest.module.scss';
 import { EMAIL_PLACEHOLDER } from '@/constants';
 import { HttpStatusCode } from 'axios';
+import { countries_en } from '../constants';
 
 type UserRequestFormValues = {
   companyName: string;
@@ -153,10 +154,12 @@ export const UserRequestForm: FC<Props> = props => {
 
     const isSuccess = result?.status === HttpStatusCode.Created;
 
-    notifications.add({
-      message: t(result?.message ?? 'notifications:genericError'),
-      autoClose: isSuccess ? undefined : 5000,
-    });
+    if (!isSuccess) {
+      notifications.add({
+        message: t(result?.message ?? 'notifications:genericError'),
+        autoClose: 5000,
+      });
+    }
 
     props.onSubmit?.();
 
@@ -181,10 +184,13 @@ export const UserRequestForm: FC<Props> = props => {
             required
             {...UserRequestForm.getInputProps('companyName')}
           />
-          <TextInput
+          <Select
             label={t('userRequestForm:countryInputTitle')}
             description={t('userRequestForm:countryInputDescription')}
             placeholder={t('userRequestForm:countryInputPlaceholder')}
+            //TODO
+            data={countries_en}
+            searchable
             required
             {...UserRequestForm.getInputProps('country')}
           />

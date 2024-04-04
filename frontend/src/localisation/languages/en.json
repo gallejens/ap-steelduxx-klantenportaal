@@ -80,7 +80,7 @@
 
     "referenceCodeInputTitle": "Reference code",
     "referenceCodeInputDescription": "Fill in the reference code of the company here",
-    "referenceCodeInputPlaceholder": "SRL/BHJ/EXP/PI-154",
+    "referenceCodeInputPlaceholder": "SOF1",
     "referenceCodeInputError": "Reference code of company is required",
 
     "denyMessageInputTitle": "Motivation",

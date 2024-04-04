@@ -18,7 +18,7 @@
     "loginSuccess": "Succesvol ingelogd"
   },
   "userRequestForm": {
-    "title": "Vraag Account Aan",
+    "title": "Vraag account aan",
     "companyInputTitle": "Bedrijf",
     "companyInputDescription": "Vul hier de naam van het bedrijf",
     "companyInputPlaceholder": "Steelduxx",
@@ -80,7 +80,7 @@
 
     "referenceCodeInputTitle": "Referentie code",
     "referenceCodeInputDescription": "Vul hier de referentie code in van het bedrijf",
-    "referenceCodeInputPlaceholder": "SRL/BHJ/EXP/PI-154",
+    "referenceCodeInputPlaceholder": "SOF1",
     "referenceCodeInputError": "Referentie code van bedrijf is verplicht",
 
     "denyMessageInputTitle": "Motivatie",

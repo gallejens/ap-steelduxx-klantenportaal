@@ -11,6 +11,7 @@ import com.ap.steelduxxklantenportaal.models.Company;
 import com.ap.steelduxxklantenportaal.models.UserCompany;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserCompanyRepository;
+import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRequestRepository;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -30,6 +32,9 @@ import java.util.stream.Collectors;
 public class UserRequestService {
         @Autowired
         private UserRequestRepository userRequestRepository;
+
+        @Autowired
+        private UserRepository userRepository;
 
         @Autowired
         private AuthService authService;
@@ -162,8 +167,10 @@ public class UserRequestService {
                         var expireTime = 3 * 30 * 24 * 60;
                         authService.requestChoosePasswordMail(userRequestDto.email(), expireTime);
 
-                        Map<String, String> responseBody = Collections.singletonMap("message",
-                                        "userRequestReviewPage:response:succes");
+                        Map<String, String> responseBody = new HashMap<>();
+
+                        responseBody.put("message", "userRequestReviewPage:response:succes");
+                        responseBody.put("status", HttpStatus.CREATED.toString());
 
                         return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
                 }
@@ -182,15 +189,28 @@ public class UserRequestService {
 
                 userRequestRepository.save(userRequest);
 
-                Map<String, String> responseBody = Collections.singletonMap("message",
-                                "userRequestReviewPage:response:denied");
+                Map<String, String> responseBody = new HashMap<>();
+
+                responseBody.put("message", "userRequestReviewPage:response:denied");
+                responseBody.put("status", HttpStatus.CREATED.toString());
 
                 return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
         }
 
         public ResponseEntity<Object> deleteUserRequest(Number id) throws MessagingException {
 
+                UserRequest userRequest = userRequestRepository.findById(id);
+
+                // Delete UserRequest when Denied
                 userRequestRepository.deleteById(id);
+
+                if (userRequest.getStatus() == StatusEnum.APPROVED) {
+                        userRepository.deleteById(id);
+
+                        companyRepository.deleteById(id);
+
+                        userCompanyRepository.deleteById(id);
+                }
 
                 Map<String, String> responseBody = Collections.singletonMap("message",
                                 "userRequestReviewPage:response:deleted");

@@ -73,7 +73,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     }
 
     const resultApprove = await doApiAction<
-      GenericAPIResponse<{ message: string }>
+      GenericAPIResponse<{ message: string; status: HttpStatusCode }>
     >({
       endpoint: `/user_requests/${requestId}/approve`,
       method: 'POST',
@@ -87,10 +87,13 @@ export const UserRequestReviewHandle: FC<Props> = props => {
       autoClose: 5000,
     });
 
-    props.onSubmit!();
+    props.onSubmit?.();
 
-    if (resultApprove?.status === HttpStatusCode.Created) {
-      props.onSucces!();
+    if (
+      resultApprove?.status.toString() ===
+      HttpStatusCode.Created + ' CREATED'
+    ) {
+      props.onSucces?.();
     }
   };
 
@@ -109,7 +112,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     }
 
     const resultDeny = await doApiAction<
-      GenericAPIResponse<{ message: string }>
+      GenericAPIResponse<{ message: string; status: HttpStatusCode }>
     >({
       endpoint: `/user_requests/${requestId}/deny`,
       method: 'POST',
@@ -125,7 +128,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
 
     props.onSubmit?.();
 
-    if (resultDeny?.status === HttpStatusCode.Created) {
+    if (resultDeny?.status.toString() === HttpStatusCode.Created + ' CREATED') {
       props.onSucces?.();
     }
   };

@@ -2,8 +2,6 @@ package com.ap.steelduxxklantenportaal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Map;
@@ -13,9 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -25,11 +22,6 @@ import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDeleteDt
 import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
-import com.ap.steelduxxklantenportaal.models.UserRequest;
-import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
-import com.ap.steelduxxklantenportaal.repositories.UserCompanyRepository;
-import com.ap.steelduxxklantenportaal.repositories.UserRepository;
-import com.ap.steelduxxklantenportaal.repositories.UserRequestRepository;
 import com.ap.steelduxxklantenportaal.services.UserRequestService;
 
 import jakarta.mail.MessagingException;

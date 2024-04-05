@@ -73,7 +73,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     }
 
     const resultApprove = await doApiAction<
-      GenericAPIResponse<{ message: string; status: HttpStatusCode }>
+      GenericAPIResponse<{ message: string }>
     >({
       endpoint: `/user_requests/${requestId}/approve`,
       method: 'POST',

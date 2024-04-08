@@ -202,10 +202,6 @@
       "orders": "Orders",
       "requests": "Registrations"
     },
-    "languageOptions": {
-      "english": "English",
-      "dutch": "Dutch"
-    },
     "userOptions": {
       "logout": "Logout",
       "changePassword": "Change password",

@@ -12,10 +12,7 @@ import { LanguagePopOver } from '../languagepopover/components/LanguagePopOver';
 export const AppShell: FC = () => {
   const navigate = useNavigate();
   const routerState = useRouterState();
-  const {
-    t,
-    i18n: { changeLanguage, language },
-  } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleTabClick = (path: string) => {
     navigate({ to: path });

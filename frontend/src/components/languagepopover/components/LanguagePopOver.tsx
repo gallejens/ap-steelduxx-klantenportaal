@@ -32,7 +32,7 @@ export function LanguagePopOver() {
             <CustomLanguageCard
               key={lang.key}
               flag={lang.flag}
-              name={t(lang.name)}
+              name={lang.name}
               onClick={() => handleLanguageChange(lang.key)}
             ></CustomLanguageCard>
           ))}

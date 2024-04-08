@@ -1,7 +1,10 @@
 .card {
   padding: 10px;
   position: relative;
-  border-bottom: 1px solid #ccc;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+  }
 
   .title {
     font-size: 10px;

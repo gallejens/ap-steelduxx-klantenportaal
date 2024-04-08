@@ -2,7 +2,7 @@ import { Card } from '@mantine/core';
 import styles from '../styles/notificationspopover.module.scss';
 import { IconCircleCheck } from '@tabler/icons-react';
 
-interface CustomCardProps {
+interface CustomNotificationCardProps {
   title: any;
   message: any;
   datetime: any;
@@ -14,7 +14,7 @@ export default function CustomCard({
   message,
   datetime,
   onClick,
-}: CustomCardProps) {
+}: CustomNotificationCardProps) {
   return (
     <Card className={styles.card}>
       <div className={styles.title}>{title}</div>

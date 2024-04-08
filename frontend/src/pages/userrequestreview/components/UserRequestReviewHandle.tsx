@@ -89,10 +89,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
 
     props.onSubmit?.();
 
-    if (
-      resultApprove?.status.toString() ===
-      HttpStatusCode.Created + ' CREATED'
-    ) {
+    if (resultApprove?.message === 'userRequestReviewPage:response:succes') {
       props.onSucces?.();
     }
   };
@@ -109,10 +106,11 @@ export const UserRequestReviewHandle: FC<Props> = props => {
         message: t('notifications:invalidForm'),
         color: 'red',
       });
+      return;
     }
 
     const resultDeny = await doApiAction<
-      GenericAPIResponse<{ message: string; status: HttpStatusCode }>
+      GenericAPIResponse<{ message: string }>
     >({
       endpoint: `/user_requests/${requestId}/deny`,
       method: 'POST',
@@ -128,7 +126,9 @@ export const UserRequestReviewHandle: FC<Props> = props => {
 
     props.onSubmit?.();
 
-    if (resultDeny?.status.toString() === HttpStatusCode.Created + ' CREATED') {
+    console.log(resultDeny?.message);
+
+    if (resultDeny?.message === 'userRequestReviewPage:response:denied') {
       props.onSucces?.();
     }
   };

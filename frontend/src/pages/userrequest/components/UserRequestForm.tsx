@@ -62,11 +62,6 @@ export const UserRequestForm: FC<Props> = props => {
           return t('userRequestForm:companyInputError');
         }
       },
-      country: value => {
-        if (value) {
-          return t('userRequestForm:countryInputError');
-        }
-      },
       email: isEmail(t('userRequestForm:emailInputError')),
       phoneNr: value => {
         if (

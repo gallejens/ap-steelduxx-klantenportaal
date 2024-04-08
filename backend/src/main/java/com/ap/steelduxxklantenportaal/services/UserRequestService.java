@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -166,10 +167,7 @@ public class UserRequestService {
                         var expireTime = 3 * 30 * 24 * 60;
                         authService.requestChoosePasswordMail(userRequestDto.email(), expireTime);
 
-                        ResponseEntity<Object> responseBody = ResponseHandler.generate(
-                                        "userRequestReviewPage:response:succes",
-                                        HttpStatus.CREATED);
-                        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+                        return ResponseHandler.generate("userRequestReviewPage:response:succes", HttpStatus.CREATED);
                 }
 
         }
@@ -178,7 +176,7 @@ public class UserRequestService {
                         throws MessagingException {
                 UserRequest userRequest = userRequestRepository.findById(id);
 
-                // Edit status to DENIED
+                // Edit denyStatus
                 userRequest.setStatus(StatusEnum.DENIED);
 
                 // Edit denyMessage
@@ -186,10 +184,7 @@ public class UserRequestService {
 
                 userRequestRepository.save(userRequest);
 
-                ResponseEntity<Object> responseBody = ResponseHandler.generate(
-                                "userRequestReviewPage:response:denied",
-                                HttpStatus.CREATED);
-                return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+                return ResponseHandler.generate("userRequestReviewPage:response:denied", HttpStatus.OK);
         }
 
         public ResponseEntity<Object> deleteUserRequest(Number id) throws MessagingException {
@@ -207,9 +202,6 @@ public class UserRequestService {
                         userCompanyRepository.deleteById(id);
                 }
 
-                ResponseEntity<Object> responseBody = ResponseHandler.generate(
-                                "userRequestReviewPage:response:deleted",
-                                HttpStatus.CREATED);
-                return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+                return ResponseHandler.generate("userRequestReviewPage:response:deleted", HttpStatus.OK);
         }
 }

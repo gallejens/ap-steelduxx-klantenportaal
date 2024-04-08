@@ -78,13 +78,13 @@ public class UserRequestDetailsTest {
         UserRequestDenyDto userRequestDenyDto = new UserRequestDenyDto("Denial reason");
 
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:denied", "status",
-                HttpStatus.CREATED.toString());
+                HttpStatus.OK.toString());
         when(userRequestService.denyUserRequest(eq(id), eq(userRequestDenyDto)))
-                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
+                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
         ResponseEntity<Object> response = userRequestController.denyRequest(id, userRequestDenyDto);
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse, response.getBody());
     }
 
@@ -95,11 +95,11 @@ public class UserRequestDetailsTest {
 
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:deleted");
         when(userRequestService.deleteUserRequest(eq(id)))
-                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
+                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
         ResponseEntity<Object> response = userRequestController.deleteRequest(userRequestDeleteDto);
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse, response.getBody());
     }
 

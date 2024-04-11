@@ -4,6 +4,7 @@ import {
   IconHome,
   IconList,
   IconBaselineDensityMedium,
+  IconUsers,
   type TablerIconsProps,
 } from '@tabler/icons-react';
 import type { FC } from 'react';
@@ -34,5 +35,11 @@ export const TABS: {
     path: '/app/requests',
     icon: IconList,
     color: { r: 219, g: 38, b: 183 },
+  },
+  {
+    labelKey: 'accounts',
+    path: 'accounts',
+    icon: <IconUsers color='rgb(150, 255, 0)' />,
+    color: 'rgba(180, 255, 20, 0.433)',
   },
 ];

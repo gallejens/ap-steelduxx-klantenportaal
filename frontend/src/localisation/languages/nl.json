@@ -201,7 +201,8 @@
     "tabs": {
       "home": "Home",
       "orders": "Orders",
-      "requests": "Registraties"
+      "requests": "Registraties",
+      "accounts": "Gebruikers"
     },
     "userOptions": {
       "logout": "Uitloggen",
@@ -241,5 +242,15 @@
   },
   "table": {
     "columnSelectorButton": "Kolommen"
+  },
+  "accountListPage": {
+    "table": {
+      "email": "Email",
+      "firstName": "Voornaam",
+      "lastName": "Achternaam",
+      "company": "Bedrijf"
+    },
+    "loading": "Laden...",
+    "error": "Er heeft zich een fout voorgedaan tijdens het laden van de accounts"
   }
 }

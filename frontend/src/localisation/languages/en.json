@@ -201,7 +201,8 @@
     "tabs": {
       "home": "Home",
       "orders": "Orders",
-      "requests": "Registrations"
+      "requests": "Registrations",
+      "accounts": "Accounts"
     },
     "userOptions": {
       "logout": "Logout",
@@ -241,5 +242,15 @@
   },
   "table": {
     "columnSelectorButton": "Columns"
+  },
+  "accountListPage": {
+    "table": {
+      "email": "Email",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "company": "Company"
+    },
+    "loading": "Loading...",
+    "error": "An error has occured while loading accounts"
   }
 }

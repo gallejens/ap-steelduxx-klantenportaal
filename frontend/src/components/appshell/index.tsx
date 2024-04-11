@@ -15,10 +15,10 @@ export const AppShell: FC = () => {
     <div className={styles.appshell}>
       <div
         className={styles.sidebar}
-        style={{ width: collapsed ? undefined : SIDEBAR_WIDTH }}
+        style={{ width: collapsed ? undefined : `${SIDEBAR_WIDTH}rem` }}
       >
         <div className={styles.logo}>
-          <SteelLogo width={'3rem'} />
+          <SteelLogo height='100%' />
         </div>
         <Tabs />
         <UserDisplay />

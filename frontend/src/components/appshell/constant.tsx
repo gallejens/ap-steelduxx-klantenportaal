@@ -7,7 +7,7 @@ import {
 } from '@tabler/icons-react';
 import type { FC } from 'react';
 
-export const SIDEBAR_WIDTH = '17rem';
+export const SIDEBAR_WIDTH: number = 17; // in rem
 
 export const TABS = [
   {

@@ -1,10 +1,4 @@
-@use '../../../styles/mixins.scss';
-
 $navbar_header_height: 4.5rem;
-
-:export {
-  navbar_header_height: $navbar_header_height;
-}
 
 .appshell {
   width: 100%;
@@ -25,6 +19,8 @@ $navbar_header_height: 4.5rem;
 
     & > .logo {
       height: $navbar_header_height;
+
+      padding: var(--mantine-spacing-xs);
 
       display: flex;
       justify-content: center;
@@ -118,7 +114,7 @@ $navbar_header_height: 4.5rem;
     }
   }
 
-  & .user_display {
+  &__user_display {
     position: relative;
 
     & > div:first-child {
@@ -166,50 +162,34 @@ $navbar_header_height: 4.5rem;
         }
       }
     }
+  }
+}
 
-    & > .options {
-      @include mixins.shadow;
+// outside main class because popover is a portal so not child of other elements
+.user_display_popover {
+  & > div {
+    height: 3rem;
 
-      z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: var(--mantine-spacing-sm);
 
-      position: absolute;
-      bottom: 0;
-      left: 17rem;
+    padding: var(--mantine-spacing-xs);
 
-      background-color: var(--mantine-color-primary-0);
-      border-radius: var(--mantine-radius-default);
+    border-radius: var(--mantine-radius-default);
 
-      display: flex;
-      flex-direction: column;
-
-      padding: var(--mantine-spacing-xs);
-      margin: var(--mantine-spacing-xs);
-
-      & > div {
-        height: 3rem;
-
-        display: flex;
-        align-items: center;
-        gap: var(--mantine-spacing-sm);
-
-        padding: var(--mantine-spacing-xs);
-
-        border-radius: var(--mantine-radius-default);
-
-        &:hover {
-          background-color: var(--mantine-color-primary-1);
-          cursor: pointer;
-        }
-
-        & > p {
-          font-size: 0.9rem;
-          white-space: nowrap;
-        }
-      }
-
-      & > div:not(:last-child) {
-        border-bottom: 1px solid var(--mantine-color-default-border);
-      }
+    &:hover {
+      background-color: var(--mantine-color-primary-1);
+      cursor: pointer;
     }
+
+    & > p {
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+  }
+
+  & > div:not(:last-child) {
+    border-bottom: 1px solid var(--mantine-color-default-border);
   }
 }

@@ -1,7 +1,7 @@
-import { useState, type FC } from 'react';
+import { type FC } from 'react';
 import styles from '../styles/appshell.module.scss';
 import { useAuth } from '@/hooks/useAuth';
-import { Avatar, Text } from '@mantine/core';
+import { Avatar, Popover, Text } from '@mantine/core';
 import {
   IconChevronRight,
   IconLogout,
@@ -15,7 +15,6 @@ import { useAppshellStore } from '../stores/useAppshellStore';
 
 export const UserDisplay: FC = () => {
   const { signOut, user } = useAuth();
-  const [menuOpened, setMenuOpened] = useState(false);
   const { t } = useTranslation();
   const { openModal, closeModal } = useModalStore();
   const collapsed = useAppshellStore(s => s.sidebarCollapsed);
@@ -40,39 +39,43 @@ export const UserDisplay: FC = () => {
   };
 
   return (
-    <div
-      className={styles.user_display}
-      onClick={() => setMenuOpened(s => !s)}
-    >
-      <div>
-        <Avatar>
-          {user.firstName.charAt(0).toUpperCase()}
-          {user.lastName.charAt(0).toUpperCase()}
-        </Avatar>
-        {!collapsed && (
-          <>
-            <div className={styles.info}>
-              <Text className={styles.name}>
-                {user.firstName} {user.lastName}
-              </Text>
-              <Text className={styles.email}>{user.email}</Text>
+    <div className={styles.appshell__user_display}>
+      <Popover
+        withArrow
+        shadow='md'
+      >
+        <Popover.Target>
+          <div>
+            <Avatar>
+              {user.firstName.charAt(0).toUpperCase()}
+              {user.lastName.charAt(0).toUpperCase()}
+            </Avatar>
+            {!collapsed && (
+              <>
+                <div className={styles.info}>
+                  <Text className={styles.name}>
+                    {user.firstName} {user.lastName}
+                  </Text>
+                  <Text className={styles.email}>{user.email}</Text>
+                </div>
+                <IconChevronRight size={16} />
+              </>
+            )}
+          </div>
+        </Popover.Target>
+        <Popover.Dropdown>
+          <div className={styles.user_display_popover}>
+            <div onClick={handleLogoutOptionClick}>
+              <IconLogout size={19} />
+              <Text>{t('appshell:userOptions:logout')}</Text>
             </div>
-            <IconChevronRight size={16} />
-          </>
-        )}
-      </div>
-      {menuOpened && (
-        <div className={styles.options}>
-          <div onClick={handleLogoutOptionClick}>
-            <IconLogout size={19} />
-            <Text>{t('appshell:userOptions:logout')}</Text>
+            <div onClick={handleChangePasswordOptionClick}>
+              <IconPassword size={19} />
+              <Text>{t('appshell:userOptions:changePassword')}</Text>
+            </div>
           </div>
-          <div onClick={handleChangePasswordOptionClick}>
-            <IconPassword size={19} />
-            <Text>{t('appshell:userOptions:changePassword')}</Text>
-          </div>
-        </div>
-      )}
+        </Popover.Dropdown>
+      </Popover>
     </div>
   );
 };

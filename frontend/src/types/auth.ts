@@ -1,7 +1,11 @@
 export namespace Auth {
-  type Role = 'ROLE_HEAD_ADMIN' | 'ROLE_ADMIN' | 'ROLE_HEAD_USER' | 'ROLE_USER';
+  export type Role =
+    | 'ROLE_HEAD_ADMIN'
+    | 'ROLE_ADMIN'
+    | 'ROLE_HEAD_USER'
+    | 'ROLE_USER';
 
-  type Permission =
+  export type Permission =
     | 'ACCESS'
     | 'MANAGE_USERS'
     | 'MANAGE_ADMINS'

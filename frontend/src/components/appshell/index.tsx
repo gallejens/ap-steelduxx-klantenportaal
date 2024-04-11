@@ -1,74 +1,30 @@
-import { IconArrowLeft, IconLanguage } from '@tabler/icons-react';
-import { Outlet, useNavigate, useRouterState } from '@tanstack/react-router';
-import type { FC } from 'react';
-import { TABS } from './constant';
+import { Outlet } from '@tanstack/react-router';
+import { type FC } from 'react';
 import styles from './styles/appshell.module.scss';
 import { UserDisplay } from './components/UserDisplay';
-import { useTranslation } from 'react-i18next';
-import { ActionIcon } from '@mantine/core';
-import { NotificationPopover } from '../notificationpopover';
-import { LanguagePopOver } from '../languagepopover/components/LanguagePopOver';
+import { Header } from './components/Header';
+import { Tabs } from './components/Tabs';
+import { SteelLogo } from '../steellogo';
+import { SIDEBAR_WIDTH } from './constant';
+import { useAppshellStore } from './stores/useAppshellStore';
 
 export const AppShell: FC = () => {
-  const navigate = useNavigate();
-  const routerState = useRouterState();
-  const { t, i18n } = useTranslation();
-
-  const handleTabClick = (path: string) => {
-    navigate({ to: path });
-  };
+  const collapsed = useAppshellStore(s => s.sidebarCollapsed);
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.top}>
-        <ActionIcon
-          onClick={() => history.go(-1)}
-          className={styles.back_button}
-          variant='transparent'
-        >
-          <IconArrowLeft />
-        </ActionIcon>
-        <img
-          className={styles.logo}
-          src='/logo.svg'
-          alt='logo'
-          onClick={() => {
-            handleTabClick('home');
-          }}
-        />
-        <div className={styles.actions}>
-          <LanguagePopOver></LanguagePopOver>
-          <NotificationPopover></NotificationPopover>
+    <div className={styles.appshell}>
+      <div
+        className={styles.sidebar}
+        style={{ width: collapsed ? undefined : SIDEBAR_WIDTH }}
+      >
+        <div className={styles.logo}>
+          <SteelLogo width={'3rem'} />
         </div>
+        <Tabs />
+        <UserDisplay />
       </div>
       <div className={styles.content}>
-        <div className={styles.left}>
-          <div className={styles.tabs}>
-            {TABS.map(tab => {
-              const isActive = routerState.location.pathname.startsWith(
-                `/app/${tab.path}`
-              );
-              return (
-                <div
-                  key={`tab_${tab.path}`}
-                  onClick={() => {
-                    handleTabClick(tab.path);
-                  }}
-                  className={`${isActive ? styles.active : ''}`}
-                >
-                  <div
-                    className={styles.navimg}
-                    style={{ backgroundColor: tab.color }}
-                  >
-                    {tab.icon}
-                  </div>
-                  {t(`appshell:tabs:${tab.labelKey}`)}
-                </div>
-              );
-            })}
-          </div>
-          <UserDisplay />
-        </div>
+        <Header />
         <div className={styles.route}>
           <Outlet />
         </div>

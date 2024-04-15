@@ -163,9 +163,15 @@ export const OrderDetailsPage: FC = () => {
               {orderDetail?.products.map((product: Product, index: number) => (
                 <li key={index}>
                   {t('orderDetailPage:hsCode')}: {product.hsCode} -{' '}
-                  {product.name} - {t('orderDetailPage:quantity')}:{' '}
-                  {product.quantity}, {product.weight} kg -{' '}
-                  {t('orderDetailPage:container')}: {product.containerNumber}
+                  {product.name} -{t('orderDetailPage:quantity')}:{' '}
+                  {product.quantity}, {product.weight} kg
+                  {product.containerNumber != null ? (
+                    <>
+                      {' '}
+                      - {t('orderDetailPage:container')}:{' '}
+                      {product.containerNumber}
+                    </>
+                  ) : null}
                 </li>
               ))}
             </ul>

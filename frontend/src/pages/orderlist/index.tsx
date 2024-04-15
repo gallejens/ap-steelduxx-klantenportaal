@@ -28,11 +28,14 @@ export const OrderListPage: FC = () => {
       }),
   });
 
-  const handleOrderClick = (referenceNumber: string) => {
+  const handleOrderClick = (order: Order) => {
     navigate({
       to: '/app/orders/$order_id',
       params: {
-        order_id: referenceNumber,
+        order_id: order.referenceNumber,
+      },
+      search: {
+        customerCode: order.customerCode ?? undefined,
       },
     });
   };
@@ -63,7 +66,7 @@ export const OrderListPage: FC = () => {
           storageKey='table_orderlist'
           translationKey='orderListPage:table'
           searchValue={searchValue}
-          onRowClick={(order: Order) => handleOrderClick(order.referenceNumber)}
+          onRowClick={handleOrderClick}
           columns={[
             {
               key: 'referenceNumber',

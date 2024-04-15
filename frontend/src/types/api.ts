@@ -9,6 +9,7 @@ export type OrderState =
 export type OrderTransportType = 'IMPORT' | 'EXPORT';
 
 export type Order = {
+  customerCode: string | null; // ex: "SOF1", only provided when admin requests orders
   referenceNumber: string; // ex: "2646607000",
   customerReferenceNumber: string; // ex: "SRL/BHJ/EXP/PI-154",
   state: OrderState;

@@ -35,6 +35,7 @@ export const TABS: {
     path: '/app/requests',
     icon: IconList,
     color: { r: 219, g: 38, b: 183 },
+    requiredPermission: 'MANAGE_USER_REQUESTS',
   },
   {
     labelKey: 'accounts',

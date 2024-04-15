@@ -100,6 +100,7 @@ const userRequestListRoute = createRoute({
   path: 'requests',
   component: UserRequestListPage,
 });
+
 const orderListRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
   path: 'orders',
@@ -110,6 +111,15 @@ const orderDetailsRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
   path: '/orders/$order_id',
   component: OrderDetailsPage,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      customerCode:
+        search.customerCode !== undefined &&
+        typeof search.customerCode === 'string'
+          ? String(search.customerCode)
+          : undefined,
+    };
+  },
 });
 
 const userRequestReviewRoute = createRoute({

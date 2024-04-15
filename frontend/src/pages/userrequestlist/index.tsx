@@ -26,7 +26,7 @@ export const UserRequestListPage: FC = () => {
     queryKey: ['userRequestListValues'],
     queryFn: () =>
       doApiAction<UserRequest[]>({
-        endpoint: '/user_requests',
+        endpoint: '/user-requests/all',
         method: 'GET',
       }),
   });
@@ -43,7 +43,7 @@ export const UserRequestListPage: FC = () => {
 
   const deleteUserRequest = async (userRequest: UserRequest) => {
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
-      endpoint: '/user_requests/delete',
+      endpoint: '/user-requests/delete',
       method: 'DELETE',
       body: {
         id: userRequest.followId,

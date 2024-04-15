@@ -57,7 +57,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
     if (searchValue !== undefined && searchValue.length !== 0) {
       filteredRows = props.data.filter(row => {
         for (const columnKey of Object.keys(row) as T[]) {
-          if (props.columns[columnKeyToIndex[columnKey]].excludeFromSearch) {
+          if (props.columns[columnKeyToIndex[columnKey]]?.excludeFromSearch) {
             continue;
           }
           if (row[columnKey]?.toString().toLowerCase().includes(searchValue)) {

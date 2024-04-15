@@ -4,6 +4,7 @@ import com.ap.steelduxxklantenportaal.enums.OrderStateEnum;
 import com.ap.steelduxxklantenportaal.enums.OrderTransportTypeEnum;
 
 public record OrderDto(
+        String customerCode,
         String referenceNumber,
         String customerReferenceNumber,
         OrderStateEnum state,

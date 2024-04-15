@@ -1,5 +1,5 @@
 import { type FC, useState } from 'react';
-import { Button, TextInput, Textarea } from '@mantine/core';
+import { Button, Select, Textarea } from '@mantine/core';
 import styles from '../styles/userRequestReview.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@mantine/form';
@@ -8,6 +8,7 @@ import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
+import { useQuery } from '@tanstack/react-query';
 
 type UserRequestApproveValues = {
   referenceCode: string;
@@ -32,13 +33,24 @@ export const UserRequestReviewHandle: FC<Props> = props => {
   const [isApproved, setIsApproved] = useState(true);
   const [isDenied, setIsDenied] = useState(false);
 
+  const { data: companyCodesResponse } = useQuery({
+    queryKey: ['user-requests-review-company-codes'],
+    queryFn: () =>
+      doApiAction<GenericAPIResponse<string[]>>({
+        endpoint: '/user-requests/company-codes',
+        method: 'GET',
+      }),
+  });
+
+  const companyCodes = companyCodesResponse?.data ?? [];
+
   const approveForm = useForm<UserRequestApproveValues>({
     initialValues: {
       referenceCode: '',
     },
     validate: {
       referenceCode: value => {
-        if (!value) {
+        if (!value || !companyCodes.includes(value)) {
           return t('userRequestForm:referenceCodeInputError');
         }
       },
@@ -74,7 +86,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     const resultApprove = await doApiAction<
       GenericAPIResponse<{ message: string }>
     >({
-      endpoint: `/user_requests/${requestId}/approve`,
+      endpoint: `/user-requests/${requestId}/approve`,
       method: 'POST',
       body: {
         referenceCode: values.referenceCode,
@@ -111,7 +123,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     const resultDeny = await doApiAction<
       GenericAPIResponse<{ message: string }>
     >({
-      endpoint: `/user_requests/${requestId}/deny`,
+      endpoint: `/user-requests/${requestId}/deny`,
       method: 'POST',
       body: {
         denyMessage: values.denyMessage,
@@ -124,8 +136,6 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     });
 
     props.onSubmit?.();
-
-    console.log(resultDeny?.message);
 
     if (resultDeny?.message === 'userRequestReviewPage:response:denied') {
       props.onSucces?.();
@@ -181,14 +191,16 @@ export const UserRequestReviewHandle: FC<Props> = props => {
               )
             )}
           >
-            <TextInput
+            <Select
+              className={styles.company_country_input}
               label={t('userRequestForm:referenceCodeInputTitle')}
-              withAsterisk
               description={t('userRequestForm:referenceCodeInputDescription')}
               placeholder={t('userRequestForm:referenceCodeInputPlaceholder')}
-              required
+              data={companyCodes}
+              searchable
               {...approveForm.getInputProps('referenceCode')}
             />
+
             <div className={styles.confirm_button}>
               <Button type='submit'>
                 {t('userRequestForm:confirmButton')}

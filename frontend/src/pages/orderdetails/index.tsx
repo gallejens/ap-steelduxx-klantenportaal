@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import { useParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/orderDetails.module.scss';
@@ -11,6 +11,11 @@ export const OrderDetailsPage: FC = () => {
   const { order_id: orderId } = useParams({
     from: '/app/orders/$order_id',
   });
+  const { customerCode } = useSearch({
+    from: '/app/orders/$order_id',
+  });
+
+  console.log(customerCode);
 
   const {
     data: orderDetail,
@@ -22,6 +27,11 @@ export const OrderDetailsPage: FC = () => {
       doApiAction<GenericAPIResponse<OrderDetails>>({
         endpoint: `/orders/${orderId}`,
         method: 'GET',
+        params: customerCode
+          ? {
+              customerCode,
+            }
+          : undefined,
       }),
   });
 

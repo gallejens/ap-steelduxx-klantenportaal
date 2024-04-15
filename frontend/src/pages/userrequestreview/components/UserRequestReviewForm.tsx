@@ -35,7 +35,7 @@ export const UserRequestReviewForm: FC<userRequestValue> = () => {
     queryKey: ['userRequestValue'],
     queryFn: () =>
       doApiAction<userRequestValue>({
-        endpoint: `/user_requests/${requestId}`,
+        endpoint: `/user-requests/${requestId}`,
         method: 'GET',
       }),
   });

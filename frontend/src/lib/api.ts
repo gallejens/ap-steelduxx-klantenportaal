@@ -46,12 +46,14 @@ export const doApiAction = async <T = GenericAPIResponse>(data: {
   endpoint: string;
   method: Method;
   body?: unknown;
+  params?: Record<string, string>;
 }): Promise<T | undefined> => {
   try {
     const response = await api<T>({
       url: data.endpoint,
       method: data.method,
       data: data.body,
+      params: data.params,
     });
     return response.data;
   } catch (e: unknown) {

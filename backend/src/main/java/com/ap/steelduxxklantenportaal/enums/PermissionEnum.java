@@ -5,4 +5,5 @@ public enum PermissionEnum {
     VIEW_ACCOUNTS, // Can access accounts overview page
     CREATE_SUB_ACCOUNTS, // Can create subaccounts
     EXTERNAL_API_ADMIN, // Use admin key for external functionality
+    MANAGE_USER_REQUESTS, // Access & manage user requests
 }

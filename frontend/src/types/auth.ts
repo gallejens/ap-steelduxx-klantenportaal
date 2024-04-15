@@ -5,12 +5,7 @@ export namespace Auth {
     | 'ROLE_HEAD_USER'
     | 'ROLE_USER';
 
-  export type Permission =
-    | 'ACCESS'
-    | 'MANAGE_USERS'
-    | 'MANAGE_ADMINS'
-    | 'MANAGE_COMPANIES'
-    | 'LOG_ACCESS';
+  export type Permission = 'ACCESS' | 'CREATE_SUB_ACCOUNTS' | 'VIEW_ACCOUNTS';
 
   export type User = {
     id: number;

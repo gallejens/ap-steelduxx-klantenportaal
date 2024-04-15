@@ -44,7 +44,7 @@ export function NotificationPopover() {
     return <div>Loading...</div>;
   }
 
-  if (status === 'error' || !notifications) {
+  if (status === 'error' || !notifications || !Array.isArray(notifications)) {
     return <div>Error: {error?.message ?? 'Unknown Error'}</div>;
   }
 

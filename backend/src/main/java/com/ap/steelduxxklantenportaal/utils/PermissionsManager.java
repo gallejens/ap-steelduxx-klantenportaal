@@ -15,10 +15,8 @@ public class PermissionsManager {
         rolePermissions.put(RoleEnum.ROLE_HEAD_ADMIN,
                 List.of(
                         PermissionEnum.ACCESS,
-                        PermissionEnum.MANAGE_USERS,
-                        PermissionEnum.MANAGE_COMPANIES,
-                        PermissionEnum.LOG_ACCESS,
-                        PermissionEnum.MANAGE_ADMINS
+                        PermissionEnum.VIEW_ACCOUNTS,
+                        PermissionEnum.CREATE_SUB_ACCOUNTS
                 )
         );
 
@@ -26,9 +24,7 @@ public class PermissionsManager {
         rolePermissions.put(RoleEnum.ROLE_ADMIN,
                 List.of(
                         PermissionEnum.ACCESS,
-                        PermissionEnum.MANAGE_USERS,
-                        PermissionEnum.MANAGE_COMPANIES,
-                        PermissionEnum.LOG_ACCESS
+                        PermissionEnum.VIEW_ACCOUNTS
                 )
         );
 
@@ -36,7 +32,8 @@ public class PermissionsManager {
         rolePermissions.put(RoleEnum.ROLE_HEAD_USER,
                 List.of(
                         PermissionEnum.ACCESS,
-                        PermissionEnum.MANAGE_USERS
+                        PermissionEnum.VIEW_ACCOUNTS,
+                        PermissionEnum.CREATE_SUB_ACCOUNTS
                 )
         );
 

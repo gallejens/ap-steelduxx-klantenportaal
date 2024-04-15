@@ -7,5 +7,5 @@ import com.ap.steelduxxklantenportaal.models.UserCompany;
 
 @Repository
 public interface UserCompanyRepository extends JpaRepository<UserCompany, Long> {
-
+    void deleteById(Number id);
 }

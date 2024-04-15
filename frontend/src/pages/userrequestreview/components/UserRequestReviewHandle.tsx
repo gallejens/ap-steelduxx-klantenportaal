@@ -7,6 +7,8 @@ import { notifications } from '@/components/notifications';
 import { GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
 import { HttpStatusCode } from 'axios';
+import { ConfirmModal } from '@/components/modals';
+import { useModalStore } from '@/stores/useModalStore';
 
 type UserRequestApproveValues = {
   referenceCode: string;
@@ -23,6 +25,7 @@ type Props = {
 
 export const UserRequestReviewHandle: FC<Props> = props => {
   const { t } = useTranslation();
+  const { openModal, closeModal } = useModalStore();
   const { request_id: requestId } = useParams({
     from: '/app/requests/$request_id',
   });
@@ -84,10 +87,10 @@ export const UserRequestReviewHandle: FC<Props> = props => {
       autoClose: 5000,
     });
 
-    props.onSubmit!();
+    props.onSubmit?.();
 
-    if (resultApprove?.status === HttpStatusCode.Created) {
-      props.onSucces!();
+    if (resultApprove?.message === 'userRequestReviewPage:response:succes') {
+      props.onSucces?.();
     }
   };
 
@@ -103,6 +106,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
         message: t('notifications:invalidForm'),
         color: 'red',
       });
+      return;
     }
 
     const resultDeny = await doApiAction<
@@ -122,7 +126,9 @@ export const UserRequestReviewHandle: FC<Props> = props => {
 
     props.onSubmit?.();
 
-    if (resultDeny?.status === HttpStatusCode.Created) {
+    console.log(resultDeny?.message);
+
+    if (resultDeny?.message === 'userRequestReviewPage:response:denied') {
       props.onSucces?.();
     }
   };
@@ -160,7 +166,20 @@ export const UserRequestReviewHandle: FC<Props> = props => {
         {isApproved ? (
           <form
             onSubmit={approveForm.onSubmit(values =>
-              approveUserRequestReviewButton(values)
+              openModal(
+                <ConfirmModal
+                  title={t(
+                    'appshell:approveRequestConfirmation:approveConfirmTitle'
+                  )}
+                  text={t(
+                    'appshell:approveRequestConfirmation:approveConfirmText'
+                  )}
+                  onConfirm={() => {
+                    closeModal();
+                    approveUserRequestReviewButton(values);
+                  }}
+                />
+              )
             )}
           >
             <TextInput
@@ -182,7 +201,16 @@ export const UserRequestReviewHandle: FC<Props> = props => {
         {isDenied ? (
           <form
             onSubmit={denyForm.onSubmit(values =>
-              denyUserRequestReviewButton(values)
+              openModal(
+                <ConfirmModal
+                  title={t('appshell:denyRequestConfirmation:denyConfirmTitle')}
+                  text={t('appshell:denyRequestConfirmation:denyConfirmText')}
+                  onConfirm={() => {
+                    closeModal();
+                    denyUserRequestReviewButton(values);
+                  }}
+                />
+              )
             )}
           >
             <Textarea

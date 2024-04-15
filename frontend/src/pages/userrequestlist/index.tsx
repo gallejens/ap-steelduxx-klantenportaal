@@ -10,6 +10,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { dateConverter } from '@/lib/util/dateConverter';
 import { STATUSES } from './constants';
 import { notifications } from '@/components/notifications';
+import { ConfirmModal } from '@/components/modals';
+import { useModalStore } from '@/stores/useModalStore';
 
 type UserRequest = {
   followId: number;
@@ -26,6 +28,7 @@ export const UserRequestListPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>('');
+  const { openModal, closeModal } = useModalStore();
   const client = useQueryClient();
 
   const { data: userRequests, status } = useQuery({
@@ -48,7 +51,7 @@ export const UserRequestListPage: FC = () => {
     );
   }
 
-  const handleDeleteClick = async (userRequest: UserRequest) => {
+  const deleteUserRequest = async (userRequest: UserRequest) => {
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
       endpoint: `/user_requests/delete`,
       method: 'DELETE',
@@ -63,6 +66,19 @@ export const UserRequestListPage: FC = () => {
     });
 
     client.invalidateQueries({ queryKey: ['userRequestListValues'] });
+  };
+
+  const handleDeleteClick = (userRequest: UserRequest) => {
+    openModal(
+      <ConfirmModal
+        title={t('appshell:deleteRequestConfirmation:deleteConfirmTitle')}
+        text={t('appshell:deleteRequestConfirmation:deleteConfirmText')}
+        onConfirm={() => {
+          closeModal();
+          deleteUserRequest(userRequest);
+        }}
+      />
+    );
   };
 
   const tableData = userRequests.reduce<

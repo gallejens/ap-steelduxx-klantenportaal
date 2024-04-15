@@ -12,4 +12,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Optional<Company> findByReferenceCode(String referenceCode);
 
     Optional<Company> findById(Long id);
+
+    void deleteById(Number id);
 }

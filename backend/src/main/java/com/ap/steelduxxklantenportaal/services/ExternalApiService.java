@@ -1,6 +1,5 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.OrderDto;
 import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.models.User;
@@ -9,10 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,17 +28,7 @@ public class ExternalApiService {
         this.userTokens = new HashMap<>();
     }
 
-    private String getToken() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            return null;
-        }
-
-        var user = (User) auth.getPrincipal();
-        if (user == null) {
-            return null;
-        }
-
+    private String getToken(User user) {
         String existingToken = userTokens.get(user.getId());
         if (existingToken != null) {
             return existingToken;
@@ -78,15 +67,39 @@ public class ExternalApiService {
     }
 
     public <T> T doRequest(String endpoint, HttpMethod method, Class<T> responseType) {
-        String token = getToken();
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return null;
+        }
+
+        var user = (User) auth.getPrincipal();
+        if (user == null) {
+            return null;
+        }
+
+        return internalRequest(user, endpoint, method, responseType, false);
+    }
+
+    private <T> T internalRequest(User user, String endpoint, HttpMethod method, Class<T> responseType, boolean isRetry) {
+        String token = getToken(user);
         if (token == null) return null;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<T> response = restTemplate.exchange(baseUrl + endpoint, method, entity, responseType);
 
-        return response.getBody();
+        try {
+            ResponseEntity<T> response = restTemplate.exchange(baseUrl + endpoint, method, entity, responseType);
+            return response.getBody();
+        } catch (RestClientException e) {
+            if (isRetry) {
+                return null;
+            }
+
+            // if call is not a retry, remove existing token and retry;
+            userTokens.remove(user.getId());
+            return internalRequest(user, endpoint, method, responseType, true);
+        }
     }
 }

@@ -12,17 +12,7 @@ import { STATUSES } from './constants';
 import { notifications } from '@/components/notifications';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
-
-type UserRequest = {
-  followId: number;
-  companyName: string;
-  createdOn: number;
-  vatNr: string;
-  firstName: string;
-  lastName: string;
-  denyMessage: string;
-  status: 'PENDING' | 'APPROVED' | 'DENIED';
-};
+import type { UserRequest } from '@/types/api';
 
 export const UserRequestListPage: FC = () => {
   const { t } = useTranslation();

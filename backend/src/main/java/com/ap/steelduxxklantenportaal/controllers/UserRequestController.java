@@ -40,14 +40,14 @@ public class UserRequestController {
 
     @PostMapping("/user_requests/{id}/approve")
     public ResponseEntity<Object> approveRequest(@PathVariable Number id,
-            @RequestBody CompanyApproveDto companyApproveDto)
+                                                 @RequestBody CompanyApproveDto companyApproveDto)
             throws MessagingException, UserAlreadyExistsException {
         return userRequestValueService.approveUserRequest(id, companyApproveDto);
     }
 
     @PostMapping("/user_requests/{id}/deny")
     public ResponseEntity<Object> denyRequest(@PathVariable Number id,
-            @RequestBody UserRequestDenyDto userRequestDenyDto)
+                                              @RequestBody UserRequestDenyDto userRequestDenyDto)
             throws MessagingException {
         return userRequestValueService.denyUserRequest(id, userRequestDenyDto);
     }

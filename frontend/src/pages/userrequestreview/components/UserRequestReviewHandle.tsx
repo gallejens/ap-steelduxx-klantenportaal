@@ -88,7 +88,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
 
     props.onSubmit?.();
 
-    if (resultApprove?.message === 'userRequestReviewPage:response:succes') {
+    if (resultApprove?.message === 'userRequestReviewPage:response:success') {
       props.onSucces?.();
     }
   };

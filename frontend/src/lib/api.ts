@@ -46,7 +46,7 @@ export const doApiAction = async <T = GenericAPIResponse>(data: {
   endpoint: string;
   method: Method;
   body?: unknown;
-}): Promise<T | null> => {
+}): Promise<T | undefined> => {
   try {
     const response = await api<T>({
       url: data.endpoint,
@@ -56,7 +56,6 @@ export const doApiAction = async <T = GenericAPIResponse>(data: {
     return response.data;
   } catch (e: unknown) {
     console.error('API Error', e);
-    return null;
   }
 };
 

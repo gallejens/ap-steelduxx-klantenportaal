@@ -39,7 +39,8 @@ export const TABS: {
   {
     labelKey: 'accounts',
     path: 'accounts',
-    icon: <IconUsers color='rgb(150, 255, 0)' />,
-    color: 'rgba(180, 255, 20, 0.433)',
+    icon: IconUsers,
+    color: { r: 150, g: 255, b: 0 },
+    requiredPermission: 'VIEW_ACCOUNTS',
   },
 ];

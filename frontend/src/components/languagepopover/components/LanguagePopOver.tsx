@@ -1,11 +1,11 @@
-import { ActionIcon, Popover } from '@mantine/core';
+import { Popover } from '@mantine/core';
 import { IconLanguage } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import CustomLanguageCard from './LanguageCard';
 import { languages } from '../languages';
 
 export function LanguagePopOver() {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   const handleLanguageChange = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -20,11 +20,7 @@ export function LanguagePopOver() {
       offset={{ mainAxis: 10, crossAxis: -50 }}
     >
       <Popover.Target>
-        <div>
-          <ActionIcon variant='transparent'>
-            <IconLanguage />
-          </ActionIcon>
-        </div>
+        <IconLanguage color={'var(--mantine-color-primary-0)'} />
       </Popover.Target>
       <Popover.Dropdown bg='var(--mantine-color-body)'>
         <div>

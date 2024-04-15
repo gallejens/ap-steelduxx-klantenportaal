@@ -57,13 +57,11 @@ export function NotificationPopover() {
       offset={{ mainAxis: 10, crossAxis: -50 }}
     >
       <Popover.Target>
-        <div>
-          <IconMessage
-            color={
-              notifications?.length ? 'red' : 'var(--mantine-color-primary-0)'
-            }
-          />
-        </div>
+        <IconMessage
+          color={
+            notifications?.length ? 'red' : 'var(--mantine-color-primary-0)'
+          }
+        />
       </Popover.Target>
       <Popover.Dropdown bg='var(--mantine-color-body)'>
         <div>

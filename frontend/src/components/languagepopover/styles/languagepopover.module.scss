@@ -1,0 +1,23 @@
+.card {
+  position: relative;
+
+  .box {
+    cursor: pointer;
+    display: flex;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+  }
+
+  .flag {
+    width: 35px;
+    margin-right: var(--mantine-spacing-md);
+  }
+
+  .name {
+    font-size: 15px;
+    font-weight: bold;
+    padding-top: 2px;
+  }
+}

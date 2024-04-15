@@ -7,14 +7,12 @@ import { UserDisplay } from './components/UserDisplay';
 import { useTranslation } from 'react-i18next';
 import { ActionIcon } from '@mantine/core';
 import { NotificationPopover } from '../notificationpopover';
+import { LanguagePopOver } from '../languagepopover/components/LanguagePopOver';
 
 export const AppShell: FC = () => {
   const navigate = useNavigate();
   const routerState = useRouterState();
-  const {
-    t,
-    i18n: { changeLanguage, language },
-  } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleTabClick = (path: string) => {
     navigate({ to: path });
@@ -39,14 +37,7 @@ export const AppShell: FC = () => {
           }}
         />
         <div className={styles.actions}>
-          <ActionIcon
-            onClick={() => {
-              changeLanguage(language === 'en' ? 'nl' : 'en');
-            }}
-            variant='transparent'
-          >
-            <IconLanguage />
-          </ActionIcon>
+          <LanguagePopOver></LanguagePopOver>
           <NotificationPopover></NotificationPopover>
         </div>
       </div>

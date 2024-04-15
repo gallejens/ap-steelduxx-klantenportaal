@@ -58,6 +58,10 @@ export const OrderDetailsPage: FC = () => {
       }),
   });
 
+  function formatWeight(weight: number): string {
+    return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
   const getIframeContent = (imo: string) => {
     return `
       <script type="text/javascript">
@@ -164,7 +168,7 @@ export const OrderDetailsPage: FC = () => {
                 <li key={index}>
                   {t('orderDetailPage:hsCode')}: {product.hsCode} -{' '}
                   {product.name} -{t('orderDetailPage:quantity')}:{' '}
-                  {product.quantity}, {product.weight} kg
+                  {product.quantity}, {formatWeight(product.weight)} kg
                   {product.containerNumber != null ? (
                     <>
                       {' '}

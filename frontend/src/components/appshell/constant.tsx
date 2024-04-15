@@ -1,31 +1,38 @@
+import type { Auth } from '@/types/auth';
+import type { RGB } from '@/types/util';
 import {
   IconHome,
   IconList,
   IconBaselineDensityMedium,
+  type TablerIconsProps,
 } from '@tabler/icons-react';
+import type { FC } from 'react';
 
-export const TABS = [
+export const SIDEBAR_WIDTH: number = 17; // in rem
+
+export const TABS: {
+  labelKey: string; // appshell:tabs:xxx in i18n files
+  path: string; // autoprefixed with /app/
+  icon: FC<TablerIconsProps>;
+  color: RGB;
+  requiredPermission?: Auth.Permission;
+}[] = [
   {
     labelKey: 'home',
-    path: 'home',
-    icon: <IconHome color='rgb(36, 136, 244)' />,
-    color: 'rgba(142, 150, 255, 0.433)',
+    path: '/app/home',
+    icon: IconHome,
+    color: { r: 36, g: 136, b: 244 },
   },
   {
     labelKey: 'orders',
-    path: 'orders',
-    icon: <IconBaselineDensityMedium color='rgb(36, 244, 112)' />,
-    color: 'rgba(142, 255, 210, 0.433)',
+    path: '/app/orders',
+    icon: IconBaselineDensityMedium,
+    color: { r: 36, g: 244, b: 112 },
   },
   {
     labelKey: 'requests',
-    path: 'requests',
-    icon: <IconList color='rgb(219, 38, 183)' />,
-    color: 'rgba(255, 142, 247, 0.433)',
+    path: '/app/requests',
+    icon: IconList,
+    color: { r: 219, g: 38, b: 183 },
   },
-] satisfies {
-  labelKey: string;
-  path: string;
-  icon: JSX.Element;
-  color: string;
-}[];
+];

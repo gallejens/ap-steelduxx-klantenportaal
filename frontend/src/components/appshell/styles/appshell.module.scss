@@ -36,7 +36,7 @@ $navbar_header_height: 4.5rem;
     flex-direction: column;
 
     & > .route {
-      width: calc(100% - $navbar_header_height);
+      width: 100%;
       height: 100%;
 
       padding: var(--mantine-spacing-xl);

@@ -165,7 +165,8 @@
   },
   "notifications": {
     "genericError": "Something went wrong",
-    "invalidForm": "One of the inputs is invalid."
+    "invalidForm": "One of the inputs is invalid.",
+    "noNotifications": "No notifications found."
   },
   "resetPasswordPage": {
     "title": "Reset Password",

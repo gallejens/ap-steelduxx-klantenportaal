@@ -1,14 +1,16 @@
-import { Popover } from '@mantine/core';
+import { Center, Popover, Text } from '@mantine/core';
 import { IconMessage } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
 import CustomCard from './Notificationcard';
-import { NotificationData } from '../types/notificationdata';
+import { type NotificationData } from '../types/notificationdata';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { doApiAction } from '@/lib/api';
+import { useTranslation } from 'react-i18next';
 
 export function NotificationPopover() {
   const { user } = useAuth();
   const client = useQueryClient();
+  const { t } = useTranslation();
 
   const {
     data: notifications,
@@ -42,8 +44,8 @@ export function NotificationPopover() {
     return <div>Loading...</div>;
   }
 
-  if (status === 'error') {
-    return <div>Error: {error.message}</div>;
+  if (status === 'error' || !notifications) {
+    return <div>Error: {error?.message ?? 'Unknown Error'}</div>;
   }
 
   return (
@@ -65,16 +67,22 @@ export function NotificationPopover() {
       </Popover.Target>
       <Popover.Dropdown bg='var(--mantine-color-body)'>
         <div>
-          {notifications?.map(
-            (notification: NotificationData, index: number) => (
-              <div key={index}>
-                <CustomCard
-                  title={notification.title}
-                  message={notification.message}
-                  datetime={notification.createdAt}
-                  onClick={() => readMutation.mutate(notification.id)}
-                />
-              </div>
+          {notifications.length === 0 ? (
+            <Center>
+              <Text>{t('notifications:noNotifications')}</Text>
+            </Center>
+          ) : (
+            notifications.map(
+              (notification: NotificationData, index: number) => (
+                <div key={index}>
+                  <CustomCard
+                    title={notification.title}
+                    message={notification.message}
+                    datetime={notification.createdAt}
+                    onClick={() => readMutation.mutate(notification.id)}
+                  />
+                </div>
+              )
             )
           )}
         </div>

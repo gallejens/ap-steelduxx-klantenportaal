@@ -165,7 +165,8 @@
   },
   "notifications": {
     "genericError": "Er is iets misgegaan",
-    "invalidForm": "Een van de ingevulde waarden is ongeldig."
+    "invalidForm": "Een van de ingevulde waarden is ongeldig.",
+    "noNotifications": "Je hebt geen notificaties."
   },
   "resetPasswordPage": {
     "title": "Wachtwoord Resetten",

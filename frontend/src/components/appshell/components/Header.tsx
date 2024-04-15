@@ -14,7 +14,7 @@ export const Header: FC = () => {
   return (
     <div className={styles.appshell__header}>
       <Burger
-        opened={collapsed}
+        opened={!collapsed}
         onClick={() => {
           setCollapsed(s => !s);
         }}

@@ -4,9 +4,8 @@ import styles from '../styles/userRequestReview.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@mantine/form';
 import { notifications } from '@/components/notifications';
-import { GenericAPIResponse, doApiAction } from '@/lib/api';
+import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
-import { HttpStatusCode } from 'axios';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
 

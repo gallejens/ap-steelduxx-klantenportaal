@@ -12,7 +12,7 @@ import {
 import styles from '../styles/userRequest.module.scss';
 import { EMAIL_PLACEHOLDER } from '@/constants';
 import { HttpStatusCode } from 'axios';
-import { countries_en } from '../constants';
+import { COUNTRIES } from '../constants';
 
 type UserRequestFormValues = {
   companyName: string;
@@ -185,7 +185,7 @@ export const UserRequestForm: FC<Props> = props => {
             label={t('userRequestForm:countryInputTitle')}
             description={t('userRequestForm:countryInputDescription')}
             placeholder={t('userRequestForm:countryInputPlaceholder')}
-            data={countries_en}
+            data={COUNTRIES}
             searchable
             {...UserRequestForm.getInputProps('country')}
           />

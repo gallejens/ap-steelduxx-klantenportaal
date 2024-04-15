@@ -7,7 +7,7 @@
 //   method: 'GET',
 // });
 
-export const countries_en = [
+export const COUNTRIES = [
   'Afghanistan',
   'Albania',
   'Algeria',

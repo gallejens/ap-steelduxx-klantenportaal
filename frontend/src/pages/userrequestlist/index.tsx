@@ -5,7 +5,7 @@ import styles from './styles/userRequestList.module.scss';
 import { useNavigate } from '@tanstack/react-router';
 import { IconArrowRight, IconSearch, IconTrash } from '@tabler/icons-react';
 import { Table } from '@/components/table';
-import { doApiAction, GenericAPIResponse } from '@/lib/api';
+import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { dateConverter } from '@/lib/util/dateConverter';
 import { STATUSES } from './constants';
@@ -53,7 +53,7 @@ export const UserRequestListPage: FC = () => {
 
   const deleteUserRequest = async (userRequest: UserRequest) => {
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
-      endpoint: `/user_requests/delete`,
+      endpoint: '/user_requests/delete',
       method: 'DELETE',
       body: {
         id: userRequest.followId,

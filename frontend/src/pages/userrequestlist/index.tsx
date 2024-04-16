@@ -61,10 +61,16 @@ export const UserRequestListPage: FC = () => {
   const handleDeactivateClick = (userRequest: UserRequest) => {
     openModal(
       <ConfirmModal
-        title={t(
-          'appshell:deactivateRequestConfirmation:deactivateConfirmTitle'
-        )}
-        text={t('appshell:deactivateRequestConfirmation:deactivateConfirmText')}
+        title={
+          userRequest.status === 'APPROVED'
+            ? t('appshell:deactivateRequestConfirmation:deactivateConfirmTitle')
+            : t('appshell:deleteRequestConfirmation:deleteConfirmTitle')
+        }
+        text={
+          userRequest.status === 'APPROVED'
+            ? t('appshell:deactivateRequestConfirmation:deactivateConfirmText')
+            : t('appshell:deleteRequestConfirmation:deleteConfirmText')
+        }
         onConfirm={() => {
           closeModal();
           deactivateUserRequest(userRequest);

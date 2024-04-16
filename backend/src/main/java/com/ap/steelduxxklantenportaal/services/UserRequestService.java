@@ -179,7 +179,7 @@ public class UserRequestService {
         return ResponseHandler.generate("userRequestReviewPage:response:denied", HttpStatus.OK);
     }
 
-    public ResponseEntity<Object> deactivateRequest(Number id) {
+    public ResponseEntity<Object> deactivateUserRequest(Number id) {
         UserRequest userRequest = userRequestRepository.findById(id);
 
         // Edit status to DEACTIVATED

@@ -94,7 +94,7 @@ public class UserRequestDetailsTest {
         UserRequestDeleteDto userRequestDeleteDto = new UserRequestDeleteDto(id);
 
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:deactivated");
-        when(userRequestService.deactivateRequest(eq(id)))
+        when(userRequestService.deactivateUserRequest(eq(id)))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
         ResponseEntity<Object> response = userRequestController.deactivateRequest(userRequestDeleteDto);

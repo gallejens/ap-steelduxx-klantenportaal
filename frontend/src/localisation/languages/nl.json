@@ -159,7 +159,7 @@
     "response": {
       "success": "Aanvraag goedgekeurd!",
       "denied": "Aanvraag afgekeurd!",
-      "deactivated": "Aanvraag gedeactiveerd!",
+      "deleted": "Aanvraag verwijderd!",
       "exists": "Aanvraag met referentie nummer bestaat al"
     }
   },
@@ -210,11 +210,11 @@
       "logoutConfirmTitle": "Uitloggen",
       "logoutConfirmText": "Weet u zeker dat u wilt uitloggen?"
     },
-    "deactivateRequestConfirmation": {
-      "deactivateConfirmTitle": "Deactiveer account",
-      "deactivateConfirmText": "Weet u zeker dat u dit account wilt deactiveren? Dit zal het bijbehorende account verwijderen."
+    "deleteApproveRequestConfirmation": {
+      "deactivateConfirmTitle": "Deactiveer aanvraag",
+      "deactivateConfirmText": "Weet u zeker dat u deze aanvraag wilt deactiveren? Dit zal het bijbehorende account verwijderen."
     },
-    "deleteRequestConfirmation": {
+    "deleteDenyRequestConfirmation": {
       "deleteConfirmTitle": "Aanvraag verwijderen",
       "deleteConfirmText": "Weet je zeker dat je deze aanvraag wilt verwijderen?"
     },

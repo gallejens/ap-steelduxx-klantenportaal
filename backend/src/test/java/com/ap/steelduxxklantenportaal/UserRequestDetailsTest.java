@@ -61,7 +61,7 @@ public class UserRequestDetailsTest {
         Number id = 1;
         CompanyApproveDto companyApproveDto = new CompanyApproveDto("referenceCode");
 
-        Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:succes", "status",
+        Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:success", "status",
                 HttpStatus.CREATED.toString());
         when(userRequestService.approveUserRequest(eq(id), eq(companyApproveDto)))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));

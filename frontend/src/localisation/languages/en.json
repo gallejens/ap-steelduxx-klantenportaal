@@ -89,7 +89,7 @@
     "denyMessageInputError": "Description of motivation is required",
 
     "confirmButton": "Confirm",
-    "succes": "Request has been send succesfully."
+    "success": "Request has been send succesfully."
   },
   "userRequestListPage": {
     "newUserRequest": "New Request",
@@ -157,7 +157,7 @@
     "approveButton": "Approve",
     "denyButton": "Deny",
     "response": {
-      "succes": "Request approved!",
+      "success": "Request approved!",
       "denied": "Request denied!",
       "deleted": "Request deleted!",
       "exists": "Request with reference code already exists"

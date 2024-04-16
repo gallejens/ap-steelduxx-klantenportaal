@@ -35,7 +35,7 @@ export const AccountListPage: FC = () => {
     return <div>{t('orderListPage:loading')}</div>;
   }
 
-  if (status === 'error' || accounts === null) {
+  if (status === 'error' || !accounts) {
     return (
       <div>
         {t('orderListPage:error')} | {error?.message ?? 'Unknown error'}

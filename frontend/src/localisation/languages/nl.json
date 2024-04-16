@@ -89,7 +89,7 @@
     "denyMessageInputError": "Descriptie van motivatie is verplicht",
 
     "confirmButton": "Bevestigen",
-    "succes": "Aanvraag is succesvol verzonden."
+    "success": "Aanvraag is succesvol verzonden."
   },
   "userRequestListPage": {
     "newUserRequest": "Nieuwe Aanvraag",
@@ -157,7 +157,7 @@
     "approveButton": "Goedkeuren",
     "denyButton": "Afkeuren",
     "response": {
-      "succes": "Aanvraag goedgekeurd!",
+      "success": "Aanvraag goedgekeurd!",
       "denied": "Aanvraag afgekeurd!",
       "deleted": "Aanvraag verwijderd!",
       "exists": "Aanvraag met referentie nummer bestaat al"

@@ -159,32 +159,17 @@ public class AuthService {
     }
 
     public void requestPasswordReset(String email) throws MessagingException {
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isEmpty())
-            return;
-
-        // Generate choosepasswordtoken, save it and email it as searchparam in link to
-        // user
-        var choosePasswordToken = new ChoosePasswordToken();
-        String uuid = UUID.randomUUID().toString();
-        choosePasswordToken.setToken(uuid);
-        choosePasswordToken.setUserId(user.get().getId());
-        // 30 minutes
-        long PASSWORD_RESET_TOKEN_TIME = 30 * 60;
-        choosePasswordToken.setExpiryDate(new Date().getTime() + PASSWORD_RESET_TOKEN_TIME * 1000);
-        choosePasswordTokenRepository.save(choosePasswordToken);
-
-        String choosePasswordLink = frontendUrl + "/choose-password?token=" + uuid;
-        emailService.sendChoosePasswordLink(user.get(), choosePasswordLink);
+        long PASSWORD_RESET_TOKEN_TIME = 30 * 60; // 30 minutes
+        sendChoosePasswordEmail(email, PASSWORD_RESET_TOKEN_TIME);
     }
 
-    public void requestChoosePasswordMail(String email, long expiryTime) throws MessagingException {
+    public void sendChoosePasswordEmail(String email, long expiryTime) throws MessagingException {
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isEmpty())
+        if (user.isEmpty()) {
             return;
+        }
 
-        // Generate choosepasswordtoken, save it and email it as searchparam in link to
-        // user
+        // Generate choose-password token, save it and email it as search params in link to user
         var choosePasswordToken = new ChoosePasswordToken();
         String uuid = UUID.randomUUID().toString();
         choosePasswordToken.setToken(uuid);

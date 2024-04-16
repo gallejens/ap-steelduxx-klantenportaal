@@ -16,7 +16,7 @@ export const UserRequestPage: FC = () => {
       footer={submitted ? undefined : <UserRequestFooter />}
     >
       {submitted ? (
-        <Text>{t('userRequestForm:succes')}</Text>
+        <Text>{t('userRequestForm:success')}</Text>
       ) : (
         <UserRequestForm
           onSuccess={() => {

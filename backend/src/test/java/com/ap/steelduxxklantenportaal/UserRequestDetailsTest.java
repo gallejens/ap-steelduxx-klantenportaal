@@ -89,15 +89,15 @@ public class UserRequestDetailsTest {
     }
 
     @Test
-    void check_userRequest_is_deleted() throws MessagingException {
+    void check_userRequest_is_deactivated() throws MessagingException {
         Long id = 3L;
         UserRequestDeleteDto userRequestDeleteDto = new UserRequestDeleteDto(id);
 
-        Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:deleted");
-        when(userRequestService.deleteUserRequest(eq(id)))
+        Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:deactivated");
+        when(userRequestService.deactivateRequest(eq(id)))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
-        ResponseEntity<Object> response = userRequestController.deleteRequest(userRequestDeleteDto);
+        ResponseEntity<Object> response = userRequestController.deactivateRequest(userRequestDeleteDto);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse, response.getBody());

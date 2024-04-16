@@ -105,12 +105,11 @@ public class UserRequestService {
     public ResponseEntity<Object> processUserRequest(UserRequestDto userRequestDto)
             throws MessagingException {
         boolean requestExists = userRequestRepository
-                .findByVatNrOrEmail(userRequestDto.vatNr(), userRequestDto.email()).isPresent();
+                .findByVatNrAndEmail(userRequestDto.vatNr(), userRequestDto.email()).isPresent();
 
         if (requestExists) {
             return ResponseHandler.generate("userRequestForm:userRequestAlreadyExists", HttpStatus.OK);
         }
-
 
         addRequest(userRequestDto);
         return ResponseHandler.generate("userRequestForm:userRequestRequested", HttpStatus.CREATED);
@@ -178,6 +177,23 @@ public class UserRequestService {
         userRequestRepository.save(userRequest);
 
         return ResponseHandler.generate("userRequestReviewPage:response:denied", HttpStatus.OK);
+    }
+
+    public ResponseEntity<Object> deactivateRequest(Number id) {
+        UserRequest userRequest = userRequestRepository.findById(id);
+
+        // Edit status to DEACTIVATED
+        userRequest.setStatus(StatusEnum.DEACTIVATED);
+        userRequestRepository.save(userRequest);
+
+        if (userRequest.getStatus() == StatusEnum.DEACTIVATED) {
+            userRepository.deleteById(id);
+            companyRepository.deleteById(id);
+            userCompanyRepository.deleteById(id);
+        }
+
+        return ResponseHandler.generate("userRequestReviewPage:response:deactivated", HttpStatus.OK);
+
     }
 
     public ResponseEntity<Object> deleteUserRequest(Number id) {

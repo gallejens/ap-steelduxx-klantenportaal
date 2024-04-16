@@ -159,7 +159,7 @@
     "response": {
       "success": "Request approved!",
       "denied": "Request denied!",
-      "deleted": "Request deleted!",
+      "deactivated": "Request deactivated!",
       "exists": "Request with reference code already exists"
     }
   },
@@ -209,6 +209,10 @@
       "changePassword": "Change password",
       "logoutConfirmTitle": "Logout",
       "logoutConfirmText": "Are you sure you want to log out?"
+    },
+    "deactivateRequestConfirmation": {
+      "deactivateConfirmTitle": "Deactivate account",
+      "deactivateConfirmText": "Are you sure you want to deactivate this account? This will remove the associated account."
     },
     "deleteRequestConfirmation": {
       "deleteConfirmTitle": "Delete request",

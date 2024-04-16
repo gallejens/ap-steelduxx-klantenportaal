@@ -51,7 +51,7 @@ public class UserRequestFormTest {
         existingUserRequest.setStatus(StatusEnum.PENDING);
         existingUserRequest.setDenyMessage("");
 
-        when(userRequestRepository.findByVatNrOrEmail("BE0473416418", "info@steelduxx.eu"))
+        when(userRequestRepository.findByVatNrAndEmail("BE0473416418", "info@steelduxx.eu"))
                 .thenReturn(Optional.of(existingUserRequest));
 
     }

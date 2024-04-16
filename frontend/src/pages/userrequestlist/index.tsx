@@ -41,10 +41,10 @@ export const UserRequestListPage: FC = () => {
     );
   }
 
-  const deleteUserRequest = async (userRequest: UserRequest) => {
+  const deactivateUserRequest = async (userRequest: UserRequest) => {
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
-      endpoint: '/user-requests/delete',
-      method: 'DELETE',
+      endpoint: '/user-requests/deactivate',
+      method: 'POST',
       body: {
         id: userRequest.followId,
       },
@@ -58,14 +58,16 @@ export const UserRequestListPage: FC = () => {
     client.invalidateQueries({ queryKey: ['userRequestListValues'] });
   };
 
-  const handleDeleteClick = (userRequest: UserRequest) => {
+  const handleDeactivateClick = (userRequest: UserRequest) => {
     openModal(
       <ConfirmModal
-        title={t('appshell:deleteRequestConfirmation:deleteConfirmTitle')}
-        text={t('appshell:deleteRequestConfirmation:deleteConfirmText')}
+        title={t(
+          'appshell:deactivateRequestConfirmation:deactivateConfirmTitle'
+        )}
+        text={t('appshell:deactivateRequestConfirmation:deactivateConfirmText')}
         onConfirm={() => {
           closeModal();
-          deleteUserRequest(userRequest);
+          deactivateUserRequest(userRequest);
         }}
       />
     );
@@ -100,7 +102,7 @@ export const UserRequestListPage: FC = () => {
           <ActionIcon
             key={`denied_${userRequest.followId}`}
             onClick={() => {
-              handleDeleteClick(userRequest);
+              handleDeactivateClick(userRequest);
             }}
           >
             <IconTrash />

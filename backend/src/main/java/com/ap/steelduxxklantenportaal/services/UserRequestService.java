@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,6 @@ public class UserRequestService {
     @Autowired
     private UserCompanyRepository userCompanyRepository;
 
-    // Assuming you have an EmailService bean defined elsewhere
     @Autowired
     private EmailService emailService;
 
@@ -80,7 +80,6 @@ public class UserRequestService {
     }
 
     private void addRequest(UserRequestDto userRequestDTO) throws MessagingException {
-        // Uncomment the following line if you have an EmailService bean defined
         emailService.sendRegistrationConfirmation(userRequestDTO);
 
         userRequestRepository.save(new UserRequest(
@@ -104,10 +103,13 @@ public class UserRequestService {
 
     public ResponseEntity<Object> processUserRequest(UserRequestDto userRequestDto)
             throws MessagingException {
-        boolean requestExists = userRequestRepository
-                .findByVatNrAndEmail(userRequestDto.vatNr(), userRequestDto.email()).isPresent();
 
-        if (requestExists) {
+        Optional<UserRequest> pendingOrApprovedRequests = userRequestRepository.findByStatusInAndVatNrAndEmail(
+                List.of(StatusEnum.PENDING, StatusEnum.APPROVED),
+                userRequestDto.vatNr(),
+                userRequestDto.email());
+
+        if (pendingOrApprovedRequests.isPresent()) {
             return ResponseHandler.generate("userRequestForm:userRequestAlreadyExists", HttpStatus.OK);
         }
 
@@ -168,32 +170,13 @@ public class UserRequestService {
             throws MessagingException {
         UserRequest userRequest = userRequestRepository.findById(id);
 
-        // Edit denyStatus
         userRequest.setStatus(StatusEnum.DENIED);
 
-        // Edit denyMessage
         userRequest.setDenyMessage(userRequestDenyDto.denyMessage());
 
         userRequestRepository.save(userRequest);
 
         return ResponseHandler.generate("userRequestReviewPage:response:denied", HttpStatus.OK);
-    }
-
-    public ResponseEntity<Object> deactivateUserRequest(Number id) {
-        UserRequest userRequest = userRequestRepository.findById(id);
-
-        // Edit status to DEACTIVATED
-        userRequest.setStatus(StatusEnum.DEACTIVATED);
-        userRequestRepository.save(userRequest);
-
-        if (userRequest.getStatus() == StatusEnum.DEACTIVATED) {
-            userRepository.deleteById(id);
-            companyRepository.deleteById(id);
-            userCompanyRepository.deleteById(id);
-        }
-
-        return ResponseHandler.generate("userRequestReviewPage:response:deactivated", HttpStatus.OK);
-
     }
 
     public ResponseEntity<Object> deleteUserRequest(Number id) {

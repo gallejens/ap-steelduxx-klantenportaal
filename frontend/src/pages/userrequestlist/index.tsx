@@ -41,7 +41,7 @@ export const UserRequestListPage: FC = () => {
     );
   }
 
-  const deactivateUserRequest = async (userRequest: UserRequest) => {
+  const deleteUserRequest = async (userRequest: UserRequest) => {
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
       endpoint: '/user-requests/deactivate',
       method: 'POST',
@@ -58,26 +58,14 @@ export const UserRequestListPage: FC = () => {
     client.invalidateQueries({ queryKey: ['userRequestListValues'] });
   };
 
-  const handleDeactivateClick = (userRequest: UserRequest) => {
+  const handleDeleteClick = (userRequest: UserRequest) => {
     openModal(
       <ConfirmModal
-        title={
-          userRequest.status === 'APPROVED'
-            ? t(
-                'appshell:deleteApproveRequestConfirmation:deactivateConfirmTitle'
-              )
-            : t('appshell:deleteDenyRequestConfirmation:deleteConfirmTitle')
-        }
-        text={
-          userRequest.status === 'APPROVED'
-            ? t(
-                'appshell:deleteApproveRequestConfirmation:deactivateConfirmText'
-              )
-            : t('appshell:deleteDenyRequestConfirmation:deleteConfirmText')
-        }
+        title={t('appshell:deleteRequestConfirmation:deleteConfirmTitle')}
+        text={t('appshell:deleteRequestConfirmation:deleteConfirmText')}
         onConfirm={() => {
           closeModal();
-          deactivateUserRequest(userRequest);
+          deleteUserRequest(userRequest);
         }}
       />
     );
@@ -108,16 +96,7 @@ export const UserRequestListPage: FC = () => {
       contactPerson: `${userRequest.firstName} ${userRequest.lastName}`,
       denyMessage: `${userRequest.denyMessage}`,
       buttons:
-        userRequest.status === 'APPROVED' || userRequest.status === 'DENIED' ? (
-          <ActionIcon
-            key={`denied_${userRequest.followId}`}
-            onClick={() => {
-              handleDeactivateClick(userRequest);
-            }}
-          >
-            <IconTrash />
-          </ActionIcon>
-        ) : (
+        userRequest.status === 'PENDING' ? (
           <ActionIcon
             key={`value_${userRequest.followId}`}
             onClick={() => {
@@ -131,6 +110,17 @@ export const UserRequestListPage: FC = () => {
           >
             <IconArrowRight />
           </ActionIcon>
+        ) : userRequest.status === 'DENIED' ? (
+          <ActionIcon
+            key={`denied_${userRequest.followId}`}
+            onClick={() => {
+              handleDeleteClick(userRequest);
+            }}
+          >
+            <IconTrash />
+          </ActionIcon>
+        ) : (
+          <></>
         ),
     });
     return acc;
@@ -175,80 +165,32 @@ export const UserRequestListPage: FC = () => {
             value={status}
             className={styles.userrequest_table}
           >
-            {status === 'DENIED' && (
-              <Table
-                searchValue={searchValue}
-                storageKey='userrequest_list'
-                translationKey='userRequestListPage:table'
-                columns={[
-                  {
-                    key: 'followId',
-                    defaultSort: true,
-                  },
-                  {
-                    key: 'companyName',
-                    initialWidth: 300,
-                  },
-                  {
-                    key: 'createdOn',
-                    initialWidth: 300,
-                  },
-                  {
-                    key: 'vatNr',
-                  },
-                  {
-                    key: 'contactPerson',
-                    initialWidth: 200,
-                  },
-                  {
-                    key: 'denyMessage',
-                    initialWidth: 300,
-                  },
-                  {
-                    key: 'buttons',
-                    emptyHeader: true,
-                    disallowSorting: true,
-                    disableResizing: true,
-                  },
-                ]}
-                data={tableData[status] ?? []}
-              />
-            )}
-            {status !== 'DENIED' && (
-              <Table
-                searchValue={searchValue}
-                storageKey='userrequest_list'
-                translationKey='userRequestListPage:table'
-                columns={[
-                  {
-                    key: 'followId',
-                    defaultSort: true,
-                  },
-                  {
-                    key: 'companyName',
-                    initialWidth: 300,
-                  },
-                  {
-                    key: 'createdOn',
-                    initialWidth: 300,
-                  },
-                  {
-                    key: 'vatNr',
-                  },
-                  {
-                    key: 'contactPerson',
-                    initialWidth: 200,
-                  },
-                  {
-                    key: 'buttons',
-                    emptyHeader: true,
-                    disallowSorting: true,
-                    disableResizing: true,
-                  },
-                ]}
-                data={tableData[status] ?? []}
-              />
-            )}
+            <Table
+              searchValue={searchValue}
+              storageKey='userrequest_list'
+              translationKey='userRequestListPage:table'
+              columns={[
+                { key: 'followId', defaultSort: true },
+                { key: 'companyName', initialWidth: 300 },
+                { key: 'createdOn', initialWidth: 300 },
+                { key: 'vatNr' },
+                { key: 'contactPerson', initialWidth: 200 },
+                ...(status === 'DENIED'
+                  ? [{ key: 'denyMessage', initialWidth: 300 }]
+                  : []),
+                ...(status !== 'APPROVED'
+                  ? [
+                      {
+                        key: 'buttons',
+                        emptyHeader: true,
+                        disallowSorting: true,
+                        disableResizing: true,
+                      },
+                    ]
+                  : []),
+              ]}
+              data={tableData[status] ?? []}
+            />
           </Tabs.Panel>
         ))}
       </Tabs>

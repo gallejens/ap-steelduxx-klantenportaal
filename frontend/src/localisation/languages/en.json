@@ -210,11 +210,7 @@
       "logoutConfirmTitle": "Logout",
       "logoutConfirmText": "Are you sure you want to log out?"
     },
-    "deleteApproveRequestConfirmation": {
-      "deactivateConfirmTitle": "Deactivate request",
-      "deactivateConfirmText": "Are you sure you want to deactivate this request? This will remove the associated account."
-    },
-    "deleteDenyRequestConfirmation": {
+    "deleteRequestConfirmation": {
       "deleteConfirmTitle": "Delete request",
       "deleteConfirmText": "Are you sure you want to delete this request?"
     },

@@ -65,12 +65,6 @@ public class UserRequestController {
         return userRequestValueService.denyUserRequest(id, userRequestDenyDto);
     }
 
-    @PostMapping("/deactivate")
-    @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
-    public ResponseEntity<Object> deactivateRequest(@RequestBody UserRequestDeleteDto userRequestDeleteDto) {
-        return userRequestValueService.deactivateUserRequest(userRequestDeleteDto.id());
-    }
-
     @DeleteMapping("/delete")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
     public ResponseEntity<Object> deleteRequest(@RequestBody UserRequestDeleteDto userRequestDeleteDto) {

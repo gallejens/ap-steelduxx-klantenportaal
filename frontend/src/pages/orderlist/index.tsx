@@ -128,6 +128,10 @@ export const OrderListPage: FC = () => {
             {
               key: 'totalContainers',
             },
+            {
+              key: 'containerTypes',
+              excludeFromSearch: true,
+            },
           ]}
           data={orders.data}
         />

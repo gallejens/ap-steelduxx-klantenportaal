@@ -121,7 +121,8 @@
       "eta": "ETA",
       "ata": "ATA",
       "totalWeight": "Totaal Gewicht",
-      "totalContainers": "Aantal Containers"
+      "totalContainers": "Aantal Containers",
+      "containerTypes": "Container Types"
     },
     "loading": "Aan het laden...",
     "error": "Kan orders niet laten"

@@ -121,7 +121,8 @@
       "eta": "ETA",
       "ata": "ATA",
       "totalWeight": "Total Weight",
-      "totalContainers": "Total Containers"
+      "totalContainers": "Total Containers",
+      "containerTypes": "Container Types"
     },
     "loading": "Loading...",
     "error": "Can't load orders"

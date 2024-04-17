@@ -5,6 +5,7 @@ import com.ap.steelduxxklantenportaal.dtos.Accounts.CreateSubaccountDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
+import com.ap.steelduxxklantenportaal.models.Account;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.models.UserCompany;
 import com.ap.steelduxxklantenportaal.repositories.AccountRepository;
@@ -36,11 +37,12 @@ public class AccountService {
 
     public List<AccountDto> getAllAccounts() {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.hasPermission(PermissionEnum.ADMIN)){
-            return accountRepository.findAllAccounts();
+        if (user.hasPermission(PermissionEnum.ADMIN)) {
+
+            return accountRepository.findAll().stream().map(Account::toDto).toList();
         }
 
-        return accountRepository.findAccountsForUserCompany(user.getId());
+        return accountRepository.findAllFromSameCompanyAsUser(user.getId()).stream().map(Account::toDto).toList();
     }
 
     public ResponseEntity<Object> createSubaccount(CreateSubaccountDto createSubaccountDto) {

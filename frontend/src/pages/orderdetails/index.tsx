@@ -179,7 +179,7 @@ export const OrderDetailsPage: FC = () => {
                   {product.containerNumber != null ? (
                     <>
                       {' '}
-                      - {t('orderDetailPage:container')}:{' '}
+                      - <strong>{t('orderDetailPage:container')}:</strong>{' '}
                       {product.containerNumber}
                     </>
                   ) : null}

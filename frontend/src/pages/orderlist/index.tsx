@@ -130,7 +130,9 @@ export const OrderListPage: FC = () => {
             },
             {
               key: 'containerTypes',
-              excludeFromSearch: true,
+              transform: (containerTypes: string[]) => {
+                return containerTypes.join(' / ');
+              },
             },
           ]}
           data={orders.data}

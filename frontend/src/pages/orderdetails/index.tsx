@@ -129,7 +129,7 @@ export const OrderDetailsPage: FC = () => {
           <section>
             <h2>{t('orderDetailPage:shipInformation')}</h2>
             <p>
-              <strong>{t('orderDetailPage:name')}:</strong>{' '}
+              <strong>{t('orderDetailPage:shipName')}:</strong>{' '}
               {orderDetail?.shipName}
             </p>
             <p>

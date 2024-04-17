@@ -147,23 +147,46 @@ export const OrderDetailsPage: FC = () => {
           </section>
           <section>
             <h2>{t('orderDetailPage:products')}</h2>
-            <ul>
-              {orderDetail.data.products.map((product, index: number) => (
-                <li key={index}>
-                  <strong>{t('orderDetailPage:hsCode')}:</strong>{' '}
-                  {product.hsCode} - {product.name} -
-                  <strong>{t('orderDetailPage:quantity')}:</strong>{' '}
-                  {product.quantity}, {formatWeight(product.weight)} kg
-                  {product.containerNumber != null ? (
-                    <>
-                      {' '}
-                      - <strong>{t('orderDetailPage:container')}:</strong>{' '}
-                      {product.containerNumber}
-                    </>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
+            <table className={styles.product_table}>
+              <thead>
+                <tr>
+                  <th>{t('orderDetailPage:hsCode')}</th>
+                  <th>{t('orderDetailPage:name')}</th>
+                  <th>{t('orderDetailPage:quantity')}</th>
+                  <th>{t('orderDetailPage:weight')}</th>
+                  {orderDetail?.products.some(
+                    p => p.containerNumber != null
+                  ) && <th>{t('orderDetailPage:container')}</th>}
+                  {orderDetail?.products.some(p => p.containerSize != null) && (
+                    <th>{t('orderDetailPage:containerSize')}</th>
+                  )}
+                  {orderDetail?.products.some(p => p.containerType != null) && (
+                    <th>{t('orderDetailPage:containerType')}</th>
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {orderDetail?.products.map(
+                  (product: Product, index: number) => (
+                    <tr key={index}>
+                      <td>{product.hsCode}</td>
+                      <td>{product.name}</td>
+                      <td>{product.quantity}</td>
+                      <td>{formatWeight(product.weight)} kg</td>
+                      {product.containerNumber != null && (
+                        <td>{product.containerNumber}</td>
+                      )}
+                      {product.containerSize != null && (
+                        <td>{product.containerSize}</td>
+                      )}
+                      {product.containerType != null && (
+                        <td>{product.containerType}</td>
+                      )}
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </table>
           </section>
           <div style={{ width: '100%', height: '300px', border: 'none' }}>
             <iframe

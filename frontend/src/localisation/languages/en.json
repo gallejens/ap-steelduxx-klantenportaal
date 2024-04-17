@@ -151,7 +151,11 @@
     "products": "Products",
     "hsCode": "HsCode",
     "quantity": "Quantity",
-    "container": "Container"
+    "weight": "Weight",
+    "container": "Container",
+    "containerNumber": "Container Number",
+    "containerSize": "Container Size",
+    "containerType": "Container Type"
   },
   "userRequestReviewPage": {
     "backButton": "Go Back",

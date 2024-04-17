@@ -151,7 +151,11 @@
     "products": "Producten",
     "hsCode": "HsCode",
     "quantity": "Aantal",
-    "container": "Container"
+    "weight": "Gewicht",
+    "container": "Container",
+    "containerNumber": "Container Nummer",
+    "containerSize": "Container Grootte",
+    "containerType": "Container Type"
   },
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",

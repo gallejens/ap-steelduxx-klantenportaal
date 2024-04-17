@@ -15,7 +15,6 @@ import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRequestRepository;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.mail.MessagingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,23 +26,31 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserRequestService {
-    @Autowired
-    private UserRequestRepository userRequestRepository;
+    private final UserRequestRepository userRequestRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
-    @Autowired
-    private CompanyRepository companyRepository;
+    private final CompanyRepository companyRepository;
 
-    @Autowired
-    private UserCompanyRepository userCompanyRepository;
+    private final UserCompanyRepository userCompanyRepository;
 
-    @Autowired
-    private EmailService emailService;
+    private final EmailService emailService;
+
+    public UserRequestService(UserRequestRepository userRequestRepository,
+            UserRepository userRepository,
+            AuthService authService,
+            CompanyRepository companyRepository,
+            UserCompanyRepository userCompanyRepository,
+            EmailService emailService) {
+        this.userRequestRepository = userRequestRepository;
+        this.userRepository = userRepository;
+        this.authService = authService;
+        this.companyRepository = companyRepository;
+        this.userCompanyRepository = userCompanyRepository;
+        this.emailService = emailService;
+    }
 
     public UserRequestDto convertUserRequestToDTO(UserRequest userRequest) {
         return new UserRequestDto(

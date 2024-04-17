@@ -1,26 +1,21 @@
-package com.ap.steelduxxklantenportaal;
+package com.ap.steelduxxklantenportaal.request;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.CompanyApproveDto;
 import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDeleteDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDenyDto;
-import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.services.UserRequestService;
 
@@ -43,64 +38,71 @@ public class UserRequestDetailsTest {
     }
 
     @Test
-    void return_getById_userRequest() {
-        UserRequestDto mockUserRequestDto = new UserRequestDto(1, "Steelduxx", "Belgium", "+32471017865",
-                "BE 0425.069.935", "2000", "Antwerp", "Duboisstraat", "50", null, null, "Raf", "Vanhoegearden",
-                "info@steelduxx.eu", 1709034820358L,
-                StatusEnum.PENDING, null);
+    void givenUserRequestId_whenGettingUserRequestById_thenCorrectUserRequestIsReturned() {
+        // Given
+        Mockito.when(userRequestService.getUserRequest(1)).thenReturn(UserRequestMotherObject.request1);
 
-        when(userRequestService.getUserRequest(1)).thenReturn(mockUserRequestDto);
-
+        // When
         UserRequestDto savedUserRequest = userRequestController.getUserRequestById("1");
 
-        assertEquals(1, savedUserRequest.followId());
+        // Then
+        Assertions.assertEquals(1, savedUserRequest.followId());
     }
 
     @Test
-    void check_userRequest_is_approved() throws MessagingException, UserAlreadyExistsException {
+    void givenUserRequestToApprove_whenApprovingUserRequest_thenUserRequestIsApproved()
+            throws MessagingException, UserAlreadyExistsException {
+        // Given
         Number id = 1;
-        CompanyApproveDto companyApproveDto = new CompanyApproveDto("referenceCode");
-
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:success", "status",
                 HttpStatus.CREATED.toString());
-        when(userRequestService.approveUserRequest(eq(id), eq(companyApproveDto)))
+        Mockito.when(userRequestService.approveUserRequest(Mockito.eq(id),
+                Mockito.eq(UserRequestMotherObject.companyApprove)))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
 
-        ResponseEntity<Object> response = userRequestController.approveRequest(id, companyApproveDto);
+        // When
+        ResponseEntity<Object> response = userRequestController.approveRequest(id,
+                UserRequestMotherObject.companyApprove);
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(expectedResponse, response.getBody());
+        // Then
+        Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        Assertions.assertEquals(expectedResponse, response.getBody());
     }
 
     @Test
-    void check_userRequest_is_denied() throws MessagingException {
+    void givenUserRequestToDeny_whenDenyingUserRequest_thenUserRequestIsDenied() throws MessagingException {
+        // Given
         Number id = 2;
-        UserRequestDenyDto userRequestDenyDto = new UserRequestDenyDto("Denial reason");
-
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:denied", "status",
                 HttpStatus.OK.toString());
-        when(userRequestService.denyUserRequest(eq(id), eq(userRequestDenyDto)))
+        Mockito.when(
+                userRequestService.denyUserRequest(Mockito.eq(id), Mockito.eq(UserRequestMotherObject.companyDeny)))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
-        ResponseEntity<Object> response = userRequestController.denyRequest(id, userRequestDenyDto);
+        // When
+        ResponseEntity<Object> response = userRequestController.denyRequest(id, UserRequestMotherObject.companyDeny);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedResponse, response.getBody());
+        // Then
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(expectedResponse, response.getBody());
     }
 
     @Test
-    void check_userRequest_is_deactivated() throws MessagingException {
+    void givenUserRequestToDeactivate_whenDeactivatingUserRequest_thenUserRequestIsDeactivated()
+            throws MessagingException {
+        // Given
         Long id = 3L;
         UserRequestDeleteDto userRequestDeleteDto = new UserRequestDeleteDto(id);
-
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:deleted");
-        when(userRequestService.deleteUserRequest(eq(id)))
+        Mockito.when(userRequestService.deleteUserRequest(Mockito.eq(id)))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
+        // When
         ResponseEntity<Object> response = userRequestController.deleteRequest(userRequestDeleteDto);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedResponse, response.getBody());
+        // Then
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(expectedResponse, response.getBody());
     }
 
 }

@@ -66,7 +66,7 @@ public class AuthController {
     @GetMapping("/info")
     @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> getUserInfo() {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = AuthService.getCurrentUser();;
         return ResponseHandler.generate("", HttpStatus.OK, user.getUserInfo());
     }
 

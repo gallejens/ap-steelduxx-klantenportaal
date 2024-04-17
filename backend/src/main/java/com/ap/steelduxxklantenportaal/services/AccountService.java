@@ -6,7 +6,6 @@ import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.models.Account;
-import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.models.UserCompany;
 import com.ap.steelduxxklantenportaal.repositories.AccountRepository;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
@@ -15,7 +14,6 @@ import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,9 +34,10 @@ public class AccountService {
     }
 
     public List<AccountDto> getAllAccounts() {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.hasPermission(PermissionEnum.ADMIN)) {
+        var user = AuthService.getCurrentUser();
+        if (user == null) return null;
 
+        if (user.hasPermission(PermissionEnum.ADMIN)) {
             return accountRepository.findAll().stream().map(Account::toDto).toList();
         }
 
@@ -46,14 +45,14 @@ public class AccountService {
     }
 
     public ResponseEntity<Object> createSubaccount(CreateSubaccountDto createSubaccountDto) {
+        var user = AuthService.getCurrentUser();
+        if (user == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
         boolean userExists = authService.doesUserExist(createSubaccountDto.email());
         if (userExists) {
             return ResponseHandler.generate("duplicate", HttpStatus.NO_CONTENT);
-        }
-
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user == null) {
-            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
         }
 
         var isAdmin = user.hasPermission(PermissionEnum.ADMIN);
@@ -68,12 +67,14 @@ public class AccountService {
             );
 
             if (!isAdmin) {
-                var company = companyRepository.findByUserId(user.getId()).orElseThrow();
-                userCompanyRepository.save(new UserCompany(
-                                newUser.getId(),
-                                company.getId()
-                        )
-                );
+                var company = companyRepository.findByUserId(user.getId());
+                if (company.isPresent()) {
+                    userCompanyRepository.save(new UserCompany(
+                                    newUser.getId(),
+                                    company.get().getId()
+                            )
+                    );
+                }
             }
 
             authService.sendChoosePasswordEmail(newUser.getEmail(), 30 * 24 * 60 * 60); // one month

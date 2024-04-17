@@ -27,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Security;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -224,7 +225,10 @@ public class AuthService {
 
     @Transactional
     public ResponseEntity<Object> changePassword(ChangePasswordDto changePasswordDto, HttpServletResponse response) {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = AuthService.getCurrentUser();
+        if (user == null) {
+            return ResponseHandler.generate("invalidPassword", HttpStatus.UNAUTHORIZED);
+        }
 
         // Check if oldpassword matches actual password
         if (!passwordEncoder.matches(changePasswordDto.oldPassword(), user.getPassword())) {
@@ -238,5 +242,13 @@ public class AuthService {
         generateRefreshTokenForUser(user, response);
 
         return ResponseHandler.generate("success", HttpStatus.OK);
+    }
+
+    public static User getCurrentUser() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) return null;
+        var user = auth.getPrincipal();
+        if (user == null) return null;
+        return (User) user;
     }
 }

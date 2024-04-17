@@ -18,7 +18,7 @@ public class OrdersService {
     }
 
     public OrderDto[] getAllOrders() {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = AuthService.getCurrentUser();
         if (user == null) return new OrderDto[0];
 
         boolean isAdmin = user.hasPermission(PermissionEnum.ADMIN);
@@ -28,7 +28,7 @@ public class OrdersService {
     }
 
     public OrderDetailsDto getOrderDetails(long orderId, String customerCode) {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = AuthService.getCurrentUser();
         if (user == null) return null;
 
         // if user is admin and customercode was provided then use admin endpoint

@@ -15,7 +15,7 @@ public class AccountRepository {
 
     public List<AccountDto> findAccountsForUserCompany(Long userId) {
         Query query = entityManager.createNativeQuery("""
-            SELECT u.email, u.first_name, u.last_name, c.company_name
+            SELECT u.email, u.first_name, u.last_name, c.company_name, u.role
             FROM users AS u
             LEFT JOIN user_company AS uc ON u.id = uc.user_id
             LEFT JOIN company AS c ON uc.company_id = c.id
@@ -30,7 +30,7 @@ public class AccountRepository {
 
     public List<AccountDto> findAllAccounts() {
         Query query = entityManager.createNativeQuery("""
-            SELECT u.email, u.first_name, u.last_name, c.company_name
+            SELECT u.email, u.first_name, u.last_name, c.company_name, u.role
             FROM users AS u
             LEFT JOIN user_company AS uc ON u.id = uc.user_id
             LEFT JOIN company AS c ON uc.company_id = c.id

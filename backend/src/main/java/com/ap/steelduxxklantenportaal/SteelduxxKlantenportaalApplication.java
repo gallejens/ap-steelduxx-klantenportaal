@@ -29,7 +29,7 @@ public class SteelduxxKlantenportaalApplication {
 		return args -> {
 			if (authService.doesUserExist(adminAccountEmail)) return;
 
-			authService.addNewUser(adminAccountEmail, adminAccountPassword, adminAccountFirstName, adminAccountLastName, RoleEnum.ROLE_ADMIN);
+			authService.addNewUser(adminAccountEmail, adminAccountPassword, adminAccountFirstName, adminAccountLastName, RoleEnum.ROLE_HEAD_ADMIN);
 
 		};
 	}

@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useRef, useState, type WheelEvent } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+  type WheelEvent,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/table.module.scss';
 import { Button, Pagination, Text } from '@mantine/core';
@@ -238,24 +245,48 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                     />
                   )}
                 </div>
-                {rows.map((row, idx) => (
-                  <div
-                    key={`cell_${column.key}_${idx}`}
-                    className={`${styles.cell} ${props.onRowClick ? styles.cellPointer : ''}`}
-                    onClick={() => props.onRowClick?.(row)}
-                  >
-                    {column.transform ? (
-                      column.transform(row[column.key])
-                    ) : (
-                      <Text
-                        truncate='end'
-                        size='xs'
-                      >
-                        {row[column.key] ?? emptyCellPlaceholder}
-                      </Text>
-                    )}
-                  </div>
-                ))}
+                {rows.map((row, idx) => {
+                  let value: ReactNode = row[column.key];
+                  let showInTextElement = true;
+
+                  if (column.transform) {
+                    showInTextElement = false;
+                    value = column.transform(value);
+                    console.log(value);
+                  }
+
+                  if (typeof value === 'boolean') {
+                    showInTextElement = true;
+                    if (value) {
+                      value = t('table:trueValue');
+                    } else {
+                      value = t('table:falseValue');
+                    }
+                  } else if (typeof value === 'string') {
+                    showInTextElement = true;
+                  }
+
+                  return (
+                    <div
+                      key={`cell_${column.key}_${idx}`}
+                      className={`${styles.cell} ${props.onRowClick ? styles.cellPointer : ''}`}
+                      onClick={() => props.onRowClick?.(row)}
+                    >
+                      {showInTextElement ? (
+                        <Text
+                          truncate='end'
+                          size='xs'
+                        >
+                          {value ??
+                            column.emptyCellPlaceholder ??
+                            emptyCellPlaceholder}
+                        </Text>
+                      ) : (
+                        value
+                      )}
+                    </div>
+                  );
+                })}
                 {!column.disableResizing && (
                   <div
                     className={styles.resize_handle}

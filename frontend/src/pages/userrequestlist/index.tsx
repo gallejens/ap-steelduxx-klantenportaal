@@ -134,11 +134,9 @@ export const UserRequestListPage: FC = () => {
           onChange={e => setSearchValue(e.target.value)}
         />
         <Button
-          type='submit'
           onClick={() => {
             navigate({ to: '/request-account' });
           }}
-          className={styles.new_button}
         >
           {t('userRequestListPage:newUserRequest')}
         </Button>

@@ -2,19 +2,20 @@ import { PublicPageWrapper } from '@/components/publicpagewrapper';
 import { type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChoosePasswordForm } from './components/ChoosePasswordForm';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { Loader, Text } from '@mantine/core';
 import styles from './styles/choosepassword.module.scss';
 import { notifications } from '@/components/notifications';
+import { useAuth } from '@/hooks/useAuth';
 
 export const ChoosePasswordPage: FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { token } = useSearch({
-    from: '/unauthorized-only-route/choose-password',
+    from: '/choose-password',
   });
+  const { signOut } = useAuth();
 
   const { data: response, status } = useQuery({
     refetchOnWindowFocus: false,
@@ -52,9 +53,7 @@ export const ChoosePasswordPage: FC = () => {
     });
 
     if (response.status === 200) {
-      navigate({
-        to: '/login',
-      });
+      await signOut();
     }
   };
 

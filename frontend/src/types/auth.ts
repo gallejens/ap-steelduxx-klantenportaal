@@ -7,9 +7,9 @@ export namespace Auth {
 
   export type Permission =
     | 'ACCESS'
+    | 'ADMIN'
     | 'CREATE_SUB_ACCOUNTS'
     | 'VIEW_ACCOUNTS'
-    | 'EXTERNAL_API_ADMIN'
     | 'MANAGE_USER_REQUESTS';
 
   export type User = {

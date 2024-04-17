@@ -34,9 +34,8 @@ public class ExternalApiService {
             return existingToken;
         }
 
-        // If user is admin, set ref to admin else get ref from company
         String referenceCode;
-        if (user.hasPermission(PermissionEnum.EXTERNAL_API_ADMIN)) {
+        if (user.hasPermission(PermissionEnum.ADMIN)) {
             referenceCode = "ADMIN";
         } else {
             var company = companyRepository.findByUserId(user.getId()).orElseThrow();

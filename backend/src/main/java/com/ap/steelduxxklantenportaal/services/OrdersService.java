@@ -21,7 +21,7 @@ public class OrdersService {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user == null) return new OrderDto[0];
 
-        boolean isAdmin = user.hasPermission(PermissionEnum.EXTERNAL_API_ADMIN);
+        boolean isAdmin = user.hasPermission(PermissionEnum.ADMIN);
         String endpoint = isAdmin ? "/admin/order/all" : "/order/all";
 
         return externalApiService.doRequest(endpoint, HttpMethod.GET, OrderDto[].class);
@@ -32,7 +32,7 @@ public class OrdersService {
         if (user == null) return null;
 
         // if user is admin and customercode was provided then use admin endpoint
-        boolean isAdmin = user.hasPermission(PermissionEnum.EXTERNAL_API_ADMIN);
+        boolean isAdmin = user.hasPermission(PermissionEnum.ADMIN);
         String endpoint;
         if (isAdmin && customerCode != null) {
             endpoint = String.format("/admin/order/%s/%s", customerCode, orderId);

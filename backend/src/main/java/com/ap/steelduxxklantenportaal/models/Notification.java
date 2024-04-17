@@ -71,8 +71,8 @@ public class Notification {
         return createdAt;
     }
 
-    public void setCreatedAt(Long CreatedAt) {
-        this.createdAt = CreatedAt;
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
     }
     
     public boolean isRead() {

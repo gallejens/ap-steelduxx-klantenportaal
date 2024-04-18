@@ -240,6 +240,57 @@
     "success": "Order aanvraag succesvol verzonden.",
     "failed": "Order aanvraag niet aangemaakt, voeg minstens een product toe."
   },
+  "newOrderPage": {
+    "orderForm": {
+      "referenceCode": {
+        "referenceCodeInputTitle": "Referentie code",
+        "referenceCodeInputDescription": "Selecteer de referentie code in van het bedrijf",
+        "referenceCodeInputPlaceholder": "SOF1",
+        "referenceCodeInputError": "Referentie code van bedrijf is vereist"
+      },
+      "transportType": {
+        "transportTypeInputTitle": "Transport type",
+        "transportTypeInputDescription": "Selecteer het transport type van het order",
+        "transportTypeInputPlaceholder": "IMPORT / EXPORT",
+        "transportTypeInputError": "Transport type is vereist"
+      },
+      "portCode": {
+        "portCodeInputTitle": "Haven code",
+        "portCodeInputDescription": "Vul hier de havencode van de bestemming in",
+        "portCodeInputPlaceholder": "BEANR",
+        "portCodeInputError": "De havencode van de bestemming is vereist"
+      }
+    },
+    "productForm": {
+      "ProductInputTitle": "Product",
+      "hsCode": {
+        "hsCodeInputDescription": "HS-code",
+        "hsCodeInputPlaceholder": "73063090",
+        "hsCodeInputError": "HS-code van het product is vereist"
+      },
+      "name": {
+        "nameInputDescription": "Naam",
+        "nameInputPlaceholder": "Verzinkte stalen buizen",
+        "nameInputError": "Naam van het product is vereist"
+      },
+      "quantity": {
+        "quantityInputDescription": "Hoeveelheid",
+        "quantityInputPlaceholder": "15",
+        "quantityInputError": "Hoeveelheid van het product is vereist"
+      },
+      "weight": {
+        "weightInputDescription": "Gewicht (kg)",
+        "weightInputPlaceholder": "14328000",
+        "weightInputError": "Gewicht van het product is vereist"
+      },
+      "containerNumber": {
+        "containerNumberInputDescription": "Container nummer (gecontaineriseerd product)",
+        "containerNumberInputPlaceholder": "OOCU7396492",
+        "containerNumberInputError": "Container nummer van het product is vereist"
+      },
+      "addProductButton": "Voeg product toe"
+    }
+  },
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",
     "approveButton": "Goedkeuren",

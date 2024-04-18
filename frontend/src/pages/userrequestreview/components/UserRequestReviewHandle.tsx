@@ -9,14 +9,7 @@ import { useParams } from '@tanstack/react-router';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
 import { useQuery } from '@tanstack/react-query';
-
-type UserRequestApproveValues = {
-  referenceCode: string;
-};
-
-type UserRequestDenyValues = {
-  denyMessage: string;
-};
+import type { UserRequest } from '@/types/userrequest';
 
 type Props = {
   onSubmit?: () => void;
@@ -44,7 +37,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
 
   const companyCodes = companyCodesResponse?.data ?? [];
 
-  const approveForm = useForm<UserRequestApproveValues>({
+  const approveForm = useForm<UserRequest.UserRequestApproveValues>({
     initialValues: {
       referenceCode: '',
     },
@@ -58,7 +51,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     validateInputOnBlur: true,
   });
 
-  const denyForm = useForm<UserRequestDenyValues>({
+  const denyForm = useForm<UserRequest.UserRequestDenyValues>({
     initialValues: {
       denyMessage: '',
     },
@@ -73,7 +66,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
   });
 
   const approveUserRequestReviewButton = async (
-    values: UserRequestApproveValues
+    values: UserRequest.UserRequestApproveValues
   ) => {
     if (!approveForm.isValid()) {
       notifications.add({
@@ -110,7 +103,9 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     setIsDenied(false);
   };
 
-  const denyUserRequestReviewButton = async (values: UserRequestDenyValues) => {
+  const denyUserRequestReviewButton = async (
+    values: UserRequest.UserRequestDenyValues
+  ) => {
     if (!denyForm.isValid()) {
       notifications.add({
         title: t('notifications: genericError'),
@@ -192,11 +187,11 @@ export const UserRequestReviewHandle: FC<Props> = props => {
             )}
           >
             <Select
-              className={styles.company_country_input}
               label={t('userRequestForm:referenceCodeInputTitle')}
               description={t('userRequestForm:referenceCodeInputDescription')}
               placeholder={t('userRequestForm:referenceCodeInputPlaceholder')}
               data={companyCodes}
+              withAsterisk
               searchable
               {...approveForm.getInputProps('referenceCode')}
             />

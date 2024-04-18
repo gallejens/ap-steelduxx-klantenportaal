@@ -1,0 +1,65 @@
+@use '../../../styles/mixins.scss';
+
+.order_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  & > .form_field_order {
+    display: flex;
+    flex-direction: row;
+    gap: var(--mantine-spacing-xl);
+
+    & > .input_field_order {
+      width: 30rem;
+    }
+
+    & > :last-child {
+      margin-top: -5px;
+    }
+  }
+
+  & > .product_form {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--mantine-spacing-xl);
+    margin-top: var(--mantine-spacing-xl);
+
+    & > .form_field_product {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      gap: var(--mantine-spacing-xl);
+
+      .column1,
+      .column2,
+      .column3 {
+        flex: 1;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: var(--mantine-spacing-md);
+      }
+
+      .column2,
+      .column3 {
+        margin-top: 30px;
+      }
+    }
+
+    .input_field_product_header,
+    .input_field_product_name,
+    .input_field_product_quantity,
+    .input_field_product_weight,
+    .input_field_product_containerNumber {
+      flex: 1;
+    }
+
+    .addProduct_button {
+    }
+  }
+}

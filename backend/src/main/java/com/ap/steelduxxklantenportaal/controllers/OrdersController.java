@@ -31,7 +31,7 @@ public class OrdersController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Object> getOrderDetail(@PathVariable Long id, @RequestParam String customerCode) {
+    public ResponseEntity<Object> getOrderDetail(@PathVariable Long id, @RequestParam(required = false) String customerCode) {
         var orderDetails = ordersService.getOrderDetails(id, customerCode);
         return ResponseHandler.generate("", HttpStatus.OK, orderDetails);
     }

@@ -1,7 +1,7 @@
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { Button, TextInput } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
-import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/userlist.module.scss';

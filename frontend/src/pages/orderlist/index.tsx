@@ -63,7 +63,7 @@ export const OrderListPage: FC = () => {
           value={searchValue}
           onChange={e => setSearchValue(e.currentTarget.value)}
         />
-        {user?.permissions.includes('ACCESS') && (
+        {user?.permissions.includes('CREATE_NEW_ORDERS') && (
           <Button
             type='submit'
             onClick={() => {

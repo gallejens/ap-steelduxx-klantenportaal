@@ -191,6 +191,7 @@ export const OrderDetailsPage: FC = () => {
               </tbody>
             </table>
           </section>
+
           <div style={{ width: '100%', height: '300px', border: 'none' }}>
             <iframe
               title='VesselFinder Map'

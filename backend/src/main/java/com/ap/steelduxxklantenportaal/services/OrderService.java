@@ -83,7 +83,7 @@ public class OrderService {
 
         OrderRequest savedOrderRequest = orderRepository.save(orderRequest);
 
-        List<Product> products = orderRequestDto.getProducts().stream()
+        List<Product> products = orderRequestDto.products().stream()
                 .map(productDto -> {
                     Product product = new Product();
                     product.setHsCode(productDto.hsCode());
@@ -109,7 +109,7 @@ public class OrderService {
     }
 
     public ResponseEntity<Object> createNewOrderRequest(OrderRequestDto orderRequestDto) {
-        if (orderRequestDto.getProducts().isEmpty()) {
+        if (orderRequestDto.products().isEmpty()) {
             return ResponseHandler.generate("newOrderPage:failed", HttpStatus.BAD_REQUEST);
         }
 

@@ -18,10 +18,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String hsCode;
-    private String item;
+    private String name;
     private String quantity;
     private String weight;
-    private String containerNr;
+    @Column(name = "container_nr")
+    private String containerNumber;
     private ContainerSizeEnum containerSize;
     private ContainerTypeEnum containerType;
 
@@ -29,14 +30,14 @@ public class Product {
     @JoinColumn(name = "order_request_id", nullable = false)
     private OrderRequest orderRequest;
 
-    public Product(String hsCode, String item, String quantity, String weight, String containerNr,
+    public Product(String hsCode, String name, String quantity, String weight, String containerNumber,
             ContainerSizeEnum containerSize,
             ContainerTypeEnum containerType, OrderRequest orderRequest) {
         this.hsCode = hsCode;
-        this.item = item;
+        this.name = name;
         this.quantity = quantity;
         this.weight = weight;
-        this.containerNr = containerNr;
+        this.containerNumber = containerNumber;
         this.containerSize = containerSize;
         this.containerType = containerType;
         this.orderRequest = orderRequest;

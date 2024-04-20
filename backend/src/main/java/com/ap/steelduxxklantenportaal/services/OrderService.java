@@ -87,10 +87,10 @@ public class OrderService {
                 .map(productDto -> {
                     Product product = new Product();
                     product.setHsCode(productDto.hsCode());
-                    product.setItem(productDto.item());
+                    product.setName(productDto.name());
                     product.setQuantity(productDto.quantity());
                     product.setWeight(productDto.weight());
-                    product.setContainerNr(productDto.containerNr());
+                    product.setContainerNumber(productDto.containerNumber());
 
                     ContainerSizeEnum containerSize = productDto.containerSize() == null ? null
                             : productDto.containerSize();

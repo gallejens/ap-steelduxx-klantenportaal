@@ -189,10 +189,10 @@
         "hsCodeInputPlaceholder": "73063090",
         "hsCodeInputError": "HS-code of product is required"
       },
-      "item": {
-        "itemInputDescription": "Item",
-        "itemInputPlaceholder": "Galvanized steel pipes",
-        "itemInputError": "Item is required"
+      "name": {
+        "nameInputDescription": "Name",
+        "nameInputPlaceholder": "Galvanized steel pipes",
+        "nameInputError": "Name is required"
       },
       "quantity": {
         "quantityInputDescription": "Quantity",
@@ -229,7 +229,7 @@
     "productListTitle": "Products",
     "table": {
       "hsCode": "HsCode",
-      "item": "Item",
+      "name": "Name",
       "quantity": "Quantity",
       "weight": "Total weight (kg)",
       "containerNumber": "Container number",

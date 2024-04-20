@@ -26,10 +26,10 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
   const newProductForm = useForm<Product>({
     initialValues: {
       hsCode: '',
-      item: '',
+      name: '',
       quantity: '',
       weight: '',
-      containerNr: '',
+      containerNumber: '',
       containerSize: null as ProductSize,
       containerType: null as ProductType,
     },
@@ -39,7 +39,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
           return t('newOrderPage:productForm:hsCode:hsCodeInputError');
         }
       },
-      item: value => {
+      name: value => {
         if (!value) {
           return t('newOrderPage:productForm:item:itemInputError');
         }
@@ -59,7 +59,8 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
   });
 
   const handleSubmit = (values: Product) => {
-    values.containerNr = values.containerNr === '' ? null : values.containerNr;
+    values.containerNumber =
+      values.containerNumber === '' ? null : values.containerNumber;
 
     onSubmit(values);
     closeModal();
@@ -88,15 +89,15 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
             {...newProductForm.getInputProps('hsCode')}
           />
           <TextInput
-            className={styles.input_field_product_item}
+            className={styles.input_field_product_name}
             description={t(
-              'newOrderPage:productForm:item:itemInputDescription'
+              'newOrderPage:productForm:name:nameInputDescription'
             )}
             placeholder={t(
-              'newOrderPage:productForm:item:itemInputPlaceholder'
+              'newOrderPage:productForm:name:nameInputPlaceholder'
             )}
             required
-            {...newProductForm.getInputProps('item')}
+            {...newProductForm.getInputProps('name')}
           />
         </div>
         <div className={styles.row2}>
@@ -147,7 +148,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
             placeholder={t(
               'newOrderPage:productForm:container:number:numberInputPlaceholder'
             )}
-            {...newProductForm.getInputProps('containerNr')}
+            {...newProductForm.getInputProps('containerNumber')}
           />
         )}
         {checked && (

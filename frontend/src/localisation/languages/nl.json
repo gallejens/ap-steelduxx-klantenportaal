@@ -189,10 +189,10 @@
         "hsCodeInputPlaceholder": "73063090",
         "hsCodeInputError": "HS-code van het product is vereist"
       },
-      "item": {
-        "itemInputDescription": "Item",
-        "itemInputPlaceholder": "Verzinkte stalen buizen",
-        "itemInputError": "Item is vereist"
+      "name": {
+        "nameInputDescription": "Name",
+        "nameInputPlaceholder": "Verzinkte stalen buizen",
+        "nameInputError": "Name is vereist"
       },
       "quantity": {
         "quantityInputDescription": "Hoeveelheid",
@@ -229,7 +229,7 @@
     "productListTitle": "Producten",
     "table": {
       "hsCode": "HsCode",
-      "item": "Item",
+      "name": "Name",
       "quantity": "Hoeveelheid",
       "weight": "Totaal gewicht (kg)",
       "containerNumber": "Container nummer",

@@ -9,7 +9,6 @@ import { useModalStore } from '@/stores/useModalStore';
 import styles from './styles/orderCreate.module.scss';
 import { Table } from '@/components/table';
 import { IconTrash } from '@tabler/icons-react';
-import { NTable } from '@/components/table/types';
 import { NewProductModal } from './modal/NewProductModal';
 import { notifications } from '@/components/notifications';
 import { doApiAction, GenericAPIResponse } from '@/lib/api';
@@ -25,7 +24,6 @@ export const OrderCreatePage: FC<Props> = props => {
   const { openModal, closeModal } = useModalStore();
   const [transportType, setTransportType] = useState('');
   const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[]>([]);
 
   const newOrderForm = useForm<OrderRequest.OrderRequestValue>({
     initialValues: {
@@ -77,18 +75,18 @@ export const OrderCreatePage: FC<Props> = props => {
     }
   };
 
-  // TODO Fix delete products from list
-
   const handleNewProductSubmit = (newProduct: Product) => {
-    setProducts(prevProducts => [...prevProducts, newProduct]);
-
-    console.log(products);
+    newOrderForm.setFieldValue('products', [
+      ...newOrderForm.values.products,
+      newProduct,
+    ]);
   };
 
   const deleteProduct = (index: number) => {
-    setProducts(prevProducts => prevProducts.filter((_, i) => i !== index));
-
-    console.log(products);
+    const updatedProducts = newOrderForm.values.products.filter(
+      (_, i) => i !== index
+    );
+    newOrderForm.setFieldValue('products', updatedProducts);
   };
 
   const handleCreateOrderRequestButton = async (
@@ -102,8 +100,6 @@ export const OrderCreatePage: FC<Props> = props => {
       });
       return;
     }
-
-    newOrderForm.setFieldValue('products', products);
 
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
       endpoint: '/orders/new',
@@ -119,10 +115,6 @@ export const OrderCreatePage: FC<Props> = props => {
     notifications.add({
       message: t(result?.message ?? 'notifications:genericError'),
       autoClose: 5000,
-    });
-
-    values.products.forEach(product => {
-      console.log('Container Number:', product.containerNr);
     });
 
     props.onSubmit?.();
@@ -230,7 +222,7 @@ export const OrderCreatePage: FC<Props> = props => {
                   key: 'hsCode',
                 },
                 {
-                  key: 'item',
+                  key: 'name',
                   initialWidth: 300,
                 },
                 {
@@ -241,7 +233,7 @@ export const OrderCreatePage: FC<Props> = props => {
                   initialWidth: 200,
                 },
                 {
-                  key: 'containerNr',
+                  key: 'containerNumber',
                   initialWidth: 200,
                 },
                 {
@@ -256,7 +248,14 @@ export const OrderCreatePage: FC<Props> = props => {
                   disableResizing: true,
                 },
               ]}
-              data={products}
+              data={newOrderForm.values.products.map((p, index) => ({
+                ...p,
+                actions: (
+                  <ActionIcon onClick={() => deleteProduct(index)}>
+                    <IconTrash />
+                  </ActionIcon>
+                ),
+              }))}
               translationKey={'newOrderPage:table'}
             ></Table>
           </div>

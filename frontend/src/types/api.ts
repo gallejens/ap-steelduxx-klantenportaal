@@ -25,6 +25,7 @@ export type Order = {
   ata: string | null; // ex: null
   totalWeight: number; // ex: 57960000,
   totalContainers: number; // ex: 4,
+  containerTypes: string[]; // ex: ["40 DV", "40 DV", "40 DV", "40 DV"],
 };
 
 export type OrderDetails = {
@@ -59,6 +60,8 @@ export type Product = {
   quantity: number; // ex: 15,
   weight: number; // ex: 14328000,
   containerNumber: string | null; // ex: "OOCU7396492",
+  containerSize: string | null; // ex: "40",
+  containerType: string | null; // ex: "DV",
 };
 
 export type UserRequestStatus = 'PENDING' | 'APPROVED' | 'DENIED';

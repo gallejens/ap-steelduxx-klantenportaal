@@ -69,7 +69,7 @@ public class OrderService {
         return externalApiService.doRequest(endpoint, HttpMethod.GET, OrderDetailsDto.class);
     }
 
-    private void addOrderRequest(OrderRequestDto orderRequestDto) {
+    public void addOrderRequest(OrderRequestDto orderRequestDto) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var company = companyRepository.findByUserId(user.getId()).orElseThrow();
         var companyCode = company.getReferenceCode();

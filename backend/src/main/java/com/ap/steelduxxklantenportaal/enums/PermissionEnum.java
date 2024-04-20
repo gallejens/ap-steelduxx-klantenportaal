@@ -7,4 +7,5 @@ public enum PermissionEnum {
     CREATE_SUB_ACCOUNTS, // Can create subaccounts
     CREATE_NEW_ORDERS, // Can create orders
     MANAGE_USER_REQUESTS, // Access & manage user requests
+    MANAGE_ORDER_REQUESTS // Acces & manage order requests
 }

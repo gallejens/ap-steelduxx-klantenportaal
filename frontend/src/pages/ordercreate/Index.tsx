@@ -241,12 +241,12 @@ export const OrderCreatePage: FC<Props> = props => {
                   initialWidth: 200,
                 },
                 { key: 'containerType' },
-                {
-                  key: 'actions',
-                  emptyHeader: true,
-                  disallowSorting: true,
-                  disableResizing: true,
-                },
+                // {
+                //   key: 'actions',
+                //   emptyHeader: true,
+                //   disallowSorting: true,
+                //   disableResizing: true,
+                // },
               ]}
               data={newOrderForm.values.products.map((p, index) => ({
                 ...p,

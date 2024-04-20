@@ -13,7 +13,7 @@ import { NTable } from '@/components/table/types';
 import { NewProductModal } from './modal/NewProductModal';
 import { notifications } from '@/components/notifications';
 import { doApiAction, GenericAPIResponse } from '@/lib/api';
-import { HttpStatusCode } from 'axios';
+import { useNavigate } from '@tanstack/react-router';
 
 type Props = {
   onSubmit?: () => void;
@@ -24,6 +24,7 @@ export const OrderCreatePage: FC<Props> = props => {
   const { t } = useTranslation();
   const { openModal, closeModal } = useModalStore();
   const [transportType, setTransportType] = useState('');
+  const navigate = useNavigate();
   const [tableData, setTableData] = useState<
     NTable.Row<
       | 'hsCode'
@@ -158,6 +159,7 @@ export const OrderCreatePage: FC<Props> = props => {
 
     if (result?.message === 'newOrderPage:success') {
       props.onSuccess?.();
+      navigate({ to: '/app/orders' });
     }
   };
 

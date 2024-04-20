@@ -35,6 +35,10 @@ export const OrderDetailsPage: FC = () => {
       }),
   });
 
+  function formatWeight(weight: number): string {
+    return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
   const getIframeContent = (imo: string) => {
     return `
       <script type="text/javascript">
@@ -73,50 +77,51 @@ export const OrderDetailsPage: FC = () => {
           <section>
             <h2>{t('orderDetailPage:generalInfo')}</h2>
             <p>
-              {t('orderDetailPage:customerReference')}:{' '}
-              {orderDetail.data.customerReferenceNumber}
+              <strong>{t('orderDetailPage:customerReference')}:</strong>{' '}
+              {orderDetail?.customerReferenceNumber}
             </p>
             <p>
-              {t('orderDetailPage:state')}: {orderDetail.data.state}
+              <strong>{t('orderDetailPage:state')}:</strong>{' '}
+              {orderDetail?.state}
             </p>
             <p>
-              {t('orderDetailPage:transportType')}:{' '}
-              {orderDetail.data.transportType}
+              <strong>{t('orderDetailPage:transportType')}:</strong>{' '}
+              {orderDetail?.transportType}
             </p>
           </section>
           <section>
             <h2>{t('orderDetailPage:portInformation')}</h2>
             <p>
-              {t('orderDetailPage:origin')}: {orderDetail.data.portOfOriginName}{' '}
-              - {orderDetail.data.portOfOriginCode}
+              <strong>{t('orderDetailPage:origin')}:</strong>{' '}
+              {orderDetail?.portOfOriginName} - {orderDetail?.portOfOriginCode}
             </p>
             <p>
-              {t('orderDetailPage:destination')}:{' '}
-              {orderDetail.data.portOfDestinationName} -{' '}
-              {orderDetail.data.portOfDestinationCode}
+              <strong>{t('orderDetailPage:destination')}:</strong>{' '}
+              {orderDetail?.portOfDestinationName} -{' '}
+              {orderDetail?.portOfDestinationCode}
             </p>
           </section>
           <section>
             <h2>{t('orderDetailPage:timeInformation')}</h2>
             <p>
-              {t('orderDetailPage:ets')}: {orderDetail.data.ets}
+              <strong>{t('orderDetailPage:ets')}:</strong> {orderDetail?.ets}
             </p>
             <p>
-              {t('orderDetailPage:ats')}: {orderDetail.data.ats}
+              <strong>{t('orderDetailPage:ats')}:</strong> {orderDetail?.ats}
             </p>
             <p>
-              {t('orderDetailPage:eta')}: {orderDetail.data.eta}
+              <strong>{t('orderDetailPage:eta')}:</strong> {orderDetail?.eta}
             </p>
             <p>
-              {t('orderDetailPage:ata')}: {orderDetail.data.ata}
+              <strong>{t('orderDetailPage:ata')}:</strong> {orderDetail?.ata}
             </p>
             <p>
-              {t('orderDetailPage:estimatedTimeCargoOnQuay')}:{' '}
-              {orderDetail.data.estimatedTimeCargoOnQuay}
+              <strong>{t('orderDetailPage:estimatedTimeCargoOnQuay')}:</strong>{' '}
+              {orderDetail?.estimatedTimeCargoOnQuay}
             </p>
             <p>
-              {t('orderDetailPage:actualTimeCargoLoaded')}:{' '}
-              {orderDetail.data.actualTimeCargoLoaded}
+              <strong>{t('orderDetailPage:actualTimeCargoLoaded')}:</strong>{' '}
+              {orderDetail?.actualTimeCargoLoaded}
             </p>
           </section>
         </div>
@@ -124,16 +129,20 @@ export const OrderDetailsPage: FC = () => {
           <section>
             <h2>{t('orderDetailPage:shipInformation')}</h2>
             <p>
-              {t('orderDetailPage:name')}: {orderDetail.data.shipName}
+              <strong>{t('orderDetailPage:name')}:</strong>{' '}
+              {orderDetail?.shipName}
             </p>
             <p>
-              {t('orderDetailPage:imo')}: {orderDetail.data.shipIMO}
+              <strong>{t('orderDetailPage:imo')}:</strong>{' '}
+              {orderDetail?.shipIMO}
             </p>
             <p>
-              {t('orderDetailPage:mmsi')}: {orderDetail.data.shipMMSI}
+              <strong>{t('orderDetailPage:mmsi')}:</strong>{' '}
+              {orderDetail?.shipMMSI}
             </p>
             <p>
-              {t('orderDetailPage:type')}: {orderDetail.data.shipType}
+              <strong>{t('orderDetailPage:type')}:</strong>{' '}
+              {orderDetail?.shipType}
             </p>
           </section>
           <section>
@@ -141,13 +150,14 @@ export const OrderDetailsPage: FC = () => {
             <ul>
               {orderDetail.data.products.map((product, index: number) => (
                 <li key={index}>
-                  {t('orderDetailPage:hsCode')}: {product.hsCode} -{' '}
-                  {product.name} -{t('orderDetailPage:quantity')}:{' '}
-                  {product.quantity}, {product.weight} kg
+                  <strong>{t('orderDetailPage:hsCode')}:</strong>{' '}
+                  {product.hsCode} - {product.name} -
+                  <strong>{t('orderDetailPage:quantity')}:</strong>{' '}
+                  {product.quantity}, {formatWeight(product.weight)} kg
                   {product.containerNumber != null ? (
                     <>
                       {' '}
-                      - {t('orderDetailPage:container')}:{' '}
+                      - <strong>{t('orderDetailPage:container')}:</strong>{' '}
                       {product.containerNumber}
                     </>
                   ) : null}

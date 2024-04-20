@@ -1,40 +1,20 @@
 package com.ap.steelduxxklantenportaal.repositories;
 
-import com.ap.steelduxxklantenportaal.dtos.Accounts.AccountDto;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import org.springframework.stereotype.Component;
+import com.ap.steelduxxklantenportaal.models.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Component
-public class AccountRepository {
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    public List<AccountDto> findAccountsForUserCompany(Long userId) {
-        Query query = entityManager.createNativeQuery("""
-            SELECT u.email, u.first_name, u.last_name, c.company_name
-            FROM users AS u
-            LEFT JOIN user_company AS uc ON u.id = uc.user_id
-            LEFT JOIN company AS c ON uc.company_id = c.id
-            WHERE c.id = (
+@Repository
+public interface AccountRepository extends JpaRepository<Account, String> {
+    @Query(value = """
+            SELECT * FROM account_view WHERE company_id = (
                 SELECT company_id
                 FROM user_company
-                WHERE user_id = :userId
+                WHERE user_id = ?1
             )
-            """, AccountDto.class).setParameter("userId", userId);
-        return (List<AccountDto>) query.getResultList();
-    };
-
-    public List<AccountDto> findAllAccounts() {
-        Query query = entityManager.createNativeQuery("""
-            SELECT u.email, u.first_name, u.last_name, c.company_name
-            FROM users AS u
-            LEFT JOIN user_company AS uc ON u.id = uc.user_id
-            LEFT JOIN company AS c ON uc.company_id = c.id
-            """, AccountDto.class);
-        return (List<AccountDto>) query.getResultList();
-    };
+            """, nativeQuery = true)
+    List<Account> findAllFromSameCompanyAsUser(long userId);
 }

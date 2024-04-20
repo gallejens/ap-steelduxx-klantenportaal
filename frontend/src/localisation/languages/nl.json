@@ -238,19 +238,38 @@
         "failed": "Er is iets misgegaan tijdens het veranderen van het wachtwoord, gelieve opnieuw te proberen.",
         "success": "Wachtwoord is succesvol verandered."
       }
+    },
+    "createSubaccount": {
+      "title": "Subaccount Aanmaken",
+      "emailInputLabel": "Email",
+      "emailInputError": "Vul een geldig email adres in",
+      "firstNameInputLabel": "Voornaam",
+      "firstNameInputError": "Voornaam is vereist",
+      "lastNameInputLabel": "Achternaam",
+      "lastNameInputError": "Achternaam is vereist",
+      "actionButton": "Aanmaken",
+      "response": {
+        "failed": "Er is iets misgegaan tijdens het aanmaken van het subaccount, gelieve opnieuw te proberen.",
+        "success": "Subaccount is succesvol aangemaakt.",
+        "duplicate": "Subaccount met dit email adres bestaat al."
+      }
     }
   },
   "table": {
-    "columnSelectorButton": "Kolommen"
+    "columnSelectorButton": "Kolommen",
+    "trueValue": "Ja",
+    "falseValue": "Nee"
   },
   "accountListPage": {
     "table": {
       "email": "Email",
       "firstName": "Voornaam",
       "lastName": "Achternaam",
-      "company": "Bedrijf"
+      "company": "Bedrijf",
+      "role": "Hoofdaccount"
     },
     "loading": "Laden...",
-    "error": "Er heeft zich een fout voorgedaan tijdens het laden van de accounts"
+    "error": "Er heeft zich een fout voorgedaan tijdens het laden van de accounts",
+    "createSubAccount": "Subaccount aanmaken"
   }
 }

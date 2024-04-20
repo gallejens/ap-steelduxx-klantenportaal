@@ -11,6 +11,7 @@ export namespace NTable {
     minimumWidth?: number; // minimum width of the column in pixels
     emptyHeader?: boolean; // if true, the header will be empty
     disableResizing?: boolean; // if true, the column will not be resizable
+    emptyCellPlaceholder?: string; // placeholder to place in empty cells (default: '-')
   };
 
   export type Row<T extends string> = Record<

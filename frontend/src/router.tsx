@@ -55,7 +55,7 @@ const passwordResetRoute = createRoute({
 });
 
 const choosePasswordRoute = createRoute({
-  getParentRoute: () => unauthorizedOnlyRoute,
+  getParentRoute: () => rootRoute,
   path: 'choose-password',
   component: ChoosePasswordPage,
   validateSearch: (search: Record<string, unknown>) => {
@@ -136,11 +136,11 @@ const accountListRoute = createRoute({
 
 // Creating route tree
 const routeTree = rootRoute.addChildren([
+  choosePasswordRoute,
   unauthorizedOnlyRoute.addChildren([
     loginRoute,
     userRequestRoute,
     passwordResetRoute,
-    choosePasswordRoute,
   ]),
   authorizedOnlyRoute.addChildren([
     homeRoute,

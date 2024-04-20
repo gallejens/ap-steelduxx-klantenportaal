@@ -238,19 +238,38 @@
         "failed": "Something went wrong while changing the password. Please try again.",
         "success": "Password has been changed successfully."
       }
+    },
+    "createSubaccount": {
+      "title": "Create Subaccount",
+      "emailInputLabel": "Email",
+      "emailInputError": "Enter a valid email address",
+      "firstNameInputLabel": "First Name",
+      "firstNameInputError": "First name is required",
+      "lastNameInputLabel": "Last Name",
+      "lastNameInputError": "Last name is required",
+      "actionButton": "Create",
+      "response": {
+        "failed": "Something went wrong while creating the subaccount. Please try again.",
+        "success": "Subaccount has been created successfully.",
+        "duplicate": "Subaccount with this email already exists."
+      }
     }
   },
   "table": {
-    "columnSelectorButton": "Columns"
+    "columnSelectorButton": "Columns",
+    "trueValue": "Yes",
+    "falseValue": "No"
   },
   "accountListPage": {
     "table": {
       "email": "Email",
       "firstName": "First Name",
       "lastName": "Last Name",
-      "company": "Company"
+      "company": "Company",
+      "role": "Headaccount"
     },
     "loading": "Loading...",
-    "error": "An error has occured while loading accounts"
+    "error": "An error has occured while loading accounts",
+    "createSubAccount": "Create subaccount"
   }
 }

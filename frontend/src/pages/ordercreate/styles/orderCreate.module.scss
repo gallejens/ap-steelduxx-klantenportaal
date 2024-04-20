@@ -4,62 +4,107 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
+  align-items: start;
 
   & > .form_field_order {
     display: flex;
     flex-direction: row;
     gap: var(--mantine-spacing-xl);
 
+    & > :first-child {
+      padding-top: 4px;
+    }
+
     & > .input_field_order {
       width: 30rem;
     }
-
-    & > :last-child {
-      margin-top: -5px;
-    }
+  }
+  & > .addProduct_button {
+    width: 300px;
+    margin-top: var(--mantine-spacing-xl);
   }
 
-  & > .product_form {
+  & > .list_column {
     width: 95%;
-    display: flex;
-    flex-direction: column;
-    gap: var(--mantine-spacing-xl);
+
     margin-top: var(--mantine-spacing-xl);
 
-    & > .form_field_product {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+
+    & > .list_title {
+      width: 100%;
+      text-align: center;
+
+      font-size: var(--mantine-font-size-xl);
+      padding-bottom: var(--mantine-spacing-xs);
+
+      border-bottom: 1.5px solid var(--mantine-color-default-border);
+    }
+
+    & > .list_product {
+      margin-top: var(--mantine-spacing-xl);
+
+      width: 100%;
+      height: 475px;
+
+      display: flex;
+      justify-content: center;
+    }
+
+    .addOrder_button_container {
+      & > .button {
+        width: 300px;
+        margin-top: var(--mantine-spacing-xl);
+      }
+    }
+  }
+}
+.modal {
+  .product_form {
+    display: flex;
+    flex-direction: column;
+
+    & > .row1,
+    .row2,
+    .input_field_product_transport_details {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
-
       gap: var(--mantine-spacing-xl);
+      margin-top: var(--mantine-spacing-md);
+    }
 
-      .column1,
-      .column2,
-      .column3 {
-        flex: 1;
-
-        display: flex;
-        flex-direction: column;
-
-        gap: var(--mantine-spacing-md);
-      }
-
-      .column2,
-      .column3 {
-        margin-top: 30px;
+    & > .row1 {
+      .input_field_product_hsCode,
+      .input_field_product_item {
+        width: 100%;
       }
     }
 
-    .input_field_product_header,
-    .input_field_product_name,
-    .input_field_product_quantity,
-    .input_field_product_weight,
-    .input_field_product_containerNumber {
-      flex: 1;
+    & > .row2 {
+      .input_field_product_quantity,
+      .input_field_product_weight {
+        width: 100%;
+      }
     }
 
-    .addProduct_button {
+    & > .input_field_product_transport_details {
+      .input_field_product_transport_size,
+      .input_field_product_transport_type {
+        width: 100%;
+      }
+      margin-bottom: var(--mantine-spacing-md);
+    }
+
+    & > .container_checkbox {
+      margin-bottom: var(--mantine-spacing-md);
+      margin-top: var(--mantine-spacing-md);
+    }
+
+    & > .confirm_button {
+      align-self: flex-end;
     }
   }
 }

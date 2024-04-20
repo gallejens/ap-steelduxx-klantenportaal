@@ -16,7 +16,7 @@ public class ExternalApiServiceTest {
     private ExternalApiService externalApiService;
 
     @Test
-    @WithUserDetails(value="sw03.ap@gmail.com")
+    @WithUserDetails(value = "sw03.ap@gmail.com")
     void givenRequest_whenCallingExternalApi_thenGetResponse() {
         var result = externalApiService.doRequest("/admin/order/all", HttpMethod.GET, OrderDto[].class);
         assertThat(result).isNotNull();

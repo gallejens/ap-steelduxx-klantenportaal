@@ -6,7 +6,11 @@ export type OrderState =
   | 'CLOSED'
   | 'LOADED';
 
-export type OrderTransportType = 'IMPORT' | 'EXPORT' | '';
+export type OrderTransportType = 'IMPORT' | 'EXPORT' | null;
+
+export type ProductSize = 'SIZE_20' | 'SIZE_40' | null;
+
+export type ProductType = 'OT' | 'FT' | 'DV' | 'HC' | 'RF' | null;
 
 export type Order = {
   customerCode: string | null; // ex: "SOF1", only provided when admin requests orders
@@ -56,12 +60,12 @@ export type OrderDetails = {
 
 export type Product = {
   hsCode: string; // ex "73063090",
-  name: string; // ex: "Galvanized steel pipes",
+  item: string; // ex: "Galvanized steel pipes",
   quantity: number | string; // ex: 15,
   weight: number | string; // ex: 14328000,
   containerNumber: string | null; // ex: "OOCU7396492",
-  containerSize: string | null; // ex: "40",
-  containerType: string[]; // ex: "DV",
+  containerSize: ProductSize; // ex: Size_20,
+  containerType: ProductType; // ex: OT
 };
 
 export type UserRequestStatus = 'PENDING' | 'APPROVED' | 'DENIED';

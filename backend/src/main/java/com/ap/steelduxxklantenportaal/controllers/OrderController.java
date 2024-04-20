@@ -1,24 +1,22 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.OrderDetailsDto;
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.OrderDto;
-import com.ap.steelduxxklantenportaal.services.ExternalApiService;
-import com.ap.steelduxxklantenportaal.services.OrdersService;
+import com.ap.steelduxxklantenportaal.services.OrderService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
-import org.springframework.http.HttpMethod;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/orders")
-public class OrdersController {
-    private final OrdersService ordersService;
+public class OrderController {
+    private final OrderService ordersService;
 
-    public OrdersController(OrdersService ordersService) {
+    public OrderController(OrderService ordersService) {
         this.ordersService = ordersService;
     }
 
@@ -35,4 +33,11 @@ public class OrdersController {
         var orderDetails = ordersService.getOrderDetails(id, customerCode);
         return ResponseHandler.generate("", HttpStatus.OK, orderDetails);
     }
+
+    @PostMapping("/new")
+    @PreAuthorize("hasAuthority('ACCESS')")
+    public ResponseEntity<Object> createOrderRequest(@RequestBody OrderRequestDto orderRequestDto) {
+        return ordersService.createNewOrderRequest(orderRequestDto);
+    }
+
 }

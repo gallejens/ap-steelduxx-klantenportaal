@@ -31,18 +31,18 @@ export const TABS: {
     color: { r: 36, g: 244, b: 112 },
   },
   {
+    labelKey: 'orderrequests',
+    path: '/app/order-requests',
+    icon: IconList,
+    color: { r: 205, g: 98, b: 0 },
+    requiredPermission: 'MANAGE_ORDER_REQUESTS',
+  },
+  {
     labelKey: 'requests',
     path: '/app/requests',
     icon: IconList,
     color: { r: 219, g: 38, b: 183 },
     requiredPermission: 'MANAGE_USER_REQUESTS',
-  },
-  {
-    labelKey: 'order requests',
-    path: '/app/order-requests',
-    icon: IconList,
-    color: { r: 219, g: 38, b: 183 },
-    requiredPermission: 'MANAGE_ORDER_REQUESTS',
   },
   {
     labelKey: 'accounts',

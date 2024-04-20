@@ -233,7 +233,7 @@ export const OrderCreatePage: FC<Props> = props => {
                   initialWidth: 200,
                 },
                 {
-                  key: 'containerNumber',
+                  key: 'containerNr',
                   initialWidth: 200,
                 },
                 {

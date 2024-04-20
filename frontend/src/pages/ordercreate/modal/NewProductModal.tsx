@@ -29,7 +29,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
       item: '',
       quantity: '',
       weight: '',
-      containerNumber: '',
+      containerNr: '',
       containerSize: null as ProductSize,
       containerType: null as ProductType,
     },
@@ -59,8 +59,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
   });
 
   const handleSubmit = (values: Product) => {
-    values.containerNumber =
-      values.containerNumber === '' ? null : values.containerNumber;
+    values.containerNr = values.containerNr === '' ? null : values.containerNr;
 
     onSubmit(values);
     closeModal();
@@ -148,7 +147,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
             placeholder={t(
               'newOrderPage:productForm:container:number:numberInputPlaceholder'
             )}
-            {...newProductForm.getInputProps('containerNumber')}
+            {...newProductForm.getInputProps('containerNr')}
           />
         )}
         {checked && (

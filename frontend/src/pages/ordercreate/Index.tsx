@@ -25,18 +25,7 @@ export const OrderCreatePage: FC<Props> = props => {
   const { openModal, closeModal } = useModalStore();
   const [transportType, setTransportType] = useState('');
   const navigate = useNavigate();
-  const [tableData, setTableData] = useState<
-    NTable.Row<
-      | 'hsCode'
-      | 'item'
-      | 'quantity'
-      | 'weight'
-      | 'containerNumber'
-      | 'containerSize'
-      | 'containerType'
-      | 'actions'
-    >[]
-  >([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   const newOrderForm = useForm<OrderRequest.OrderRequestValue>({
     initialValues: {
@@ -91,37 +80,16 @@ export const OrderCreatePage: FC<Props> = props => {
   // TODO Fix delete products from list
 
   const handleNewProductSubmit = (newProduct: Product) => {
-    const updatedProductsInOrder = [
-      ...newOrderForm.values.products,
-      newProduct,
-    ];
-    newOrderForm.setFieldValue('products', updatedProductsInOrder);
+    setProducts(prevProducts => [...prevProducts, newProduct]);
 
-    console.log(updatedProductsInOrder);
-    const newRows = updatedProductsInOrder.map(product => ({
-      hsCode: product.hsCode,
-      item: product.item,
-      quantity: product.quantity,
-      weight: product.weight,
-      containerNumber: product.containerNumber,
-      containerSize: product.containerSize,
-      containerType: product.containerType,
-      actions: (
-        <ActionIcon>
-          <IconTrash /*onClick={() => deleteProduct(index)}*/></IconTrash>
-        </ActionIcon>
-      ),
-    }));
-
-    setTableData(newRows);
+    console.log(products);
   };
 
-  // const deleteProduct = (index: number) => {
-  //   const productsInOrder = [...newOrderForm.values.products];
-  //   const updatedProducts = productsInOrder.filter((_, i) => i !== index);
-  //   newOrderForm.setFieldValue('products', updatedProducts);
-  //   console.log(productsInOrder);
-  // };
+  const deleteProduct = (index: number) => {
+    setProducts(prevProducts => prevProducts.filter((_, i) => i !== index));
+
+    console.log(products);
+  };
 
   const handleCreateOrderRequestButton = async (
     values: OrderRequest.OrderRequestValue
@@ -134,6 +102,9 @@ export const OrderCreatePage: FC<Props> = props => {
       });
       return;
     }
+
+    newOrderForm.setFieldValue('products', products);
+
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
       endpoint: '/orders/new',
       method: 'POST',
@@ -150,9 +121,8 @@ export const OrderCreatePage: FC<Props> = props => {
       autoClose: 5000,
     });
 
-    // Log containerNumber, here it is the value that is given in field BUT in backend it is null???
     values.products.forEach(product => {
-      console.log('Container Number:', product.containerNumber);
+      console.log('Container Number:', product.containerNr);
     });
 
     props.onSubmit?.();
@@ -271,7 +241,7 @@ export const OrderCreatePage: FC<Props> = props => {
                   initialWidth: 200,
                 },
                 {
-                  key: 'containerNumber',
+                  key: 'containerNr',
                   initialWidth: 200,
                 },
                 {
@@ -286,7 +256,7 @@ export const OrderCreatePage: FC<Props> = props => {
                   disableResizing: true,
                 },
               ]}
-              data={tableData}
+              data={products}
               translationKey={'newOrderPage:table'}
             ></Table>
           </div>

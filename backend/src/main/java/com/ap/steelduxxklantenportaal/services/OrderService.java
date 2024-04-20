@@ -90,9 +90,7 @@ public class OrderService {
                     product.setItem(productDto.item());
                     product.setQuantity(productDto.quantity());
                     product.setWeight(productDto.weight());
-                    // ContainerNr is saved as NULL in database, IDK why??
                     product.setContainerNr(productDto.containerNr());
-                    System.out.println(productDto.containerNr());
 
                     ContainerSizeEnum containerSize = productDto.containerSize() == null ? null
                             : productDto.containerSize();

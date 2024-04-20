@@ -242,23 +242,23 @@
   },
   "newOrderPage": {
     "orderForm": {
-      "referenceCode": {
-        "referenceCodeInputTitle": "Referentie code",
-        "referenceCodeInputDescription": "Selecteer de referentie code in van het bedrijf",
-        "referenceCodeInputPlaceholder": "SOF1",
-        "referenceCodeInputError": "Referentie code van bedrijf is vereist"
-      },
       "transportType": {
         "transportTypeInputTitle": "Transport type",
         "transportTypeInputDescription": "Selecteer het transport type van het order",
         "transportTypeInputPlaceholder": "IMPORT / EXPORT",
         "transportTypeInputError": "Transport type is vereist"
       },
-      "portCode": {
-        "portCodeInputTitle": "Haven code",
-        "portCodeInputDescription": "Vul hier de havencode van de bestemming in",
-        "portCodeInputPlaceholder": "BEANR",
-        "portCodeInputError": "De havencode van de bestemming is vereist"
+      "portDestinationCode": {
+        "portDestinationCodeInputTitle": "Haven code van bestemming",
+        "portDestinationCodeInputDescription": "Vul hier de havencode van de bestemming in",
+        "portDestinationCodeInputPlaceholder": "BEANR",
+        "portDestinationCodeInputError": "De havencode van de bestemming is vereist"
+      },
+      "portOriginCode": {
+        "portOriginCodeInputTitle": "Haven code van oorsprong",
+        "portOriginCodeInputDescription": "Vul hier de havencode van de oorsprong in",
+        "portOriginCodeInputPlaceholder": "CNSHG",
+        "portOriginCodeInputError": "De havencode van de oorsprong is vereist"
       }
     },
     "productForm": {
@@ -268,10 +268,10 @@
         "hsCodeInputPlaceholder": "73063090",
         "hsCodeInputError": "HS-code van het product is vereist"
       },
-      "name": {
-        "nameInputDescription": "Naam",
-        "nameInputPlaceholder": "Verzinkte stalen buizen",
-        "nameInputError": "Naam van het product is vereist"
+      "item": {
+        "itemInputDescription": "Item",
+        "itemInputPlaceholder": "Verzinkte stalen buizen",
+        "itemInputError": "Item is vereist"
       },
       "quantity": {
         "quantityInputDescription": "Hoeveelheid",
@@ -283,13 +283,41 @@
         "weightInputPlaceholder": "14328000",
         "weightInputError": "Gewicht van het product is vereist"
       },
-      "containerNumber": {
-        "containerNumberInputDescription": "Container nummer (gecontaineriseerd product)",
-        "containerNumberInputPlaceholder": "OOCU7396492",
-        "containerNumberInputError": "Container nummer van het product is vereist"
+      "checkBoxContainer": {
+        "checkBoxLabel": "Container product"
+      },
+      "container": {
+        "number": {
+          "numberInputDescription": "Container nummer",
+          "numberInputPlaceholder": "OOCU7396492",
+          "numberInputError": "Container nummer van product is vereist"
+        },
+        "size": {
+          "sizeInputDescription": "Container grootte (feet)",
+          "sizeInputPlaceholder": "20",
+          "sizeInputError": "Container grootte van product is vereist"
+        },
+        "type": {
+          "typeInputDescription": "Container type",
+          "typeInputPlaceholder": "OT (open top)",
+          "typeInputError": "Container type van product is vereist"
+        }
       },
       "addProductButton": "Voeg product toe"
-    }
+    },
+    "productListTitle": "Producten",
+    "table": {
+      "hsCode": "HsCode",
+      "item": "Item",
+      "quantity": "Hoeveelheid",
+      "weight": "Totaal gewicht (kg)",
+      "containerNumber": "Container nummer",
+      "containerSize": "Container grootte (feet)",
+      "containerType": "Container type"
+    },
+    "addOrderButton": "Maak order aanvraag aan",
+    "success": "Order aanvraag succesvol verzonden.",
+    "failed": "Order aanvraag niet aangemaakt, voeg minstens een product toe."
   },
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",

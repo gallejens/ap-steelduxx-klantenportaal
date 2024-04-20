@@ -242,36 +242,36 @@
   },
   "newOrderPage": {
     "orderForm": {
-      "referenceCode": {
-        "referenceCodeInputTitle": "Reference code",
-        "referenceCodeInputDescription": "Select the reference code of the company here",
-        "referenceCodeInputPlaceholder": "SOF1",
-        "referenceCodeInputError": "Reference code of company is required"
-      },
       "transportType": {
         "transportTypeInputTitle": "Transport type",
         "transportTypeInputDescription": "Select the transport type of the order here",
         "transportTypeInputPlaceholder": "IMPORT / EXPORT",
         "transportTypeInputError": "Transport type is required"
       },
-      "portCode": {
-        "portCodeInputTitle": "Port code",
-        "portCodeInputDescription": "Fill in the port code of the destination here",
-        "portCodeInputPlaceholder": "BEANR",
-        "portCodeInputError": "Port Code of destination is required"
+      "portDestinationCode": {
+        "portDestinationCodeInputTitle": "Port code of destination",
+        "portDestinationCodeInputDescription": "Fill in the port code of the destination here",
+        "portDestinationCodeInputPlaceholder": "BEANR",
+        "portDestinationCodeInputError": "Port Code of destination is required"
+      },
+      "portOriginCode": {
+        "portOriginCodeInputTitle": "Port code of origin",
+        "portOriginCodeInputDescription": "Fill in the port code of the origin here",
+        "portOriginCodeInputPlaceholder": "CNSHG",
+        "portOriginCodeInputError": "Port Code of origin is required"
       }
     },
     "productForm": {
-      "ProductInputTitle": "Product",
+      "ProductInputTitle": "New product",
       "hsCode": {
         "hsCodeInputDescription": "HS-code",
         "hsCodeInputPlaceholder": "73063090",
         "hsCodeInputError": "HS-code of product is required"
       },
-      "name": {
-        "nameInputDescription": "Name",
-        "nameInputPlaceholder": "Galvanized steel pipes",
-        "nameInputError": "Name of product is required"
+      "item": {
+        "itemInputDescription": "Item",
+        "itemInputPlaceholder": "Galvanized steel pipes",
+        "itemInputError": "Item is required"
       },
       "quantity": {
         "quantityInputDescription": "Quantity",
@@ -283,13 +283,41 @@
         "weightInputPlaceholder": "14328000",
         "weightInputError": "Weight of product is required"
       },
-      "containerNumber": {
-        "containerNumberInputDescription": "Container number (containerized product)",
-        "containerNumberInputPlaceholder": "OOCU7396492",
-        "containerNumberInputError": "Container number of product is required"
+      "checkBoxContainer": {
+        "checkBoxLabel": "Container product"
+      },
+      "container": {
+        "number": {
+          "numberInputDescription": "Container number",
+          "numberInputPlaceholder": "OOCU7396492",
+          "numberInputError": "Container number of product is required"
+        },
+        "size": {
+          "sizeInputDescription": "Container size (feet)",
+          "sizeInputPlaceholder": "20",
+          "sizeInputError": "Container size of product is required"
+        },
+        "type": {
+          "typeInputDescription": "Container type",
+          "typeInputPlaceholder": "OT (open top)",
+          "typeInputError": "Container type of product is required"
+        }
       },
       "addProductButton": "Add product"
-    }
+    },
+    "productListTitle": "Products",
+    "table": {
+      "hsCode": "HsCode",
+      "item": "Item",
+      "quantity": "Quantity",
+      "weight": "Total weight (kg)",
+      "containerNumber": "Container number",
+      "containerSize": "Container size (feet)",
+      "containerType": "Container type"
+    },
+    "addOrderButton": "Create order request",
+    "success": "Order request succesfully created.",
+    "failed": "Order not created, add atleast one product."
   },
   "userRequestReviewPage": {
     "backButton": "Go Back",

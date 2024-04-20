@@ -127,7 +127,7 @@ export const UserRequestForm: FC<Props> = props => {
     }
 
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
-      endpoint: '/user_request',
+      endpoint: '/user-requests/new',
       method: 'POST',
       body: {
         companyName: values.companyName,

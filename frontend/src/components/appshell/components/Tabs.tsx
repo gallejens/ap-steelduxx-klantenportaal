@@ -28,7 +28,7 @@ export const Tabs: FC = () => {
           <div
             key={`tab_${tab.path}`}
             onClick={() => {
-              navigate({ to: tab.path });
+              navigate({ to: tab.path as string });
             }}
             className={classNames(isActive && styles.active)}
           >

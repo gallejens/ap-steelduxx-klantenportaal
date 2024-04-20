@@ -3,58 +3,12 @@ import { Badge, TextInput } from '@mantine/core';
 import { useNavigate } from '@tanstack/react-router';
 import styles from './styles/orderList.module.scss';
 import { IconSearch } from '@tabler/icons-react';
-import { doApiAction } from '@/lib/api';
+import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Table } from '@/components/table';
-
-type Order = {
-  referenceNumber: string; // ex: "2646607000",
-  customerReferenceNumber: string; // ex: "SRL/BHJ/EXP/PI-154",
-  state: 'SAILING' | 'PLANNED' | 'CREATED' | 'ARRIVED' | 'CLOSED' | 'LOADED';
-  transportType: 'IMPORT' | 'EXPORT';
-  portOfOriginCode: string; // ex: "INMUN",
-  portOfOriginName: string; // ex: "Mundra, India",
-  portOfDestinationCode: string; // ex: "BEANR",
-  portOfDestinationName: string; // ex: "Antwerp, Belgium",
-  shipName: string; // ex: "EDISON",
-  ets: string | null; // ex: "07-03-2024 11:58",
-  ats: string | null; // ex: "07-03-2024 23:58",
-  eta: string | null; // ex: "27-03-2024 11:58",
-  ata: string | null; // ex: null
-  totalWeight: number; // ex: 57960000,
-  totalContainers: number; // ex: 4,
-};
-
-const getStateColor = (state: Order['state']) => {
-  switch (state) {
-    case 'SAILING':
-      return 'orange';
-    case 'PLANNED':
-      return 'blue';
-    case 'CREATED':
-      return 'gray';
-    case 'ARRIVED':
-      return 'green';
-    case 'CLOSED':
-      return 'red';
-    case 'LOADED':
-      return 'violet';
-    default:
-      return 'gray';
-  }
-};
-
-const getTransportTypeColor = (state: Order['transportType']) => {
-  switch (state) {
-    case 'IMPORT':
-      return 'blue';
-    case 'EXPORT':
-      return 'pink';
-    default:
-      return 'gray';
-  }
-};
+import type { Order } from '@/types/api';
+import { getOrderStateColor, getOrderTransportTypeColor } from './helpers';
 
 export const OrderListPage: FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -68,17 +22,20 @@ export const OrderListPage: FC = () => {
   } = useQuery({
     queryKey: ['orders'],
     queryFn: () =>
-      doApiAction<Order[]>({
+      doApiAction<GenericAPIResponse<Order[]>>({
         endpoint: '/orders/all',
         method: 'GET',
       }),
   });
 
-  const handleOrderClick = (referenceNumber: string) => {
+  const handleOrderClick = (order: Order) => {
     navigate({
       to: '/app/orders/$order_id',
       params: {
-        order_id: referenceNumber,
+        order_id: order.referenceNumber,
+      },
+      search: {
+        customerCode: order.customerCode ?? undefined,
       },
     });
   };
@@ -87,10 +44,10 @@ export const OrderListPage: FC = () => {
     return <div>{t('orderListPage:loading')}</div>;
   }
 
-  if (status === 'error') {
+  if (status === 'error' || !orders) {
     return (
       <div>
-        {t('orderListPage:error')} | {error.message}
+        {t('orderListPage:error')} | {error?.message ?? 'Unknown Error'}
       </div>
     );
   }
@@ -109,7 +66,7 @@ export const OrderListPage: FC = () => {
           storageKey='table_orderlist'
           translationKey='orderListPage:table'
           searchValue={searchValue}
-          onRowClick={(order: Order) => handleOrderClick(order.referenceNumber)}
+          onRowClick={handleOrderClick}
           columns={[
             {
               key: 'referenceNumber',
@@ -121,14 +78,16 @@ export const OrderListPage: FC = () => {
             {
               key: 'state',
               transform: (value: Order['state']) => {
-                return <Badge color={getStateColor(value)}>{value}</Badge>;
+                return <Badge color={getOrderStateColor(value)}>{value}</Badge>;
               },
             },
             {
               key: 'transportType',
               transform: (value: Order['transportType']) => {
                 return (
-                  <Badge color={getTransportTypeColor(value)}>{value}</Badge>
+                  <Badge color={getOrderTransportTypeColor(value)}>
+                    {value}
+                  </Badge>
                 );
               },
             },
@@ -170,7 +129,7 @@ export const OrderListPage: FC = () => {
               key: 'totalContainers',
             },
           ]}
-          data={orders ?? []}
+          data={orders.data}
         />
       </div>
     </div>

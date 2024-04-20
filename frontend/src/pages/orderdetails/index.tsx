@@ -1,49 +1,21 @@
 import { type FC } from 'react';
-import { useParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/orderDetails.module.scss';
-import { doApiAction } from '@/lib/api';
-
-interface OrderDetail {
-  referenceNumber: string; // ex: "2646607000",
-  customerReferenceNumber: string; // ex: "SRL/BHJ/EXP/PI-154",
-  state: 'SAILING' | 'PLANNED' | 'CREATED' | 'ARRIVED' | 'CLOSED' | 'LOADED';
-  transportType: 'IMPORT' | 'EXPORT';
-  portOfOriginCode: string; // ex: "INMUN",
-  portOfOriginName: string; // ex: "Mundra, India",
-  portOfDestinationCode: string; // ex: "BEANR",
-  portOfDestinationName: string; // ex: "Antwerp, Belgium",
-  shipName: string; // ex: "EDISON",
-  shipIMO: string; // ex: "9463011",
-  shipMMSI: string; // ex: "235082896",
-  shipType: string; // ex: "Container Ship",
-  ets: string | null; // ex: "07-03-2024 11:58",
-  ats: string | null; // ex: "07-03-2024 23:58",
-  eta: string | null; // ex: "27-03-2024 11:58",
-  ata: string | null; // ex: null
-  preCarriage: string; // ex: "RAIL",
-  estimatedTimeCargoOnQuay: string; // ex: "13-03-2024 17:12",
-  actualTimeCargoLoaded: string; // ex: "17-03-2024 17:12",
-  billOfLadingDownloadLink: string; // ex: "/document/download/2646607000/bl"
-  packingListDownloadLink: string; // ex: "/document/download/2646607000/packing",
-  customsDownloadLink: string; // ex: "/document/download/2646607000/customs",
-  products: Product[];
-}
-
-interface Product {
-  hsCode: string; // ex "73063090",
-  name: string; // ex: "Galvanized steel pipes",
-  quantity: number; // ex: 15,
-  weight: number; // ex: 14328000,
-  containerNumber: string; // ex: "OOCU7396492",
-}
+import { doApiAction, type GenericAPIResponse } from '@/lib/api';
+import type { OrderDetails } from '@/types/api';
 
 export const OrderDetailsPage: FC = () => {
   const { t } = useTranslation();
   const { order_id: orderId } = useParams({
     from: '/app/orders/$order_id',
   });
+  const { customerCode } = useSearch({
+    from: '/app/orders/$order_id',
+  });
+
+  console.log(customerCode);
 
   const {
     data: orderDetail,
@@ -52,9 +24,14 @@ export const OrderDetailsPage: FC = () => {
   } = useQuery({
     queryKey: ['orderDetail', orderId],
     queryFn: () =>
-      doApiAction<OrderDetail>({
+      doApiAction<GenericAPIResponse<OrderDetails>>({
         endpoint: `/orders/${orderId}`,
         method: 'GET',
+        params: customerCode
+          ? {
+              customerCode,
+            }
+          : undefined,
       }),
   });
 
@@ -79,10 +56,10 @@ export const OrderDetailsPage: FC = () => {
     return <div>{t('orderDetailsPage:loading')}</div>;
   }
 
-  if (status === 'error') {
+  if (status === 'error' || !orderDetail) {
     return (
       <div>
-        {t('orderDetailsPage:error')} | {error.message}
+        {t('orderDetailsPage:error')} | {error?.message ?? 'Unknown Error'}
       </div>
     );
   }
@@ -91,7 +68,8 @@ export const OrderDetailsPage: FC = () => {
     <div className={styles.order_details_wrapper}>
       <div className={styles.order_details_header}>
         <h1>
-          {t('orderDetailPage:orderDetails')}: {orderDetail?.referenceNumber}
+          {t('orderDetailPage:orderDetails')}:{' '}
+          {orderDetail.data.referenceNumber}
         </h1>
       </div>
       <div className={styles.order_details_content}>
@@ -170,7 +148,7 @@ export const OrderDetailsPage: FC = () => {
           <section>
             <h2>{t('orderDetailPage:products')}</h2>
             <ul>
-              {orderDetail?.products.map((product: Product, index: number) => (
+              {orderDetail.data.products.map((product, index: number) => (
                 <li key={index}>
                   <strong>{t('orderDetailPage:hsCode')}:</strong>{' '}
                   {product.hsCode} - {product.name} -
@@ -191,7 +169,9 @@ export const OrderDetailsPage: FC = () => {
             <iframe
               title='VesselFinder Map'
               style={{ width: '100%', height: '100%' }}
-              srcDoc={orderDetail ? getIframeContent(orderDetail.shipIMO) : ''}
+              srcDoc={
+                orderDetail ? getIframeContent(orderDetail.data.shipIMO) : ''
+              }
               frameBorder='0'
             />
           </div>

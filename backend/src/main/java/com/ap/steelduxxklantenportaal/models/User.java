@@ -145,4 +145,8 @@ public class User implements UserDetails {
     public UserInfoDto getUserInfo() {
         return new UserInfoDto(id, email, firstName, lastName, role, getPermissions());
     }
+
+    public boolean hasPermission(PermissionEnum permission) {
+        return getPermissions().contains(permission);
+    }
 }

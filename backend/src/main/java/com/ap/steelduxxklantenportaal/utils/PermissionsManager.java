@@ -16,7 +16,9 @@ public class PermissionsManager {
                 List.of(
                         PermissionEnum.ACCESS,
                         PermissionEnum.VIEW_ACCOUNTS,
-                        PermissionEnum.CREATE_SUB_ACCOUNTS
+                        PermissionEnum.CREATE_SUB_ACCOUNTS,
+                        PermissionEnum.EXTERNAL_API_ADMIN,
+                        PermissionEnum.MANAGE_USER_REQUESTS
                 )
         );
 
@@ -24,7 +26,9 @@ public class PermissionsManager {
         rolePermissions.put(RoleEnum.ROLE_ADMIN,
                 List.of(
                         PermissionEnum.ACCESS,
-                        PermissionEnum.VIEW_ACCOUNTS
+                        PermissionEnum.VIEW_ACCOUNTS,
+                        PermissionEnum.EXTERNAL_API_ADMIN,
+                        PermissionEnum.MANAGE_USER_REQUESTS
                 )
         );
 

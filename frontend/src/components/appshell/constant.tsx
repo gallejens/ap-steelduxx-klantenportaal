@@ -13,7 +13,7 @@ export const SIDEBAR_WIDTH: number = 17; // in rem
 
 export const TABS: {
   labelKey: string; // appshell:tabs:xxx in i18n files
-  path: string; // autoprefixed with /app/
+  path: `/app/${string}`;
   icon: FC<TablerIconsProps>;
   color: RGB;
   requiredPermission?: Auth.Permission;
@@ -35,10 +35,11 @@ export const TABS: {
     path: '/app/requests',
     icon: IconList,
     color: { r: 219, g: 38, b: 183 },
+    requiredPermission: 'MANAGE_USER_REQUESTS',
   },
   {
     labelKey: 'accounts',
-    path: 'accounts',
+    path: '/app/accounts',
     icon: IconUsers,
     color: { r: 150, g: 255, b: 0 },
     requiredPermission: 'VIEW_ACCOUNTS',

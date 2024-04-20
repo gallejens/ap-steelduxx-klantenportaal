@@ -12,17 +12,7 @@ import { STATUSES } from './constants';
 import { notifications } from '@/components/notifications';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
-
-type UserRequest = {
-  followId: number;
-  companyName: string;
-  createdOn: number;
-  vatNr: string;
-  firstName: string;
-  lastName: string;
-  denyMessage: string;
-  status: 'PENDING' | 'APPROVED' | 'DENIED';
-};
+import type { UserRequest } from '@/types/api';
 
 export const UserRequestListPage: FC = () => {
   const { t } = useTranslation();
@@ -36,7 +26,7 @@ export const UserRequestListPage: FC = () => {
     queryKey: ['userRequestListValues'],
     queryFn: () =>
       doApiAction<UserRequest[]>({
-        endpoint: '/user_requests',
+        endpoint: '/user-requests/all',
         method: 'GET',
       }),
   });
@@ -53,7 +43,7 @@ export const UserRequestListPage: FC = () => {
 
   const deleteUserRequest = async (userRequest: UserRequest) => {
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
-      endpoint: '/user_requests/delete',
+      endpoint: '/user-requests/delete',
       method: 'DELETE',
       body: {
         id: userRequest.followId,

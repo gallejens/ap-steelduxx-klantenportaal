@@ -1,0 +1,15 @@
+meta {
+  name: admin-company-codes
+  type: http
+  seq: 4
+}
+
+get {
+  url: https://sw11-1.devops-ap.be/admin/company-codes/all
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{auth-key}}
+}

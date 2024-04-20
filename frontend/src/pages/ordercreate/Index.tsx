@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Select, TextInput } from '@mantine/core';
+import { Button, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';

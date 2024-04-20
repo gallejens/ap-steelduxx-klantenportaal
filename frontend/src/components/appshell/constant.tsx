@@ -38,6 +38,13 @@ export const TABS: {
     requiredPermission: 'MANAGE_USER_REQUESTS',
   },
   {
+    labelKey: 'order requests',
+    path: '/app/order-requests',
+    icon: IconList,
+    color: { r: 219, g: 38, b: 183 },
+    requiredPermission: 'MANAGE_ORDER_REQUESTS',
+  },
+  {
     labelKey: 'accounts',
     path: '/app/accounts',
     icon: IconUsers,

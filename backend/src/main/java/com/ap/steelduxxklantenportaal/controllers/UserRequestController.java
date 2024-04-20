@@ -16,6 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("user-requests")
@@ -50,7 +52,7 @@ public class UserRequestController {
     @PostMapping("/{id}/approve")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
     public ResponseEntity<Object> approveRequest(@PathVariable Number id,
-                                                 @RequestBody CompanyApproveDto companyApproveDto)
+            @RequestBody CompanyApproveDto companyApproveDto)
             throws MessagingException, UserAlreadyExistsException {
         return userRequestValueService.approveUserRequest(id, companyApproveDto);
     }
@@ -58,7 +60,7 @@ public class UserRequestController {
     @PostMapping("/{id}/deny")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
     public ResponseEntity<Object> denyRequest(@PathVariable Number id,
-                                              @RequestBody UserRequestDenyDto userRequestDenyDto)
+            @RequestBody UserRequestDenyDto userRequestDenyDto)
             throws MessagingException {
         return userRequestValueService.denyUserRequest(id, userRequestDenyDto);
     }

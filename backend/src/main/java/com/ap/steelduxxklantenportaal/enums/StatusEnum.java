@@ -3,7 +3,8 @@ package com.ap.steelduxxklantenportaal.enums;
 public enum StatusEnum {
     PENDING("Pending"),
     APPROVED("Approved"),
-    DENIED("Denied");
+    DENIED("Denied"),
+    DEACTIVATED("Deactivated");
 
     private final String value;
 

@@ -1,4 +1,4 @@
-package com.ap.steelduxxklantenportaal;
+package com.ap.steelduxxklantenportaal.notification;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -71,7 +71,6 @@ public class NotificationControllerTest {
                 .andExpect(jsonPath("$.message", is("Create Test")));
     }
 
-
     @Test
     public void testGetNewNotificationsByUserId() throws Exception {
         Notification notification = new Notification();
@@ -86,7 +85,6 @@ public class NotificationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].message", is("New User Notification")));
     }
-
 
     @Test
     public void testMarkNotificationAsRead() throws Exception {

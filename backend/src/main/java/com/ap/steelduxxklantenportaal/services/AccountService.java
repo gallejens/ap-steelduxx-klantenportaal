@@ -26,7 +26,8 @@ public class AccountService {
     private final CompanyRepository companyRepository;
     private final UserCompanyRepository userCompanyRepository;
 
-    public AccountService(AccountRepository accountRepository, AuthService authService, CompanyRepository companyRepository, UserCompanyRepository userCompanyRepository) {
+    public AccountService(AccountRepository accountRepository, AuthService authService,
+            CompanyRepository companyRepository, UserCompanyRepository userCompanyRepository) {
         this.accountRepository = accountRepository;
         this.authService = authService;
         this.companyRepository = companyRepository;
@@ -35,7 +36,8 @@ public class AccountService {
 
     public List<AccountDto> getAllAccounts() {
         var user = AuthService.getCurrentUser();
-        if (user == null) return null;
+        if (user == null)
+            return null;
 
         if (user.hasPermission(PermissionEnum.ADMIN)) {
             return accountRepository.findAll().stream().map(Account::toDto).toList();
@@ -63,17 +65,14 @@ public class AccountService {
                     UUID.randomUUID().toString(),
                     createSubaccountDto.firstName(),
                     createSubaccountDto.lastName(),
-                    isAdmin ? RoleEnum.ROLE_ADMIN : RoleEnum.ROLE_USER
-            );
+                    isAdmin ? RoleEnum.ROLE_ADMIN : RoleEnum.ROLE_USER);
 
             if (!isAdmin) {
                 var company = companyRepository.findByUserId(user.getId());
                 if (company.isPresent()) {
                     userCompanyRepository.save(new UserCompany(
-                                    newUser.getId(),
-                                    company.get().getId()
-                            )
-                    );
+                            newUser.getId(),
+                            company.get().getId()));
                 }
             }
 

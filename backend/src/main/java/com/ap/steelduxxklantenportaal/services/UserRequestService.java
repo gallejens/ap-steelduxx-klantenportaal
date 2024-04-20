@@ -15,35 +15,42 @@ import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRequestRepository;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.mail.MessagingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class UserRequestService {
-    @Autowired
-    private UserRequestRepository userRequestRepository;
+    private final UserRequestRepository userRequestRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
-    @Autowired
-    private CompanyRepository companyRepository;
+    private final CompanyRepository companyRepository;
 
-    @Autowired
-    private UserCompanyRepository userCompanyRepository;
+    private final UserCompanyRepository userCompanyRepository;
 
-    // Assuming you have an EmailService bean defined elsewhere
-    @Autowired
-    private EmailService emailService;
+    private final EmailService emailService;
+
+    public UserRequestService(UserRequestRepository userRequestRepository,
+            UserRepository userRepository,
+            AuthService authService,
+            CompanyRepository companyRepository,
+            UserCompanyRepository userCompanyRepository,
+            EmailService emailService) {
+        this.userRequestRepository = userRequestRepository;
+        this.userRepository = userRepository;
+        this.authService = authService;
+        this.companyRepository = companyRepository;
+        this.userCompanyRepository = userCompanyRepository;
+        this.emailService = emailService;
+    }
 
     public UserRequestDto convertUserRequestToDTO(UserRequest userRequest) {
         return new UserRequestDto(
@@ -80,7 +87,6 @@ public class UserRequestService {
     }
 
     private void addRequest(UserRequestDto userRequestDTO) throws MessagingException {
-        // Uncomment the following line if you have an EmailService bean defined
         emailService.sendRegistrationConfirmation(userRequestDTO);
 
         userRequestRepository.save(new UserRequest(
@@ -104,13 +110,15 @@ public class UserRequestService {
 
     public ResponseEntity<Object> processUserRequest(UserRequestDto userRequestDto)
             throws MessagingException {
-        boolean requestExists = userRequestRepository
-                .findByVatNrOrEmail(userRequestDto.vatNr(), userRequestDto.email()).isPresent();
 
-        if (requestExists) {
+        Optional<UserRequest> pendingOrApprovedRequests = userRequestRepository.findByStatusInAndVatNrAndEmail(
+                List.of(StatusEnum.PENDING, StatusEnum.APPROVED),
+                userRequestDto.vatNr(),
+                userRequestDto.email());
+
+        if (pendingOrApprovedRequests.isPresent()) {
             return ResponseHandler.generate("userRequestForm:userRequestAlreadyExists", HttpStatus.OK);
         }
-
 
         addRequest(userRequestDto);
         return ResponseHandler.generate("userRequestForm:userRequestRequested", HttpStatus.CREATED);
@@ -169,10 +177,8 @@ public class UserRequestService {
             throws MessagingException {
         UserRequest userRequest = userRequestRepository.findById(id);
 
-        // Edit denyStatus
         userRequest.setStatus(StatusEnum.DENIED);
 
-        // Edit denyMessage
         userRequest.setDenyMessage(userRequestDenyDto.denyMessage());
 
         userRequestRepository.save(userRequest);

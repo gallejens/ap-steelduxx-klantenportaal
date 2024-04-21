@@ -5,7 +5,9 @@ import { Table } from '@/components/table';
 import { doApiAction } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { STATUSES } from './constants';
+import styles from './styles/orderRequestList.module.scss';
 import type { OrderRequest } from '@/types/api';
+import { IconSearch } from '@tabler/icons-react';
 
 export const OrderRequestListPage: FC = () => {
   const { t } = useTranslation();
@@ -50,14 +52,19 @@ export const OrderRequestListPage: FC = () => {
   }, {});
 
   return (
-    <div>
-      <TextInput
-        value={searchValue}
-        onChange={event => setSearchValue(event.target.value)}
-      />
+    <div className={styles.orderrequest_list_page}>
+      <div className={styles.header}>
+        <TextInput
+          className={styles.search_bar}
+          leftSection={<IconSearch />}
+          value={searchValue}
+          onChange={e => setSearchValue(e.target.value)}
+        />
+      </div>
       <Tabs
         defaultValue={STATUSES[0]}
         variant='outline'
+        className={styles.body}
       >
         <Tabs.List>
           {STATUSES.map(status => (
@@ -74,6 +81,7 @@ export const OrderRequestListPage: FC = () => {
           <Tabs.Panel
             key={status}
             value={status}
+            className={styles.orderrequest_table}
           >
             <Table
               searchValue={searchValue}

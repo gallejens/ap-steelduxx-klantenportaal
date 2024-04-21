@@ -69,7 +69,7 @@ export const OrderDetailsPage: FC = () => {
       <div className={styles.order_details_header}>
         <h1>
           {t('orderDetailPage:orderDetails')}:{' '}
-          {orderDetail.data.referenceNumber}
+          {orderDetail?.data.referenceNumber}
         </h1>
       </div>
       <div className={styles.order_details_content}>

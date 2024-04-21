@@ -4,6 +4,7 @@ import com.ap.steelduxxklantenportaal.enums.ContainerSizeEnum;
 import com.ap.steelduxxklantenportaal.enums.ContainerTypeEnum;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,18 +31,4 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "order_request_id", nullable = false)
     private OrderRequest orderRequest;
-
-    public Product(String hsCode, String name, String quantity, String weight, String containerNumber,
-            ContainerSizeEnum containerSize,
-            ContainerTypeEnum containerType, OrderRequest orderRequest) {
-        this.hsCode = hsCode;
-        this.name = name;
-        this.quantity = quantity;
-        this.weight = weight;
-        this.containerNumber = containerNumber;
-        this.containerSize = containerSize;
-        this.containerType = containerType;
-        this.orderRequest = orderRequest;
-    }
-
 }

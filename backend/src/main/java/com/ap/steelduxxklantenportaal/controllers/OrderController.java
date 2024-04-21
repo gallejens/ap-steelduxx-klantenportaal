@@ -29,13 +29,14 @@ public class OrderController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Object> getOrderDetail(@PathVariable Long id, @RequestParam(required = false) String customerCode) {
+    public ResponseEntity<Object> getOrderDetail(@PathVariable Long id,
+            @RequestParam(required = false) String customerCode) {
         var orderDetails = ordersService.getOrderDetails(id, customerCode);
         return ResponseHandler.generate("", HttpStatus.OK, orderDetails);
     }
 
     @PostMapping("/new")
-    @PreAuthorize("hasAuthority('ACCESS')")
+    @PreAuthorize("hasAuthority('CREATE_NEW_ORDERS')")
     public ResponseEntity<Object> createOrderRequest(@RequestBody OrderRequestDto orderRequestDto) {
         return ordersService.createNewOrderRequest(orderRequestDto);
     }

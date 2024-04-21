@@ -30,8 +30,8 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
       quantity: '',
       weight: '',
       containerNumber: '',
-      containerSize: null as ProductSize,
-      containerType: null as ProductType,
+      containerSize: '' as ProductSize,
+      containerType: '' as ProductType,
     },
     validate: {
       hsCode: value => {

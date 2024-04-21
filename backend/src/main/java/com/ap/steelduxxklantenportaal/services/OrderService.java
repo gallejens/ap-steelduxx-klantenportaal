@@ -70,7 +70,7 @@ public class OrderService {
     }
 
     public void addOrderRequest(OrderRequestDto orderRequestDto) {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = AuthService.getCurrentUser();
         var company = companyRepository.findByUserId(user.getId()).orElseThrow();
         var companyCode = company.getReferenceCode();
 

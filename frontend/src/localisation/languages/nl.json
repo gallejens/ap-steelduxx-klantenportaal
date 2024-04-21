@@ -121,7 +121,8 @@
       "eta": "ETA",
       "ata": "ATA",
       "totalWeight": "Totaal Gewicht",
-      "totalContainers": "Aantal Containers"
+      "totalContainers": "Aantal Containers",
+      "containerTypes": "Container Types"
     },
     "loading": "Aan het laden...",
     "error": "Kan orders niet laten"
@@ -143,14 +144,19 @@
     "estimatedTimeCargoOnQuay": "Geschatte tijd van lading op kade",
     "actualTimeCargoLoaded": "Werkelijke tijd van lading op kade",
     "shipInformation": "Schip Informatie",
-    "name": "Naam",
+    "shipName": "Naam",
     "imo": "IMO",
     "mmsi": "MMSI",
     "type": "Type",
     "products": "Producten",
     "hsCode": "HsCode",
+    "name": "Naam",
     "quantity": "Aantal",
-    "container": "Container"
+    "weight": "Gewicht",
+    "container": "Container",
+    "containerNumber": "Container Nummer",
+    "containerSize": "Container Grootte",
+    "containerType": "Container Type"
   },
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",

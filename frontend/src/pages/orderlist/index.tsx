@@ -128,6 +128,14 @@ export const OrderListPage: FC = () => {
             {
               key: 'totalContainers',
             },
+            {
+              key: 'containerTypes',
+              transform: (containerTypes: string[] | undefined) => {
+                return containerTypes && containerTypes.length > 0
+                  ? containerTypes.join(' / ')
+                  : 'N/A';
+              },
+            },
           ]}
           data={orders.data}
         />

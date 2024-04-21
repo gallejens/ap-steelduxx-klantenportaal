@@ -121,7 +121,8 @@
       "eta": "ETA",
       "ata": "ATA",
       "totalWeight": "Total Weight",
-      "totalContainers": "Total Containers"
+      "totalContainers": "Total Containers",
+      "containerTypes": "Container Types"
     },
     "loading": "Loading...",
     "error": "Can't load orders"
@@ -143,14 +144,19 @@
     "estimatedTimeCargoOnQuay": "Estimated Time Cargo On Quay",
     "actualTimeCargoLoaded": "Actual Time Cargo Loaded",
     "shipInformation": "Ship Information",
-    "name": "Name",
+    "shipName": "Name",
     "imo": "IMO",
     "mmsi": "MMSI",
     "type": "Type",
     "products": "Products",
     "hsCode": "HsCode",
+    "name": "Name",
     "quantity": "Quantity",
-    "container": "Container"
+    "weight": "Weight",
+    "container": "Container",
+    "containerNumber": "Container Number",
+    "containerSize": "Container Size",
+    "containerType": "Container Type"
   },
   "userRequestReviewPage": {
     "backButton": "Go Back",

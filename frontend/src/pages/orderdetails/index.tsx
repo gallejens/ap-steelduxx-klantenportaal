@@ -69,7 +69,7 @@ export const OrderDetailsPage: FC = () => {
       <div className={styles.order_details_header}>
         <h1>
           {t('orderDetailPage:orderDetails')}:{' '}
-          {orderDetail.data.referenceNumber}
+          {orderDetail?.data.referenceNumber}
         </h1>
       </div>
       <div className={styles.order_details_content}>
@@ -78,50 +78,55 @@ export const OrderDetailsPage: FC = () => {
             <h2>{t('orderDetailPage:generalInfo')}</h2>
             <p>
               <strong>{t('orderDetailPage:customerReference')}:</strong>{' '}
-              {orderDetail?.customerReferenceNumber}
+              {orderDetail?.data.customerReferenceNumber}
             </p>
             <p>
               <strong>{t('orderDetailPage:state')}:</strong>{' '}
-              {orderDetail?.state}
+              {orderDetail?.data.state}
             </p>
             <p>
               <strong>{t('orderDetailPage:transportType')}:</strong>{' '}
-              {orderDetail?.transportType}
+              {orderDetail?.data.transportType}
             </p>
           </section>
           <section>
             <h2>{t('orderDetailPage:portInformation')}</h2>
             <p>
               <strong>{t('orderDetailPage:origin')}:</strong>{' '}
-              {orderDetail?.portOfOriginName} - {orderDetail?.portOfOriginCode}
+              {orderDetail?.data.portOfOriginName} -{' '}
+              {orderDetail?.data.portOfOriginCode}
             </p>
             <p>
               <strong>{t('orderDetailPage:destination')}:</strong>{' '}
-              {orderDetail?.portOfDestinationName} -{' '}
-              {orderDetail?.portOfDestinationCode}
+              {orderDetail?.data.portOfDestinationName} -{' '}
+              {orderDetail?.data.portOfDestinationCode}
             </p>
           </section>
           <section>
             <h2>{t('orderDetailPage:timeInformation')}</h2>
             <p>
-              <strong>{t('orderDetailPage:ets')}:</strong> {orderDetail?.ets}
+              <strong>{t('orderDetailPage:ets')}:</strong>{' '}
+              {orderDetail?.data.ets}
             </p>
             <p>
-              <strong>{t('orderDetailPage:ats')}:</strong> {orderDetail?.ats}
+              <strong>{t('orderDetailPage:ats')}:</strong>{' '}
+              {orderDetail?.data.ats}
             </p>
             <p>
-              <strong>{t('orderDetailPage:eta')}:</strong> {orderDetail?.eta}
+              <strong>{t('orderDetailPage:eta')}:</strong>{' '}
+              {orderDetail?.data.eta}
             </p>
             <p>
-              <strong>{t('orderDetailPage:ata')}:</strong> {orderDetail?.ata}
+              <strong>{t('orderDetailPage:ata')}:</strong>{' '}
+              {orderDetail?.data.ata}
             </p>
             <p>
               <strong>{t('orderDetailPage:estimatedTimeCargoOnQuay')}:</strong>{' '}
-              {orderDetail?.estimatedTimeCargoOnQuay}
+              {orderDetail?.data.estimatedTimeCargoOnQuay}
             </p>
             <p>
               <strong>{t('orderDetailPage:actualTimeCargoLoaded')}:</strong>{' '}
-              {orderDetail?.actualTimeCargoLoaded}
+              {orderDetail?.data.actualTimeCargoLoaded}
             </p>
           </section>
         </div>
@@ -129,41 +134,62 @@ export const OrderDetailsPage: FC = () => {
           <section>
             <h2>{t('orderDetailPage:shipInformation')}</h2>
             <p>
-              <strong>{t('orderDetailPage:name')}:</strong>{' '}
-              {orderDetail?.shipName}
+              <strong>{t('orderDetailPage:shipName')}:</strong>{' '}
+              {orderDetail?.data.shipName}
             </p>
             <p>
               <strong>{t('orderDetailPage:imo')}:</strong>{' '}
-              {orderDetail?.shipIMO}
+              {orderDetail?.data.shipIMO}
             </p>
             <p>
               <strong>{t('orderDetailPage:mmsi')}:</strong>{' '}
-              {orderDetail?.shipMMSI}
+              {orderDetail?.data.shipMMSI}
             </p>
             <p>
               <strong>{t('orderDetailPage:type')}:</strong>{' '}
-              {orderDetail?.shipType}
+              {orderDetail?.data.shipType}
             </p>
           </section>
           <section>
             <h2>{t('orderDetailPage:products')}</h2>
-            <ul>
-              {orderDetail.data.products.map((product, index: number) => (
-                <li key={index}>
-                  <strong>{t('orderDetailPage:hsCode')}:</strong>{' '}
-                  {product.hsCode} - {product.name} -
-                  <strong>{t('orderDetailPage:quantity')}:</strong>{' '}
-                  {product.quantity}, {formatWeight(product.weight)} kg
-                  {product.containerNumber != null ? (
-                    <>
-                      {' '}
-                      - <strong>{t('orderDetailPage:container')}:</strong>{' '}
-                      {product.containerNumber}
-                    </>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
+            <table className={styles.product_table}>
+              <thead>
+                <tr>
+                  <th>{t('orderDetailPage:hsCode')}</th>
+                  <th>{t('orderDetailPage:name')}</th>
+                  <th>{t('orderDetailPage:quantity')}</th>
+                  <th>{t('orderDetailPage:weight')}</th>
+                  {orderDetail?.data.products.some(
+                    p => p.containerNumber != null
+                  ) && <th>{t('orderDetailPage:container')}</th>}
+                  {orderDetail?.data.products.some(
+                    p => p.containerSize != null
+                  ) && <th>{t('orderDetailPage:containerSize')}</th>}
+                  {orderDetail?.data.products.some(
+                    p => p.containerType != null
+                  ) && <th>{t('orderDetailPage:containerType')}</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {orderDetail?.data.products.map((product, index: number) => (
+                  <tr key={index}>
+                    <td>{product.hsCode}</td>
+                    <td>{product.name}</td>
+                    <td>{product.quantity}</td>
+                    <td>{formatWeight(product.weight)} kg</td>
+                    {product.containerNumber != null && (
+                      <td>{product.containerNumber}</td>
+                    )}
+                    {product.containerSize != null && (
+                      <td>{product.containerSize}</td>
+                    )}
+                    {product.containerType != null && (
+                      <td>{product.containerType}</td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </section>
           <div style={{ width: '100%', height: '300px', border: 'none' }}>
             <iframe

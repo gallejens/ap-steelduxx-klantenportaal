@@ -14,10 +14,7 @@ export namespace NTable {
     emptyCellPlaceholder?: string; // placeholder to place in empty cells (default: '-')
   };
 
-  export type Row<T extends string> = Record<
-    T,
-    string | number | JSX.Element | null | undefined
-  >;
+  export type Row<T extends string> = Record<T, ReactNode>;
 
   export type Props<T extends string> = {
     columns: Column<T>[];

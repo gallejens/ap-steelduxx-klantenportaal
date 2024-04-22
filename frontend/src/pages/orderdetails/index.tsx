@@ -72,28 +72,24 @@ export const OrderDetailsPage: FC = () => {
       <div className={styles.topRow}>
         <div className={styles.generalInfo}>
           <section>
-            <h2>{t('orderDetailPage:generalInfo')}</h2>
-            <p>
-              <strong>{t('orderDetailPage:customerReference')}:</strong>{' '}
+            <h2 className={styles.title}>{t('orderDetailPage:generalInfo')}</h2>
+            <p className={styles.subTitle}>
+              {t('orderDetailPage:customerReference')}
             </p>
             <p>{orderDetail?.data.customerReferenceNumber}</p>
-            <p>
-              <strong>{t('orderDetailPage:state')}:</strong>{' '}
-            </p>
+            <p className={styles.subTitle}>{t('orderDetailPage:state')}</p>
             <p>{orderDetail?.data.state}</p>
-            <p>
-              <strong>{t('orderDetailPage:transportType')}:</strong>{' '}
+            <p className={styles.subTitle}>
+              {t('orderDetailPage:transportType')}
             </p>
             <p>{orderDetail?.data.transportType}</p>
-            <p>
-              <strong>{t('orderDetailPage:origin')}:</strong>{' '}
-            </p>
+            <p className={styles.subTitle}>{t('orderDetailPage:origin')}</p>
             <p>
               {orderDetail?.data.portOfOriginName} -{' '}
               {orderDetail?.data.portOfOriginCode}
             </p>
-            <p>
-              <strong>{t('orderDetailPage:destination')}:</strong>{' '}
+            <p className={styles.subTitle}>
+              {t('orderDetailPage:destination')}
             </p>
             <p>
               {orderDetail?.data.portOfDestinationName} -{' '}
@@ -103,56 +99,44 @@ export const OrderDetailsPage: FC = () => {
         </div>
         <div className={styles.timeInfo}>
           <section>
-            <h2>{t('orderDetailPage:timeInformation')}</h2>
-            <p>
-              <strong>{t('orderDetailPage:ets')}:</strong>{' '}
-            </p>
+            <h2 className={styles.title}>
+              {t('orderDetailPage:timeInformation')}
+            </h2>
+            <p className={styles.subTitle}>{t('orderDetailPage:ets')}</p>
             <p>{orderDetail?.data.ets}</p>
-            <p>
-              <strong>{t('orderDetailPage:ats')}:</strong>{' '}
-            </p>
+            <p className={styles.subTitle}>{t('orderDetailPage:ats')}</p>
             <p>{orderDetail?.data.ats}</p>
-            <p>
-              <strong>{t('orderDetailPage:eta')}:</strong>{' '}
-            </p>
+            <p className={styles.subTitle}>{t('orderDetailPage:eta')}</p>
             <p>{orderDetail?.data.eta}</p>
-            <p>
-              <strong>{t('orderDetailPage:ata')}:</strong>{' '}
-            </p>
+            <p className={styles.subTitle}>{t('orderDetailPage:ata')}</p>
             <p>{orderDetail?.data.ata}</p>
-            <p>
-              <strong>{t('orderDetailPage:estimatedTimeCargoOnQuay')}:</strong>{' '}
+            <p className={styles.subTitle}>
+              {t('orderDetailPage:estimatedTimeCargoOnQuay')}
             </p>
             <p>{orderDetail?.data.estimatedTimeCargoOnQuay}</p>
-            <p>
-              <strong>{t('orderDetailPage:actualTimeCargoLoaded')}:</strong>{' '}
+            <p className={styles.subTitle}>
+              {t('orderDetailPage:actualTimeCargoLoaded')}
             </p>
             <p>{orderDetail?.data.actualTimeCargoLoaded}</p>
           </section>
         </div>
         <div className={styles.shipInfo}>
           <section>
-            <h2>{t('orderDetailPage:shipInformation')}</h2>
-            <p>
-              <strong>{t('orderDetailPage:shipName')}:</strong>{' '}
-            </p>
+            <h2 className={styles.title}>
+              {t('orderDetailPage:shipInformation')}
+            </h2>
+            <p className={styles.subTitle}>{t('orderDetailPage:shipName')}</p>
             <p>{orderDetail?.data.shipName}</p>
-            <p>
-              <strong>{t('orderDetailPage:imo')}:</strong>{' '}
-            </p>
+            <p className={styles.subTitle}>{t('orderDetailPage:imo')}</p>
             <p>{orderDetail?.data.shipIMO}</p>
-            <p>
-              <strong>{t('orderDetailPage:mmsi')}:</strong>{' '}
-            </p>
+            <p className={styles.subTitle}>{t('orderDetailPage:mmsi')}</p>
             <p>{orderDetail?.data.shipMMSI}</p>
-            <p>
-              <strong>{t('orderDetailPage:type')}:</strong>{' '}
-            </p>
+            <p className={styles.subTitle}>{t('orderDetailPage:type')}</p>
             <p>{orderDetail?.data.shipType}</p>
           </section>
         </div>
         <div className={styles.mapContainer}>
-          <h2>Ship Location</h2>
+          <h2 className={styles.title}>{t('orderDetailPage:shipLocation')}</h2>
           <iframe
             title='VesselFinder Map'
             style={{ width: '100%', height: '300px' }}

@@ -145,6 +145,7 @@
     "actualTimeCargoLoaded": "Werkelijke tijd van lading op kade",
     "shipInformation": "Schip Informatie",
     "shipName": "Naam",
+    "shipLocation": "Schip Locatie",
     "imo": "IMO",
     "mmsi": "MMSI",
     "type": "Type",

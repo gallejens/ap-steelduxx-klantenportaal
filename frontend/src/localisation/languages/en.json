@@ -145,6 +145,7 @@
     "actualTimeCargoLoaded": "Actual Time Cargo Loaded",
     "shipInformation": "Ship Information",
     "shipName": "Name",
+    "shipLocation": "Ship Location",
     "imo": "IMO",
     "mmsi": "MMSI",
     "type": "Type",

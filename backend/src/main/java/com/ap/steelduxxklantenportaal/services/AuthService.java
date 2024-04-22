@@ -170,7 +170,8 @@ public class AuthService {
             return;
         }
 
-        // Generate choose-password token, save it and email it as search params in link to user
+        // Generate choose-password token, save it and email it as search params in link
+        // to user
         var choosePasswordToken = new ChoosePasswordToken();
         String uuid = UUID.randomUUID().toString();
         choosePasswordToken.setToken(uuid);

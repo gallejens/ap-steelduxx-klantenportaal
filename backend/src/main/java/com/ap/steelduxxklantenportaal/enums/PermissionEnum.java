@@ -5,5 +5,6 @@ public enum PermissionEnum {
     ADMIN, // Can use for external api admin func, check new subaccount target, ...
     VIEW_ACCOUNTS, // Can access accounts overview page
     CREATE_SUB_ACCOUNTS, // Can create subaccounts
+    CREATE_NEW_ORDERS, // Can create orders
     MANAGE_USER_REQUESTS, // Access & manage user requests
 }

@@ -5,25 +5,9 @@ import { NumberInput, TextInput } from '@mantine/core';
 import { useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { doApiAction } from '@/lib/api';
+import type { UserRequest } from '@/types/userrequest';
 
-type userRequestValue = {
-  companyName: string;
-  country: string;
-  email: string;
-  phoneNr: string;
-  vatNr: string;
-  postalCode: string;
-  district: string;
-  street: string;
-  streetNr: string;
-  boxNr: string;
-  extraInfo: string;
-  firstName: string;
-  lastName: string;
-  status: string;
-};
-
-export const UserRequestReviewForm: FC<userRequestValue> = () => {
+export const UserRequestReviewForm: FC<UserRequest.UserRequestValue> = () => {
   const { t } = useTranslation();
 
   const { request_id: requestId } = useParams({
@@ -34,7 +18,7 @@ export const UserRequestReviewForm: FC<userRequestValue> = () => {
     refetchOnWindowFocus: false,
     queryKey: ['userRequestValue'],
     queryFn: () =>
-      doApiAction<userRequestValue>({
+      doApiAction<UserRequest.UserRequestValue>({
         endpoint: `/user-requests/${requestId}`,
         method: 'GET',
       }),

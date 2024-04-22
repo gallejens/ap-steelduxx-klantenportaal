@@ -9,6 +9,7 @@ export namespace Auth {
     | 'ACCESS'
     | 'ADMIN'
     | 'CREATE_SUB_ACCOUNTS'
+    | 'CREATE_NEW_ORDERS'
     | 'VIEW_ACCOUNTS'
     | 'MANAGE_USER_REQUESTS';
 

@@ -1,7 +1,5 @@
 package com.ap.steelduxxklantenportaal.models;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;

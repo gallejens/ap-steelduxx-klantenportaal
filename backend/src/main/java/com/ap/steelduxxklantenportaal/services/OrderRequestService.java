@@ -5,6 +5,7 @@ import com.ap.steelduxxklantenportaal.dtos.ProductDto;
 import com.ap.steelduxxklantenportaal.models.OrderRequest;
 import com.ap.steelduxxklantenportaal.models.Product;
 import com.ap.steelduxxklantenportaal.repositories.OrderRequestRepository;
+import com.ap.steelduxxklantenportaal.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +13,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderRequestService  {
-    private OrderRequestRepository orderRequestRepository;
+    private  OrderRequestRepository orderRequestRepository;
+    private ProductRepository productRepository;
 
-    public OrderRequestService(OrderRequestRepository orderRequestRepository) {
+    public OrderRequestService(OrderRequestRepository orderRequestRepository, ProductRepository productRepository) {
         this.orderRequestRepository = orderRequestRepository;
+        this.productRepository = productRepository;
     }
 
     public ProductDto convertProductsToDTO(Product product){
@@ -31,14 +34,15 @@ public class OrderRequestService  {
     }
 
     public OrderRequestDto convertOrderRequestToDTO(OrderRequest orderRequest){
-        List<ProductDto> productDtos = orderRequest.getProducts().stream()
-                .map(this::convertProductsToDTO)
-                .collect(Collectors.toList());
+        List<Product> productDtos = productRepository.findAllByOrderRequestId(orderRequest.getId());
+        System.out.println(productDtos);
         return new OrderRequestDto(
                 orderRequest.getTransportType(),
                 orderRequest.getPortOfOriginCode(),
                 orderRequest.getPortOfDestinationCode(),
-                productDtos
+                productDtos.stream()
+                .map(this::convertProductsToDTO)
+                .collect(Collectors.toList())
         );
     }
 

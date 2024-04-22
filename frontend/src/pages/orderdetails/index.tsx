@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/orderDetails.module.scss';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
-import type { OrderDetails } from '@/types/api';
+import type { OrderDetails, OrderState, OrderTransportType } from '@/types/api';
 
 export const OrderDetailsPage: FC = () => {
   const { t } = useTranslation();
@@ -34,6 +34,36 @@ export const OrderDetailsPage: FC = () => {
           : undefined,
       }),
   });
+
+  function getStateClass(state: OrderState): string {
+    switch (state) {
+      case 'SAILING':
+        return styles.sailing;
+      case 'PLANNED':
+        return styles.planned;
+      case 'CREATED':
+        return styles.created;
+      case 'ARRIVED':
+        return styles.arrived;
+      case 'CLOSED':
+        return styles.closed;
+      case 'LOADED':
+        return styles.loaded;
+      default:
+        return '';
+    }
+  }
+
+  function getTransportTypeClass(transportType: OrderTransportType): string {
+    switch (transportType) {
+      case 'IMPORT':
+        return styles.import;
+      case 'EXPORT':
+        return styles.export;
+      default:
+        return '';
+    }
+  }
 
   function formatWeight(weight: number): string {
     return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -78,11 +108,17 @@ export const OrderDetailsPage: FC = () => {
             </p>
             <p>{orderDetail?.data.customerReferenceNumber || '?'}</p>
             <p className={styles.subTitle}>{t('orderDetailPage:state')}</p>
-            <p>{orderDetail?.data.state || '?'}</p>
+            <p className={getStateClass(orderDetail?.data.state)}>
+              {orderDetail?.data.state || '?'}
+            </p>
             <p className={styles.subTitle}>
               {t('orderDetailPage:transportType')}
             </p>
-            <p>{orderDetail?.data.transportType}</p>
+            <p
+              className={getTransportTypeClass(orderDetail?.data.transportType)}
+            >
+              {orderDetail?.data.transportType}
+            </p>
             <p className={styles.subTitle}>{t('orderDetailPage:origin')}</p>
             <p>
               {orderDetail?.data.portOfOriginName || '?'} -{' '}

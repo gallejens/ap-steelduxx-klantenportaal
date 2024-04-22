@@ -17,7 +17,7 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
   p {
     color: black;
-    font-weight: 600;
+    font-weight: 500;
   }
   .title {
     font-size: large;
@@ -122,5 +122,31 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       border-radius: $border-radius;
       box-shadow: $box-shadow;
     }
+  }
+
+  .sailing {
+    color: orange;
+  }
+  .planned {
+    color: blue;
+  }
+  .created {
+    color: black;
+  }
+  .arrived {
+    color: green;
+  }
+  .closed {
+    color: red;
+  }
+  .loaded {
+    color: purple;
+  }
+
+  .import {
+    color: blue;
+  }
+  .export {
+    color: red;
   }
 }

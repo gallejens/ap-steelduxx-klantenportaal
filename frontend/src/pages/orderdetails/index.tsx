@@ -176,7 +176,7 @@ export const OrderDetailsPage: FC = () => {
                     <td>{product.hsCode}</td>
                     <td>{product.name}</td>
                     <td>{product.quantity}</td>
-                    <td>{formatWeight(product.weight)} kg</td>
+                    <td>{formatWeight(Number(product.weight))} kg</td>
                     {product.containerNumber != null && (
                       <td>{product.containerNumber}</td>
                     )}

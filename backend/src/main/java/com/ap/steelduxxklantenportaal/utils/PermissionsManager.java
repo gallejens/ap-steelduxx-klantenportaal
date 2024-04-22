@@ -19,15 +19,20 @@ public class PermissionsManager {
                                                 PermissionEnum.CREATE_SUB_ACCOUNTS,
                                                 PermissionEnum.CREATE_NEW_ORDERS,
                                                 PermissionEnum.ADMIN,
+                                                PermissionEnum.MANAGE_ORDER_REQUESTS,
                                                 PermissionEnum.MANAGE_USER_REQUESTS));
 
-                // Admin permissions
-                rolePermissions.put(RoleEnum.ROLE_ADMIN,
-                                List.of(
-                                                PermissionEnum.ACCESS,
-                                                PermissionEnum.VIEW_ACCOUNTS,
-                                                PermissionEnum.ADMIN,
-                                                PermissionEnum.MANAGE_USER_REQUESTS));
+        // Admin permissions
+        rolePermissions.put(RoleEnum.ROLE_ADMIN,
+                List.of(
+                        PermissionEnum.ACCESS,
+                        PermissionEnum.VIEW_ACCOUNTS,
+                        PermissionEnum.ADMIN,
+                        PermissionEnum.MANAGE_USER_REQUESTS,
+                        PermissionEnum.MANAGE_ORDER_REQUESTS,
+                        PermissionEnum.MANAGE_USER_REQUESTS
+                )
+        );
 
                 // Head user permissions
                 rolePermissions.put(RoleEnum.ROLE_HEAD_USER,

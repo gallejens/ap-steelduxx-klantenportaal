@@ -1,8 +1,5 @@
 package com.ap.steelduxxklantenportaal.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;
 
@@ -21,6 +18,7 @@ public class OrderRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String customerCode;
+    @Enumerated(EnumType.STRING)
     private TransportTypeEnum transportType;
     private String portOfOriginCode;
     private String portOfDestinationCode;

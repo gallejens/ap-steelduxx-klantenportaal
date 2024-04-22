@@ -80,3 +80,12 @@ export type UserRequest = {
   denyMessage: string;
   status: UserRequestStatus;
 };
+
+export type OrderRequest = {
+  id: string;
+  customerCode: string;
+  transportType: string;
+  portOfOriginCode: string;
+  portOfDestinationCode: string;
+  status: string;
+};

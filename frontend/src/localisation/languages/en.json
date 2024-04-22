@@ -290,7 +290,8 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registrations",
-      "accounts": "Accounts"
+      "accounts": "Accounts",
+      "orderrequests": "Order requests"
     },
     "userOptions": {
       "logout": "Logout",
@@ -367,5 +368,14 @@
     "loading": "Loading...",
     "error": "An error has occured while loading accounts",
     "createSubAccount": "Create subaccount"
+  },
+  "orderRequestListPage": {
+    "table": {
+      "id": "Follow ID",
+      "customerCode": "Company Id",
+      "transportType": "Transport type",
+      "portOfOriginCode": "Port origin",
+      "portOfDestinationCode": "Port destination"
+    }
   }
 }

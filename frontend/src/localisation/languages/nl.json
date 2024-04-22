@@ -290,7 +290,8 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registraties",
-      "accounts": "Gebruikers"
+      "accounts": "Gebruikers",
+      "orderrequests": "Order aanvragen"
     },
     "userOptions": {
       "logout": "Uitloggen",
@@ -367,5 +368,14 @@
     "loading": "Laden...",
     "error": "Er heeft zich een fout voorgedaan tijdens het laden van de accounts",
     "createSubAccount": "Subaccount aanmaken"
+  },
+  "orderRequestListPage": {
+    "table": {
+      "id": "Volg ID",
+      "customerCode": "Klant Id",
+      "transportType": "Transport type",
+      "portOfOriginCode": "Port herkomst",
+      "portOfDestinationCode": "Port aankomst"
+    }
   }
 }

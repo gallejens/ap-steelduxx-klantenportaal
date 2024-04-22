@@ -26,6 +26,8 @@ public class Product {
     private String weight;
     @Column(name = "container_nr")
     private String containerNumber;
+    @Enumerated(EnumType.STRING)
     private ContainerSizeEnum containerSize;
+    @Enumerated(EnumType.STRING)
     private ContainerTypeEnum containerType;
 }

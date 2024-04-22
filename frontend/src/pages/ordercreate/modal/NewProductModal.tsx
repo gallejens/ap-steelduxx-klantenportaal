@@ -148,7 +148,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
             placeholder={t(
               'newOrderPage:productForm:container:number:numberInputPlaceholder'
             )}
-            {...newProductForm.getInputProps('containerNumber')}
+            {...newProductForm.getInputProps('containerNr')}
           />
         )}
         {checked && (

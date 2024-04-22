@@ -22,6 +22,9 @@ export const OrderRequestListPage: FC = () => {
       }),
   });
 
+  console.log('orderRequests:', orderRequests);
+  console.log('status:', status);
+
   if (status === 'pending' || status === 'error' || orderRequests == null) {
     return <div>{t('orderRequestListPage:loading')}</div>;
   }
@@ -50,7 +53,7 @@ export const OrderRequestListPage: FC = () => {
     });
     return acc;
   }, {});
-
+  console.log(tableData);
   return (
     <div className={styles.orderrequest_list_page}>
       <div className={styles.header}>

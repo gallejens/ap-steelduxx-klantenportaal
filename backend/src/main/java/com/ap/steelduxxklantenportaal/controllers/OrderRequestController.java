@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.dtos.OrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequestListDto;
 import com.ap.steelduxxklantenportaal.services.OrderRequestService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ public class OrderRequestController {
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public List<OrderRequestDto> getAllOrderRequests(){
+    public List<OrderRequestListDto> getAllOrderRequests(){
         return orderRequestService.getAll();}
 
 }

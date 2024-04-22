@@ -1,6 +1,7 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.OrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequestListDto;
 import com.ap.steelduxxklantenportaal.dtos.ProductDto;
 import com.ap.steelduxxklantenportaal.models.OrderRequest;
 import com.ap.steelduxxklantenportaal.models.Product;
@@ -32,22 +33,26 @@ public class OrderRequestService {
                 product.getContainerType());
     }
 
-    public OrderRequestDto convertOrderRequestToDTO(OrderRequest orderRequest) {
-        List<Product> productDtos = productRepository.findAllByOrderRequestId(orderRequest.getId());
-        System.out.println(productDtos);
-        return new OrderRequestDto(
+    public OrderRequestListDto convertOrderRequestListToDTO(OrderRequest orderRequest) {
+        List<ProductDto> productDtos = productRepository.findAllByOrderRequestId(orderRequest.getId()).stream()
+        .map(this::convertProductsToDTO)
+        .collect(Collectors.toList());
+
+        return new OrderRequestListDto(
+                orderRequest.getId(),
+                orderRequest.getCustomerCode(),
+                orderRequest.getStatus(),
                 orderRequest.getTransportType(),
                 orderRequest.getPortOfOriginCode(),
                 orderRequest.getPortOfDestinationCode(),
-                productDtos.stream()
-                        .map(this::convertProductsToDTO)
-                        .collect(Collectors.toList()));
+                productDtos
+                );
     }
 
-    public List<OrderRequestDto> getAll() {
+    public List<OrderRequestListDto> getAll() {
         List<OrderRequest> orderRequest = orderRequestRepository.findAll();
         return orderRequest.stream()
-                .map(this::convertOrderRequestToDTO)
+                .map(this::convertOrderRequestListToDTO)
                 .collect(Collectors.toList());
     }
 

@@ -151,44 +151,46 @@ export const OrderDetailsPage: FC = () => {
         <div className={styles.productsList}>
           <section>
             <h2>{t('orderDetailPage:products')}</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>{t('orderDetailPage:hsCode')}</th>
-                  <th>{t('orderDetailPage:name')}</th>
-                  <th>{t('orderDetailPage:quantity')}</th>
-                  <th>{t('orderDetailPage:weight')}</th>
-                  {orderDetail?.data.products.some(
-                    p => p.containerNumber != null
-                  ) && <th>{t('orderDetailPage:container')}</th>}
-                  {orderDetail?.data.products.some(
-                    p => p.containerSize != null
-                  ) && <th>{t('orderDetailPage:containerSize')}</th>}
-                  {orderDetail?.data.products.some(
-                    p => p.containerType != null
-                  ) && <th>{t('orderDetailPage:containerType')}</th>}
-                </tr>
-              </thead>
-              <tbody>
-                {orderDetail?.data.products.map((product, index: number) => (
-                  <tr key={index}>
-                    <td>{product.hsCode}</td>
-                    <td>{product.name}</td>
-                    <td>{product.quantity}</td>
-                    <td>{formatWeight(product.weight)} kg</td>
-                    {product.containerNumber != null && (
-                      <td>{product.containerNumber}</td>
-                    )}
-                    {product.containerSize != null && (
-                      <td>{product.containerSize}</td>
-                    )}
-                    {product.containerType != null && (
-                      <td>{product.containerType}</td>
-                    )}
+            <div className={styles.tableContainer}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>{t('orderDetailPage:hsCode')}</th>
+                    <th>{t('orderDetailPage:name')}</th>
+                    <th>{t('orderDetailPage:quantity')}</th>
+                    <th>{t('orderDetailPage:weight')}</th>
+                    {orderDetail?.data.products.some(
+                      p => p.containerNumber != null
+                    ) && <th>{t('orderDetailPage:container')}</th>}
+                    {orderDetail?.data.products.some(
+                      p => p.containerSize != null
+                    ) && <th>{t('orderDetailPage:containerSize')}</th>}
+                    {orderDetail?.data.products.some(
+                      p => p.containerType != null
+                    ) && <th>{t('orderDetailPage:containerType')}</th>}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {orderDetail?.data.products.map((product, index: number) => (
+                    <tr key={index}>
+                      <td>{product.hsCode}</td>
+                      <td>{product.name}</td>
+                      <td>{product.quantity}</td>
+                      <td>{formatWeight(product.weight)} kg</td>
+                      {product.containerNumber != null && (
+                        <td>{product.containerNumber}</td>
+                      )}
+                      {product.containerSize != null && (
+                        <td>{product.containerSize}</td>
+                      )}
+                      {product.containerType != null && (
+                        <td>{product.containerType}</td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </section>
         </div>
         <div className={styles.documentsContainer}>

@@ -68,42 +68,44 @@ public class OrderService {
     }
 
     public void addOrderRequest(OrderRequestDto orderRequestDto) {
-        var user = AuthService.getCurrentUser();
-        var company = companyRepository.findByUserId(user.getId()).orElseThrow();
-        var companyCode = company.getReferenceCode();
-
-        OrderRequest orderRequest = new OrderRequest(
-                companyCode,
-                orderRequestDto.transportType(),
-                orderRequestDto.portOfOriginCode(),
-                orderRequestDto.portOfDestinationCode(),
-                StatusEnum.PENDING);
-
-        OrderRequest savedOrderRequest = orderRepository.save(orderRequest);
-
-        List<Product> products = orderRequestDto.products().stream()
-                .map(productDto -> {
-                    Product product = new Product();
-                    product.setHsCode(productDto.hsCode());
-                    product.setName(productDto.name());
-                    product.setQuantity(productDto.quantity());
-                    product.setWeight(productDto.weight());
-                    product.setContainerNumber(productDto.containerNumber());
-
-                    ContainerSizeEnum containerSize = productDto.containerSize() == null ? null
-                            : productDto.containerSize();
-                    product.setContainerSize(containerSize);
-
-                    ContainerTypeEnum containerType = productDto.containerType() == null ? null
-                            : productDto.containerType();
-                    product.setContainerType(containerType);
-
-                    product.setOrderRequestId(savedOrderRequest.getId());
-                    return product;
-                })
-                .collect(Collectors.toList());
-
-        productRepository.saveAll(products);
+        System.out.println(orderRequestDto);
+        return;
+//        var user = AuthService.getCurrentUser();
+//        var company = companyRepository.findByUserId(user.getId()).orElseThrow();
+//        var companyCode = company.getReferenceCode();
+//
+//        OrderRequest orderRequest = new OrderRequest(
+//                companyCode,
+//                orderRequestDto.transportType(),
+//                orderRequestDto.portOfOriginCode(),
+//                orderRequestDto.portOfDestinationCode(),
+//                StatusEnum.PENDING);
+//
+//        OrderRequest savedOrderRequest = orderRepository.save(orderRequest);
+//
+//        List<Product> products = orderRequestDto.products().stream()
+//                .map(productDto -> {
+//                    Product product = new Product();
+//                    product.setHsCode(productDto.hsCode());
+//                    product.setName(productDto.name());
+//                    product.setQuantity(productDto.quantity());
+//                    product.setWeight(productDto.weight());
+//                    product.setContainerNumber(productDto.containerNumber());
+//
+//                    ContainerSizeEnum containerSize = productDto.containerSize() == null ? null
+//                            : productDto.containerSize();
+//                    product.setContainerSize(containerSize);
+//
+//                    ContainerTypeEnum containerType = productDto.containerType() == null ? null
+//                            : productDto.containerType();
+//                    product.setContainerType(containerType);
+//
+//                    product.setOrderRequestId(savedOrderRequest.getId());
+//                    return product;
+//                })
+//                .collect(Collectors.toList());
+//
+//        productRepository.saveAll(products);
     }
 
     public ResponseEntity<Object> createNewOrderRequest(OrderRequestDto orderRequestDto) {

@@ -22,8 +22,8 @@ public class Product {
     private Long orderRequestId;
     private String hsCode;
     private String name;
-    private String quantity;
-    private String weight;
+    private long quantity;
+    private long weight;
     @Column(name = "container_nr")
     private String containerNumber;
     @Enumerated(EnumType.STRING)

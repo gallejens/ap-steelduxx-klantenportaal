@@ -9,3 +9,5 @@ export const PRODUCT_CONTAINER_TYPES: Record<ProductContainerType, string> = {
   HC: 'HC (High Cube)',
   RF: 'RF (Reefer)',
 };
+
+export const DEFAULT_PORT_CODE = 'BEANR';

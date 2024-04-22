@@ -2,7 +2,6 @@ import { ActionIcon, Button, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type OrderRequest } from '@/types/orderrequest';
 import { type Product, type OrderTransportType } from '@/types/api';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
@@ -13,96 +12,70 @@ import { NewProductModal } from './modal/NewProductModal';
 import { notifications } from '@/components/notifications';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useNavigate } from '@tanstack/react-router';
+import { DEFAULT_PORT_CODE } from './constants';
 
-type Props = {
-  onSubmit?: () => void;
-  onSuccess?: () => void;
+type NewOrderFormValues = {
+  transportType: OrderTransportType;
+  portOfDestinationCode: string;
+  portOfOriginCode: string;
 };
 
-export const OrderCreatePage: FC<Props> = props => {
+export const OrderCreatePage: FC = () => {
   const { t } = useTranslation();
   const { openModal, closeModal } = useModalStore();
-  const [transportType, setTransportType] = useState('');
   const navigate = useNavigate();
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const newOrderForm = useForm<OrderRequest.OrderRequestValue>({
+  const newOrderForm = useForm<NewOrderFormValues>({
     initialValues: {
-      transportType: '' as OrderTransportType,
-      portOfDestinationCode: '',
+      transportType: 'IMPORT',
+      portOfDestinationCode: DEFAULT_PORT_CODE,
       portOfOriginCode: '',
-      products: [],
     },
     validate: {
-      transportType: value => {
-        if (!value) {
-          return t(
-            'newOrderPage:orderForm:transportType:transportTypeInputError'
-          );
-        }
-      },
-      portOfDestinationCode: value => {
-        if (!value || value.length !== 5) {
-          return t(
-            'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputError'
-          );
-        }
-      },
-      portOfOriginCode: value => {
-        if (!value || value.length !== 5) {
-          return t(
-            'newOrderPage:orderForm:portOriginCode:portOriginCodeInputError'
-          );
-        }
-      },
+      transportType: value =>
+        !value
+          ? t('newOrderPage:orderForm:transportType:transportTypeInputError')
+          : null,
+      portOfDestinationCode: value =>
+        !value || value.length !== 5
+          ? t(
+              'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputError'
+            )
+          : null,
+      portOfOriginCode: value =>
+        !value || value.length !== 5
+          ? t('newOrderPage:orderForm:portOriginCode:portOriginCodeInputError')
+          : null,
     },
     validateInputOnBlur: true,
   });
 
-  const openProductModal = () => {
-    openModal(<NewProductModal onSubmit={handleNewProductSubmit} />);
-  };
-
-  const handleTransportTypeChange = (value: string | null) => {
+  newOrderForm.watch('transportType', ({ value }) => {
     if (value === 'IMPORT') {
-      newOrderForm.setFieldValue('portOfDestinationCode', 'BEANR');
+      newOrderForm.setFieldValue('portOfDestinationCode', DEFAULT_PORT_CODE);
       newOrderForm.setFieldValue('portOfOriginCode', '');
-      newOrderForm.setFieldValue('transportType', 'IMPORT');
-      setTransportType(value);
     } else {
       newOrderForm.setFieldValue('portOfDestinationCode', '');
-      newOrderForm.setFieldValue('portOfOriginCode', 'BEANR');
-      newOrderForm.setFieldValue('transportType', 'EXPORT');
+      newOrderForm.setFieldValue('portOfOriginCode', DEFAULT_PORT_CODE);
     }
-  };
+  });
 
-  const handleNewProductSubmit = (newProduct: Product) => {
-    console.log(newProduct);
-
-    // newOrderForm.setFieldValue('products', [
-    //   ...newOrderForm.values.products,
-    //   newProduct,
-    // ]);
+  const openProductModal = () => {
+    openModal(
+      <NewProductModal
+        onSubmit={product => {
+          setProducts(s => [...s, product]);
+        }}
+      />
+    );
   };
 
   const deleteProduct = (index: number) => {
-    const updatedProducts = newOrderForm.values.products.filter(
-      (_, i) => i !== index
-    );
-    newOrderForm.setFieldValue('products', updatedProducts);
+    setProducts(s => s.filter((_, i) => i !== index));
   };
 
-  const handleCreateOrderRequestButton = async (
-    values: OrderRequest.OrderRequestValue
-  ) => {
-    if (!newOrderForm.isValid()) {
-      notifications.add({
-        title: t('notifications: genericError'),
-        message: t('notifications:invalidForm'),
-        color: 'red',
-      });
-      return;
-    }
-
+  const handleCreateOrderRequestButton = async (values: NewOrderFormValues) => {
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
       endpoint: '/orders/new',
       method: 'POST',
@@ -110,7 +83,7 @@ export const OrderCreatePage: FC<Props> = props => {
         transportType: values.transportType,
         portOfOriginCode: values.portOfOriginCode,
         portOfDestinationCode: values.portOfDestinationCode,
-        products: values.products,
+        products,
       },
     });
 
@@ -119,10 +92,7 @@ export const OrderCreatePage: FC<Props> = props => {
       autoClose: 5000,
     });
 
-    props.onSubmit?.();
-
     if (result?.message === 'newOrderPage:success') {
-      props.onSuccess?.();
       navigate({ to: '/app/orders' });
     }
   };
@@ -160,10 +130,11 @@ export const OrderCreatePage: FC<Props> = props => {
               { label: 'IMPORT', value: 'IMPORT' },
               { label: 'EXPORT', value: 'EXPORT' },
             ]}
-            withAsterisk
+            required
             searchable
+            clearable={false}
+            allowDeselect={false}
             {...newOrderForm.getInputProps('transportType')}
-            onChange={handleTransportTypeChange}
           />
           <TextInput
             className={styles.input_field_order}
@@ -174,7 +145,7 @@ export const OrderCreatePage: FC<Props> = props => {
               'newOrderPage:orderForm:portOriginCode:portOriginCodeInputDescription'
             )}
             placeholder={
-              transportType === 'IMPORT'
+              newOrderForm.values.transportType === 'IMPORT'
                 ? t(
                     'newOrderPage:orderForm:portOriginCode:portOriginCodeInputPlaceholder'
                   )
@@ -183,7 +154,6 @@ export const OrderCreatePage: FC<Props> = props => {
                   )
             }
             maxLength={5}
-            value={newOrderForm.values.portOfOriginCode}
             required
             {...newOrderForm.getInputProps('portOfOriginCode')}
           />
@@ -199,7 +169,6 @@ export const OrderCreatePage: FC<Props> = props => {
               'newOrderPage:orderForm:portOriginCode:portOriginCodeInputPlaceholder'
             )}
             maxLength={5}
-            value={newOrderForm.values.portOfDestinationCode}
             required
             {...newOrderForm.getInputProps('portOfDestinationCode')}
           />
@@ -212,7 +181,6 @@ export const OrderCreatePage: FC<Props> = props => {
             {t('newOrderPage:productForm:addProductButton')}
           </Button>
         </div>
-
         <div className={styles.list_column}>
           <h1 className={styles.list_title}>
             {t('newOrderPage:productListTitle')}
@@ -242,7 +210,9 @@ export const OrderCreatePage: FC<Props> = props => {
                   key: 'containerSize',
                   initialWidth: 200,
                 },
-                { key: 'containerType' },
+                {
+                  key: 'containerType',
+                },
                 {
                   key: 'actions',
                   emptyHeader: true,
@@ -250,7 +220,7 @@ export const OrderCreatePage: FC<Props> = props => {
                   disableResizing: true,
                 },
               ]}
-              data={newOrderForm.values.products.map((p, index) => ({
+              data={products.map((p, index) => ({
                 ...p,
                 actions: (
                   <ActionIcon onClick={() => deleteProduct(index)}>

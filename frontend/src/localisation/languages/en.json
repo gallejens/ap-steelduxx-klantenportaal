@@ -447,5 +447,14 @@
     "loading": "Loading...",
     "error": "An error has occured while loading accounts",
     "createSubAccount": "Create subaccount"
+  },
+  "orderRequestListPage": {
+    "table": {
+      "id": "Follow ID",
+      "customerCode": "Company Id",
+      "transportType": "Transport type",
+      "portOfOriginCode": "Port origin",
+      "portOfDestinationCode": "Port destination"
+    }
   }
 }

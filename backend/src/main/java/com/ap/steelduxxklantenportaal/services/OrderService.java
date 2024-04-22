@@ -100,7 +100,7 @@ public class OrderService {
                             : productDto.containerType();
                     product.setContainerType(containerType);
 
-                    product.setOrderRequest(savedOrderRequest);
+                    product.setOrderRequestId(savedOrderRequest.getId());
                     return product;
                 })
                 .collect(Collectors.toList());

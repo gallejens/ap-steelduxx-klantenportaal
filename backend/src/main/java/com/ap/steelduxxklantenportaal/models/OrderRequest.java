@@ -7,7 +7,6 @@ import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,9 +26,6 @@ public class OrderRequest {
     private String portOfDestinationCode;
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
-
-    @OneToMany(mappedBy = "orderRequest", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> products = new ArrayList<>();
 
     public OrderRequest(String customerCode, TransportTypeEnum transportType, String portOfOriginCode,
             String portOfDestinationCode, StatusEnum status) {

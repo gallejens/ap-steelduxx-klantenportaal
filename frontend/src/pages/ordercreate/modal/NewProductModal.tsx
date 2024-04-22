@@ -6,12 +6,12 @@ import {
   Select,
   TextInput,
 } from '@mantine/core';
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import styles from '../styles/orderCreate.module.scss';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 
-import { Product, ProductSize, ProductType } from '@/types/api';
+import { type Product, type ProductSize, type ProductType } from '@/types/api';
 import { useModalStore } from '@/stores/useModalStore';
 
 interface NewProductModalProps {

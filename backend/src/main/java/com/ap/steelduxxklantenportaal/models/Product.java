@@ -19,6 +19,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long orderRequestId;
     private String hsCode;
     private String name;
     private String quantity;
@@ -27,8 +28,4 @@ public class Product {
     private String containerNumber;
     private ContainerSizeEnum containerSize;
     private ContainerTypeEnum containerType;
-
-    @ManyToOne
-    @JoinColumn(name = "order_request_id", nullable = false)
-    private OrderRequest orderRequest;
 }

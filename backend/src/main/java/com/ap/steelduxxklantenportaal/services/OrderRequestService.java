@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class OrderRequestService  {
-    private  OrderRequestRepository orderRequestRepository;
+public class OrderRequestService {
+    private OrderRequestRepository orderRequestRepository;
     private ProductRepository productRepository;
 
     public OrderRequestService(OrderRequestRepository orderRequestRepository, ProductRepository productRepository) {
@@ -21,7 +21,7 @@ public class OrderRequestService  {
         this.productRepository = productRepository;
     }
 
-    public ProductDto convertProductsToDTO(Product product){
+    public ProductDto convertProductsToDTO(Product product) {
         return new ProductDto(
                 product.getHsCode(),
                 product.getName(),
@@ -29,11 +29,10 @@ public class OrderRequestService  {
                 product.getWeight(),
                 product.getContainerNumber(),
                 product.getContainerSize(),
-                product.getContainerType()
-        );
+                product.getContainerType());
     }
 
-    public OrderRequestDto convertOrderRequestToDTO(OrderRequest orderRequest){
+    public OrderRequestDto convertOrderRequestToDTO(OrderRequest orderRequest) {
         List<Product> productDtos = productRepository.findAllByOrderRequestId(orderRequest.getId());
         System.out.println(productDtos);
         return new OrderRequestDto(
@@ -41,9 +40,8 @@ public class OrderRequestService  {
                 orderRequest.getPortOfOriginCode(),
                 orderRequest.getPortOfDestinationCode(),
                 productDtos.stream()
-                .map(this::convertProductsToDTO)
-                .collect(Collectors.toList())
-        );
+                        .map(this::convertProductsToDTO)
+                        .collect(Collectors.toList()));
     }
 
     public List<OrderRequestDto> getAll() {

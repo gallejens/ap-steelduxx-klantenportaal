@@ -369,7 +369,8 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registraties",
-      "accounts": "Gebruikers"
+      "accounts": "Gebruikers",
+      "orderrequests": "Order aanvragen"
     },
     "userOptions": {
       "logout": "Uitloggen",

@@ -59,7 +59,8 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
   });
 
   const handleSubmit = (values: Product) => {
-    values.containerNr = values.containerNr === '' ? null : values.containerNr;
+    values.containerNumber =
+      values.containerNumber === '' ? null : values.containerNumber;
 
     onSubmit(values);
     closeModal();

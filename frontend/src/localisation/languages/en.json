@@ -369,7 +369,8 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registrations",
-      "accounts": "Accounts"
+      "accounts": "Accounts",
+      "orderrequests": "Order requests"
     },
     "userOptions": {
       "logout": "Logout",

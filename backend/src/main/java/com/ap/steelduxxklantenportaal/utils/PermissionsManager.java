@@ -27,7 +27,7 @@ public class PermissionsManager {
                 List.of(
                         PermissionEnum.ACCESS,
                         PermissionEnum.VIEW_ACCOUNTS,
-                        PermissionEnum.EXTERNAL_API_ADMIN,
+                        PermissionEnum.ADMIN,
                         PermissionEnum.MANAGE_USER_REQUESTS,
                         PermissionEnum.MANAGE_ORDER_REQUESTS,
                         PermissionEnum.MANAGE_USER_REQUESTS

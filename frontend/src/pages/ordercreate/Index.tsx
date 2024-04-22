@@ -1,4 +1,4 @@
-import { Button, Select, TextInput } from '@mantine/core';
+import { ActionIcon, Button, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -233,7 +233,7 @@ export const OrderCreatePage: FC<Props> = props => {
                   initialWidth: 200,
                 },
                 {
-                  key: 'containerNr',
+                  key: 'containerNumber',
                   initialWidth: 200,
                 },
                 {
@@ -241,12 +241,12 @@ export const OrderCreatePage: FC<Props> = props => {
                   initialWidth: 200,
                 },
                 { key: 'containerType' },
-                // {
-                //   key: 'actions',
-                //   emptyHeader: true,
-                //   disallowSorting: true,
-                //   disableResizing: true,
-                // },
+                {
+                  key: 'actions',
+                  emptyHeader: true,
+                  disallowSorting: true,
+                  disableResizing: true,
+                },
               ]}
               data={newOrderForm.values.products.map((p, index) => ({
                 ...p,

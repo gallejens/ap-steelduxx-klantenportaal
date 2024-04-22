@@ -21,10 +21,10 @@ public class OrderRequestService  {
     public ProductDto convertProductsToDTO(Product product){
         return new ProductDto(
                 product.getHsCode(),
-                product.getItem(),
+                product.getName(),
                 product.getQuantity(),
                 product.getWeight(),
-                product.getContainerNr(),
+                product.getContainerNumber(),
                 product.getContainerSize(),
                 product.getContainerType()
         );
@@ -34,7 +34,6 @@ public class OrderRequestService  {
         List<ProductDto> productDtos = orderRequest.getProducts().stream()
                 .map(this::convertProductsToDTO)
                 .collect(Collectors.toList());
-
         return new OrderRequestDto(
                 orderRequest.getTransportType(),
                 orderRequest.getPortOfOriginCode(),
@@ -45,7 +44,6 @@ public class OrderRequestService  {
 
     public List<OrderRequestDto> getAll() {
         List<OrderRequest> orderRequest = orderRequestRepository.findAll();
-
         return orderRequest.stream()
                 .map(this::convertOrderRequestToDTO)
                 .collect(Collectors.toList());

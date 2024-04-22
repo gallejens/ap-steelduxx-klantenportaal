@@ -76,10 +76,12 @@ export const OrderCreatePage: FC<Props> = props => {
   };
 
   const handleNewProductSubmit = (newProduct: Product) => {
-    newOrderForm.setFieldValue('products', [
-      ...newOrderForm.values.products,
-      newProduct,
-    ]);
+    console.log(newProduct);
+
+    // newOrderForm.setFieldValue('products', [
+    //   ...newOrderForm.values.products,
+    //   newProduct,
+    // ]);
   };
 
   const deleteProduct = (index: number) => {

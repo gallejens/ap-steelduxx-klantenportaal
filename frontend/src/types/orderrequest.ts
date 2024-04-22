@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import { Product, OrderTransportType } from './api';
+import { type Product, type OrderTransportType } from './api';
 
 export namespace OrderRequest {
   export type OrderRequestValue = {

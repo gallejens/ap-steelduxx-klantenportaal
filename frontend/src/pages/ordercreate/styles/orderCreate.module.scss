@@ -62,49 +62,25 @@
     }
   }
 }
-.modal {
-  .product_form {
+
+.product_form {
+  display: flex;
+  flex-direction: column;
+
+  & > div {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: var(--mantine-spacing-xl);
+    margin-top: var(--mantine-spacing-md);
 
-    & > .row1,
-    .row2,
-    .input_field_product_transport_details {
-      display: flex;
-      flex-direction: row;
-      gap: var(--mantine-spacing-xl);
-      margin-top: var(--mantine-spacing-md);
-    }
+    align-items: center;
 
-    & > .row1 {
-      .input_field_product_hsCode,
-      .input_field_product_name {
-        width: 100%;
-      }
+    & > * {
+      width: 100%;
     }
+  }
 
-    & > .row2 {
-      .input_field_product_quantity,
-      .input_field_product_weight {
-        width: 100%;
-      }
-    }
-
-    & > .input_field_product_transport_details {
-      .input_field_product_transport_size,
-      .input_field_product_transport_type {
-        width: 100%;
-      }
-      margin-bottom: var(--mantine-spacing-md);
-    }
-
-    & > .container_checkbox {
-      margin-bottom: var(--mantine-spacing-md);
-      margin-top: var(--mantine-spacing-md);
-    }
-
-    & > .confirm_button {
-      align-self: flex-end;
-    }
+  & > .confirm_button {
+    align-self: flex-end;
   }
 }

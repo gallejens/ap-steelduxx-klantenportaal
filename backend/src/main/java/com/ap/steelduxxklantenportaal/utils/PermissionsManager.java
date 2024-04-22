@@ -17,7 +17,6 @@ public class PermissionsManager {
                                                 PermissionEnum.ACCESS,
                                                 PermissionEnum.VIEW_ACCOUNTS,
                                                 PermissionEnum.CREATE_SUB_ACCOUNTS,
-                                                PermissionEnum.CREATE_NEW_ORDERS,
                                                 PermissionEnum.ADMIN,
                                                 PermissionEnum.MANAGE_USER_REQUESTS));
 

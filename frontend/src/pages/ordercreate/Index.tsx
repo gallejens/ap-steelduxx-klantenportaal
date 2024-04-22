@@ -3,7 +3,7 @@ import { useForm } from '@mantine/form';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type OrderRequest } from '@/types/orderrequest';
-import { Product, type OrderTransportType } from '@/types/api';
+import { type Product, type OrderTransportType } from '@/types/api';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
 import styles from './styles/orderCreate.module.scss';
@@ -11,7 +11,7 @@ import { Table } from '@/components/table';
 import { IconTrash } from '@tabler/icons-react';
 import { NewProductModal } from './modal/NewProductModal';
 import { notifications } from '@/components/notifications';
-import { doApiAction, GenericAPIResponse } from '@/lib/api';
+import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useNavigate } from '@tanstack/react-router';
 
 type Props = {

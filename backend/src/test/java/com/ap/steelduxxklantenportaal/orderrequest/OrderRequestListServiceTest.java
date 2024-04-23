@@ -4,9 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.ap.steelduxxklantenportaal.enums.ContainerSizeEnum;
 import com.ap.steelduxxklantenportaal.enums.ContainerTypeEnum;
+import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,6 +20,7 @@ import com.ap.steelduxxklantenportaal.models.OrderRequestProduct;
 import com.ap.steelduxxklantenportaal.repositories.OrderRequestRepository;
 import com.ap.steelduxxklantenportaal.repositories.OrderRequestProductRepository;
 import com.ap.steelduxxklantenportaal.services.OrderRequestService;
+
 
 @ExtendWith(MockitoExtension.class)
 public class OrderRequestListServiceTest {
@@ -85,5 +88,23 @@ public class OrderRequestListServiceTest {
         orderRequestProduct.setContainerSize(containerSize);
         orderRequestProduct.setContainerType(containerType);
         return orderRequestProduct;
+    }
+
+    @Test
+    void testUpdateOrderRequestStatus() {
+        // Given
+        Long orderId = 1L;
+        StatusEnum newStatus = StatusEnum.APPROVED;
+
+        OrderRequest orderRequest = new OrderRequest();
+        orderRequest.setStatus(StatusEnum.PENDING);
+
+        when(orderRequestRepository.findById(orderId)).thenReturn(Optional.of(orderRequest));
+
+        // When
+        orderRequestService.updateOrderRequestStatus(orderId, newStatus);
+
+        // Then
+        assertEquals(newStatus, orderRequest.getStatus());
     }
 }

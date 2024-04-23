@@ -6,5 +6,4 @@ import com.ap.steelduxxklantenportaal.models.OrderRequest;
 
 @Repository
 public interface OrderRequestRepository extends JpaRepository<OrderRequest, Long> {
-
 }

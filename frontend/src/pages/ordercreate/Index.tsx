@@ -18,7 +18,7 @@ import { IconTrash } from '@tabler/icons-react';
 import { NewProductModal } from './modal/NewProductModal';
 import { notifications } from '@/components/notifications';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
-import { useNavigate } from '@tanstack/react-router';
+//import { useNavigate } from '@tanstack/react-router';
 import { DEFAULT_PORT_CODE } from './constants';
 import type { CreateOrderDocument } from './types';
 import { OrderDocuments } from './components/OrderDocuments';
@@ -32,7 +32,7 @@ type NewOrderFormValues = {
 export const OrderCreatePage: FC = () => {
   const { t } = useTranslation();
   const { openModal, closeModal } = useModalStore();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [documents, setDocuments] = useState<CreateOrderDocument[]>([]);
   const [loading, setLoading] = useState(false);

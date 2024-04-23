@@ -1,16 +1,18 @@
 import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Tabs, TextInput } from '@mantine/core';
+import { ActionIcon, Tabs, TextInput } from '@mantine/core';
 import { Table } from '@/components/table';
 import { doApiAction } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { STATUSES } from './constants';
 import styles from './styles/orderRequestList.module.scss';
 import type { OrderRequest } from '@/types/api';
-import { IconSearch } from '@tabler/icons-react';
+import { IconArrowRight, IconSearch } from '@tabler/icons-react';
+import { useNavigate } from '@tanstack/react-router';
 
 export const OrderRequestListPage: FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<string>('');
   const { data: orderRequests, status } = useQuery({
     refetchOnWindowFocus: false,
@@ -21,9 +23,6 @@ export const OrderRequestListPage: FC = () => {
         method: 'GET',
       }),
   });
-
-  console.log('orderRequests:', orderRequests);
-  console.log('status:', status);
 
   if (status === 'pending' || status === 'error' || orderRequests == null) {
     return <div>{t('orderRequestListPage:loading')}</div>;
@@ -39,6 +38,7 @@ export const OrderRequestListPage: FC = () => {
           transportType: string;
           portOfOriginCode: string;
           portOfDestinationCode: string;
+          navigate: JSX.Element;
         }[]
       >
     >
@@ -50,6 +50,21 @@ export const OrderRequestListPage: FC = () => {
       transportType: orderRequest.transportType,
       portOfOriginCode: orderRequest.portOfOriginCode,
       portOfDestinationCode: orderRequest.portOfDestinationCode,
+      navigate: (
+        <ActionIcon>
+          <IconArrowRight
+            key={`value_${orderRequest.id}`}
+            onClick={() => {
+              navigate({
+                to: '/app/order-requests/$orderrequestid',
+                params: {
+                  orderrequestid: orderRequest.id,
+                },
+              });
+            }}
+          />
+        </ActionIcon>
+      ),
     });
     return acc;
   }, {});
@@ -96,6 +111,7 @@ export const OrderRequestListPage: FC = () => {
                 { key: 'transportType', initialWidth: 150 },
                 { key: 'portOfOriginCode', initialWidth: 150 },
                 { key: 'portOfDestinationCode', initialWidth: 150 },
+                { key: 'navigate', initialWidth: 50 },
               ]}
               data={tableData[status] ?? []}
             />

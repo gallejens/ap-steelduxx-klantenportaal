@@ -381,8 +381,23 @@
       "id": "Volg ID",
       "customerCode": "Klant Id",
       "transportType": "Transport type",
-      "portOfOriginCode": "Port herkomst",
-      "portOfDestinationCode": "Port aankomst"
+      "portOfOriginCode": "Haven van Herkomst Code",
+      "portOfDestinationCode": "Haven van Bestemming Code",
+      "navigate": "Behandel"
     }
+  },
+  "orderRequestForm": {
+    "idInputTitle": "Volg ID",
+    "statusInputTitle": "Status",
+    "transportTypeInputTitle": "Transport Type",
+    "customerCodeInputTitle": "Bedrijf ID",
+    "portOfDestinationInputTitle": "Haven van bestemming",
+    "portOfOriginInputTitle": "Haven van herkomst",
+    "productName": "Product Naam",
+    "quantity": "Aantal",
+    "weight": "Gewicht",
+    "containerNumber": "Container nummer",
+    "containerSize": "Container grootte (feet)",
+    "containerType": "Container type"
   }
 }

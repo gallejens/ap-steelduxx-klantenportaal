@@ -144,10 +144,12 @@ export const OrderListPage: FC = () => {
             },
             {
               key: 'containerTypes',
-              transform: (containerTypes: string[] | undefined) => {
-                return containerTypes && containerTypes.length > 0
-                  ? containerTypes.join(' / ')
-                  : 'N/A';
+              transform: (value: string[] | null) => {
+                if (value && value.length > 0) {
+                  return value.join(' / ');
+                } else {
+                  return 'N/A';
+                }
               },
             },
           ]}

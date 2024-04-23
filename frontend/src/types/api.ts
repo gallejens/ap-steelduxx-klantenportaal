@@ -64,8 +64,8 @@ export type Product = {
   quantity: number | string; // ex: 15,
   weight: number | string; // ex: 14328000,
   containerNumber: string | null; // ex: "OOCU7396492",
-  containerSize: ProductSize; // ex: Size_20,
-  containerType: ProductType; // ex: OT
+  containerSize: string | null; // ex: "40",
+  containerType: string | null; // ex: "DV",
 };
 
 export type UserRequestStatus = 'PENDING' | 'APPROVED' | 'DENIED';

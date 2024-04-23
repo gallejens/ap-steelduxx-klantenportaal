@@ -105,7 +105,7 @@ export const UserRequestForm: FC<Props> = props => {
   ) => {
     if (!UserRequestForm.isValid()) {
       notifications.add({
-        title: t('notifications: genericError'),
+        title: t('notifications:genericError'),
         message: t('notifications:invalidForm'),
         color: 'red',
       });

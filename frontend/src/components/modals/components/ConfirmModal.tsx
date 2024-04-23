@@ -2,6 +2,7 @@ import { Button, Text } from '@mantine/core';
 import type { FC } from 'react';
 import { Modal } from '..';
 import styles from '../styles/confirmmodal.module.scss';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   title: string;
@@ -11,6 +12,8 @@ type Props = {
 };
 
 export const ConfirmModal: FC<Props> = props => {
+  const { t } = useTranslation();
+
   return (
     <Modal
       title={props.title}
@@ -19,7 +22,7 @@ export const ConfirmModal: FC<Props> = props => {
     >
       {props.text && <Text size='sm'>{props.text}</Text>}
       <div className={styles.action_button}>
-        <Button onClick={props.onConfirm}>Confirm</Button>
+        <Button onClick={props.onConfirm}>{t('modals:confirm:action')}</Button>
       </div>
     </Modal>
   );

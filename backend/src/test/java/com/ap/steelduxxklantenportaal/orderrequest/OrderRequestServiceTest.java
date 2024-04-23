@@ -5,6 +5,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
+import com.ap.steelduxxklantenportaal.controllers.OrderRequestController;
+import com.ap.steelduxxklantenportaal.services.OrderRequestService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,32 +16,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ap.steelduxxklantenportaal.controllers.OrderController;
-import com.ap.steelduxxklantenportaal.dtos.OrderRequestDto;
-
-import com.ap.steelduxxklantenportaal.services.OrderService;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderRequestServiceTest {
 
     @Mock
-    private OrderService orderService;
+    private OrderRequestService orderRequestService;
 
     @InjectMocks
-    private OrderController orderController;
+    private OrderRequestController orderRequestController;
 
     @Test
     void givenOrderRequestToAdd_whenAddingOrderRequest_thenOrderRequestIsAdded() {
         // Given
-        OrderRequestDto orderRequestDto = OrderRequestMotherObject.orderRequest1;
+        NewOrderRequestDto newOrderRequestDto = OrderRequestObjectMother.orderRequest1;
         Map<String, String> expectedResponse = Map.of(
                 "message", "newOrderPage:success",
                 "status", HttpStatus.CREATED.toString());
 
-        when(orderService.createNewOrderRequest(orderRequestDto))
+        when(orderRequestService.createNewOrderRequest(newOrderRequestDto))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
 
         // When
-        ResponseEntity<Object> response = orderController.createOrderRequest(orderRequestDto);
+        ResponseEntity<Object> response = orderRequestController.createOrderRequest(newOrderRequestDto);
 
         // Then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -49,16 +49,16 @@ public class OrderRequestServiceTest {
     @Test
     void givenOrderRequestToAdd_whenAddingOrderRequestWithEmptyProductList_thenOrderRequestIsNotAdded() {
         // Given
-        OrderRequestDto orderRequestDto = OrderRequestMotherObject.orderRequest2;
+        NewOrderRequestDto newOrderRequestDto = OrderRequestObjectMother.orderRequest2;
         Map<String, String> expectedResponse = Map.of(
                 "message", "newOrderPage:success",
                 "status", HttpStatus.CREATED.toString());
 
-        when(orderService.createNewOrderRequest(orderRequestDto))
+        when(orderRequestService.createNewOrderRequest(newOrderRequestDto))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.BAD_REQUEST));
 
         // When
-        ResponseEntity<Object> response = orderController.createOrderRequest(orderRequestDto);
+        ResponseEntity<Object> response = orderRequestController.createOrderRequest(newOrderRequestDto);
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());

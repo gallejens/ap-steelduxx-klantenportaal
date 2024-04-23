@@ -2,6 +2,7 @@ package com.ap.steelduxxklantenportaal;
 
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.services.AuthService;
+import com.ap.steelduxxklantenportaal.services.FileSystemStorageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,12 +26,19 @@ public class SteelduxxKlantenportaalApplication {
 	}
 
 	@Bean
-	public CommandLineRunner run(AuthService authService) {
+	public CommandLineRunner createAdminUser(AuthService authService) {
 		return args -> {
 			if (authService.doesUserExist(adminAccountEmail)) return;
 
 			authService.addNewUser(adminAccountEmail, adminAccountPassword, adminAccountFirstName, adminAccountLastName, RoleEnum.ROLE_HEAD_ADMIN);
 
+		};
+	}
+
+	@Bean
+	public CommandLineRunner initFileSystemStorageService(FileSystemStorageService fileSystemStorageService) {
+		return (args) -> {
+			fileSystemStorageService.init();
 		};
 	}
 }

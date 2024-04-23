@@ -12,11 +12,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.ap.steelduxxklantenportaal.dtos.OrderRequestListDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestListDto;
 import com.ap.steelduxxklantenportaal.models.OrderRequest;
-import com.ap.steelduxxklantenportaal.models.Product;
+import com.ap.steelduxxklantenportaal.models.OrderRequestProduct;
 import com.ap.steelduxxklantenportaal.repositories.OrderRequestRepository;
-import com.ap.steelduxxklantenportaal.repositories.ProductRepository;
+import com.ap.steelduxxklantenportaal.repositories.OrderRequestProductRepository;
 import com.ap.steelduxxklantenportaal.services.OrderRequestService;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,7 +26,7 @@ public class OrderRequestListServiceTest {
     private OrderRequestRepository orderRequestRepository;
 
     @Mock
-    private ProductRepository productRepository;
+    private OrderRequestProductRepository orderRequestProductRepository;
 
     @InjectMocks
     private OrderRequestService orderRequestService;
@@ -41,13 +41,13 @@ public class OrderRequestListServiceTest {
 
         when(orderRequestRepository.findAll()).thenReturn(orderRequests);
 
-        when(productRepository.findAllByOrderRequestId(1)).thenReturn(List.of(
-                createProduct("12345", "Product1", "5", "10.0", "CN123", ContainerSizeEnum.SIZE_40, ContainerTypeEnum.DV),
-                createProduct("54321", "Product2", "3", "8.0", "CN456", ContainerSizeEnum.SIZE_20, ContainerTypeEnum.FT)
+        when(orderRequestProductRepository.findAllByOrderRequestId(1)).thenReturn(List.of(
+                createProduct("12345", "Product1", 5, 10, "CN123", ContainerSizeEnum.SIZE_40, ContainerTypeEnum.DV),
+                createProduct("54321", "Product2", 3, 8, "CN456", ContainerSizeEnum.SIZE_20, ContainerTypeEnum.FT)
         ));
 
-        when(productRepository.findAllByOrderRequestId(2)).thenReturn(List.of(
-                createProduct("67890", "Product3", "2", "7.0", "CN789", ContainerSizeEnum.SIZE_20, ContainerTypeEnum.RF)
+        when(orderRequestProductRepository.findAllByOrderRequestId(2)).thenReturn(List.of(
+                createProduct("67890", "Product3", 2, 7, "CN789", ContainerSizeEnum.SIZE_20, ContainerTypeEnum.RF)
         ));
 
         // When
@@ -74,16 +74,16 @@ public class OrderRequestListServiceTest {
         return orderRequest;
     }
 
-    private Product createProduct(String hsCode, String name, String quantity, String weight,
-                                  String containerNumber, ContainerSizeEnum containerSize, ContainerTypeEnum containerType) {
-        Product product = new Product();
-        product.setHsCode(hsCode);
-        product.setName(name);
-        product.setQuantity(quantity);
-        product.setWeight(weight);
-        product.setContainerNumber(containerNumber);
-        product.setContainerSize(containerSize);
-        product.setContainerType(containerType);
-        return product;
+    private OrderRequestProduct createProduct(String hsCode, String name, long quantity, long weight,
+                                              String containerNumber, ContainerSizeEnum containerSize, ContainerTypeEnum containerType) {
+        OrderRequestProduct orderRequestProduct = new OrderRequestProduct();
+        orderRequestProduct.setHsCode(hsCode);
+        orderRequestProduct.setName(name);
+        orderRequestProduct.setQuantity(quantity);
+        orderRequestProduct.setWeight(weight);
+        orderRequestProduct.setContainerNumber(containerNumber);
+        orderRequestProduct.setContainerSize(containerSize);
+        orderRequestProduct.setContainerType(containerType);
+        return orderRequestProduct;
     }
 }

@@ -163,6 +163,9 @@
     "containerType": "Container Type"
   },
   "newOrderPage": {
+    "title": "Order Info",
+    "products": "Products",
+    "documents": "Documents",
     "orderForm": {
       "transportType": {
         "transportTypeInputTitle": "Transport type",
@@ -173,7 +176,7 @@
       "portDestinationCode": {
         "portDestinationCodeInputTitle": "Port code of destination",
         "portDestinationCodeInputDescription": "Fill in the port code of the destination here",
-        "portDestinationCodeInputPlaceholder": "BEANR",
+        "portDestinationCodeInputPlaceholder": "CNSHG",
         "portDestinationCodeInputError": "Port Code of destination is required"
       },
       "portOriginCode": {
@@ -225,9 +228,8 @@
           "typeInputError": "Container type of product is required"
         }
       },
-      "addProductButton": "Add product"
+      "addProductButton": "Add Product"
     },
-    "productListTitle": "Products",
     "table": {
       "hsCode": "HsCode",
       "name": "Name",
@@ -239,7 +241,8 @@
     },
     "addOrderButton": "Create order request",
     "success": "Order request succesfully created.",
-    "failed": "Order not created, add atleast one product."
+    "failed": "Failed to create order, try again later.",
+    "emptyProducts": "Add at least one product."
   },
   "userRequestReviewPage": {
     "backButton": "Go Back",
@@ -292,7 +295,7 @@
       "orders": "Orders",
       "requests": "Registrations",
       "accounts": "Accounts",
-      "orderrequests": "Order requests"
+      "orderrequests": "Order Requests"
     },
     "userOptions": {
       "logout": "Logout",
@@ -322,6 +325,9 @@
     }
   },
   "modals": {
+    "confirm": {
+      "action": "Confirm"
+    },
     "changePassword": {
       "title": "Change password",
       "oldPasswordInputLabel": "Old password",

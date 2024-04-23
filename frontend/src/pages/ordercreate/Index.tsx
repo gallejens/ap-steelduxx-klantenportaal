@@ -1,8 +1,14 @@
-import { ActionIcon, Button, Select, TextInput } from '@mantine/core';
+import {
+  ActionIcon,
+  Divider,
+  Select,
+  TextInput,
+  Title,
+  Button,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type OrderRequest } from '@/types/orderrequest';
 import { type Product, type OrderTransportType } from '@/types/api';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
@@ -13,138 +19,158 @@ import { NewProductModal } from './modal/NewProductModal';
 import { notifications } from '@/components/notifications';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useNavigate } from '@tanstack/react-router';
+import { DEFAULT_PORT_CODE } from './constants';
+import type { CreateOrderDocument } from './types';
+import { OrderDocuments } from './components/OrderDocuments';
 
-type Props = {
-  onSubmit?: () => void;
-  onSuccess?: () => void;
+type NewOrderFormValues = {
+  transportType: OrderTransportType;
+  portOfDestinationCode: string;
+  portOfOriginCode: string;
 };
 
-export const OrderCreatePage: FC<Props> = props => {
+export const OrderCreatePage: FC = () => {
   const { t } = useTranslation();
   const { openModal, closeModal } = useModalStore();
-  const [transportType, setTransportType] = useState('');
   const navigate = useNavigate();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [documents, setDocuments] = useState<CreateOrderDocument[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const newOrderForm = useForm<OrderRequest.OrderRequestValue>({
+  const newOrderForm = useForm<NewOrderFormValues>({
     initialValues: {
-      transportType: '' as OrderTransportType,
-      portOfDestinationCode: '',
+      transportType: 'IMPORT',
+      portOfDestinationCode: DEFAULT_PORT_CODE,
       portOfOriginCode: '',
-      products: [],
     },
     validate: {
-      transportType: value => {
-        if (!value) {
-          return t(
-            'newOrderPage:orderForm:transportType:transportTypeInputError'
-          );
-        }
-      },
-      portOfDestinationCode: value => {
-        if (!value || value.length !== 5) {
-          return t(
-            'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputError'
-          );
-        }
-      },
-      portOfOriginCode: value => {
-        if (!value || value.length !== 5) {
-          return t(
-            'newOrderPage:orderForm:portOriginCode:portOriginCodeInputError'
-          );
-        }
-      },
+      transportType: value =>
+        !value
+          ? t('newOrderPage:orderForm:transportType:transportTypeInputError')
+          : null,
+      portOfDestinationCode: value =>
+        !value || value.length !== 5
+          ? t(
+              'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputError'
+            )
+          : null,
+      portOfOriginCode: value =>
+        !value || value.length !== 5
+          ? t('newOrderPage:orderForm:portOriginCode:portOriginCodeInputError')
+          : null,
     },
     validateInputOnBlur: true,
   });
 
-  const openProductModal = () => {
-    openModal(<NewProductModal onSubmit={handleNewProductSubmit} />);
-  };
-
-  const handleTransportTypeChange = (value: string | null) => {
+  newOrderForm.watch('transportType', ({ value }) => {
     if (value === 'IMPORT') {
-      newOrderForm.setFieldValue('portOfDestinationCode', 'BEANR');
+      newOrderForm.setFieldValue('portOfDestinationCode', DEFAULT_PORT_CODE);
       newOrderForm.setFieldValue('portOfOriginCode', '');
-      newOrderForm.setFieldValue('transportType', 'IMPORT');
-      setTransportType(value);
     } else {
       newOrderForm.setFieldValue('portOfDestinationCode', '');
-      newOrderForm.setFieldValue('portOfOriginCode', 'BEANR');
-      newOrderForm.setFieldValue('transportType', 'EXPORT');
+      newOrderForm.setFieldValue('portOfOriginCode', DEFAULT_PORT_CODE);
     }
-  };
+  });
 
-  const handleNewProductSubmit = (newProduct: Product) => {
-    newOrderForm.setFieldValue('products', [
-      ...newOrderForm.values.products,
-      newProduct,
-    ]);
+  const openProductModal = () => {
+    openModal(
+      <NewProductModal
+        onSubmit={product => {
+          setProducts(s => [...s, product]);
+        }}
+      />
+    );
   };
 
   const deleteProduct = (index: number) => {
-    const updatedProducts = newOrderForm.values.products.filter(
-      (_, i) => i !== index
-    );
-    newOrderForm.setFieldValue('products', updatedProducts);
+    setProducts(s => s.filter((_, i) => i !== index));
   };
 
-  const handleCreateOrderRequestButton = async (
-    values: OrderRequest.OrderRequestValue
-  ) => {
-    if (!newOrderForm.isValid()) {
+  const handleCreateOrderRequestButton = () => {
+    if (products.length === 0) {
       notifications.add({
-        title: t('notifications: genericError'),
+        message: t('newOrderPage:emptyProducts'),
+        color: 'red',
+      });
+      return;
+    }
+
+    openModal(
+      <ConfirmModal
+        title={t('appshell:newOrderConfirmation:newOrderConfirmTitle')}
+        text={t('appshell:newOrderConfirmation:newOrderConfirmText')}
+        onConfirm={() => {
+          closeModal();
+          createOrder();
+        }}
+      />
+    );
+  };
+
+  const createOrder = async () => {
+    if (!newOrderForm.isValid()) {
+      newOrderForm.validate();
+      notifications.add({
+        title: t('notifications:genericError'),
         message: t('notifications:invalidForm'),
         color: 'red',
       });
       return;
     }
 
-    const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
-      endpoint: '/orders/new',
+    setLoading(true);
+    const result = await doApiAction<GenericAPIResponse<number>>({
+      endpoint: '/order-requests/new',
       method: 'POST',
       body: {
-        transportType: values.transportType,
-        portOfOriginCode: values.portOfOriginCode,
-        portOfDestinationCode: values.portOfDestinationCode,
-        products: values.products,
+        ...newOrderForm.values,
+        products,
       },
     });
 
+    const createdOrderRequest = !!result?.data;
+    if (!createdOrderRequest) {
+      setLoading(false);
+      notifications.add({
+        message: t(result?.message ?? 'notifications:genericError'),
+        autoClose: 5000,
+      });
+      return;
+    }
+
+    for (const doc of documents) {
+      const formData = new FormData();
+      formData.set('orderRequestId', result.data.toString());
+      formData.set('file', doc.file);
+      formData.set('type', doc.type);
+
+      await doApiAction({
+        endpoint: '/order-requests/upload-file',
+        method: 'POST',
+        body: formData,
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      });
+    }
+
+    setLoading(false);
     notifications.add({
-      message: t(result?.message ?? 'notifications:genericError'),
+      message: t(result.message),
       autoClose: 5000,
     });
 
-    props.onSubmit?.();
-
     if (result?.message === 'newOrderPage:success') {
-      props.onSuccess?.();
       navigate({ to: '/app/orders' });
     }
   };
 
   return (
-    <div>
-      <form
-        className={styles.order_form}
-        onSubmit={newOrderForm.onSubmit(values =>
-          openModal(
-            <ConfirmModal
-              title={t('appshell:newOrderConfirmation:newOrderConfirmTitle')}
-              text={t('appshell:newOrderConfirmation:newOrderConfirmText')}
-              onConfirm={() => {
-                closeModal();
-                handleCreateOrderRequestButton(values);
-              }}
-            />
-          )
-        )}
-      >
-        <div className={styles.form_field_order}>
+    <div className={styles.ordercreate_page}>
+      <div className={styles.inputs}>
+        <Title order={3}>{t('newOrderPage:title')}</Title>
+        <form className={styles.form}>
           <Select
-            className={styles.input_field_order}
             label={t(
               'newOrderPage:orderForm:transportType:transportTypeInputTitle'
             )}
@@ -154,39 +180,29 @@ export const OrderCreatePage: FC<Props> = props => {
             placeholder={t(
               'newOrderPage:orderForm:transportType:transportTypeInputPlaceholder'
             )}
-            data={[
-              { label: 'IMPORT', value: 'IMPORT' },
-              { label: 'EXPORT', value: 'EXPORT' },
-            ]}
-            withAsterisk
+            data={['IMPORT', 'EXPORT']}
+            required
             searchable
+            clearable={false}
+            allowDeselect={false}
             {...newOrderForm.getInputProps('transportType')}
-            onChange={handleTransportTypeChange}
           />
           <TextInput
-            className={styles.input_field_order}
             label={t(
               'newOrderPage:orderForm:portOriginCode:portOriginCodeInputTitle'
             )}
             description={t(
               'newOrderPage:orderForm:portOriginCode:portOriginCodeInputDescription'
             )}
-            placeholder={
-              transportType === 'IMPORT'
-                ? t(
-                    'newOrderPage:orderForm:portOriginCode:portOriginCodeInputPlaceholder'
-                  )
-                : t(
-                    'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputPlaceholder'
-                  )
-            }
+            placeholder={t(
+              'newOrderPage:orderForm:portOriginCode:portOriginCodeInputPlaceholder'
+            )}
             maxLength={5}
-            value={newOrderForm.values.portOfOriginCode}
-            required
+            required={newOrderForm.values.transportType === 'IMPORT'}
+            disabled={newOrderForm.values.transportType !== 'IMPORT'}
             {...newOrderForm.getInputProps('portOfOriginCode')}
           />
           <TextInput
-            className={styles.input_field_order}
             label={t(
               'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputTitle'
             )}
@@ -194,81 +210,88 @@ export const OrderCreatePage: FC<Props> = props => {
               'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputDescription'
             )}
             placeholder={t(
-              'newOrderPage:orderForm:portOriginCode:portOriginCodeInputPlaceholder'
+              'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputPlaceholder'
             )}
             maxLength={5}
-            value={newOrderForm.values.portOfDestinationCode}
-            required
+            required={newOrderForm.values.transportType === 'EXPORT'}
+            disabled={newOrderForm.values.transportType !== 'EXPORT'}
             {...newOrderForm.getInputProps('portOfDestinationCode')}
           />
+        </form>
+        <Divider />
+        <div className={styles.documents}>
+          <Title order={3}>{t('newOrderPage:documents')}</Title>
+          <OrderDocuments
+            documents={documents}
+            setDocuments={setDocuments}
+          />
         </div>
-        <div className={styles.addProduct_button}>
-          <Button
-            onClick={openProductModal}
-            fullWidth
-          >
+        <Divider />
+        <Button
+          onClick={handleCreateOrderRequestButton}
+          fullWidth
+          loading={loading}
+        >
+          {t('newOrderPage:addOrderButton')}
+        </Button>
+      </div>
+      <Divider orientation='vertical' />
+      <div className={styles.products}>
+        <div className={styles.header}>
+          <Title order={3}>{t('newOrderPage:products')}</Title>
+          <Button onClick={openProductModal}>
             {t('newOrderPage:productForm:addProductButton')}
           </Button>
         </div>
-
-        <div className={styles.list_column}>
-          <h1 className={styles.list_title}>
-            {t('newOrderPage:productListTitle')}
-          </h1>
-          <div className={styles.list_product}>
-            <Table
-              columns={[
-                {
-                  key: 'hsCode',
-                },
-                {
-                  key: 'name',
-                  initialWidth: 300,
-                },
-                {
-                  key: 'quantity',
-                },
-                {
-                  key: 'weight',
-                  initialWidth: 200,
-                },
-                {
-                  key: 'containerNumber',
-                  initialWidth: 200,
-                },
-                {
-                  key: 'containerSize',
-                  initialWidth: 200,
-                },
-                { key: 'containerType' },
-                {
-                  key: 'actions',
-                  emptyHeader: true,
-                  disallowSorting: true,
-                  disableResizing: true,
-                },
-              ]}
-              data={newOrderForm.values.products.map((p, index) => ({
-                ...p,
-                actions: (
-                  <ActionIcon onClick={() => deleteProduct(index)}>
-                    <IconTrash />
-                  </ActionIcon>
-                ),
-              }))}
-              translationKey={'newOrderPage:table'}
-            ></Table>
-          </div>
-          <div className={styles.addOrder_button_container}>
-            <Button
-              className={styles.button}
-              type='submit'
-            >
-              {t('newOrderPage:addOrderButton')}
-            </Button>
-          </div>
+        <div className={styles.table}>
+          <Table
+            columns={[
+              {
+                key: 'hsCode',
+                initialWidth: 100,
+              },
+              {
+                key: 'name',
+                initialWidth: 250,
+              },
+              {
+                key: 'quantity',
+                initialWidth: 100,
+              },
+              {
+                key: 'weight',
+                initialWidth: 175,
+              },
+              {
+                key: 'containerNumber',
+                initialWidth: 175,
+              },
+              {
+                key: 'containerSize',
+                initialWidth: 200,
+              },
+              {
+                key: 'containerType',
+              },
+              {
+                key: 'actions',
+                emptyHeader: true,
+                disallowSorting: true,
+                disableResizing: true,
+              },
+            ]}
+            data={products.map((p, index) => ({
+              ...p,
+              actions: (
+                <ActionIcon onClick={() => deleteProduct(index)}>
+                  <IconTrash />
+                </ActionIcon>
+              ),
+            }))}
+            translationKey={'newOrderPage:table'}
+          ></Table>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

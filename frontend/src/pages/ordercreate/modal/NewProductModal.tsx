@@ -2,86 +2,114 @@ import { Modal } from '@/components/modals';
 import {
   Button,
   Checkbox,
+  Divider,
   NumberInput,
   Select,
   TextInput,
 } from '@mantine/core';
-import { type FC, useState } from 'react';
+import { type FC } from 'react';
 import styles from '../styles/orderCreate.module.scss';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
-
-import { type Product, type ProductSize, type ProductType } from '@/types/api';
+import {
+  type Product,
+  type ProductContainerSize,
+  type ProductContainerType,
+} from '@/types/api';
 import { useModalStore } from '@/stores/useModalStore';
+import { PRODUCT_CONTAINER_SIZES, PRODUCT_CONTAINER_TYPES } from '../constants';
 
-interface NewProductModalProps {
+type NewProductModalProps = {
   onSubmit: (newProduct: Product) => void;
-}
+};
+
+type NewProductFormValues = {
+  hsCode: string;
+  name: string;
+  quantity: number;
+  weight: number;
+  isContainerProduct: boolean;
+  containerNumber: string;
+  containerSize: string;
+  containerType: string;
+};
 
 export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
   const { t } = useTranslation();
   const { closeModal } = useModalStore();
-  const [checked, setChecked] = useState(true);
 
-  const newProductForm = useForm<Product>({
+  const newProductForm = useForm<NewProductFormValues>({
     initialValues: {
       hsCode: '',
       name: '',
-      quantity: '',
-      weight: '',
+      quantity: 0,
+      weight: 0,
+      isContainerProduct: false,
       containerNumber: '',
-      containerSize: '' as ProductSize,
-      containerType: '' as ProductType,
+      containerSize: '',
+      containerType: '',
     },
     validate: {
-      hsCode: value => {
-        if (!value) {
-          return t('newOrderPage:productForm:hsCode:hsCodeInputError');
-        }
-      },
-      name: value => {
-        if (!value) {
-          return t('newOrderPage:productForm:item:itemInputError');
-        }
-      },
-      quantity: value => {
-        if (!value) {
-          return t('newOrderPage:productForm:quantity:quantityInputError');
-        }
-      },
-      weight: value => {
-        if (!value) {
-          return t('newOrderPage:productForm:weight:weightInputError');
-        }
-      },
+      hsCode: value =>
+        !value ? t('newOrderPage:productForm:hsCode:hsCodeInputError') : null,
+      name: value =>
+        !value ? t('newOrderPage:productForm:item:itemInputError') : null,
+      quantity: value =>
+        !value
+          ? t('newOrderPage:productForm:quantity:quantityInputError')
+          : null,
+      weight: value =>
+        !value ? t('newOrderPage:productForm:weight:weightInputError') : null,
+      containerNumber: (value, { isContainerProduct }) =>
+        !value && isContainerProduct
+          ? t('newOrderPage:productForm:container:number:numberInputError')
+          : null,
+      containerSize: (value, { isContainerProduct }) =>
+        !value && isContainerProduct
+          ? t('newOrderPage:productForm:container:size:sizeInputError')
+          : null,
+      containerType: (value, { isContainerProduct }) =>
+        !value && isContainerProduct
+          ? t('newOrderPage:productForm:container:type:typeInputError')
+          : null,
     },
-    validateInputOnBlur: true,
   });
 
-  const handleSubmit = (values: Product) => {
-    values.containerNumber =
-      values.containerNumber === '' ? null : values.containerNumber;
+  const handleSubmit = (values: NewProductFormValues) => {
+    const newProduct: Product = {
+      hsCode: values.hsCode,
+      name: values.name,
+      quantity: values.quantity,
+      weight: values.weight,
+      ...(values.isContainerProduct
+        ? {
+            containerNumber: values.containerNumber,
+            containerSize: values.containerSize as ProductContainerSize,
+            containerType: values.containerType as ProductContainerType,
+          }
+        : {
+            containerNumber: null,
+            containerSize: null,
+            containerType: null,
+          }),
+    };
 
-    onSubmit(values);
+    onSubmit(newProduct);
     closeModal();
   };
 
   return (
     <Modal
       title={t('newOrderPage:productForm:ProductInputTitle')}
-      className={styles.modal}
       size='55rem'
     >
       <form
         className={styles.product_form}
         onSubmit={newProductForm.onSubmit(handleSubmit)}
       >
-        <div className={styles.row1}>
+        <div>
           <TextInput
-            className={styles.input_field_product_hsCode}
-            description={t(
-              'newOrderPage:productForm:hsCode:hsCodeInputDescription'
-            )}
+            label={t('newOrderPage:productForm:hsCode:hsCodeInputDescription')}
             placeholder={t(
               'newOrderPage:productForm:hsCode:hsCodeInputPlaceholder'
             )}
@@ -89,10 +117,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
             {...newProductForm.getInputProps('hsCode')}
           />
           <TextInput
-            className={styles.input_field_product_name}
-            description={t(
-              'newOrderPage:productForm:name:nameInputDescription'
-            )}
+            label={t('newOrderPage:productForm:name:nameInputDescription')}
             placeholder={t(
               'newOrderPage:productForm:name:nameInputPlaceholder'
             )}
@@ -100,89 +125,79 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
             {...newProductForm.getInputProps('name')}
           />
         </div>
-        <div className={styles.row2}>
+        <div>
           <NumberInput
-            className={styles.input_field_product_quantity}
-            description={t(
+            label={t(
               'newOrderPage:productForm:quantity:quantityInputDescription'
             )}
             placeholder={t(
               'newOrderPage:productForm:quantity:quantityInputPlaceholder'
             )}
             required
-            value={'text'}
             hideControls
             allowNegative={false}
             allowDecimal={false}
             {...newProductForm.getInputProps('quantity')}
           />
           <NumberInput
-            className={styles.input_field_product_weight}
-            description={t(
-              'newOrderPage:productForm:weight:weightInputDescription'
-            )}
+            label={t('newOrderPage:productForm:weight:weightInputDescription')}
             placeholder={t(
               'newOrderPage:productForm:weight:weightInputPlaceholder'
             )}
             required
-            value={'text'}
             hideControls
             allowNegative={false}
             allowDecimal={false}
             {...newProductForm.getInputProps('weight')}
           />
         </div>
-        <Checkbox
-          className={styles.container_checkbox}
-          checked={checked}
-          onChange={event => setChecked(event.currentTarget.checked)}
-          size='md'
-          label={t('newOrderPage:productForm:checkBoxContainer:checkBoxLabel')}
-        />
-        {checked && (
-          <TextInput
-            className={styles.input_field_product_containerNumber}
-            description={t(
-              'newOrderPage:productForm:container:number:numberInputDescription'
+        <Divider />
+        <div>
+          <Checkbox
+            size='md'
+            label={t(
+              'newOrderPage:productForm:checkBoxContainer:checkBoxLabel'
             )}
-            placeholder={t(
-              'newOrderPage:productForm:container:number:numberInputPlaceholder'
-            )}
-            {...newProductForm.getInputProps('containerNr')}
+            {...newProductForm.getInputProps('isContainerProduct')}
           />
-        )}
-        {checked && (
-          <div className={styles.input_field_product_transport_details}>
+          {newProductForm.values.isContainerProduct && (
+            <TextInput
+              label={t(
+                'newOrderPage:productForm:container:number:numberInputDescription'
+              )}
+              placeholder={t(
+                'newOrderPage:productForm:container:number:numberInputPlaceholder'
+              )}
+              {...newProductForm.getInputProps('containerNumber')}
+            />
+          )}
+        </div>
+        {newProductForm.values.isContainerProduct && (
+          <div>
             <Select
-              className={styles.input_field_product_transport_size}
-              description={t(
+              label={t(
                 'newOrderPage:productForm:container:size:sizeInputDescription'
               )}
               placeholder={t(
                 'newOrderPage:productForm:container:size:sizeInputPlaceholder'
               )}
-              data={[
-                { label: '20', value: 'SIZE_20' },
-                { label: '40', value: 'SIZE_40' },
-              ]}
+              data={PRODUCT_CONTAINER_SIZES}
               withAsterisk
               {...newProductForm.getInputProps('containerSize')}
             />
             <Select
-              className={styles.input_field_product_transport_type}
-              description={t(
+              label={t(
                 'newOrderPage:productForm:container:type:typeInputDescription'
               )}
               placeholder={t(
                 'newOrderPage:productForm:container:type:typeInputPlaceholder'
               )}
-              data={[
-                { label: 'OT (open top)', value: 'OT' },
-                { label: 'FT (flat)', value: 'FT' },
-                { label: 'DV (dry van)', value: 'DV' },
-                { label: 'HC (high cube)', value: 'HC' },
-                { label: 'RF (reefer)', value: 'RF' },
-              ]}
+              data={Object.entries(PRODUCT_CONTAINER_TYPES).reduce<
+                { value: string; label: string }[]
+              >((acc, [key, value]) => {
+                acc.push({ value: key, label: value });
+                return acc;
+              }, [])}
               withAsterisk
               {...newProductForm.getInputProps('containerType')}
             />
@@ -190,7 +205,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
         )}
         <div className={styles.confirm_button}>
           <Button type='submit'>
-            {t('modals:changePassword:actionButton')}
+            {t('newOrderPage:productForm:addProductButton')}
           </Button>
         </div>
       </form>

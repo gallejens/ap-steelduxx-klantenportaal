@@ -163,6 +163,9 @@
     "containerType": "Container Type"
   },
   "newOrderPage": {
+    "title": "Order Informatie",
+    "products": "Producten",
+    "documents": "Documenten",
     "orderForm": {
       "transportType": {
         "transportTypeInputTitle": "Transport type",
@@ -225,9 +228,8 @@
           "typeInputError": "Container type van product is vereist"
         }
       },
-      "addProductButton": "Voeg product toe"
+      "addProductButton": "Product Toevoegen"
     },
-    "productListTitle": "Producten",
     "table": {
       "hsCode": "HsCode",
       "name": "Name",
@@ -239,7 +241,8 @@
     },
     "addOrderButton": "Maak order aanvraag aan",
     "success": "Order aanvraag succesvol verzonden.",
-    "failed": "Order aanvraag niet aangemaakt, voeg minstens een product toe."
+    "failed": "Kon order aanvraag niet afhandelen, probeer later opnieuw.",
+    "emptyProducts": "Voeg minstens een product toe."
   },
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",
@@ -292,7 +295,7 @@
       "orders": "Orders",
       "requests": "Registraties",
       "accounts": "Gebruikers",
-      "orderrequests": "Order aanvragen"
+      "orderrequests": "Order Aanvragen"
     },
     "userOptions": {
       "logout": "Uitloggen",
@@ -322,6 +325,9 @@
     }
   },
   "modals": {
+    "confirm": {
+      "action": "Bevestig"
+    },
     "changePassword": {
       "title": "Wachtwoord veranderen",
       "oldPasswordInputLabel": "Oud wachtwoord",

@@ -1,4 +1,4 @@
-package com.ap.steelduxxklantenportaal.dtos;
+package com.ap.steelduxxklantenportaal.dtos.OrderRequests;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public record OrderRequestListDto(
     TransportTypeEnum transportType,
     String portOfOriginCode,
     String portOfDestinationCode, 
-    List<ProductDto> product
+    List<OrderRequestProductDto> product
 ) {
  
     

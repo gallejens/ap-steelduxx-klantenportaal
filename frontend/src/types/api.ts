@@ -62,7 +62,7 @@ export type Product = {
   hsCode: string; // ex "73063090",
   name: string; // ex: "Galvanized steel pipes",
   quantity: number | string; // ex: 15,
-  weight: number | string; // ex: 14328000,
+  weight: number; // ex: 14328000,
   containerNumber: string | null; // ex: "OOCU7396492",
   containerSize: string | null; // ex: "40",
   containerType: string | null; // ex: "DV",

@@ -22,10 +22,6 @@ public record OrderDto(
                 String eta,
                 String ata,
                 long totalWeight,
-<<<<<<< backend/src/main/java/com/ap/steelduxxklantenportaal/dtos/ExternalAPI/OrderDto.java
                 long totalContainers,
                 List<String> containerTypes) {
-=======
-                long totalContainers) {
->>>>>>> backend/src/main/java/com/ap/steelduxxklantenportaal/dtos/ExternalAPI/OrderDto.java
 }

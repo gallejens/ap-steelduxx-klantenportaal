@@ -42,5 +42,4 @@ public class OrdersService {
 
         return externalApiService.doRequest(endpoint, HttpMethod.GET, OrderDetailsDto.class);
     }
-
 }

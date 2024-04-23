@@ -35,6 +35,8 @@ export const OrderDetailsPage: FC = () => {
       }),
   });
 
+  console.log('Order details loaded:', orderDetail);
+
   function getStateClass(state: OrderState): string {
     switch (state) {
       case 'SAILING':
@@ -230,9 +232,33 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          <p>documents</p>
-          <p>download</p>
-          <button>X</button>
+          {orderDetail.data.billOfLadingDownloadLink && (
+            <a
+              href={`/orders/download/${orderDetail.data.referenceNumber}/bl`}
+              download
+              className='download-link'
+            >
+              {t('orderDetailPage:downloadBillOfLading')}
+            </a>
+          )}
+          {orderDetail.data.packingListDownloadLink && (
+            <a
+              href={`/orders/download/${orderDetail.data.referenceNumber}/packing`}
+              download
+              className='download-link'
+            >
+              {t('orderDetailPage:downloadPackingList')}
+            </a>
+          )}
+          {orderDetail.data.customsDownloadLink && (
+            <a
+              href={`/orders/download/${orderDetail.data.referenceNumber}/customs`}
+              download
+              className='download-link'
+            >
+              {t('orderDetailPage:downloadCustomsDocuments')}
+            </a>
+          )}
         </div>
       </div>
     </div>

@@ -108,6 +108,7 @@ export const OrderCreatePage: FC = () => {
 
   const createOrder = async () => {
     if (!newOrderForm.isValid()) {
+      newOrderForm.validate();
       notifications.add({
         title: t('notifications:genericError'),
         message: t('notifications:invalidForm'),
@@ -125,14 +126,29 @@ export const OrderCreatePage: FC = () => {
       },
     });
 
+    // files
+    const formData = new FormData();
+    for (const doc of documents) {
+      formData.set(doc.type, doc.file);
+    }
+
+    doApiAction({
+      endpoint: '/order-requests/upload-files',
+      method: 'POST',
+      body: formData,
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+
     notifications.add({
       message: t(result?.message ?? 'notifications:genericError'),
       autoClose: 5000,
     });
 
-    if (result?.message === 'newOrderPage:success') {
-      navigate({ to: '/app/orders' });
-    }
+    // if (result?.message === 'newOrderPage:success') {
+    //   navigate({ to: '/app/orders' });
+    // }
   };
 
   return (

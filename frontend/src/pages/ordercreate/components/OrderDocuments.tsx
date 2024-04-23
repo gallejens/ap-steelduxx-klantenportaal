@@ -4,10 +4,12 @@ import styles from '../styles/orderCreate.module.scss';
 import { ActionIcon, FileButton, Text, Title } from '@mantine/core';
 import {
   ACCEPTED_DOCUMENT_FILETYPES,
+  MAX_DOCUMENT_FILESIZE,
   ORDER_DOCUMENT_TYPES,
 } from '../constants';
 import { IconTrash, IconUpload } from '@tabler/icons-react';
 import type { OrderDocumentType } from '@/types/api';
+import { notifications } from '@/components/notifications';
 
 type Props = {
   documents: CreateOrderDocument[];
@@ -23,6 +25,14 @@ export const OrderDocuments: FC<Props> = props => {
 
   const handleFileChange = (type: OrderDocumentType, file: File | null) => {
     if (!file) return;
+
+    if (file.size > MAX_DOCUMENT_FILESIZE) {
+      notifications.add({
+        message: 'Max 10MB',
+        color: 'red',
+      });
+      return;
+    }
 
     props.setDocuments(s => [
       ...s.filter(d => d.type !== type),

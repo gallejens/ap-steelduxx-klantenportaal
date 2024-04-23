@@ -3,6 +3,7 @@ package com.ap.steelduxxklantenportaal.services;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestListDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestProductDto;
+import com.ap.steelduxxklantenportaal.enums.DocumentType;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.models.OrderRequest;
 import com.ap.steelduxxklantenportaal.models.OrderRequestProduct;
@@ -13,8 +14,10 @@ import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,11 +25,13 @@ public class OrderRequestService {
     private final OrderRequestRepository orderRequestRepository;
     private final OrderRequestProductRepository orderRequestProductRepository;
     private final CompanyRepository companyRepository;
+    private final FileSystemStorageService fileSystemStorageService;
 
-    public OrderRequestService(OrderRequestRepository orderRequestRepository, OrderRequestProductRepository orderRequestProductRepository, CompanyRepository companyRepository) {
+    public OrderRequestService(OrderRequestRepository orderRequestRepository, OrderRequestProductRepository orderRequestProductRepository, CompanyRepository companyRepository, FileSystemStorageService fileSystemStorageService) {
         this.orderRequestRepository = orderRequestRepository;
         this.orderRequestProductRepository = orderRequestProductRepository;
         this.companyRepository = companyRepository;
+        this.fileSystemStorageService = fileSystemStorageService;
     }
 
     public void addOrderRequest(NewOrderRequestDto newOrderRequestDto) {
@@ -100,4 +105,9 @@ public class OrderRequestService {
                 .collect(Collectors.toList());
     }
 
+    public void saveOrderRequestDocuments(Map<DocumentType, MultipartFile> documents) {
+        for (MultipartFile file: documents.values()) {
+            fileSystemStorageService.store(file);
+        }
+    }
 }

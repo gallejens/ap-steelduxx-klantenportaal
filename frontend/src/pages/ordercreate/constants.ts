@@ -23,3 +23,4 @@ export const ORDER_DOCUMENT_TYPES: Record<OrderDocumentType, string> = {
 };
 
 export const ACCEPTED_DOCUMENT_FILETYPES = 'application/pdf';
+export const MAX_DOCUMENT_FILESIZE = 10 * 1024 * 1024; // 10mb

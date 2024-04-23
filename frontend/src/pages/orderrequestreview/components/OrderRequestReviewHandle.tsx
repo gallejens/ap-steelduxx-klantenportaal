@@ -1,89 +1,54 @@
-import { type FC, useState } from 'react';
-import { Button, Select, Textarea } from '@mantine/core';
-import styles from '../styles/userRequestReview.module.scss';
+import { FC, useState } from 'react';
+import { Button } from '@mantine/core';
+import styles from '../styles/orderRequestReview.module.scss';
 import { useTranslation } from 'react-i18next';
-import { useForm } from '@mantine/form';
 import { notifications } from '@/components/notifications';
-import { type GenericAPIResponse, doApiAction } from '@/lib/api';
+import { GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
-import { useQuery } from '@tanstack/react-query';
-import type { UserRequest } from '@/types/userrequest';
 
 type Props = {
   onSubmit?: () => void;
-  onSucces?: () => void;
+  onSuccess?: () => void;
 };
 
-export const UserRequestReviewHandle: FC<Props> = props => {
+export const OrderRequestReviewHandle: FC<Props> = props => {
   const { t } = useTranslation();
-  const { openModal, closeModal } = useModalStore();
-  const { request_id: requestId } = useParams({
-    from: '/app/requests/$request_id',
+  const {} = useModalStore();
+  const { orderrequestid: orderRequestId } = useParams({
+    from: '/app/order-requests/$orderrequestid',
   });
 
-  const [isApproved, setIsApproved] = useState(true);
-  const [isDenied, setIsDenied] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [actionType, setActionType] = useState('');
 
-  const { data: companyCodesResponse } = useQuery({
-    queryKey: ['user-requests-review-company-codes'],
-    queryFn: () =>
-      doApiAction<GenericAPIResponse<string[]>>({
-        endpoint: '/user-requests/company-codes',
-        method: 'GET',
-      }),
-  });
+  const handleApproveClick = async () => {
+    setActionType('approve');
+    setIsConfirmModalOpen(true);
+  };
 
-  const companyCodes = companyCodesResponse?.data ?? [];
+  const handleDenyClick = async () => {
+    setActionType('deny');
+    setIsConfirmModalOpen(true);
+  };
 
-  const approveForm = useForm<UserRequest.UserRequestApproveValues>({
-    initialValues: {
-      referenceCode: '',
-    },
-    validate: {
-      referenceCode: value => {
-        if (!value || !companyCodes.includes(value)) {
-          return t('userRequestForm:referenceCodeInputError');
-        }
-      },
-    },
-    validateInputOnBlur: true,
-  });
-
-  const denyForm = useForm<UserRequest.UserRequestDenyValues>({
-    initialValues: {
-      denyMessage: '',
-    },
-    validate: {
-      denyMessage: value => {
-        if (!value) {
-          return t('userRequestForm:denyMessageInputError');
-        }
-      },
-    },
-    validateInputOnBlur: true,
-  });
-
-  const approveUserRequestReviewButton = async (
-    values: UserRequest.UserRequestApproveValues
-  ) => {
-    if (!approveForm.isValid()) {
-      notifications.add({
-        title: t('notifications: genericError'),
-        message: t('notifications:invalidForm'),
-        color: 'red',
-      });
+  const handleConfirm = async () => {
+    setIsConfirmModalOpen(false);
+    if (actionType === 'approve') {
+      await approveOrderRequest();
+    } else if (actionType === 'deny') {
+      await denyOrderRequest();
     }
+  };
 
+  const approveOrderRequest = async () => {
     const resultApprove = await doApiAction<
       GenericAPIResponse<{ message: string }>
     >({
-      endpoint: `/user-requests/${requestId}/approve`,
-      method: 'POST',
-      body: {
-        referenceCode: values.referenceCode,
-      },
+      endpoint: `/order-requests/${orderRequestId}/status`,
+      method: 'PUT',
+      body: 'APPROVED',
     });
 
     notifications.add({
@@ -94,35 +59,17 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     props.onSubmit?.();
 
     if (resultApprove?.message === 'userRequestReviewPage:response:success') {
-      props.onSucces?.();
+      props.onSuccess?.();
     }
   };
 
-  const handleApproveClick = () => {
-    setIsApproved(true);
-    setIsDenied(false);
-  };
-
-  const denyUserRequestReviewButton = async (
-    values: UserRequest.UserRequestDenyValues
-  ) => {
-    if (!denyForm.isValid()) {
-      notifications.add({
-        title: t('notifications: genericError'),
-        message: t('notifications:invalidForm'),
-        color: 'red',
-      });
-      return;
-    }
-
+  const denyOrderRequest = async () => {
     const resultDeny = await doApiAction<
       GenericAPIResponse<{ message: string }>
     >({
-      endpoint: `/user-requests/${requestId}/deny`,
-      method: 'POST',
-      body: {
-        denyMessage: values.denyMessage,
-      },
+      endpoint: `/order-requests/${orderRequestId}/status`,
+      method: 'PUT',
+      body: 'DENIED',
     });
 
     notifications.add({
@@ -133,13 +80,8 @@ export const UserRequestReviewHandle: FC<Props> = props => {
     props.onSubmit?.();
 
     if (resultDeny?.message === 'userRequestReviewPage:response:denied') {
-      props.onSucces?.();
+      props.onSuccess?.();
     }
-  };
-
-  const handleDenyClick = () => {
-    setIsDenied(true);
-    setIsApproved(false);
   };
 
   return (
@@ -147,7 +89,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
       <div className={styles.button_container}>
         <Button
           className={styles.approve_button}
-          variant={isApproved ? 'filled' : 'light'}
+          variant='filled'
           color='#1F9254'
           size='lg'
           onClick={handleApproveClick}
@@ -157,7 +99,7 @@ export const UserRequestReviewHandle: FC<Props> = props => {
 
         <Button
           className={styles.deny_button}
-          variant={isDenied ? 'filled' : 'light'}
+          variant='filled'
           color='#A30D11'
           size='lg'
           onClick={handleDenyClick}
@@ -166,79 +108,22 @@ export const UserRequestReviewHandle: FC<Props> = props => {
         </Button>
       </div>
 
-      <div className={styles.handle_container}>
-        {isApproved ? (
-          <form
-            onSubmit={approveForm.onSubmit(values =>
-              openModal(
-                <ConfirmModal
-                  title={t(
-                    'appshell:approveRequestConfirmation:approveConfirmTitle'
-                  )}
-                  text={t(
-                    'appshell:approveRequestConfirmation:approveConfirmText'
-                  )}
-                  onConfirm={() => {
-                    closeModal();
-                    approveUserRequestReviewButton(values);
-                  }}
-                />
-              )
-            )}
-          >
-            <Select
-              label={t('userRequestForm:referenceCodeInputTitle')}
-              description={t('userRequestForm:referenceCodeInputDescription')}
-              placeholder={t('userRequestForm:referenceCodeInputPlaceholder')}
-              data={companyCodes}
-              withAsterisk
-              searchable
-              {...approveForm.getInputProps('referenceCode')}
-            />
-
-            <div className={styles.confirm_button}>
-              <Button type='submit'>
-                {t('userRequestForm:confirmButton')}
-              </Button>
-            </div>
-          </form>
-        ) : null}
-
-        {isDenied ? (
-          <form
-            onSubmit={denyForm.onSubmit(values =>
-              openModal(
-                <ConfirmModal
-                  title={t('appshell:denyRequestConfirmation:denyConfirmTitle')}
-                  text={t('appshell:denyRequestConfirmation:denyConfirmText')}
-                  onConfirm={() => {
-                    closeModal();
-                    denyUserRequestReviewButton(values);
-                  }}
-                />
-              )
-            )}
-          >
-            <Textarea
-              className={styles.deny_input}
-              withAsterisk
-              autosize
-              minRows={2}
-              maxRows={10}
-              label={t('userRequestForm:denyMessageInputTitle')}
-              description={t('userRequestForm:denyMessageInputDescription')}
-              placeholder={t('userRequestForm:denyMessageInputPlaceholder')}
-              required
-              {...denyForm.getInputProps('denyMessage')}
-            />
-            <div className={styles.confirm_button}>
-              <Button type='submit'>
-                {t('userRequestForm:confirmButton')}
-              </Button>
-            </div>
-          </form>
-        ) : null}
-      </div>
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          title={
+            actionType === 'approve'
+              ? t('appshell:approveRequestConfirmation:approveConfirmTitle')
+              : t('appshell:denyRequestConfirmation:denyConfirmTitle')
+          }
+          text={
+            actionType === 'approve'
+              ? t('appshell:approveRequestConfirmation:approveConfirmText')
+              : t('appshell:denyRequestConfirmation:denyConfirmText')
+          }
+          onConfirm={handleConfirm}
+          onCancel={() => setIsConfirmModalOpen(false)}
+        />
+      )}
     </>
   );
 };

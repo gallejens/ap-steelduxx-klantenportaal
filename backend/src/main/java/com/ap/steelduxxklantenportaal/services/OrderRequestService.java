@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -129,5 +130,14 @@ public class OrderRequestService {
 
         var orderRequestDocument = new OrderRequestDocument(orderRequestUploadDto.orderRequestId(), orderRequestUploadDto.type(), fileName);
         orderRequestDocumentRepository.save(orderRequestDocument);
+    }
+
+    public void updateOrderRequestStatus(Long orderId, StatusEnum status) {
+        Optional<OrderRequest> optionalOrderRequest = orderRequestRepository.findById(orderId);
+        if (optionalOrderRequest.isPresent()) {
+            OrderRequest orderRequest = optionalOrderRequest.get();
+            orderRequest.setStatus(status);
+            orderRequestRepository.save(orderRequest);
+        }
     }
 }

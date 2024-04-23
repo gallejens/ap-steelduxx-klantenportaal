@@ -384,5 +384,13 @@
       "portOfOriginCode": "Port herkomst",
       "portOfDestinationCode": "Port aankomst"
     }
+  },
+  "orderRequestForm": {
+    "idInputTitle": "Volg ID",
+    "statusInputTitle": "Status",
+    "transportTypeInputTitle": "Transport Type",
+    "customerCodeInputTitle": "Bedrijf ID",
+    "portOfDestinationInputTitle": "Haven van bestemming",
+    "portOfOriginInputTitle": "Haven van herkomst"
   }
 }

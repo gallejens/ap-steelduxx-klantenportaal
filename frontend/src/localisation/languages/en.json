@@ -384,5 +384,13 @@
       "portOfOriginCode": "Port origin",
       "portOfDestinationCode": "Port destination"
     }
+  },
+  "orderRequestForm": {
+    "idInputTitle": "Follow ID",
+    "statusInputTitle": "Status",
+    "transportTypeInputTitle": "Transport Type",
+    "customerCodeInputTitle": "Company ID",
+    "portOfDestinationInputTitle": "Port of Destination",
+    "portOfOriginInputTitle": "Port of Origin"
   }
 }

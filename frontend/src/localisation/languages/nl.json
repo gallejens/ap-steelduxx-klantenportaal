@@ -22,11 +22,11 @@
     "companyInputTitle": "Bedrijf",
     "companyInputDescription": "Vul hier de naam van het bedrijf",
     "companyInputPlaceholder": "Steelduxx",
-    "companyInputError": "Bedrijfsnaam is verplicht",
+    "companyInputError": "Bedrijfsnaam is vereist",
     "countryInputTitle": "Land",
     "countryInputDescription": "Vul hier het land van het bedrijf",
     "countryInputPlaceholder": "Belgie",
-    "countryInputError": "Land is verplicht",
+    "countryInputError": "Land is vereist",
 
     "phoneNrInputTitle": "Telefoonnummer",
     "phoneNrInputDesription": "Vul hier de telefoonnummer van het bedrijf",
@@ -40,19 +40,19 @@
     "postalCodeInputTitle": "ZIP",
     "postalCodeInputDescription": "Vul hier de zip van het bedrijf",
     "postalCodeInputPlaceholder": "2000",
-    "postalCodeInputError": "ZIP is verplicht",
+    "postalCodeInputError": "ZIP is vereist",
     "districtInputTitle": "Gemeente",
     "districtInputDescription": "Vul hier de gemeente van het bedrijf",
     "districtInputPlaceholder": "Antwerpen",
-    "districtInputError": "Gemeente is verplicht",
+    "districtInputError": "Gemeente is vereist",
 
     "streetInputTitle": "Adres",
     "streetInputDescription": "Straat",
     "streetInputPlaceholder": "Duboisstraat",
-    "streetInputError": "Straat is verplicht",
+    "streetInputError": "Straat is vereist",
     "streetNrInputDescription": "Straatnummer",
     "streetNrInputPlaceholder": "50",
-    "streetNrInputError": "Nummer is verplicht",
+    "streetNrInputError": "Nummer is vereist",
     "boxNrInputDescription": "Bus nummer",
     "boxNrInputPlaceholder": "1",
     "boxNrInputError": "Ongeldig bus nummer",
@@ -62,10 +62,10 @@
     "firstNameInputTitle": "Contactpersoon",
     "firstNameInputDescription": "Voornaam",
     "firstNameInputPlaceholder": "John",
-    "firstNameInputError": "Voornaam is verplicht",
+    "firstNameInputError": "Voornaam is vereist",
     "lastNameInputDescription": "Achternaam",
     "lastNameInputPlaceholder": "Doe",
-    "lastNameInputError": "Achternaam is verplicht",
+    "lastNameInputError": "Achternaam is vereist",
 
     "emailInputDescription": "E-mail",
     "emailInputError": "Ongeldig e-mailadres",
@@ -79,14 +79,14 @@
     "loginLink": "Log in",
 
     "referenceCodeInputTitle": "Referentie code",
-    "referenceCodeInputDescription": "Vul hier de referentie code in van het bedrijf",
+    "referenceCodeInputDescription": "Selecteer de referentie code in van het bedrijf",
     "referenceCodeInputPlaceholder": "SOF1",
-    "referenceCodeInputError": "Referentie code van bedrijf is verplicht",
+    "referenceCodeInputError": "Referentie code van bedrijf is vereist",
 
     "denyMessageInputTitle": "Motivatie",
     "denyMessageInputDescription": "Vul hier de motivatie voor het afkeuren",
     "denyMessageInputPlaceholder": "Beschrijving van motivatie",
-    "denyMessageInputError": "Descriptie van motivatie is verplicht",
+    "denyMessageInputError": "Descriptie van motivatie is vereist",
 
     "confirmButton": "Bevestigen",
     "success": "Aanvraag is succesvol verzonden."
@@ -106,6 +106,9 @@
     "tableEmpty": "Geen aanvragen"
   },
   "orderListPage": {
+    "header": {
+      "newOrder": "Niew Order"
+    },
     "table": {
       "referenceNumber": "Referentienummer",
       "customerReferenceNumber": "Klanten Referentienummer",
@@ -159,6 +162,85 @@
     "containerSize": "Container Grootte",
     "containerType": "Container Type"
   },
+  "newOrderPage": {
+    "orderForm": {
+      "transportType": {
+        "transportTypeInputTitle": "Transport type",
+        "transportTypeInputDescription": "Selecteer het transport type van het order",
+        "transportTypeInputPlaceholder": "IMPORT / EXPORT",
+        "transportTypeInputError": "Transport type is vereist"
+      },
+      "portDestinationCode": {
+        "portDestinationCodeInputTitle": "Haven code van bestemming",
+        "portDestinationCodeInputDescription": "Vul hier de havencode van de bestemming in",
+        "portDestinationCodeInputPlaceholder": "BEANR",
+        "portDestinationCodeInputError": "De havencode van de bestemming is vereist"
+      },
+      "portOriginCode": {
+        "portOriginCodeInputTitle": "Haven code van oorsprong",
+        "portOriginCodeInputDescription": "Vul hier de havencode van de oorsprong in",
+        "portOriginCodeInputPlaceholder": "CNSHG",
+        "portOriginCodeInputError": "De havencode van de oorsprong is vereist"
+      }
+    },
+    "productForm": {
+      "ProductInputTitle": "Product",
+      "hsCode": {
+        "hsCodeInputDescription": "HS-code",
+        "hsCodeInputPlaceholder": "73063090",
+        "hsCodeInputError": "HS-code van het product is vereist"
+      },
+      "name": {
+        "nameInputDescription": "Name",
+        "nameInputPlaceholder": "Verzinkte stalen buizen",
+        "nameInputError": "Name is vereist"
+      },
+      "quantity": {
+        "quantityInputDescription": "Hoeveelheid",
+        "quantityInputPlaceholder": "15",
+        "quantityInputError": "Hoeveelheid van het product is vereist"
+      },
+      "weight": {
+        "weightInputDescription": "Gewicht (kg)",
+        "weightInputPlaceholder": "14328000",
+        "weightInputError": "Gewicht van het product is vereist"
+      },
+      "checkBoxContainer": {
+        "checkBoxLabel": "Container product"
+      },
+      "container": {
+        "number": {
+          "numberInputDescription": "Container nummer",
+          "numberInputPlaceholder": "OOCU7396492",
+          "numberInputError": "Container nummer van product is vereist"
+        },
+        "size": {
+          "sizeInputDescription": "Container grootte (feet)",
+          "sizeInputPlaceholder": "20",
+          "sizeInputError": "Container grootte van product is vereist"
+        },
+        "type": {
+          "typeInputDescription": "Container type",
+          "typeInputPlaceholder": "OT (open top)",
+          "typeInputError": "Container type van product is vereist"
+        }
+      },
+      "addProductButton": "Voeg product toe"
+    },
+    "productListTitle": "Producten",
+    "table": {
+      "hsCode": "HsCode",
+      "name": "Name",
+      "quantity": "Hoeveelheid",
+      "weight": "Totaal gewicht (kg)",
+      "containerNumber": "Container nummer",
+      "containerSize": "Container grootte (feet)",
+      "containerType": "Container type"
+    },
+    "addOrderButton": "Maak order aanvraag aan",
+    "success": "Order aanvraag succesvol verzonden.",
+    "failed": "Order aanvraag niet aangemaakt, voeg minstens een product toe."
+  },
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",
     "approveButton": "Goedkeuren",
@@ -209,7 +291,8 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registraties",
-      "accounts": "Gebruikers"
+      "accounts": "Gebruikers",
+      "orderrequests": "Order aanvragen"
     },
     "userOptions": {
       "logout": "Uitloggen",
@@ -228,6 +311,14 @@
     "denyRequestConfirmation": {
       "denyConfirmTitle": "Aanvraag afwijzen",
       "denyConfirmText": "Weet je zeker dat je deze aanvraag wilt afwijzen?"
+    },
+    "newOrderConfirmation": {
+      "newOrderConfirmTitle": "Nieuw order",
+      "newOrderConfirmText": "Weet je zeker dat je deze order wilt aanmaken?"
+    },
+    "newProductConfirmation": {
+      "newOrderConfirmTitle": "Nieuw product",
+      "newOrderConfirmText": "Weet je zeker dat je dit product wilt toevoegen?"
     }
   },
   "modals": {
@@ -278,5 +369,14 @@
     "loading": "Laden...",
     "error": "Er heeft zich een fout voorgedaan tijdens het laden van de accounts",
     "createSubAccount": "Subaccount aanmaken"
+  },
+  "orderRequestListPage": {
+    "table": {
+      "id": "Volg ID",
+      "customerCode": "Klant Id",
+      "transportType": "Transport type",
+      "portOfOriginCode": "Port herkomst",
+      "portOfDestinationCode": "Port aankomst"
+    }
   }
 }

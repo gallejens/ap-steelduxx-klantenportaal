@@ -19,6 +19,7 @@ export const Modal: FC<
     title: string;
     onClose?: () => void;
     className?: string;
+    size?: string;
   }
 > = props => {
   const { closeModal } = useModalStore();
@@ -34,6 +35,7 @@ export const Modal: FC<
         closeModal();
         props.onClose?.();
       }}
+      size={props.size ?? 'md'}
     >
       <div className={classNames(props.className, styles.modal_body)}>
         {props.children}

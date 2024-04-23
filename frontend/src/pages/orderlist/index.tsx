@@ -1,5 +1,5 @@
 import { useState, type FC } from 'react';
-import { Badge, TextInput } from '@mantine/core';
+import { Badge, Button, TextInput } from '@mantine/core';
 import { useNavigate } from '@tanstack/react-router';
 import styles from './styles/orderList.module.scss';
 import { IconSearch } from '@tabler/icons-react';
@@ -9,11 +9,13 @@ import { useTranslation } from 'react-i18next';
 import { Table } from '@/components/table';
 import type { Order } from '@/types/api';
 import { getOrderStateColor, getOrderTransportTypeColor } from './helpers';
+import { useAuth } from '@/hooks/useAuth';
 
 export const OrderListPage: FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const {
     data: orders,
@@ -56,10 +58,22 @@ export const OrderListPage: FC = () => {
     <div className={styles.order_list_page}>
       <div className={styles.header}>
         <TextInput
+          className={styles.search_bar}
           leftSection={<IconSearch />}
           value={searchValue}
           onChange={e => setSearchValue(e.currentTarget.value)}
         />
+        {user?.permissions.includes('CREATE_NEW_ORDERS') && (
+          <Button
+            type='submit'
+            onClick={() => {
+              navigate({ to: '/app/orders/new' });
+            }}
+            className={styles.new_button}
+          >
+            {t('orderListPage:header:newOrder')}
+          </Button>
+        )}
       </div>
       <div className={styles.body}>
         <Table

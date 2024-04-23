@@ -9,8 +9,11 @@ export namespace Auth {
     | 'ACCESS'
     | 'ADMIN'
     | 'CREATE_SUB_ACCOUNTS'
+    | 'CREATE_NEW_ORDERS'
     | 'VIEW_ACCOUNTS'
-    | 'MANAGE_USER_REQUESTS';
+    | 'EXTERNAL_API_ADMIN'
+    | 'MANAGE_USER_REQUESTS'
+    | 'MANAGE_ORDER_REQUESTS';
 
   export type User = {
     id: number;

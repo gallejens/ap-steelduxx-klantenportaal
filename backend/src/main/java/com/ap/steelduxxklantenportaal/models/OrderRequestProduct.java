@@ -1,6 +1,5 @@
 package com.ap.steelduxxklantenportaal.models;
 
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestProductDto;
 import com.ap.steelduxxklantenportaal.enums.ContainerSizeEnum;
 import com.ap.steelduxxklantenportaal.enums.ContainerTypeEnum;

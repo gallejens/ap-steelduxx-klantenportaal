@@ -35,6 +35,7 @@ export const OrderCreatePage: FC = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [documents, setDocuments] = useState<CreateOrderDocument[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const newOrderForm = useForm<NewOrderFormValues>({
     initialValues: {
@@ -117,7 +118,8 @@ export const OrderCreatePage: FC = () => {
       return;
     }
 
-    const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
+    setLoading(true);
+    const result = await doApiAction<GenericAPIResponse<number>>({
       endpoint: '/order-requests/new',
       method: 'POST',
       body: {
@@ -126,29 +128,41 @@ export const OrderCreatePage: FC = () => {
       },
     });
 
-    // files
-    const formData = new FormData();
-    for (const doc of documents) {
-      formData.set(doc.type, doc.file);
+    const createdOrderRequest = !!result?.data;
+    if (!createdOrderRequest) {
+      setLoading(false);
+      notifications.add({
+        message: t(result?.message ?? 'notifications:genericError'),
+        autoClose: 5000,
+      });
+      return;
     }
 
-    doApiAction({
-      endpoint: '/order-requests/upload-files',
-      method: 'POST',
-      body: formData,
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    });
+    for (const doc of documents) {
+      const formData = new FormData();
+      formData.set('orderRequestId', result.data.toString());
+      formData.set('file', doc.file);
+      formData.set('type', doc.type);
 
+      await doApiAction({
+        endpoint: '/order-requests/upload-file',
+        method: 'POST',
+        body: formData,
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      });
+    }
+
+    setLoading(false);
     notifications.add({
-      message: t(result?.message ?? 'notifications:genericError'),
+      message: t(result.message),
       autoClose: 5000,
     });
 
-    // if (result?.message === 'newOrderPage:success') {
-    //   navigate({ to: '/app/orders' });
-    // }
+    if (result?.message === 'newOrderPage:success') {
+      navigate({ to: '/app/orders' });
+    }
   };
 
   return (
@@ -216,6 +230,7 @@ export const OrderCreatePage: FC = () => {
         <Button
           onClick={handleCreateOrderRequestButton}
           fullWidth
+          loading={loading}
         >
           {t('newOrderPage:addOrderButton')}
         </Button>

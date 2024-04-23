@@ -241,7 +241,7 @@
     },
     "addOrderButton": "Create order request",
     "success": "Order request succesfully created.",
-    "failed": "Order not created, add atleast one product.",
+    "failed": "Failed to create order, try again later.",
     "emptyProducts": "Add at least one product."
   },
   "userRequestReviewPage": {

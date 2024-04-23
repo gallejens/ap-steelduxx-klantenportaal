@@ -241,7 +241,7 @@
     },
     "addOrderButton": "Maak order aanvraag aan",
     "success": "Order aanvraag succesvol verzonden.",
-    "failed": "Order aanvraag niet aangemaakt, voeg minstens een product toe.",
+    "failed": "Kon order aanvraag niet afhandelen, probeer later opnieuw.",
     "emptyProducts": "Voeg minstens een product toe."
   },
   "userRequestReviewPage": {

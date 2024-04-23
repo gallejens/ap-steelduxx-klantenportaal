@@ -22,8 +22,8 @@ public class FileSystemStorageService {
         rootLocation = Paths.get("order-request-files");
     }
 
-    public void store(MultipartFile file) {
-        if (file.isEmpty()) return;
+    public String store(MultipartFile file) {
+        if (file.isEmpty()) return null;
 
         String fileName = UUID.randomUUID().toString();
         Path destinationFile = rootLocation.resolve(Paths.get(fileName)).normalize().toAbsolutePath();
@@ -31,8 +31,10 @@ public class FileSystemStorageService {
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            //
+            return null;
         }
+
+        return fileName;
     }
 
     public Resource load(String fileName) {

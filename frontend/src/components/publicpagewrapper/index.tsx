@@ -41,6 +41,10 @@ export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
           </>
         )}
       </div>
+      <img
+        className={styles.waves}
+        src='/public_page_waves.svg'
+      ></img>
     </div>
   );
 };

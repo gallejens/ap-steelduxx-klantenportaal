@@ -109,7 +109,7 @@ export const OrderCreatePage: FC = () => {
     }
 
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
-      endpoint: '/orders/new',
+      endpoint: '/order-requests/new',
       method: 'POST',
       body: {
         ...newOrderForm.values,
@@ -142,10 +142,7 @@ export const OrderCreatePage: FC = () => {
             placeholder={t(
               'newOrderPage:orderForm:transportType:transportTypeInputPlaceholder'
             )}
-            data={[
-              { label: 'IMPORT', value: 'IMPORT' },
-              { label: 'EXPORT', value: 'EXPORT' },
-            ]}
+            data={['IMPORT', 'EXPORT']}
             required
             searchable
             clearable={false}

@@ -1,11 +1,17 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.OrderRequestListDto;
-import com.ap.steelduxxklantenportaal.dtos.ProductDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestListDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestProductDto;
+import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.models.OrderRequest;
-import com.ap.steelduxxklantenportaal.models.Product;
+import com.ap.steelduxxklantenportaal.models.OrderRequestProduct;
+import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import com.ap.steelduxxklantenportaal.repositories.OrderRequestRepository;
-import com.ap.steelduxxklantenportaal.repositories.ProductRepository;
+import com.ap.steelduxxklantenportaal.repositories.OrderRequestProductRepository;
+import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,27 +19,66 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderRequestService {
-    private OrderRequestRepository orderRequestRepository;
-    private ProductRepository productRepository;
+    private final OrderRequestRepository orderRequestRepository;
+    private final OrderRequestProductRepository orderRequestProductRepository;
+    private final CompanyRepository companyRepository;
 
-    public OrderRequestService(OrderRequestRepository orderRequestRepository, ProductRepository productRepository) {
+    public OrderRequestService(OrderRequestRepository orderRequestRepository, OrderRequestProductRepository orderRequestProductRepository, CompanyRepository companyRepository) {
         this.orderRequestRepository = orderRequestRepository;
-        this.productRepository = productRepository;
+        this.orderRequestProductRepository = orderRequestProductRepository;
+        this.companyRepository = companyRepository;
     }
 
-    public ProductDto convertProductsToDTO(Product product) {
-        return new ProductDto(
-                product.getHsCode(),
-                product.getName(),
-                product.getQuantity(),
-                product.getWeight(),
-                product.getContainerNumber(),
-                product.getContainerSize(),
-                product.getContainerType());
+    public void addOrderRequest(NewOrderRequestDto newOrderRequestDto) {
+        var user = AuthService.getCurrentUser();
+        if (user == null) return;
+        var company = companyRepository.findByUserId(user.getId());
+        if (company.isEmpty()) return;
+
+        var companyCode = company.get().getReferenceCode();
+
+        OrderRequest orderRequest = new OrderRequest(
+                companyCode,
+                newOrderRequestDto.transportType(),
+                newOrderRequestDto.portOfOriginCode(),
+                newOrderRequestDto.portOfDestinationCode(),
+                StatusEnum.PENDING);
+
+        OrderRequest savedOrderRequest = orderRequestRepository.save(orderRequest);
+
+        List<OrderRequestProduct> orderRequestProducts = newOrderRequestDto.products().stream()
+                .map(orderRequestProductDto -> {
+                    var product = OrderRequestProduct.fromDto(orderRequestProductDto);
+                    product.setOrderRequestId(savedOrderRequest.getId());
+                    return product;
+                })
+                .collect(Collectors.toList());
+
+        orderRequestProductRepository.saveAll(orderRequestProducts);
+    }
+
+    public ResponseEntity<Object> createNewOrderRequest(NewOrderRequestDto newOrderRequestDto) {
+        if (newOrderRequestDto.products().isEmpty()) {
+            return ResponseHandler.generate("newOrderPage:failed", HttpStatus.BAD_REQUEST);
+        }
+
+        addOrderRequest(newOrderRequestDto);
+        return ResponseHandler.generate("newOrderPage:success", HttpStatus.CREATED);
+    }
+
+    public OrderRequestProductDto convertProductsToDTO(OrderRequestProduct orderRequestProduct) {
+        return new OrderRequestProductDto(
+                orderRequestProduct.getHsCode(),
+                orderRequestProduct.getName(),
+                orderRequestProduct.getQuantity(),
+                orderRequestProduct.getWeight(),
+                orderRequestProduct.getContainerNumber(),
+                orderRequestProduct.getContainerSize(),
+                orderRequestProduct.getContainerType());
     }
 
     public OrderRequestListDto convertOrderRequestListToDTO(OrderRequest orderRequest) {
-        List<ProductDto> productDtos = productRepository.findAllByOrderRequestId(orderRequest.getId()).stream()
+        List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository.findAllByOrderRequestId(orderRequest.getId()).stream()
         .map(this::convertProductsToDTO)
         .collect(Collectors.toList());
 
@@ -44,7 +89,7 @@ public class OrderRequestService {
                 orderRequest.getTransportType(),
                 orderRequest.getPortOfOriginCode(),
                 orderRequest.getPortOfDestinationCode(),
-                productDtos
+                orderRequestProductDtos
                 );
     }
 

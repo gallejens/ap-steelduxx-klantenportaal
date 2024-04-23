@@ -1,11 +1,11 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.dtos.OrderRequestListDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestListDto;
 import com.ap.steelduxxklantenportaal.services.OrderRequestService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,6 +16,12 @@ public class OrderRequestController {
 
     public OrderRequestController(OrderRequestService orderRequestService){
         this.orderRequestService = orderRequestService;
+    }
+
+    @PostMapping("/new")
+    @PreAuthorize("hasAuthority('CREATE_NEW_ORDERS')")
+    public ResponseEntity<Object> createOrderRequest(@RequestBody NewOrderRequestDto newOrderRequestDto) {
+        return orderRequestService.createNewOrderRequest(newOrderRequestDto);
     }
 
     @GetMapping("/all")

@@ -1,5 +1,7 @@
 package com.ap.steelduxxklantenportaal.models;
 
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestProductDto;
 import com.ap.steelduxxklantenportaal.enums.ContainerSizeEnum;
 import com.ap.steelduxxklantenportaal.enums.ContainerTypeEnum;
 
@@ -15,7 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class OrderRequestProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,4 +32,16 @@ public class Product {
     private ContainerSizeEnum containerSize;
     @Enumerated(EnumType.STRING)
     private ContainerTypeEnum containerType;
+
+    public static OrderRequestProduct fromDto(OrderRequestProductDto dto) {
+        var product = new OrderRequestProduct();
+        product.setHsCode(dto.hsCode());
+        product.setName(dto.name());
+        product.setQuantity(dto.quantity());
+        product.setWeight(dto.weight());
+        product.setContainerNumber(dto.containerNumber());
+        product.setContainerSize(dto.containerSize());
+        product.setContainerType(dto.containerType());
+        return product;
+    }
 }

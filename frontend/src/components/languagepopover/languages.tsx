@@ -4,11 +4,11 @@ export const languages = [
   {
     key: 'en',
     name: 'English',
-    flag: <GBFlag radius={'md'}></GBFlag>,
+    flag: GBFlag,
   },
   {
     key: 'nl',
     name: 'Nederlands',
-    flag: <NLFlag radius={'md'}></NLFlag>,
+    flag: NLFlag,
   },
 ];

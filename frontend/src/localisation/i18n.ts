@@ -5,6 +5,7 @@ import { initReactI18next } from 'react-i18next';
 const languageFiles = import.meta.glob('./languages/*.json', { eager: true });
 
 const resources: Resource = {};
+const storedLanguage = localStorage.getItem('lang') ?? 'en';
 
 for (const [path, fileContent] of Object.entries(languageFiles)) {
   const languageName = path.match(/[^/]+(?=\.)/g);
@@ -16,7 +17,7 @@ for (const [path, fileContent] of Object.entries(languageFiles)) {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: 'en', // default
+  lng: storedLanguage, // default
   interpolation: {
     escapeValue: false, // not needed for react as it escapes by default
   },

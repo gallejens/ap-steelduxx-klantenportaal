@@ -86,7 +86,7 @@ export const OrderDetailsPage: FC = () => {
     return <div>{t('orderDetailsPage:loading')}</div>;
   }
 
-  if (status === 'error' || !orderDetail) {
+  if (status === 'error' ?? !orderDetail) {
     return (
       <div>
         {t('orderDetailsPage:error')} | {error?.message ?? 'Unknown Error'}
@@ -106,10 +106,10 @@ export const OrderDetailsPage: FC = () => {
             <p className={styles.subTitle}>
               {t('orderDetailPage:customerReference')}
             </p>
-            <p>{orderDetail?.data.customerReferenceNumber || '?'}</p>
+            <p>{orderDetail?.data.customerReferenceNumber ?? '?'}</p>
             <p className={styles.subTitle}>{t('orderDetailPage:state')}</p>
             <p className={getStateClass(orderDetail?.data.state)}>
-              {orderDetail?.data.state || '?'}
+              {orderDetail?.data.state ?? '?'}
             </p>
             <p className={styles.subTitle}>
               {t('orderDetailPage:transportType')}
@@ -121,15 +121,15 @@ export const OrderDetailsPage: FC = () => {
             </p>
             <p className={styles.subTitle}>{t('orderDetailPage:origin')}</p>
             <p>
-              {orderDetail?.data.portOfOriginName || '?'} -{' '}
-              {orderDetail?.data.portOfOriginCode || '?'}
+              {orderDetail?.data.portOfOriginName ?? '?'} -{' '}
+              {orderDetail?.data.portOfOriginCode ?? '?'}
             </p>
             <p className={styles.subTitle}>
               {t('orderDetailPage:destination')}
             </p>
             <p>
-              {orderDetail?.data.portOfDestinationName || '?'} -{' '}
-              {orderDetail?.data.portOfDestinationCode || '?'}
+              {orderDetail?.data.portOfDestinationName ?? '?'} -{' '}
+              {orderDetail?.data.portOfDestinationCode ?? '?'}
             </p>
           </section>
         </div>
@@ -139,13 +139,13 @@ export const OrderDetailsPage: FC = () => {
               {t('orderDetailPage:timeInformation')}
             </h2>
             <p className={styles.subTitle}>{t('orderDetailPage:ets')}</p>
-            <p>{orderDetail?.data.ets || '?'}</p>
+            <p>{orderDetail?.data.ets ?? '?'}</p>
             <p className={styles.subTitle}>{t('orderDetailPage:ats')}</p>
-            <p>{orderDetail?.data.ats || '?'}</p>
+            <p>{orderDetail?.data.ats ?? '?'}</p>
             <p className={styles.subTitle}>{t('orderDetailPage:eta')}</p>
-            <p>{orderDetail?.data.eta || '?'}</p>
+            <p>{orderDetail?.data.eta ?? '?'}</p>
             <p className={styles.subTitle}>{t('orderDetailPage:ata')}</p>
-            <p>{orderDetail?.data.ata || '?'}</p>
+            <p>{orderDetail?.data.ata ?? '?'}</p>
             <p className={styles.subTitle}>
               {t('orderDetailPage:estimatedTimeCargoOnQuay')}
             </p>
@@ -162,13 +162,13 @@ export const OrderDetailsPage: FC = () => {
               {t('orderDetailPage:shipInformation')}
             </h2>
             <p className={styles.subTitle}>{t('orderDetailPage:shipName')}</p>
-            <p>{orderDetail?.data.shipName || '?'}</p>
+            <p>{orderDetail?.data.shipName ?? '?'}</p>
             <p className={styles.subTitle}>{t('orderDetailPage:imo')}</p>
-            <p>{orderDetail?.data.shipIMO || '?'}</p>
+            <p>{orderDetail?.data.shipIMO ?? '?'}</p>
             <p className={styles.subTitle}>{t('orderDetailPage:mmsi')}</p>
-            <p>{orderDetail?.data.shipMMSI || '?'}</p>
+            <p>{orderDetail?.data.shipMMSI ?? '?'}</p>
             <p className={styles.subTitle}>{t('orderDetailPage:type')}</p>
-            <p>{orderDetail?.data.shipType || '?'}</p>
+            <p>{orderDetail?.data.shipType ?? '?'}</p>
           </section>
         </div>
         <div className={styles.mapContainer}>

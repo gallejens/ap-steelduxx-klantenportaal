@@ -76,6 +76,8 @@ export type ProductContainerSize = '20' | '40';
 
 export type ProductContainerType = 'OT' | 'FT' | 'DV' | 'HC' | 'RF';
 
+export type OrderDocumentType = 'bl' | 'packing' | 'customs';
+
 export type UserRequestStatus = 'PENDING' | 'APPROVED' | 'DENIED';
 
 export type UserRequest = {

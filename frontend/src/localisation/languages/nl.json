@@ -166,7 +166,6 @@
     "orderForm": {
       "title": "Order Informatie",
       "products": "Producten",
-      "files": "Documenten",
       "transportType": {
         "transportTypeInputTitle": "Transport type",
         "transportTypeInputDescription": "Selecteer het transport type van het order",
@@ -228,7 +227,7 @@
           "typeInputError": "Container type van product is vereist"
         }
       },
-      "addProductButton": "Voeg product toe"
+      "addProductButton": "Product Toevoegen"
     },
     "productListTitle": "Producten",
     "table": {
@@ -239,6 +238,26 @@
       "containerNumber": "Container nummer",
       "containerSize": "Container grootte (feet)",
       "containerType": "Container type"
+    },
+    "documents": {
+      "addButton": "Document Uploaden",
+      "modal": {
+        "title": "Document Uploaden",
+        "typeSelect": {
+          "label": "Document Type",
+          "error": "Document type is vereist"
+        },
+        "filePicker": {
+          "label": "Bestand kiezen",
+          "error": "Bestand is vereist"
+        },
+        "confirm": "Bevestig"
+      },
+      "types": {
+        "bl": "Bill of Lading",
+        "packing": "Packing List",
+        "customs": "Customs Declaration"
+      }
     },
     "addOrderButton": "Maak order aanvraag aan",
     "success": "Order aanvraag succesvol verzonden.",
@@ -325,6 +344,9 @@
     }
   },
   "modals": {
+    "confirm": {
+      "action": "Bevestig"
+    },
     "changePassword": {
       "title": "Wachtwoord veranderen",
       "oldPasswordInputLabel": "Oud wachtwoord",

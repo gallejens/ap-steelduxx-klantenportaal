@@ -45,6 +45,11 @@
     flex-direction: column;
     gap: var(--mantine-spacing-md);
 
+    & > .header {
+      display: flex;
+      justify-content: space-between;
+    }
+
     & > .table {
       height: 100%;
     }
@@ -67,6 +72,16 @@
       width: 100%;
     }
   }
+
+  & > .confirm_button {
+    align-self: flex-end;
+  }
+}
+
+.upload_document_form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
 
   & > .confirm_button {
     align-self: flex-end;

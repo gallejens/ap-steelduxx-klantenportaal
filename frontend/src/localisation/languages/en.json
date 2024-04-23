@@ -166,7 +166,6 @@
     "orderForm": {
       "title": "Order Info",
       "products": "Products",
-      "files": "Documents",
       "transportType": {
         "transportTypeInputTitle": "Transport type",
         "transportTypeInputDescription": "Select the transport type of the order here",
@@ -228,7 +227,7 @@
           "typeInputError": "Container type of product is required"
         }
       },
-      "addProductButton": "Add product"
+      "addProductButton": "Add Product"
     },
     "productListTitle": "Products",
     "table": {
@@ -239,6 +238,26 @@
       "containerNumber": "Container number",
       "containerSize": "Container size (feet)",
       "containerType": "Container type"
+    },
+    "documents": {
+      "addButton": "Upload Document",
+      "modal": {
+        "title": "Upload Document",
+        "typeSelect": {
+          "label": "Document Type",
+          "error": "Document type is required"
+        },
+        "filePicker": {
+          "label": "Choose File",
+          "error": "File is required"
+        },
+        "confirm": "Confirm"
+      },
+      "types": {
+        "bl": "Bill of Lading",
+        "packing": "Packing List",
+        "customs": "Customs Declaration"
+      }
     },
     "addOrderButton": "Create order request",
     "success": "Order request succesfully created.",
@@ -325,6 +344,9 @@
     }
   },
   "modals": {
+    "confirm": {
+      "action": "Confirm"
+    },
     "changePassword": {
       "title": "Change password",
       "oldPasswordInputLabel": "Old password",

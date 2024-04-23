@@ -20,6 +20,7 @@ import { notifications } from '@/components/notifications';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useNavigate } from '@tanstack/react-router';
 import { DEFAULT_PORT_CODE } from './constants';
+import { UploadDocumentModal } from './modal/UploadDocumentModal';
 
 type NewOrderFormValues = {
   transportType: OrderTransportType;
@@ -73,6 +74,16 @@ export const OrderCreatePage: FC = () => {
       <NewProductModal
         onSubmit={product => {
           setProducts(s => [...s, product]);
+        }}
+      />
+    );
+  };
+
+  const openUploadDocumentModal = () => {
+    openModal(
+      <UploadDocumentModal
+        onSubmit={document => {
+          console.log(document);
         }}
       />
     );
@@ -181,20 +192,27 @@ export const OrderCreatePage: FC = () => {
           />
         </form>
         <Divider />
-        <div className={styles.documents}></div>
-        <Divider />
-        <div className={styles.actions}>
-          <Button onClick={openProductModal}>
-            {t('newOrderPage:productForm:addProductButton')}
-          </Button>
-          <Button onClick={handleCreateOrderRequestButton}>
-            {t('newOrderPage:addOrderButton')}
+        <div className={styles.documents}>
+          <Button onClick={openUploadDocumentModal}>
+            {t('newOrderPage:documents:addButton')}
           </Button>
         </div>
+        <Divider />
+        <Button
+          onClick={handleCreateOrderRequestButton}
+          fullWidth
+        >
+          {t('newOrderPage:addOrderButton')}
+        </Button>
       </div>
       <Divider orientation='vertical' />
       <div className={styles.products}>
-        <Title order={3}>{t('newOrderPage:orderForm:products')}</Title>
+        <div className={styles.header}>
+          <Title order={3}>{t('newOrderPage:orderForm:products')}</Title>
+          <Button onClick={openProductModal}>
+            {t('newOrderPage:productForm:addProductButton')}
+          </Button>
+        </div>
         <div className={styles.table}>
           <Table
             columns={[

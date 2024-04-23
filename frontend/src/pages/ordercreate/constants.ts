@@ -1,4 +1,8 @@
-import type { ProductContainerSize, ProductContainerType } from '@/types/api';
+import type {
+  OrderDocumentType,
+  ProductContainerSize,
+  ProductContainerType,
+} from '@/types/api';
 
 export const PRODUCT_CONTAINER_SIZES: ProductContainerSize[] = ['20', '40'];
 
@@ -11,3 +15,9 @@ export const PRODUCT_CONTAINER_TYPES: Record<ProductContainerType, string> = {
 };
 
 export const DEFAULT_PORT_CODE = 'BEANR';
+
+export const ORDER_DOCUMENT_TYPES: Record<OrderDocumentType, string> = {
+  bl: 'Bill of Lading',
+  packing: 'Packing List',
+  customs: 'Customs Declaration',
+};

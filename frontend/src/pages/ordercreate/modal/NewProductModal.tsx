@@ -109,9 +109,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
       >
         <div>
           <TextInput
-            description={t(
-              'newOrderPage:productForm:hsCode:hsCodeInputDescription'
-            )}
+            label={t('newOrderPage:productForm:hsCode:hsCodeInputDescription')}
             placeholder={t(
               'newOrderPage:productForm:hsCode:hsCodeInputPlaceholder'
             )}
@@ -119,9 +117,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
             {...newProductForm.getInputProps('hsCode')}
           />
           <TextInput
-            description={t(
-              'newOrderPage:productForm:name:nameInputDescription'
-            )}
+            label={t('newOrderPage:productForm:name:nameInputDescription')}
             placeholder={t(
               'newOrderPage:productForm:name:nameInputPlaceholder'
             )}
@@ -131,7 +127,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
         </div>
         <div>
           <NumberInput
-            description={t(
+            label={t(
               'newOrderPage:productForm:quantity:quantityInputDescription'
             )}
             placeholder={t(
@@ -144,9 +140,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
             {...newProductForm.getInputProps('quantity')}
           />
           <NumberInput
-            description={t(
-              'newOrderPage:productForm:weight:weightInputDescription'
-            )}
+            label={t('newOrderPage:productForm:weight:weightInputDescription')}
             placeholder={t(
               'newOrderPage:productForm:weight:weightInputPlaceholder'
             )}
@@ -168,7 +162,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
           />
           {newProductForm.values.isContainerProduct && (
             <TextInput
-              description={t(
+              label={t(
                 'newOrderPage:productForm:container:number:numberInputDescription'
               )}
               placeholder={t(
@@ -181,7 +175,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
         {newProductForm.values.isContainerProduct && (
           <div>
             <Select
-              description={t(
+              label={t(
                 'newOrderPage:productForm:container:size:sizeInputDescription'
               )}
               placeholder={t(
@@ -192,7 +186,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
               {...newProductForm.getInputProps('containerSize')}
             />
             <Select
-              description={t(
+              label={t(
                 'newOrderPage:productForm:container:type:typeInputDescription'
               )}
               placeholder={t(
@@ -211,7 +205,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
         )}
         <div className={styles.confirm_button}>
           <Button type='submit'>
-            {t('modals:changePassword:actionButton')}
+            {t('newOrderPage:productForm:addProductButton')}
           </Button>
         </div>
       </form>

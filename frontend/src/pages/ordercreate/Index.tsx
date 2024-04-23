@@ -86,6 +86,14 @@ export const OrderCreatePage: FC = () => {
   };
 
   const handleCreateOrderRequestButton = () => {
+    if (products.length === 0) {
+      notifications.add({
+        message: t('newOrderPage:emptyProducts'),
+        color: 'red',
+      });
+      return;
+    }
+
     openModal(
       <ConfirmModal
         title={t('appshell:newOrderConfirmation:newOrderConfirmTitle')}

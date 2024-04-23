@@ -230,7 +230,6 @@
       },
       "addProductButton": "Product Toevoegen"
     },
-    "productListTitle": "Producten",
     "table": {
       "hsCode": "HsCode",
       "name": "Name",
@@ -242,7 +241,8 @@
     },
     "addOrderButton": "Maak order aanvraag aan",
     "success": "Order aanvraag succesvol verzonden.",
-    "failed": "Order aanvraag niet aangemaakt, voeg minstens een product toe."
+    "failed": "Order aanvraag niet aangemaakt, voeg minstens een product toe.",
+    "emptyProducts": "Voeg minstens een product toe."
   },
   "userRequestReviewPage": {
     "backButton": "Terug Gaan",

@@ -230,7 +230,6 @@
       },
       "addProductButton": "Add Product"
     },
-    "productListTitle": "Products",
     "table": {
       "hsCode": "HsCode",
       "name": "Name",
@@ -242,7 +241,8 @@
     },
     "addOrderButton": "Create order request",
     "success": "Order request succesfully created.",
-    "failed": "Order not created, add atleast one product."
+    "failed": "Order not created, add atleast one product.",
+    "emptyProducts": "Add at least one product."
   },
   "userRequestReviewPage": {
     "backButton": "Go Back",

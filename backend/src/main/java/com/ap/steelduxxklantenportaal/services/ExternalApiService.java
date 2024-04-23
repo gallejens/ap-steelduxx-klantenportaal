@@ -105,25 +105,9 @@ public class ExternalApiService {
         }
     }
 
-    public byte[] getFile(String referenceNumber, String docType) throws RestClientException {
+    public byte[] getFile(String referenceNumber, String docType) {
         String endpoint = String.format("/document/download/%s/%s", referenceNumber, docType);
-        String url = baseUrl + endpoint;
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<byte[]> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                entity,
-                byte[].class);
-
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return response.getBody();
-        } else {
-            throw new RestClientException(
-                    "Failed to download file from external API with status code: " + response.getStatusCode());
-        }
+        return this.doRequest(endpoint, HttpMethod.GET, byte[].class);
     }
+
 }

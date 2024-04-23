@@ -71,27 +71,26 @@ export const OrderDetailsPage: FC = () => {
     return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
-  const downloadFile = async (referenceNumber: string, docType: string) => {
+  const handleDocumentDownload = async (
+    referenceNumber: string,
+    docType: string
+  ) => {
     try {
-      const url = `/orders/download/${referenceNumber}/${docType}`;
-      const response = await fetch(url, { method: 'GET' });
+      const response = await doApiAction<Blob>({
+        endpoint: `/orders/download/${referenceNumber}/${docType}`,
+        method: 'GET',
+        responseType: 'blob',
+      });
 
-      if (!response.ok) {
-        throw new Error(`Failed to download file: ${response.statusText}`);
-      }
-
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
+      const url = window.URL.createObjectURL(new Blob([response]));
       const link = document.createElement('a');
-      link.href = downloadUrl;
+      link.href = url;
       link.setAttribute('download', `${docType}-${referenceNumber}.pdf`);
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
+      link.parentNode!.removeChild(link);
     } catch (error) {
-      console.error('Error downloading file:', error);
-      alert(`Error downloading file: ${error.message}`);
+      console.error('Error downloading the document:', error);
     }
   };
 
@@ -256,36 +255,33 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          {orderDetail.data.billOfLadingDownloadLink && (
-            <button
-              onClick={() =>
-                downloadFile(orderDetail.data.referenceNumber, 'bl')
-              }
-              className='download-link'
-            >
-              {t('orderDetailPage:downloadBillOfLading')}
-            </button>
-          )}
-          {orderDetail.data.packingListDownloadLink && (
-            <button
-              onClick={() =>
-                downloadFile(orderDetail.data.referenceNumber, 'packing')
-              }
-              className='download-link'
-            >
-              {t('orderDetailPage:downloadPackingList')}
-            </button>
-          )}
-          {orderDetail.data.customsDownloadLink && (
-            <button
-              onClick={() =>
-                downloadFile(orderDetail.data.referenceNumber, 'customs')
-              }
-              className='download-link'
-            >
-              {t('orderDetailPage:downloadCustomsDocuments')}
-            </button>
-          )}
+          <button
+            onClick={() =>
+              handleDocumentDownload(orderDetail?.data.referenceNumber, 'bl')
+            }
+          >
+            BL Doc Download
+          </button>
+          <button
+            onClick={() =>
+              handleDocumentDownload(
+                orderDetail?.data.referenceNumber,
+                'packing'
+              )
+            }
+          >
+            Packing Doc Download
+          </button>
+          <button
+            onClick={() =>
+              handleDocumentDownload(
+                orderDetail?.data.referenceNumber,
+                'customs'
+              )
+            }
+          >
+            Customs Doc Download
+          </button>
         </div>
       </div>
     </div>

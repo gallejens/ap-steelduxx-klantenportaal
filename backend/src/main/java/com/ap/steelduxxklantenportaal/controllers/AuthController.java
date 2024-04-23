@@ -4,7 +4,6 @@ import com.ap.steelduxxklantenportaal.dtos.ChangePasswordDto;
 import com.ap.steelduxxklantenportaal.dtos.ChoosePasswordDto;
 import com.ap.steelduxxklantenportaal.dtos.ResetPasswordDto;
 import com.ap.steelduxxklantenportaal.dtos.SignInRequestDto;
-import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.mail.MessagingException;
@@ -13,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -66,7 +64,8 @@ public class AuthController {
     @GetMapping("/info")
     @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> getUserInfo() {
-        var user = AuthService.getCurrentUser();;
+        var user = AuthService.getCurrentUser();
+        ;
         return ResponseHandler.generate("", HttpStatus.OK, user.getUserInfo());
     }
 

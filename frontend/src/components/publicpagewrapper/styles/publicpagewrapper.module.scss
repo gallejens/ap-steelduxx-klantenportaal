@@ -55,6 +55,13 @@
         height: 2rem;
         width: 2rem;
       }
+
+      & > .lang_selector {
+        position: absolute;
+        right: 0;
+
+        margin-bottom: 20px;
+      }
     }
   }
 

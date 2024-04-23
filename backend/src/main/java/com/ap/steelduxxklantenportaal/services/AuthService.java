@@ -27,7 +27,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Security;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -247,9 +246,11 @@ public class AuthService {
 
     public static User getCurrentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) return null;
+        if (auth == null)
+            return null;
         var user = auth.getPrincipal();
-        if (user == null) return null;
+        if (user == null)
+            return null;
         return (User) user;
     }
 }

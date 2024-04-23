@@ -381,8 +381,9 @@
       "id": "Follow ID",
       "customerCode": "Company Id",
       "transportType": "Transport type",
-      "portOfOriginCode": "Port origin",
-      "portOfDestinationCode": "Port destination"
+      "portOfOriginCode": "Port of Origin Code",
+      "portOfDestinationCode": "Port of Destination Code",
+      "navigate": "Review"
     }
   },
   "orderRequestForm": {
@@ -391,6 +392,12 @@
     "transportTypeInputTitle": "Transport Type",
     "customerCodeInputTitle": "Company ID",
     "portOfDestinationInputTitle": "Port of Destination",
-    "portOfOriginInputTitle": "Port of Origin"
+    "portOfOriginInputTitle": "Port of Origin",
+    "productName": "Product Name",
+    "quantity": "Quantity",
+    "weight": "Weight",
+    "containerNumber": "Container Number",
+    "containerSize": "Container size (feet)",
+    "containerType": "Container Type"
   }
 }

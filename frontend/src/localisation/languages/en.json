@@ -163,9 +163,10 @@
     "containerType": "Container Type"
   },
   "newOrderPage": {
+    "title": "Order Info",
+    "products": "Products",
+    "documents": "Documents",
     "orderForm": {
-      "title": "Order Info",
-      "products": "Products",
       "transportType": {
         "transportTypeInputTitle": "Transport type",
         "transportTypeInputDescription": "Select the transport type of the order here",
@@ -238,26 +239,6 @@
       "containerNumber": "Container number",
       "containerSize": "Container size (feet)",
       "containerType": "Container type"
-    },
-    "documents": {
-      "addButton": "Upload Document",
-      "modal": {
-        "title": "Upload Document",
-        "typeSelect": {
-          "label": "Document Type",
-          "error": "Document type is required"
-        },
-        "filePicker": {
-          "label": "Choose File",
-          "error": "File is required"
-        },
-        "confirm": "Confirm"
-      },
-      "types": {
-        "bl": "Bill of Lading",
-        "packing": "Packing List",
-        "customs": "Customs Declaration"
-      }
     },
     "addOrderButton": "Create order request",
     "success": "Order request succesfully created.",

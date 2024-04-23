@@ -163,9 +163,10 @@
     "containerType": "Container Type"
   },
   "newOrderPage": {
+    "title": "Order Informatie",
+    "products": "Producten",
+    "documents": "Documenten",
     "orderForm": {
-      "title": "Order Informatie",
-      "products": "Producten",
       "transportType": {
         "transportTypeInputTitle": "Transport type",
         "transportTypeInputDescription": "Selecteer het transport type van het order",
@@ -238,26 +239,6 @@
       "containerNumber": "Container nummer",
       "containerSize": "Container grootte (feet)",
       "containerType": "Container type"
-    },
-    "documents": {
-      "addButton": "Document Uploaden",
-      "modal": {
-        "title": "Document Uploaden",
-        "typeSelect": {
-          "label": "Document Type",
-          "error": "Document type is vereist"
-        },
-        "filePicker": {
-          "label": "Bestand kiezen",
-          "error": "Bestand is vereist"
-        },
-        "confirm": "Bevestig"
-      },
-      "types": {
-        "bl": "Bill of Lading",
-        "packing": "Packing List",
-        "customs": "Customs Declaration"
-      }
     },
     "addOrderButton": "Maak order aanvraag aan",
     "success": "Order aanvraag succesvol verzonden.",

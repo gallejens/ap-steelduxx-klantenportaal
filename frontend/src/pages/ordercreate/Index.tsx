@@ -130,7 +130,7 @@ export const OrderCreatePage: FC = () => {
   return (
     <div className={styles.ordercreate_page}>
       <div className={styles.inputs}>
-        <Title order={3}>{t('newOrderPage:orderForm:title')}</Title>
+        <Title order={3}>{t('newOrderPage:title')}</Title>
         <form className={styles.form}>
           <Select
             label={t(
@@ -185,12 +185,12 @@ export const OrderCreatePage: FC = () => {
         </form>
         <Divider />
         <div className={styles.documents}>
+          <Title order={3}>{t('newOrderPage:documents')}</Title>
           <OrderDocuments
             documents={documents}
             setDocuments={setDocuments}
           />
         </div>
-
         <Divider />
         <Button
           onClick={handleCreateOrderRequestButton}
@@ -202,7 +202,7 @@ export const OrderCreatePage: FC = () => {
       <Divider orientation='vertical' />
       <div className={styles.products}>
         <div className={styles.header}>
-          <Title order={3}>{t('newOrderPage:orderForm:products')}</Title>
+          <Title order={3}>{t('newOrderPage:products')}</Title>
           <Button onClick={openProductModal}>
             {t('newOrderPage:productForm:addProductButton')}
           </Button>

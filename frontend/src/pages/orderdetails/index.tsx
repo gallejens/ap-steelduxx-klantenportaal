@@ -73,12 +73,13 @@ export const OrderDetailsPage: FC = () => {
 
   const downloadFile = async (referenceNumber: string, docType: string) => {
     try {
-      const response = await fetch(
-        `/orders/download/${referenceNumber}/${docType}`
-      );
+      const url = `/orders/download/${referenceNumber}/${docType}`;
+      const response = await fetch(url, { method: 'GET' });
+
       if (!response.ok) {
-        throw new Error('Failed to download file');
+        throw new Error(`Failed to download file: ${response.statusText}`);
       }
+
       const blob = await response.blob();
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -86,9 +87,11 @@ export const OrderDetailsPage: FC = () => {
       link.setAttribute('download', `${docType}-${referenceNumber}.pdf`);
       document.body.appendChild(link);
       link.click();
-      link.parentNode.removeChild(link);
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
       console.error('Error downloading file:', error);
+      alert(`Error downloading file: ${error.message}`);
     }
   };
 

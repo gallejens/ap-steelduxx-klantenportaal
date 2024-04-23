@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,9 +80,11 @@ public class ExternalApiService {
         return internalRequest(user, endpoint, method, responseType, false);
     }
 
-    private <T> T internalRequest(User user, String endpoint, HttpMethod method, Class<T> responseType, boolean isRetry) {
+    private <T> T internalRequest(User user, String endpoint, HttpMethod method, Class<T> responseType,
+            boolean isRetry) {
         String token = getToken(user);
-        if (token == null) return null;
+        if (token == null)
+            return null;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
@@ -99,6 +102,28 @@ public class ExternalApiService {
             // if call is not a retry, remove existing token and retry;
             userTokens.remove(user.getId());
             return internalRequest(user, endpoint, method, responseType, true);
+        }
+    }
+
+    public byte[] getFile(String referenceNumber, String docType) throws RestClientException {
+        String endpoint = String.format("/document/download/%s/%s", referenceNumber, docType);
+        String url = baseUrl + endpoint;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<byte[]> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                byte[].class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return response.getBody();
+        } else {
+            throw new RestClientException(
+                    "Failed to download file from external API with status code: " + response.getStatusCode());
         }
     }
 }

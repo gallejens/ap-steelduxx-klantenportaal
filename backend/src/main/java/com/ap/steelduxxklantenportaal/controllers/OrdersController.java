@@ -4,13 +4,18 @@ import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.OrdersService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 
+import java.io.InputStream;
+
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.core.io.Resource;
 
 @RestController
 @RequestMapping("/orders")
@@ -38,26 +43,21 @@ public class OrdersController {
         return ResponseHandler.generate("", HttpStatus.OK, orderDetails);
     }
 
-    @GetMapping("/download/{referenceNumber}/{documentType}")
+    @GetMapping("/download/{referenceNumber}/{docType}")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Object> downloadDocument(@PathVariable String referenceNumber,
-            @PathVariable String documentType) {
-        String endpoint = String.format("/document/download/%s/%s", referenceNumber, documentType);
+    public ResponseEntity<Resource> downloadDocument(@PathVariable String referenceNumber,
+            @PathVariable String docType) {
         try {
-            byte[] fileData = externalApiService.doRequest(endpoint, HttpMethod.GET, byte[].class);
-            if (fileData == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION,
-                    "attachment; filename=\"" + documentType + "-" + referenceNumber + ".pdf\"");
-            headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
-
-            return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
+            byte[] fileContents = externalApiService.getFile(referenceNumber, docType);
+            String filename = docType + "-" + referenceNumber + ".pdf";
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(new ByteArrayResource(fileContents));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to download file: " + e.getMessage());
+            System.out.println("Error downloading the file: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 }

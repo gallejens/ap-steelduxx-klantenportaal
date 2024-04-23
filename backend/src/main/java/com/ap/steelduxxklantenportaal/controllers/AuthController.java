@@ -65,8 +65,7 @@ public class AuthController {
     @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> getUserInfo() {
         var user = AuthService.getCurrentUser();
-        ;
-        return ResponseHandler.generate("", HttpStatus.OK, user.getUserInfo());
+        return ResponseHandler.generate("", HttpStatus.OK, user == null ? null : user.getUserInfo());
     }
 
     @PostMapping("/change-password")

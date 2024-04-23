@@ -68,7 +68,7 @@ export const OrderRequestListPage: FC = () => {
     });
     return acc;
   }, {});
-  console.log(tableData);
+
   return (
     <div className={styles.orderrequest_list_page}>
       <div className={styles.header}>

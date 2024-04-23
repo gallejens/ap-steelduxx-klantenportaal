@@ -98,15 +98,5 @@ export type OrderRequest = {
   portOfOriginCode: string;
   portOfDestinationCode: string;
   status: string;
-  product: OrderProduct[]; // Voeg dit toe
-};
-
-export type OrderProduct = {
-  hsCode: string;
-  name: string;
-  quantity: number;
-  weight: number;
-  containerNumber: string | null;
-  containerSize: string;
-  containerType: string;
+  product: Product[];
 };

@@ -15,8 +15,6 @@ export const OrderDetailsPage: FC = () => {
     from: '/app/orders/$order_id',
   });
 
-  console.log(customerCode);
-
   const {
     data: orderDetail,
     status,
@@ -86,7 +84,7 @@ export const OrderDetailsPage: FC = () => {
     return <div>{t('orderDetailsPage:loading')}</div>;
   }
 
-  if (status === 'error' ?? !orderDetail) {
+  if (status === 'error' || !orderDetail) {
     return (
       <div>
         {t('orderDetailsPage:error')} | {error?.message ?? 'Unknown Error'}

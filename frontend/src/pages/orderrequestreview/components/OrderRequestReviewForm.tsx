@@ -5,7 +5,7 @@ import { TextInput } from '@mantine/core';
 import { useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { doApiAction } from '@/lib/api';
-import { OrderRequest } from '@/types/api';
+import { type OrderRequest } from '@/types/api';
 
 export const OrderRequestReviewForm: FC = () => {
   const { t } = useTranslation();
@@ -86,7 +86,7 @@ export const OrderRequestReviewForm: FC = () => {
                 <td>{product.name}</td>
                 <td>{product.quantity}</td>
                 <td>{product.weight}</td>
-                <td>{product.containerNumber || '-'}</td>
+                <td>{product.containerNumber ?? '-'}</td>
                 <td>{product.containerSize}</td>
                 <td>{product.containerType}</td>
               </tr>

@@ -26,8 +26,6 @@ export function LanguagePopOver(props: LanguagePopOverProps) {
     i18n.changeLanguage(lang);
   };
 
-  console.log(currentLanguageObj);
-
   return (
     <Popover
       width={200}

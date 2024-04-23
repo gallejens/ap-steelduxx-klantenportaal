@@ -1,12 +1,11 @@
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { Button } from '@mantine/core';
 import styles from '../styles/orderRequestReview.module.scss';
 import { useTranslation } from 'react-i18next';
 import { notifications } from '@/components/notifications';
-import { GenericAPIResponse, doApiAction } from '@/lib/api';
+import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
 import { ConfirmModal } from '@/components/modals';
-import { useModalStore } from '@/stores/useModalStore';
 
 type Props = {
   onSubmit?: () => void;
@@ -15,7 +14,6 @@ type Props = {
 
 export const OrderRequestReviewHandle: FC<Props> = props => {
   const { t } = useTranslation();
-  const {} = useModalStore();
   const { orderrequestid: orderRequestId } = useParams({
     from: '/app/order-requests/$orderrequestid',
   });

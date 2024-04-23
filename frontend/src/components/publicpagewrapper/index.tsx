@@ -31,14 +31,11 @@ export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
             </ActionIcon>
           )}
           <Text>{props.title}</Text>
-
           <div className={styles.lang_selector}>
-            {
-              <LanguagePopOver
-                textColor={'var(--mantine-color-primary-7)'}
-                paddingTop={'22px'}
-              />
-            }
+            <LanguagePopOver
+              textColor={'var(--mantine-color-primary-7)'}
+              paddingTop={'22px'}
+            />
           </div>
         </div>
         <Divider className={styles.divider} />

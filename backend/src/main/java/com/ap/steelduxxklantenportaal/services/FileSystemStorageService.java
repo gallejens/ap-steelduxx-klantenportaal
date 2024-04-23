@@ -45,6 +45,7 @@ public class FileSystemStorageService {
         } catch (MalformedURLException e) {
             //
         }
+        return null;
     }
 
     public void init() {

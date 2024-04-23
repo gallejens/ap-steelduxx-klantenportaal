@@ -21,3 +21,5 @@ export const ORDER_DOCUMENT_TYPES: Record<OrderDocumentType, string> = {
   packing: 'Packing List',
   customs: 'Customs Declaration',
 };
+
+export const ACCEPTED_DOCUMENT_FILETYPES = 'application/pdf';

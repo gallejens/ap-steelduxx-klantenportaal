@@ -20,7 +20,8 @@ import { notifications } from '@/components/notifications';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useNavigate } from '@tanstack/react-router';
 import { DEFAULT_PORT_CODE } from './constants';
-import { UploadDocumentModal } from './modal/UploadDocumentModal';
+import type { CreateOrderDocument } from './types';
+import { OrderDocuments } from './components/OrderDocuments';
 
 type NewOrderFormValues = {
   transportType: OrderTransportType;
@@ -33,6 +34,7 @@ export const OrderCreatePage: FC = () => {
   const { openModal, closeModal } = useModalStore();
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
+  const [documents, setDocuments] = useState<CreateOrderDocument[]>([]);
 
   const newOrderForm = useForm<NewOrderFormValues>({
     initialValues: {
@@ -74,16 +76,6 @@ export const OrderCreatePage: FC = () => {
       <NewProductModal
         onSubmit={product => {
           setProducts(s => [...s, product]);
-        }}
-      />
-    );
-  };
-
-  const openUploadDocumentModal = () => {
-    openModal(
-      <UploadDocumentModal
-        onSubmit={document => {
-          console.log(document);
         }}
       />
     );
@@ -193,10 +185,12 @@ export const OrderCreatePage: FC = () => {
         </form>
         <Divider />
         <div className={styles.documents}>
-          <Button onClick={openUploadDocumentModal}>
-            {t('newOrderPage:documents:addButton')}
-          </Button>
+          <OrderDocuments
+            documents={documents}
+            setDocuments={setDocuments}
+          />
         </div>
+
         <Divider />
         <Button
           onClick={handleCreateOrderRequestButton}

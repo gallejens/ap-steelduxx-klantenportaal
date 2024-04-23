@@ -71,6 +71,27 @@ export const OrderDetailsPage: FC = () => {
     return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
+  const downloadFile = async (referenceNumber: string, docType: string) => {
+    try {
+      const response = await fetch(
+        `/orders/download/${referenceNumber}/${docType}`
+      );
+      if (!response.ok) {
+        throw new Error('Failed to download file');
+      }
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.setAttribute('download', `${docType}-${referenceNumber}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
+  };
+
   const getIframeContent = (imo: string) => {
     return `
       <script type="text/javascript">
@@ -151,11 +172,11 @@ export const OrderDetailsPage: FC = () => {
             <p className={styles.subTitle}>
               {t('orderDetailPage:estimatedTimeCargoOnQuay')}
             </p>
-            <p>{orderDetail?.data.estimatedTimeCargoOnQuay}</p>
+            <p>{orderDetail?.data.estimatedTimeCargoOnQuay || '?'}</p>
             <p className={styles.subTitle}>
               {t('orderDetailPage:actualTimeCargoLoaded')}
             </p>
-            <p>{orderDetail?.data.actualTimeCargoLoaded}</p>
+            <p>{orderDetail?.data.actualTimeCargoLoaded || '?'}</p>
           </section>
         </div>
         <div className={styles.shipInfo}>
@@ -233,31 +254,34 @@ export const OrderDetailsPage: FC = () => {
         </div>
         <div className={styles.documentsContainer}>
           {orderDetail.data.billOfLadingDownloadLink && (
-            <a
-              href={`/orders/download/${orderDetail.data.referenceNumber}/bl`}
-              download
+            <button
+              onClick={() =>
+                downloadFile(orderDetail.data.referenceNumber, 'bl')
+              }
               className='download-link'
             >
               {t('orderDetailPage:downloadBillOfLading')}
-            </a>
+            </button>
           )}
           {orderDetail.data.packingListDownloadLink && (
-            <a
-              href={`/orders/download/${orderDetail.data.referenceNumber}/packing`}
-              download
+            <button
+              onClick={() =>
+                downloadFile(orderDetail.data.referenceNumber, 'packing')
+              }
               className='download-link'
             >
               {t('orderDetailPage:downloadPackingList')}
-            </a>
+            </button>
           )}
           {orderDetail.data.customsDownloadLink && (
-            <a
-              href={`/orders/download/${orderDetail.data.referenceNumber}/customs`}
-              download
+            <button
+              onClick={() =>
+                downloadFile(orderDetail.data.referenceNumber, 'customs')
+              }
               className='download-link'
             >
               {t('orderDetailPage:downloadCustomsDocuments')}
-            </a>
+            </button>
           )}
         </div>
       </div>

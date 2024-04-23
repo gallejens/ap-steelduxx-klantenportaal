@@ -101,36 +101,4 @@ public class ExternalApiService {
             return internalRequest(user, endpoint, method, responseType, true);
         }
     }
-
-    public byte[] fetchDocument(String documentUrl) {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            throw new IllegalStateException("User not authenticated");
-        }
-
-        var user = (User) auth.getPrincipal();
-        if (user == null) {
-            throw new IllegalStateException("User details not found");
-        }
-
-        String token = getToken(user);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<byte[]> response;
-
-        try {
-            response = restTemplate.exchange(baseUrl + documentUrl, HttpMethod.GET, entity, byte[].class);
-        } catch (RestClientException e) {
-            userTokens.remove(user.getId());
-            throw new IllegalStateException("Error fetching document: " + e.getMessage());
-        }
-
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new IllegalStateException("Failed to fetch document: HTTP " + response.getStatusCode());
-        }
-
-        return response.getBody();
-    }
 }

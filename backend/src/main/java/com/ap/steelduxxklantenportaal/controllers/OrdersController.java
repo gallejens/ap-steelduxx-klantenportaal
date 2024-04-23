@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 
 @RestController
 @RequestMapping("/orders")
@@ -37,24 +38,26 @@ public class OrdersController {
         return ResponseHandler.generate("", HttpStatus.OK, orderDetails);
     }
 
-    @GetMapping("/download/{referenceNumber}/{docType}")
+    @GetMapping("/download/{referenceNumber}/{documentType}")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<ByteArrayResource> downloadDocument(@PathVariable String referenceNumber,
-            @PathVariable String docType) {
-        String fileUrl = String.format("/document/download/%s/%s", referenceNumber, docType);
+    public ResponseEntity<Object> downloadDocument(@PathVariable String referenceNumber,
+            @PathVariable String documentType) {
+        String endpoint = String.format("/document/download/%s/%s", referenceNumber, documentType);
         try {
-            byte[] data = externalApiService.fetchDocument(fileUrl);
-            ByteArrayResource resource = new ByteArrayResource(data);
-            String fileName = String.format("%s-%s.pdf", docType, referenceNumber);
+            byte[] fileData = externalApiService.doRequest(endpoint, HttpMethod.GET, byte[].class);
+            if (fileData == null) {
+                return ResponseEntity.notFound().build();
+            }
 
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-                    .contentLength(data.length)
-                    .body(resource);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment; filename=\"" + documentType + "-" + referenceNumber + ".pdf\"");
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
+
+            return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                    .body(new ByteArrayResource(e.getMessage().getBytes()));
+                    .body("Failed to download file: " + e.getMessage());
         }
     }
 }

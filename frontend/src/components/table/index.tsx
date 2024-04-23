@@ -252,7 +252,6 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                   if (column.transform) {
                     showInTextElement = false;
                     value = column.transform(value);
-                    console.log(value);
                   }
 
                   if (typeof value === 'boolean') {

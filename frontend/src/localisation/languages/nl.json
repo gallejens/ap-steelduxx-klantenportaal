@@ -164,6 +164,9 @@
   },
   "newOrderPage": {
     "orderForm": {
+      "title": "Order Informatie",
+      "products": "Producten",
+      "files": "Documenten",
       "transportType": {
         "transportTypeInputTitle": "Transport type",
         "transportTypeInputDescription": "Selecteer het transport type van het order",

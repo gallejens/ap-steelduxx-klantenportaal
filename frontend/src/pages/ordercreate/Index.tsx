@@ -1,4 +1,11 @@
-import { ActionIcon, Button, Select, TextInput } from '@mantine/core';
+import {
+  ActionIcon,
+  Divider,
+  Select,
+  TextInput,
+  Title,
+  Button,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -75,14 +82,34 @@ export const OrderCreatePage: FC = () => {
     setProducts(s => s.filter((_, i) => i !== index));
   };
 
-  const handleCreateOrderRequestButton = async (values: NewOrderFormValues) => {
+  const handleCreateOrderRequestButton = () => {
+    openModal(
+      <ConfirmModal
+        title={t('appshell:newOrderConfirmation:newOrderConfirmTitle')}
+        text={t('appshell:newOrderConfirmation:newOrderConfirmText')}
+        onConfirm={() => {
+          closeModal();
+          createOrder();
+        }}
+      />
+    );
+  };
+
+  const createOrder = async () => {
+    if (!newOrderForm.isValid()) {
+      notifications.add({
+        title: t('notifications:genericError'),
+        message: t('notifications:invalidForm'),
+        color: 'red',
+      });
+      return;
+    }
+
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
       endpoint: '/orders/new',
       method: 'POST',
       body: {
-        transportType: values.transportType,
-        portOfOriginCode: values.portOfOriginCode,
-        portOfDestinationCode: values.portOfDestinationCode,
+        ...newOrderForm.values,
         products,
       },
     });
@@ -98,25 +125,11 @@ export const OrderCreatePage: FC = () => {
   };
 
   return (
-    <div>
-      <form
-        className={styles.order_form}
-        onSubmit={newOrderForm.onSubmit(values =>
-          openModal(
-            <ConfirmModal
-              title={t('appshell:newOrderConfirmation:newOrderConfirmTitle')}
-              text={t('appshell:newOrderConfirmation:newOrderConfirmText')}
-              onConfirm={() => {
-                closeModal();
-                handleCreateOrderRequestButton(values);
-              }}
-            />
-          )
-        )}
-      >
-        <div className={styles.form_field_order}>
+    <div className={styles.ordercreate_page}>
+      <div className={styles.inputs}>
+        <Title order={3}>{t('newOrderPage:orderForm:title')}</Title>
+        <form className={styles.form}>
           <Select
-            className={styles.input_field_order}
             label={t(
               'newOrderPage:orderForm:transportType:transportTypeInputTitle'
             )}
@@ -137,28 +150,21 @@ export const OrderCreatePage: FC = () => {
             {...newOrderForm.getInputProps('transportType')}
           />
           <TextInput
-            className={styles.input_field_order}
             label={t(
               'newOrderPage:orderForm:portOriginCode:portOriginCodeInputTitle'
             )}
             description={t(
               'newOrderPage:orderForm:portOriginCode:portOriginCodeInputDescription'
             )}
-            placeholder={
-              newOrderForm.values.transportType === 'IMPORT'
-                ? t(
-                    'newOrderPage:orderForm:portOriginCode:portOriginCodeInputPlaceholder'
-                  )
-                : t(
-                    'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputPlaceholder'
-                  )
-            }
+            placeholder={t(
+              'newOrderPage:orderForm:portOriginCode:portOriginCodeInputPlaceholder'
+            )}
             maxLength={5}
-            required
+            required={newOrderForm.values.transportType === 'IMPORT'}
+            disabled={newOrderForm.values.transportType !== 'IMPORT'}
             {...newOrderForm.getInputProps('portOfOriginCode')}
           />
           <TextInput
-            className={styles.input_field_order}
             label={t(
               'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputTitle'
             )}
@@ -166,81 +172,78 @@ export const OrderCreatePage: FC = () => {
               'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputDescription'
             )}
             placeholder={t(
-              'newOrderPage:orderForm:portOriginCode:portOriginCodeInputPlaceholder'
+              'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputPlaceholder'
             )}
             maxLength={5}
-            required
+            required={newOrderForm.values.transportType === 'EXPORT'}
+            disabled={newOrderForm.values.transportType !== 'EXPORT'}
             {...newOrderForm.getInputProps('portOfDestinationCode')}
           />
-        </div>
-        <div className={styles.addProduct_button}>
-          <Button
-            onClick={openProductModal}
-            fullWidth
-          >
+        </form>
+        <Divider />
+        <div className={styles.documents}></div>
+        <Divider />
+        <div className={styles.actions}>
+          <Button onClick={openProductModal}>
             {t('newOrderPage:productForm:addProductButton')}
           </Button>
+          <Button onClick={handleCreateOrderRequestButton}>
+            {t('newOrderPage:addOrderButton')}
+          </Button>
         </div>
-        <div className={styles.list_column}>
-          <h1 className={styles.list_title}>
-            {t('newOrderPage:productListTitle')}
-          </h1>
-          <div className={styles.list_product}>
-            <Table
-              columns={[
-                {
-                  key: 'hsCode',
-                },
-                {
-                  key: 'name',
-                  initialWidth: 300,
-                },
-                {
-                  key: 'quantity',
-                },
-                {
-                  key: 'weight',
-                  initialWidth: 200,
-                },
-                {
-                  key: 'containerNumber',
-                  initialWidth: 200,
-                },
-                {
-                  key: 'containerSize',
-                  initialWidth: 200,
-                },
-                {
-                  key: 'containerType',
-                },
-                {
-                  key: 'actions',
-                  emptyHeader: true,
-                  disallowSorting: true,
-                  disableResizing: true,
-                },
-              ]}
-              data={products.map((p, index) => ({
-                ...p,
-                actions: (
-                  <ActionIcon onClick={() => deleteProduct(index)}>
-                    <IconTrash />
-                  </ActionIcon>
-                ),
-              }))}
-              translationKey={'newOrderPage:table'}
-            ></Table>
-          </div>
-          <div className={styles.addOrder_button_container}>
-            <Button
-              className={styles.button}
-              type='submit'
-            >
-              {t('newOrderPage:addOrderButton')}
-            </Button>
-          </div>
+      </div>
+      <Divider orientation='vertical' />
+      <div className={styles.products}>
+        <Title order={3}>{t('newOrderPage:orderForm:products')}</Title>
+        <div className={styles.table}>
+          <Table
+            columns={[
+              {
+                key: 'hsCode',
+                initialWidth: 100,
+              },
+              {
+                key: 'name',
+                initialWidth: 250,
+              },
+              {
+                key: 'quantity',
+                initialWidth: 100,
+              },
+              {
+                key: 'weight',
+                initialWidth: 175,
+              },
+              {
+                key: 'containerNumber',
+                initialWidth: 175,
+              },
+              {
+                key: 'containerSize',
+                initialWidth: 200,
+              },
+              {
+                key: 'containerType',
+              },
+              {
+                key: 'actions',
+                emptyHeader: true,
+                disallowSorting: true,
+                disableResizing: true,
+              },
+            ]}
+            data={products.map((p, index) => ({
+              ...p,
+              actions: (
+                <ActionIcon onClick={() => deleteProduct(index)}>
+                  <IconTrash />
+                </ActionIcon>
+              ),
+            }))}
+            translationKey={'newOrderPage:table'}
+          ></Table>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

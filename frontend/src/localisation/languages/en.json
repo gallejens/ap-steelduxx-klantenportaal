@@ -164,6 +164,9 @@
   },
   "newOrderPage": {
     "orderForm": {
+      "title": "Order Info",
+      "products": "Products",
+      "files": "Documents",
       "transportType": {
         "transportTypeInputTitle": "Transport type",
         "transportTypeInputDescription": "Select the transport type of the order here",
@@ -173,7 +176,7 @@
       "portDestinationCode": {
         "portDestinationCodeInputTitle": "Port code of destination",
         "portDestinationCodeInputDescription": "Fill in the port code of the destination here",
-        "portDestinationCodeInputPlaceholder": "BEANR",
+        "portDestinationCodeInputPlaceholder": "CNSHG",
         "portDestinationCodeInputError": "Port Code of destination is required"
       },
       "portOriginCode": {

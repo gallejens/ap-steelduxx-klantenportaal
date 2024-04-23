@@ -118,6 +118,11 @@ public class OrderRequestService {
                 .collect(Collectors.toList());
     }
 
+    public OrderRequestListDto getOrderRequest(Long id){
+        OrderRequest orderRequest = orderRequestRepository.findById(id).get();
+        return convertOrderRequestListToDTO(orderRequest);
+    }
+
     public void saveOrderRequestDocument(OrderRequestUploadDto orderRequestUploadDto) {
         var fileName = fileSystemStorageService.store(orderRequestUploadDto.file());
         if (fileName == null) return;

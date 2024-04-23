@@ -1,0 +1,57 @@
+.orderrequest_review_page {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+
+  & > .orderrequest_form {
+    height: 100%;
+    width: calc(1.1 / 2 * 100%);
+
+    padding: var(--mantine-spacing-xl);
+    border-right: 1.5px solid var(--mantine-color-default-border);
+  }
+
+  & .orderrequest_form {
+    display: flex;
+    flex-direction: column;
+
+    & > .company_detail_fields {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+
+      & > .company_fields {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        & > .companyName_field {
+          width: calc(0.95 / 2 * 100%);
+        }
+
+        & > .country_field {
+          width: calc(0.95 / 2 * 100%);
+        }
+      }
+
+      & > .email_field {
+        margin-top: var(--mantine-spacing-md);
+      }
+
+      & > .number_fields,
+      & > .place_fields {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: var(--mantine-spacing-md);
+
+        & > div {
+          width: calc(0.95 / 2 * 100%);
+        }
+      }
+    }
+  }
+}

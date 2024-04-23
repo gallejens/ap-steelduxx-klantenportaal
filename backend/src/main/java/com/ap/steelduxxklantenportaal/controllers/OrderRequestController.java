@@ -34,6 +34,11 @@ public class OrderRequestController {
         return orderRequestService.getAll();
     }
 
+    @GetMapping("{id}")
+    @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
+    public OrderRequestListDto getOrderRequestById(@PathVariable String id){
+        return orderRequestService.getOrderRequest(Long.parseLong(id));
+    }
     @PostMapping("/upload-file")
     @PreAuthorize("hasAuthority('CREATE_NEW_ORDERS')")
     public ResponseEntity<Object> uploadOrderRequestFile(@ModelAttribute OrderRequestUploadDto orderRequestUploadDto) {

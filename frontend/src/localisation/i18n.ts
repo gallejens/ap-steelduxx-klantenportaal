@@ -1,6 +1,6 @@
 import i18n, { type Resource, type ResourceLanguage } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { DEFAULT_LANGUAGE, LANGUAGES } from './constants';
+import { DEFAULT_LANGUAGE } from './constants';
 
 // We import all the language files in the `languages` directory using some trickery
 const languageFiles = import.meta.glob('./languages/*.json', { eager: true });

@@ -1,6 +1,8 @@
 .targetContainer {
   display: flex;
   align-items: center;
+
+  cursor: pointer;
 }
 
 .flagContainer {
@@ -34,7 +36,6 @@
   .name {
     font-size: 15px;
     font-weight: bold;
-    padding-top: 2px;
   }
 }
 .selectedCard {

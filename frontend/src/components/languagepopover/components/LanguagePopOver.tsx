@@ -1,9 +1,9 @@
 import { Popover, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import CustomLanguageCard from './LanguageCard';
-import { useState } from 'react';
-import { languages } from '../languages';
 import styles from '../styles/languagepopover.module.scss';
+import { useLocalStorage } from '@mantine/hooks';
+import { DEFAULT_LANGUAGE, LANGUAGES } from '@/localisation/constants';
 
 interface LanguagePopOverProps {
   textColor?: string;
@@ -12,17 +12,17 @@ interface LanguagePopOverProps {
 
 export function LanguagePopOver(props: LanguagePopOverProps) {
   const { i18n } = useTranslation();
-  const [currentLanguage, setCurrentLanguage] = useState(
-    localStorage.getItem('lang')
-  );
+  const [currentLanguage, setCurrentLanguage] = useLocalStorage({
+    key: 'lang',
+    defaultValue: DEFAULT_LANGUAGE,
+  });
 
-  const currentLanguageObj = languages.find(
+  const currentLanguageObj = LANGUAGES.find(
     lang => lang.key === currentLanguage
   );
 
   const handleLanguageChange = (lang: string) => {
-    localStorage.setItem('lang', lang);
-    setCurrentLanguage(lang); // Update the state with the new language
+    setCurrentLanguage(lang);
     i18n.changeLanguage(lang);
   };
 
@@ -48,7 +48,7 @@ export function LanguagePopOver(props: LanguagePopOverProps) {
             )}
           </div>
           <Text
-            className={styles.lang_name}
+            className={styles.name}
             pt={props.paddingTop ?? '0px'}
             c={props.textColor ?? 'white'}
             fw={500}
@@ -59,7 +59,7 @@ export function LanguagePopOver(props: LanguagePopOverProps) {
       </Popover.Target>
       <Popover.Dropdown bg='var(--mantine-color-body)'>
         <div>
-          {languages.map(lang => (
+          {LANGUAGES.map(lang => (
             <CustomLanguageCard
               key={lang.key}
               flag={lang.flag}

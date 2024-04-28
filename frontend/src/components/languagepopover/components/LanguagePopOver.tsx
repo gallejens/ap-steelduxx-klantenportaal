@@ -65,7 +65,6 @@ export function LanguagePopOver(props: LanguagePopOverProps) {
               flag={lang.flag}
               name={lang.name}
               onClick={() => handleLanguageChange(lang.key)}
-              isSelected={lang.key === currentLanguage}
             />
           ))}
         </div>

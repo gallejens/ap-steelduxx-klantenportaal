@@ -7,7 +7,10 @@ const languageFiles = import.meta.glob('./languages/*.json', { eager: true });
 
 const resources: Resource = {};
 
-const storedLanguage = localStorage.getItem('lang');
+const storedLanguageJSON = localStorage.getItem('lang');
+const storedLanguage = storedLanguageJSON
+  ? JSON.parse(storedLanguageJSON)
+  : null;
 
 for (const [path, fileContent] of Object.entries(languageFiles)) {
   const languageName = path.match(/[^/]+(?=\.)/g);

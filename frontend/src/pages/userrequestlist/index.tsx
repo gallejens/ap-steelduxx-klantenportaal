@@ -135,13 +135,6 @@ export const UserRequestListPage: FC = () => {
           value={searchValue}
           onChange={e => setSearchValue(e.target.value)}
         />
-        <Button
-          onClick={() => {
-            navigate({ to: '/request-account' });
-          }}
-        >
-          {t('userRequestListPage:newUserRequest')}
-        </Button>
       </div>
       <Tabs
         defaultValue={STATUSES[0]}

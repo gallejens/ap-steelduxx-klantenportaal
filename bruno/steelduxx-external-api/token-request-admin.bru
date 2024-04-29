@@ -1,0 +1,22 @@
+meta {
+  name: token-request-admin
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://sw11-1.devops-ap.be/authenticate/token
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "group": "ADMIN",
+    "apiKey": "SECRET-KEY-ADMIN"
+  }
+}
+
+script:post-response {
+  bru.setEnvVar("auth-key", res.body.token)
+}

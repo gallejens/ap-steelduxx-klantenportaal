@@ -51,7 +51,7 @@ export const OrderRequestReviewHandle: FC<Props> = props => {
 
     notifications.add({
       message: t(resultApprove?.message ?? 'notifications:genericError'),
-      autoClose: 5000,
+      autoClose: 10000,
     });
 
     props.onSubmit?.();
@@ -72,7 +72,7 @@ export const OrderRequestReviewHandle: FC<Props> = props => {
 
     notifications.add({
       message: t(resultDeny?.message ?? 'notifications:genericError'),
-      autoClose: 5000,
+      autoClose: 10000,
     });
 
     props.onSubmit?.();

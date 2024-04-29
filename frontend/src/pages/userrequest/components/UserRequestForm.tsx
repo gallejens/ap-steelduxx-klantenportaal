@@ -107,7 +107,7 @@ export const UserRequestForm: FC<Props> = props => {
       notifications.add({
         title: t('notifications:genericError'),
         message: t('notifications:invalidForm'),
-        color: 'red',
+        autoClose: 10000,
       });
       return;
     }
@@ -138,7 +138,7 @@ export const UserRequestForm: FC<Props> = props => {
     if (!isSuccess) {
       notifications.add({
         message: t(result?.message ?? 'notifications:genericError'),
-        autoClose: 5000,
+        autoClose: 10000,
       });
     }
 

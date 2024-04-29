@@ -1,6 +1,6 @@
 import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Button, Tabs, TextInput } from '@mantine/core';
+import { ActionIcon, Tabs, TextInput } from '@mantine/core';
 import styles from './styles/userRequestList.module.scss';
 import { useNavigate } from '@tanstack/react-router';
 import { IconArrowRight, IconSearch, IconTrash } from '@tabler/icons-react';
@@ -52,7 +52,7 @@ export const UserRequestListPage: FC = () => {
 
     notifications.add({
       message: t(result?.message ?? 'notifications:genericError'),
-      autoClose: 5000,
+      autoClose: 10000,
     });
 
     client.invalidateQueries({ queryKey: ['userRequestListValues'] });

@@ -90,7 +90,7 @@ export const OrderCreatePage: FC = () => {
     if (products.length === 0) {
       notifications.add({
         message: t('newOrderPage:emptyProducts'),
-        color: 'red',
+        autoClose: 10000,
       });
       return;
     }
@@ -113,7 +113,7 @@ export const OrderCreatePage: FC = () => {
       notifications.add({
         title: t('notifications:genericError'),
         message: t('notifications:invalidForm'),
-        color: 'red',
+        autoClose: 10000,
       });
       return;
     }
@@ -133,7 +133,7 @@ export const OrderCreatePage: FC = () => {
       setLoading(false);
       notifications.add({
         message: t(result?.message ?? 'notifications:genericError'),
-        autoClose: 5000,
+        autoClose: 10000,
       });
       return;
     }
@@ -157,7 +157,7 @@ export const OrderCreatePage: FC = () => {
     setLoading(false);
     notifications.add({
       message: t(result.message),
-      autoClose: 5000,
+      autoClose: 10000,
     });
 
     if (result?.message === 'newOrderPage:success') {

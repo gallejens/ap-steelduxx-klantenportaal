@@ -45,7 +45,7 @@ export const ChangePasswordModal: FC = () => {
       notifications.add({
         title: t('notifications:genericError'),
         message: t('notifications:invalidForm'),
-        color: 'red',
+        autoClose: 10000,
       });
       return;
     }

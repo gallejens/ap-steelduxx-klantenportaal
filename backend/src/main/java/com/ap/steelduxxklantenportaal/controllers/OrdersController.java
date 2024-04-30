@@ -42,22 +42,4 @@ public class OrdersController {
         var orderDetails = ordersService.getOrderDetails(id, customerCode);
         return ResponseHandler.generate("", HttpStatus.OK, orderDetails);
     }
-
-    @GetMapping("/download/{referenceNumber}/{docType}")
-    @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Resource> downloadDocument(@PathVariable String referenceNumber,
-            @PathVariable String docType) {
-        try {
-            byte[] fileContents = externalApiService.getFile(referenceNumber, docType);
-            String filename = docType + "-" + referenceNumber + ".pdf";
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
-                    .contentType(MediaType.APPLICATION_PDF)
-                    .body(new ByteArrayResource(fileContents));
-        } catch (Exception e) {
-            System.out.println("Error downloading the file: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
 }

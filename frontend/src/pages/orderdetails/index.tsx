@@ -71,29 +71,6 @@ export const OrderDetailsPage: FC = () => {
     return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
-  const handleDocumentDownload = async (
-    referenceNumber: string,
-    docType: string
-  ) => {
-    try {
-      const response = await doApiAction<Blob>({
-        endpoint: `/orders/download/${referenceNumber}/${docType}`,
-        method: 'GET',
-        responseType: 'blob',
-      });
-
-      const url = window.URL.createObjectURL(new Blob([response]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${docType}-${referenceNumber}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode!.removeChild(link);
-    } catch (error) {
-      console.error('Error downloading the document:', error);
-    }
-  };
-
   const getIframeContent = (imo: string) => {
     return `
       <script type="text/javascript">
@@ -255,33 +232,9 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          <button
-            onClick={() =>
-              handleDocumentDownload(orderDetail?.data.referenceNumber, 'bl')
-            }
-          >
-            BL Doc Download
-          </button>
-          <button
-            onClick={() =>
-              handleDocumentDownload(
-                orderDetail?.data.referenceNumber,
-                'packing'
-              )
-            }
-          >
-            Packing Doc Download
-          </button>
-          <button
-            onClick={() =>
-              handleDocumentDownload(
-                orderDetail?.data.referenceNumber,
-                'customs'
-              )
-            }
-          >
-            Customs Doc Download
-          </button>
+          <button>BL Doc Download</button>
+          <button>Packing Doc Download</button>
+          <button>Customs Doc Download</button>
         </div>
       </div>
     </div>

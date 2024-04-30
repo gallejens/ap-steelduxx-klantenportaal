@@ -105,9 +105,5 @@ public class ExternalApiService {
         }
     }
 
-    public byte[] getFile(String referenceNumber, String docType) {
-        String endpoint = String.format("/document/download/%s/%s", referenceNumber, docType);
-        return this.doRequest(endpoint, HttpMethod.GET, byte[].class);
-    }
-
+    
 }

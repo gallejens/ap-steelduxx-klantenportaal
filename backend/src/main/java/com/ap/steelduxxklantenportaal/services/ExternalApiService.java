@@ -105,5 +105,26 @@ public class ExternalApiService {
         }
     }
 
-    
+    public byte[] downloadDocument(String endpoint) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new RestClientException("Unauthorized access");
+        }
+
+        var user = (User) auth.getPrincipal();
+        String token = getToken(user);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<byte[]> response = restTemplate.exchange(baseUrl + endpoint, HttpMethod.GET, entity,
+                byte[].class);
+
+        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
+            throw new RestClientException("Failed to download document");
+        }
+
+        return response.getBody();
+    }
+
 }

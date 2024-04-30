@@ -157,7 +157,8 @@
     "container": "Container",
     "containerNumber": "Container Number",
     "containerSize": "Container Size",
-    "containerType": "Container Type"
+    "containerType": "Container Type",
+    "documents": "Documents"
   },
   "userRequestReviewPage": {
     "backButton": "Go Back",

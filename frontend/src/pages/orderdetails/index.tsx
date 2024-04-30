@@ -268,7 +268,9 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          <h2 className={styles.documentsTitle}>Documents</h2>
+          <h2 className={styles.documentsTitle}>
+            {t('orderDetailPage:documents')}
+          </h2>
           <div className={styles.documentItem}>
             <p>Bill of Lading Document</p>
             <DownloadButton

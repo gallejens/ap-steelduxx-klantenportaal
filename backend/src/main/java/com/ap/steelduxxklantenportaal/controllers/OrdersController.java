@@ -42,4 +42,20 @@ public class OrdersController {
         var orderDetails = ordersService.getOrderDetails(id, customerCode);
         return ResponseHandler.generate("", HttpStatus.OK, orderDetails);
     }
+
+    @GetMapping("/download-document")
+    @PreAuthorize("hasAuthority('ACCESS')")
+    public ResponseEntity<Resource> downloadDocument(@RequestParam String endpoint) {
+        try {
+            byte[] data = externalApiService.downloadDocument(endpoint);
+            String fileName = endpoint.substring(endpoint.lastIndexOf('/') + 1);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                    .body(new ByteArrayResource(data));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }

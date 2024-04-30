@@ -117,7 +117,8 @@ public class ExternalApiService {
         headers.setBearerAuth(token);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<byte[]> response = restTemplate.exchange(baseUrl + endpoint, HttpMethod.GET, entity,
+        ResponseEntity<byte[]> response = restTemplate.exchange(baseUrl + endpoint,
+                HttpMethod.GET, entity,
                 byte[].class);
 
         if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {

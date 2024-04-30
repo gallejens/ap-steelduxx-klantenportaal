@@ -71,6 +71,41 @@ export const OrderDetailsPage: FC = () => {
     return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
+  const downloadDocument = async (downloadLink: string | null) => {
+    if (!downloadLink) {
+      console.error(
+        'Failed to download document: Invalid or missing download link'
+      );
+      return; // Exit the function if no valid download link is provided
+    }
+
+    try {
+      const blob = await doApiAction<Blob>({
+        endpoint: `/orders/download-document?endpoint=${encodeURIComponent(downloadLink)}`,
+        method: 'GET',
+        responseType: 'blob',
+      });
+
+      if (!blob) {
+        console.error('Failed to download document: No data returned');
+        return; // Exit the function if no blob is returned
+      }
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      // Ensure the filename ends with .pdf
+      const filename = (downloadLink.split('/').pop() || 'download') + '.pdf';
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to download document:', error);
+    }
+  };
+
   const getIframeContent = (imo: string) => {
     return `
       <script type="text/javascript">
@@ -232,9 +267,27 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          <button>BL Doc Download</button>
-          <button>Packing Doc Download</button>
-          <button>Customs Doc Download</button>
+          <button
+            onClick={() =>
+              downloadDocument(orderDetail?.data.billOfLadingDownloadLink)
+            }
+          >
+            BL Doc Download
+          </button>
+          <button
+            onClick={() =>
+              downloadDocument(orderDetail?.data.packingListDownloadLink)
+            }
+          >
+            Packing Doc Download
+          </button>
+          <button
+            onClick={() =>
+              downloadDocument(orderDetail?.data.customsDownloadLink)
+            }
+          >
+            Customs Doc Download
+          </button>
         </div>
       </div>
     </div>

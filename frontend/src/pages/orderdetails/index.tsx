@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './styles/orderDetails.module.scss';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import type { OrderDetails, OrderState, OrderTransportType } from '@/types/api';
+import { DownloadButton } from '../orderdetails/downloadButton.tsx';
 
 export const OrderDetailsPage: FC = () => {
   const { t } = useTranslation();
@@ -267,27 +268,30 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          <button
-            onClick={() =>
-              downloadDocument(orderDetail?.data.billOfLadingDownloadLink)
-            }
-          >
-            BL Doc Download
-          </button>
-          <button
-            onClick={() =>
-              downloadDocument(orderDetail?.data.packingListDownloadLink)
-            }
-          >
-            Packing Doc Download
-          </button>
-          <button
-            onClick={() =>
-              downloadDocument(orderDetail?.data.customsDownloadLink)
-            }
-          >
-            Customs Doc Download
-          </button>
+          <h2 className={styles.documentsTitle}>Documents</h2>
+          <div className={styles.documentItem}>
+            <p>Bill of Lading Document</p>
+            <DownloadButton
+              downloadLink={orderDetail?.data.billOfLadingDownloadLink}
+              downloadDocument={downloadDocument}
+            />
+          </div>
+          <div className={styles.documentDivider}></div>
+          <div className={styles.documentItem}>
+            <p>Packing List Document</p>
+            <DownloadButton
+              downloadLink={orderDetail?.data.packingListDownloadLink}
+              downloadDocument={downloadDocument}
+            />
+          </div>
+          <div className={styles.documentDivider}></div>
+          <div className={styles.documentItem}>
+            <p>Customs Document</p>
+            <DownloadButton
+              downloadLink={orderDetail?.data.customsDownloadLink}
+              downloadDocument={downloadDocument}
+            />
+          </div>
         </div>
       </div>
     </div>

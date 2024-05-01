@@ -10,6 +10,7 @@ type Props = {
   footer?: JSX.Element;
   panelWidth?: string;
   hideBackButton?: boolean;
+  hideLanguageSelector?: boolean;
 };
 
 export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
@@ -32,10 +33,12 @@ export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
           )}
           <Text>{props.title}</Text>
           <div className={styles.lang_selector}>
-            <LanguagePopOver
-              textColor={'var(--mantine-color-primary-7)'}
-              paddingTop={'22px'}
-            />
+            {!props.hideLanguageSelector && (
+              <LanguagePopOver
+                textColor={'var(--mantine-color-primary-7)'}
+                paddingTop={'22px'}
+              />
+            )}
           </div>
         </div>
         <Divider className={styles.divider} />

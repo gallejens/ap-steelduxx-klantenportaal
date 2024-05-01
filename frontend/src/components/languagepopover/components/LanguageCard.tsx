@@ -6,13 +6,12 @@ interface CustomLanguageCardProps {
   flag: any;
   name: any;
   onClick: () => void;
-  isSelected: boolean;
 }
 
 export default function CustomLanguageCard(props: CustomLanguageCardProps) {
   return (
     <Card
-      className={`${styles.card} ${props.isSelected ? styles.selectedCard : ''}`}
+      className={`${styles.card}`}
       onClick={props.onClick}
     >
       <div className={styles.box}>

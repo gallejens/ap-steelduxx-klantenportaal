@@ -184,6 +184,9 @@
         "portOriginCodeInputDescription": "Fill in the port code of the origin here",
         "portOriginCodeInputPlaceholder": "CNSHG",
         "portOriginCodeInputError": "Port Code of origin is required"
+      },
+      "checkBoxContainer": {
+        "checkBoxLabel": "Container order"
       }
     },
     "productForm": {
@@ -207,9 +210,6 @@
         "weightInputDescription": "Weight (kg)",
         "weightInputPlaceholder": "14328000",
         "weightInputError": "Weight of product is required"
-      },
-      "checkBoxContainer": {
-        "checkBoxLabel": "Container product"
       },
       "container": {
         "number": {

@@ -5,9 +5,10 @@ import {
   TextInput,
   Title,
   Button,
+  Checkbox,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type Product, type OrderTransportType } from '@/types/api';
 import { ConfirmModal } from '@/components/modals';
@@ -27,21 +28,30 @@ type NewOrderFormValues = {
   transportType: OrderTransportType;
   portOfDestinationCode: string;
   portOfOriginCode: string;
+  isContainerOrder: boolean;
 };
 
 export const OrderCreatePage: FC = () => {
   const { t } = useTranslation();
   const { openModal, closeModal } = useModalStore();
   const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(() => {
+    const storedProducts = localStorage.getItem('previousProducts');
+    return storedProducts ? JSON.parse(storedProducts) : [];
+  });
   const [documents, setDocuments] = useState<CreateOrderDocument[]>([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('previousProducts', JSON.stringify(products));
+  }, [products]);
 
   const newOrderForm = useForm<NewOrderFormValues>({
     initialValues: {
       transportType: 'IMPORT',
       portOfDestinationCode: DEFAULT_PORT_CODE,
       portOfOriginCode: '',
+      isContainerOrder: false,
     },
     validate: {
       transportType: value =>
@@ -72,12 +82,51 @@ export const OrderCreatePage: FC = () => {
     }
   });
 
+  newOrderForm.watch('isContainerOrder', ({ value }) => {
+    if (value) {
+      // Retrieve previous container values from localStorage
+      const previousContainerValues = JSON.parse(
+        localStorage.getItem('previousContainerValues') ?? '[]'
+      );
+
+      // Update products with previous container values
+      setProducts(prevProducts =>
+        prevProducts.map((product, index) => ({
+          ...product,
+          ...previousContainerValues[index],
+        }))
+      );
+    } else {
+      // Store previous container values in localStorage
+      const previousContainerValues = products.map(product => ({
+        containerNumber: product.containerNumber,
+        containerSize: product.containerSize,
+        containerType: product.containerType,
+      }));
+      localStorage.setItem(
+        'previousContainerValues',
+        JSON.stringify(previousContainerValues)
+      );
+
+      // Reset container fields to null
+      setProducts(prevProducts =>
+        prevProducts.map(product => ({
+          ...product,
+          containerNumber: null,
+          containerSize: null,
+          containerType: null,
+        }))
+      );
+    }
+  });
+
   const openProductModal = () => {
     openModal(
       <NewProductModal
         onSubmit={product => {
           setProducts(s => [...s, product]);
         }}
+        isContainerOrder={newOrderForm.values.isContainerOrder}
       />
     );
   };
@@ -107,13 +156,27 @@ export const OrderCreatePage: FC = () => {
     );
   };
 
+  const containerColumns = [
+    {
+      key: 'containerNumber',
+      initialWidth: 175,
+    },
+    {
+      key: 'containerSize',
+      initialWidth: 200,
+    },
+    {
+      key: 'containerType',
+    },
+  ];
+
   const createOrder = async () => {
     if (!newOrderForm.isValid()) {
       newOrderForm.validate();
       notifications.add({
         title: t('notifications:genericError'),
         message: t('notifications:invalidForm'),
-        color: 'red',
+        autoClose: 10000,
       });
       return;
     }
@@ -217,6 +280,11 @@ export const OrderCreatePage: FC = () => {
             disabled={newOrderForm.values.transportType !== 'EXPORT'}
             {...newOrderForm.getInputProps('portOfDestinationCode')}
           />
+          <Checkbox
+            size='md'
+            label={t('newOrderPage:orderForm:checkBoxContainer:checkBoxLabel')}
+            {...newOrderForm.getInputProps('isContainerOrder')}
+          />
         </form>
         <Divider />
         <div className={styles.documents}>
@@ -262,17 +330,7 @@ export const OrderCreatePage: FC = () => {
                 key: 'weight',
                 initialWidth: 175,
               },
-              {
-                key: 'containerNumber',
-                initialWidth: 175,
-              },
-              {
-                key: 'containerSize',
-                initialWidth: 200,
-              },
-              {
-                key: 'containerType',
-              },
+              ...(newOrderForm.values.isContainerOrder ? containerColumns : []),
               {
                 key: 'actions',
                 emptyHeader: true,

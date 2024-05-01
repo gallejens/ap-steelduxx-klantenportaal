@@ -184,6 +184,9 @@
         "portOriginCodeInputDescription": "Vul hier de havencode van de oorsprong in",
         "portOriginCodeInputPlaceholder": "CNSHG",
         "portOriginCodeInputError": "De havencode van de oorsprong is vereist"
+      },
+      "checkBoxContainer": {
+        "checkBoxLabel": "Container order"
       }
     },
     "productForm": {
@@ -207,9 +210,6 @@
         "weightInputDescription": "Gewicht (kg)",
         "weightInputPlaceholder": "14328000",
         "weightInputError": "Gewicht van het product is vereist"
-      },
-      "checkBoxContainer": {
-        "checkBoxLabel": "Container product"
       },
       "container": {
         "number": {

@@ -45,7 +45,6 @@ export const OrderCreatePage: FC = () => {
   useEffect(() => {
     localStorage.setItem('previousProducts', JSON.stringify(products));
     return () => {
-      setProducts([]);
       localStorage.removeItem('previousProducts');
     };
   }, [products]);

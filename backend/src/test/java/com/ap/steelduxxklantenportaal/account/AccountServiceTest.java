@@ -3,7 +3,6 @@ package com.ap.steelduxxklantenportaal.account;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.services.AccountService;
-import com.ap.steelduxxklantenportaal.services.AuthService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

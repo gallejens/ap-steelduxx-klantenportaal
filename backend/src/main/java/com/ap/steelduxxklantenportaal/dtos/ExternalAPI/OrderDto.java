@@ -1,6 +1,5 @@
 package com.ap.steelduxxklantenportaal.dtos.ExternalAPI;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 import com.ap.steelduxxklantenportaal.enums.OrderStateEnum;

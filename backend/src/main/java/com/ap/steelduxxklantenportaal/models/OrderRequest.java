@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.models;
 
+import com.ap.steelduxxklantenportaal.enums.OrderTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;
 
@@ -24,13 +25,16 @@ public class OrderRequest {
     private String portOfDestinationCode;
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
+    @Enumerated(EnumType.STRING)
+    private OrderTypeEnum orderType;
 
     public OrderRequest(String customerCode, TransportTypeEnum transportType, String portOfOriginCode,
-            String portOfDestinationCode, StatusEnum status) {
+            String portOfDestinationCode, StatusEnum status, OrderTypeEnum orderType) {
         this.customerCode = customerCode;
         this.transportType = transportType;
         this.portOfOriginCode = portOfOriginCode;
         this.portOfDestinationCode = portOfDestinationCode;
         this.status = status;
+        this.orderType = orderType;
     }
 }

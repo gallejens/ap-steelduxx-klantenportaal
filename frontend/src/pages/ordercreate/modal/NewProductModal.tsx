@@ -22,7 +22,7 @@ type NewProductFormValues = {
   name: string;
   quantity: number;
   weight: number;
-  containerNumber: string;
+  containerNumber: string | null;
   containerSize: string;
   containerType: string;
 };
@@ -37,7 +37,7 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
       name: '',
       quantity: 0,
       weight: 0,
-      containerNumber: '',
+      containerNumber: null,
       containerSize: '',
       containerType: '',
     },
@@ -52,10 +52,6 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
           : null,
       weight: value =>
         !value ? t('newOrderPage:productForm:weight:weightInputError') : null,
-      containerNumber: value =>
-        !value && props.isContainerOrder
-          ? t('newOrderPage:productForm:container:number:numberInputError')
-          : null,
       containerSize: value =>
         !value && props.isContainerOrder
           ? t('newOrderPage:productForm:container:size:sizeInputError')
@@ -75,7 +71,7 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
       weight: values.weight,
       ...(props.isContainerOrder
         ? {
-            containerNumber: values.containerNumber,
+            containerNumber: values.containerNumber ?? null,
             containerSize: values.containerSize as ProductContainerSize,
             containerType: values.containerType as ProductContainerType,
           }

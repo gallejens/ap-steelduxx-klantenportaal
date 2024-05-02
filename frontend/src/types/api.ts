@@ -61,7 +61,7 @@ export type Product = {
   weight: number;
 } & (
   | {
-      containerNumber: string;
+      containerNumber: string | null;
       containerSize: ProductContainerSize;
       containerType: ProductContainerType;
     }

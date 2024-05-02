@@ -8,7 +8,7 @@ import {
   Checkbox,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useEffect, useState, type FC } from 'react';
+import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type Product, type OrderTransportType } from '@/types/api';
 import { ConfirmModal } from '@/components/modals';
@@ -35,19 +35,9 @@ export const OrderCreatePage: FC = () => {
   const { t } = useTranslation();
   const { openModal, closeModal } = useModalStore();
   const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[]>(() => {
-    const storedProducts = localStorage.getItem('previousProducts');
-    return storedProducts ? JSON.parse(storedProducts) : [];
-  });
+  const [products, setProducts] = useState<Product[]>([]);
   const [documents, setDocuments] = useState<CreateOrderDocument[]>([]);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem('previousProducts', JSON.stringify(products));
-    return () => {
-      localStorage.removeItem('previousProducts');
-    };
-  }, [products]);
 
   const newOrderForm = useForm<NewOrderFormValues>({
     initialValues: {
@@ -87,39 +77,9 @@ export const OrderCreatePage: FC = () => {
 
   newOrderForm.watch('isContainerOrder', ({ value }) => {
     if (value) {
-      // Retrieve previous container values from localStorage
-      const previousContainerValues = JSON.parse(
-        localStorage.getItem('previousContainerValues') ?? '[]'
-      );
-
-      // Update products with previous container values
-      setProducts(prevProducts =>
-        prevProducts.map((product, index) => ({
-          ...product,
-          ...previousContainerValues[index],
-        }))
-      );
+      setProducts([]);
     } else {
-      // Store previous container values in localStorage
-      const previousContainerValues = products.map(product => ({
-        containerNumber: product.containerNumber,
-        containerSize: product.containerSize,
-        containerType: product.containerType,
-      }));
-      localStorage.setItem(
-        'previousContainerValues',
-        JSON.stringify(previousContainerValues)
-      );
-
-      // Reset container fields to null
-      setProducts(prevProducts =>
-        prevProducts.map(product => ({
-          ...product,
-          containerNumber: null,
-          containerSize: null,
-          containerType: null,
-        }))
-      );
+      setProducts([]);
     }
   });
 

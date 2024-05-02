@@ -5,6 +5,7 @@ import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestListDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestProductDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestUploadDto;
 import com.ap.steelduxxklantenportaal.enums.DocumentType;
+import com.ap.steelduxxklantenportaal.enums.OrderTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.models.OrderRequest;
 import com.ap.steelduxxklantenportaal.models.OrderRequestDocument;
@@ -37,8 +38,7 @@ public class OrderRequestService {
             OrderRequestProductRepository orderRequestProductRepository,
             OrderRequestDocumentRepository orderRequestDocumentRepository,
             CompanyRepository companyRepository,
-            FileSystemStorageService fileSystemStorageService
-    ) {
+            FileSystemStorageService fileSystemStorageService) {
         this.orderRequestRepository = orderRequestRepository;
         this.orderRequestProductRepository = orderRequestProductRepository;
         this.orderRequestDocumentRepository = orderRequestDocumentRepository;
@@ -48,18 +48,24 @@ public class OrderRequestService {
 
     public Long addOrderRequest(NewOrderRequestDto newOrderRequestDto) {
         var user = AuthService.getCurrentUser();
-        if (user == null) return null;
+        if (user == null)
+            return null;
         var company = companyRepository.findByUserId(user.getId());
-        if (company.isEmpty()) return null;
+        if (company.isEmpty())
+            return null;
 
         var companyCode = company.get().getReferenceCode();
+
+        OrderTypeEnum orderType = newOrderRequestDto.isContainerOrder() ? OrderTypeEnum.CONTAINER
+                : OrderTypeEnum.BULK;
 
         OrderRequest orderRequest = new OrderRequest(
                 companyCode,
                 newOrderRequestDto.transportType(),
                 newOrderRequestDto.portOfOriginCode(),
                 newOrderRequestDto.portOfDestinationCode(),
-                StatusEnum.PENDING);
+                StatusEnum.PENDING,
+                orderType);
 
         OrderRequest savedOrderRequest = orderRequestRepository.save(orderRequest);
 
@@ -97,7 +103,8 @@ public class OrderRequestService {
     }
 
     public OrderRequestListDto convertOrderRequestListToDTO(OrderRequest orderRequest) {
-        List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository.findAllByOrderRequestId(orderRequest.getId()).stream()
+        List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository
+                .findAllByOrderRequestId(orderRequest.getId()).stream()
                 .map(this::convertProductsToDTO)
                 .collect(Collectors.toList());
 
@@ -105,11 +112,11 @@ public class OrderRequestService {
                 orderRequest.getId(),
                 orderRequest.getCustomerCode(),
                 orderRequest.getStatus(),
+                orderRequest.getOrderType(),
                 orderRequest.getTransportType(),
                 orderRequest.getPortOfOriginCode(),
                 orderRequest.getPortOfDestinationCode(),
-                orderRequestProductDtos
-        );
+                orderRequestProductDtos);
     }
 
     public List<OrderRequestListDto> getAll() {
@@ -119,16 +126,18 @@ public class OrderRequestService {
                 .collect(Collectors.toList());
     }
 
-    public OrderRequestListDto getOrderRequest(Long id){
+    public OrderRequestListDto getOrderRequest(Long id) {
         OrderRequest orderRequest = orderRequestRepository.findById(id).get();
         return convertOrderRequestListToDTO(orderRequest);
     }
 
     public void saveOrderRequestDocument(OrderRequestUploadDto orderRequestUploadDto) {
         var fileName = fileSystemStorageService.store(orderRequestUploadDto.file());
-        if (fileName == null) return;
+        if (fileName == null)
+            return;
 
-        var orderRequestDocument = new OrderRequestDocument(orderRequestUploadDto.orderRequestId(), orderRequestUploadDto.type(), fileName);
+        var orderRequestDocument = new OrderRequestDocument(orderRequestUploadDto.orderRequestId(),
+                orderRequestUploadDto.type(), fileName);
         orderRequestDocumentRepository.save(orderRequestDocument);
     }
 

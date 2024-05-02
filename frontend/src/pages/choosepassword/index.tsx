@@ -42,14 +42,14 @@ export const ChoosePasswordPage: FC = () => {
     if (!response) {
       notifications.add({
         message: t('notifications:genericError'),
-        color: 'red',
+        autoClose: 10000,
       });
       return;
     }
 
     notifications.add({
       message: t(`choosePasswordPage:response:${response.message}`),
-      autoClose: 5000,
+      autoClose: 10000,
     });
 
     if (response.status === 200) {

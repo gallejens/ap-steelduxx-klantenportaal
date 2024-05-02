@@ -29,7 +29,7 @@ export const OrderDocuments: FC<Props> = props => {
     if (file.size > MAX_DOCUMENT_FILESIZE) {
       notifications.add({
         message: 'Max 10MB',
-        color: 'red',
+        autoClose: 10000,
       });
       return;
     }

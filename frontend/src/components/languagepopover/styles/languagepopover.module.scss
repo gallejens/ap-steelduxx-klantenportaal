@@ -1,3 +1,21 @@
+.targetContainer {
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.flagContainer {
+  margin-top: 5px;
+  margin-right: var(--mantine-spacing-sm);
+}
+
+.flag {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
 .card {
   position: relative;
 
@@ -18,6 +36,5 @@
   .name {
     font-size: 15px;
     font-weight: bold;
-    padding-top: 2px;
   }
 }

@@ -42,14 +42,14 @@ public class AccountServiceTest {
     }
 
     @Test
-    @WithUserDetails(value=AccountObjectMother.headAdminEmail)
+    @WithUserDetails(value = AccountObjectMother.headAdminEmail)
     void givenLoggedInUser_whenRequestingAccounts_thenGetList() {
         var accounts = accountService.getAllAccounts();
         assertThat(accounts).isInstanceOf(List.class);
     }
 
     @Test
-    @WithUserDetails(value=AccountObjectMother.headAdminEmail)
+    @WithUserDetails(value = AccountObjectMother.headAdminEmail)
     void givenHeadAdminUser_whenCreatingSubaccount_expectAccountWithAdminRole() {
         var result = accountService.createSubaccount(AccountObjectMother.createSubaccountDto);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -59,7 +59,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    @WithUserDetails(value=AccountObjectMother.headNormalEmail)
+    @WithUserDetails(value = AccountObjectMother.headNormalEmail)
     void givenHeadNormalUser_whenCreatingSubaccount_expectAccountWithUserRole() {
         var result = accountService.createSubaccount(AccountObjectMother.createSubaccountDto);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);

@@ -8,19 +8,17 @@ interface CustomLanguageCardProps {
   onClick: () => void;
 }
 
-export default function CustomLanguageCard({
-  flag,
-  name,
-  onClick,
-}: CustomLanguageCardProps) {
+export default function CustomLanguageCard(props: CustomLanguageCardProps) {
   return (
     <Card
-      className={styles.card}
-      onClick={onClick}
+      className={`${styles.card}`}
+      onClick={props.onClick}
     >
       <div className={styles.box}>
-        <div className={styles.flag}>{flag}</div>
-        <div className={styles.name}>{name}</div>
+        <div className={styles.flag}>
+          <props.flag />
+        </div>
+        <div className={styles.name}>{props.name}</div>
       </div>
     </Card>
   );

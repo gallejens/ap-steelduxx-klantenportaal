@@ -26,7 +26,7 @@ export const useAuth = () => {
     } else {
       notifications.add({
         message: t(result?.message ?? 'notifications:genericError'),
-        autoClose: 5000,
+        autoClose: 10000,
       });
     }
   };

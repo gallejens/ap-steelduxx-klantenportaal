@@ -64,13 +64,14 @@ public class AuthController {
     @GetMapping("/info")
     @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> getUserInfo() {
-        var user = AuthService.getCurrentUser();;
-        return ResponseHandler.generate("", HttpStatus.OK, user.getUserInfo());
+        var user = AuthService.getCurrentUser();
+        return ResponseHandler.generate("", HttpStatus.OK, user == null ? null : user.getUserInfo());
     }
 
     @PostMapping("/change-password")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDto changePasswordDto, HttpServletResponse response) {
+    public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDto changePasswordDto,
+            HttpServletResponse response) {
         return authService.changePassword(changePasswordDto, response);
     }
 }

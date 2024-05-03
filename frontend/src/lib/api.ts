@@ -49,6 +49,7 @@ export const doApiAction = async <T = GenericAPIResponse>(data: {
   body?: unknown;
   params?: Record<string, string>;
   responseType?: ResponseType;
+  headers?: Record<string, string>;
 }): Promise<T | undefined> => {
   try {
     const response = await api<T>({
@@ -57,6 +58,7 @@ export const doApiAction = async <T = GenericAPIResponse>(data: {
       data: data.body,
       params: data.params,
       responseType: data.responseType || 'json',
+      headers: data.headers,
     });
     return response.data;
   } catch (e: unknown) {

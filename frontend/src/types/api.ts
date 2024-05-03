@@ -55,14 +55,28 @@ export type OrderDetails = {
 };
 
 export type Product = {
-  hsCode: string; // ex "73063090",
-  name: string; // ex: "Galvanized steel pipes",
-  quantity: number; // ex: 15,
-  weight: number; // ex: 14328000,
-  containerNumber: string | null; // ex: "OOCU7396492",
-  containerSize: string | null; // ex: "40",
-  containerType: string | null; // ex: "DV",
-};
+  hsCode: string;
+  name: string;
+  quantity: number;
+  weight: number;
+} & (
+  | {
+      containerNumber: string;
+      containerSize: ProductContainerSize;
+      containerType: ProductContainerType;
+    }
+  | {
+      containerNumber: null;
+      containerSize: null;
+      containerType: null;
+    }
+);
+
+export type ProductContainerSize = '20' | '40';
+
+export type ProductContainerType = 'OT' | 'FT' | 'DV' | 'HC' | 'RF';
+
+export type OrderDocumentType = 'bl' | 'packing' | 'customs';
 
 export type UserRequestStatus = 'PENDING' | 'APPROVED' | 'DENIED';
 
@@ -75,4 +89,14 @@ export type UserRequest = {
   lastName: string;
   denyMessage: string;
   status: UserRequestStatus;
+};
+
+export type OrderRequest = {
+  id: string;
+  customerCode: string;
+  transportType: string;
+  portOfOriginCode: string;
+  portOfDestinationCode: string;
+  status: string;
+  product: Product[];
 };

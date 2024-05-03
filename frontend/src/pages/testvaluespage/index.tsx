@@ -103,7 +103,7 @@ export const TestValuesPage: FC = () => {
           notifications.add({
             message: 'This is a testnotification',
             title: 'Test',
-            autoClose: 5000,
+            autoClose: 10000,
           });
         }}
       >
@@ -120,7 +120,7 @@ export const TestValuesPage: FC = () => {
                 notifications.add({
                   message: 'Confirmed',
                   title: 'Test',
-                  autoClose: 5000,
+                  autoClose: 10000,
                 });
               }}
             />

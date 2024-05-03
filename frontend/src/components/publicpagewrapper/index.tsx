@@ -3,12 +3,14 @@ import type { FC, PropsWithChildren } from 'react';
 import styles from './styles/publicpagewrapper.module.scss';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from '@tanstack/react-router';
+import { LanguagePopOver } from '../languagepopover';
 
 type Props = {
   title: string;
   footer?: JSX.Element;
   panelWidth?: string;
   hideBackButton?: boolean;
+  hideLanguageSelector?: boolean;
 };
 
 export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
@@ -30,7 +32,14 @@ export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
             </ActionIcon>
           )}
           <Text>{props.title}</Text>
-          {/* TODO: Add language selector */}
+          <div className={styles.lang_selector}>
+            {!props.hideLanguageSelector && (
+              <LanguagePopOver
+                textColor={'var(--mantine-color-primary-7)'}
+                paddingTop={'22px'}
+              />
+            )}
+          </div>
         </div>
         <Divider className={styles.divider} />
         {props.children}
@@ -41,6 +50,10 @@ export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
           </>
         )}
       </div>
+      <img
+        className={styles.waves}
+        src='/public_page_waves.svg'
+      ></img>
     </div>
   );
 };

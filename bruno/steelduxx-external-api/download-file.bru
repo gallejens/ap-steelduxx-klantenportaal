@@ -1,0 +1,15 @@
+meta {
+  name: download-file
+  type: http
+  seq: 8
+}
+
+get {
+  url: https://sw11-1.devops-ap.be/document/download/2646607000/bl
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{auth-key}}
+}

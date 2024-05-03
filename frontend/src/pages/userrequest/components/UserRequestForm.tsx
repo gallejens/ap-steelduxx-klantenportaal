@@ -13,23 +13,7 @@ import styles from '../styles/userRequest.module.scss';
 import { EMAIL_PLACEHOLDER } from '@/constants';
 import { HttpStatusCode } from 'axios';
 import { COUNTRIES } from '../constants';
-
-type UserRequestFormValues = {
-  companyName: string;
-  country: string;
-  phoneNr: string;
-  vatNr: string;
-  postalCode: string;
-  district: string;
-  street: string;
-  streetNr: string;
-  boxNr: string;
-  extraInfo: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  createdOn: number;
-};
+import type { UserRequest } from '@/types/userrequest';
 
 type Props = {
   onSubmit?: () => void;
@@ -39,7 +23,7 @@ type Props = {
 export const UserRequestForm: FC<Props> = props => {
   const { t } = useTranslation();
 
-  const UserRequestForm = useForm<UserRequestFormValues>({
+  const UserRequestForm = useForm<UserRequest.UserRequestFormValues>({
     initialValues: {
       companyName: '',
       country: '',
@@ -116,12 +100,14 @@ export const UserRequestForm: FC<Props> = props => {
     validateInputOnBlur: true,
   });
 
-  const handleUserRequestButton = async (values: UserRequestFormValues) => {
+  const handleUserRequestButton = async (
+    values: UserRequest.UserRequestFormValues
+  ) => {
     if (!UserRequestForm.isValid()) {
       notifications.add({
-        title: t('notifications: genericError'),
+        title: t('notifications:genericError'),
         message: t('notifications:invalidForm'),
-        color: 'red',
+        autoClose: 10000,
       });
       return;
     }
@@ -152,7 +138,7 @@ export const UserRequestForm: FC<Props> = props => {
     if (!isSuccess) {
       notifications.add({
         message: t(result?.message ?? 'notifications:genericError'),
-        autoClose: 5000,
+        autoClose: 10000,
       });
     }
 

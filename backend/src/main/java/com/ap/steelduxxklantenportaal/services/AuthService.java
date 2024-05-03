@@ -169,7 +169,8 @@ public class AuthService {
             return;
         }
 
-        // Generate choose-password token, save it and email it as search params in link to user
+        // Generate choose-password token, save it and email it as search params in link
+        // to user
         var choosePasswordToken = new ChoosePasswordToken();
         String uuid = UUID.randomUUID().toString();
         choosePasswordToken.setToken(uuid);
@@ -245,9 +246,11 @@ public class AuthService {
 
     public static User getCurrentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) return null;
+        if (auth == null)
+            return null;
         var user = auth.getPrincipal();
-        if (user == null) return null;
+        if (user == null)
+            return null;
         return (User) user;
     }
 }

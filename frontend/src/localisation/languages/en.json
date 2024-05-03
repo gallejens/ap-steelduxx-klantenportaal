@@ -79,7 +79,7 @@
     "loginLink": "Log in",
 
     "referenceCodeInputTitle": "Reference code",
-    "referenceCodeInputDescription": "Fill in the reference code of the company here",
+    "referenceCodeInputDescription": "Select the reference code of the company here",
     "referenceCodeInputPlaceholder": "SOF1",
     "referenceCodeInputError": "Reference code of company is required",
 
@@ -106,6 +106,9 @@
     "tableEmpty": "No requests"
   },
   "orderListPage": {
+    "header": {
+      "newOrder": "New Order"
+    },
     "table": {
       "referenceNumber": "Reference Number",
       "customerReferenceNumber": "Customer Reference Number",
@@ -160,6 +163,88 @@
     "containerType": "Container Type",
     "documents": "Documents"
   },
+  "newOrderPage": {
+    "title": "Order Info",
+    "products": "Products",
+    "documents": "Documents",
+    "orderForm": {
+      "transportType": {
+        "transportTypeInputTitle": "Transport type",
+        "transportTypeInputDescription": "Select the transport type of the order here",
+        "transportTypeInputPlaceholder": "IMPORT / EXPORT",
+        "transportTypeInputError": "Transport type is required"
+      },
+      "portDestinationCode": {
+        "portDestinationCodeInputTitle": "Port code of destination",
+        "portDestinationCodeInputDescription": "Fill in the port code of the destination here",
+        "portDestinationCodeInputPlaceholder": "CNSHG",
+        "portDestinationCodeInputError": "Port Code of destination is required"
+      },
+      "portOriginCode": {
+        "portOriginCodeInputTitle": "Port code of origin",
+        "portOriginCodeInputDescription": "Fill in the port code of the origin here",
+        "portOriginCodeInputPlaceholder": "CNSHG",
+        "portOriginCodeInputError": "Port Code of origin is required"
+      }
+    },
+    "productForm": {
+      "ProductInputTitle": "New product",
+      "hsCode": {
+        "hsCodeInputDescription": "HS-code",
+        "hsCodeInputPlaceholder": "73063090",
+        "hsCodeInputError": "HS-code of product is required"
+      },
+      "name": {
+        "nameInputDescription": "Name",
+        "nameInputPlaceholder": "Galvanized steel pipes",
+        "nameInputError": "Name is required"
+      },
+      "quantity": {
+        "quantityInputDescription": "Quantity",
+        "quantityInputPlaceholder": "15",
+        "quantityInputError": "Quantity of product is required"
+      },
+      "weight": {
+        "weightInputDescription": "Weight (kg)",
+        "weightInputPlaceholder": "14328000",
+        "weightInputError": "Weight of product is required"
+      },
+      "checkBoxContainer": {
+        "checkBoxLabel": "Container product"
+      },
+      "container": {
+        "number": {
+          "numberInputDescription": "Container number",
+          "numberInputPlaceholder": "OOCU7396492",
+          "numberInputError": "Container number of product is required"
+        },
+        "size": {
+          "sizeInputDescription": "Container size (feet)",
+          "sizeInputPlaceholder": "20",
+          "sizeInputError": "Container size of product is required"
+        },
+        "type": {
+          "typeInputDescription": "Container type",
+          "typeInputPlaceholder": "OT (open top)",
+          "typeInputError": "Container type of product is required"
+        }
+      },
+      "addProductButton": "Add Product"
+    },
+    "table": {
+      "hsCode": "HsCode",
+      "name": "Name",
+      "quantity": "Quantity",
+      "weight": "Total weight (kg)",
+      "containerNumber": "Container number",
+      "containerSize": "Container size (feet)",
+      "containerType": "Container type"
+    },
+    "addOrderButton": "Create order request",
+    "success": "Order request succesfully created.",
+    "failed": "Failed to create order, try again later.",
+    "emptyProducts": "Add at least one product."
+  },
   "userRequestReviewPage": {
     "backButton": "Go Back",
     "approveButton": "Approve",
@@ -210,7 +295,8 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registrations",
-      "accounts": "Accounts"
+      "accounts": "Accounts",
+      "orderrequests": "Order Requests"
     },
     "userOptions": {
       "logout": "Logout",
@@ -229,9 +315,20 @@
     "denyRequestConfirmation": {
       "denyConfirmTitle": "Deny request",
       "denyConfirmText": "Are you sure you want to deny this request?"
+    },
+    "newOrderConfirmation": {
+      "newOrderConfirmTitle": "New order",
+      "newOrderConfirmText": "Are you sure you want to create this order?"
+    },
+    "newProductConfirmation": {
+      "newProductConfirmTitle": "New product",
+      "newProductConfirmText": "Are you sure you want to add this product?"
     }
   },
   "modals": {
+    "confirm": {
+      "action": "Confirm"
+    },
     "changePassword": {
       "title": "Change password",
       "oldPasswordInputLabel": "Old password",
@@ -279,5 +376,29 @@
     "loading": "Loading...",
     "error": "An error has occured while loading accounts",
     "createSubAccount": "Create subaccount"
+  },
+  "orderRequestListPage": {
+    "table": {
+      "id": "Follow ID",
+      "customerCode": "Company Id",
+      "transportType": "Transport type",
+      "portOfOriginCode": "Port of Origin Code",
+      "portOfDestinationCode": "Port of Destination Code",
+      "navigate": "Review"
+    }
+  },
+  "orderRequestForm": {
+    "idInputTitle": "Follow ID",
+    "statusInputTitle": "Status",
+    "transportTypeInputTitle": "Transport Type",
+    "customerCodeInputTitle": "Company ID",
+    "portOfDestinationInputTitle": "Port of Destination",
+    "portOfOriginInputTitle": "Port of Origin",
+    "productName": "Product Name",
+    "quantity": "Quantity",
+    "weight": "Weight",
+    "containerNumber": "Container Number",
+    "containerSize": "Container size (feet)",
+    "containerType": "Container Type"
   }
 }

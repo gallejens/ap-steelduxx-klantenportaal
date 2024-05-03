@@ -1,4 +1,11 @@
-import { Input, NumberInput, PasswordInput, createTheme } from '@mantine/core';
+import {
+  FileInput,
+  Input,
+  NumberInput,
+  PasswordInput,
+  Select,
+  createTheme,
+} from '@mantine/core';
 import styles from './styles/mantine.module.scss';
 import { PASSWORD_PLACEHOLDER } from './constants';
 
@@ -56,6 +63,20 @@ export const theme = createTheme({
       },
     }),
     NumberInput: NumberInput.extend({
+      defaultProps: {
+        classNames: {
+          label: styles.input_label,
+        },
+      },
+    }),
+    Select: Select.extend({
+      defaultProps: {
+        classNames: {
+          label: styles.input_label,
+        },
+      },
+    }),
+    FileInput: FileInput.extend({
       defaultProps: {
         classNames: {
           label: styles.input_label,

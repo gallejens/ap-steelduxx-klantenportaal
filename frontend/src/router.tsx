@@ -19,6 +19,9 @@ import { OrderListPage } from './pages/orderlist';
 import { OrderDetailsPage } from './pages/orderdetails';
 import { UserRequestReviewPage } from './pages/userrequestreview';
 import { AccountListPage } from './pages/accountlist';
+import { OrderCreatePage } from './pages/ordercreate/Index';
+import { OrderRequestListPage } from './pages/orderrequestlist';
+import { OrderRequestReviewPage } from './pages/orderrequestreview';
 
 const rootRoute = createRootRoute();
 
@@ -107,6 +110,18 @@ const orderListRoute = createRoute({
   component: OrderListPage,
 });
 
+const orderRequestsListRoute = createRoute({
+  getParentRoute: () => authorizedOnlyRoute,
+  path: 'order-requests',
+  component: OrderRequestListPage,
+});
+
+const orderRequestReviewRoute = createRoute({
+  getParentRoute: () => authorizedOnlyRoute,
+  path: '/order-requests/$orderrequestid',
+  component: OrderRequestReviewPage,
+});
+
 const orderDetailsRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
   path: '/orders/$order_id',
@@ -120,6 +135,12 @@ const orderDetailsRoute = createRoute({
           : undefined,
     };
   },
+});
+
+const orderCreateRoute = createRoute({
+  getParentRoute: () => authorizedOnlyRoute,
+  path: '/orders/new',
+  component: OrderCreatePage,
 });
 
 const userRequestReviewRoute = createRoute({
@@ -145,7 +166,10 @@ const routeTree = rootRoute.addChildren([
   authorizedOnlyRoute.addChildren([
     homeRoute,
     orderListRoute,
+    orderRequestsListRoute,
+    orderRequestReviewRoute,
     orderDetailsRoute,
+    orderCreateRoute,
     userRequestListRoute,
     testValuesRoute,
     userRequestReviewRoute,

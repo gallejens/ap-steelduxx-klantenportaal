@@ -400,5 +400,14 @@
     "containerNumber": "Container nummer",
     "containerSize": "Container grootte (feet)",
     "containerType": "Container type"
+  },
+  "orderRequestReviewPage": {
+    "backButton": "Terug Gaan",
+    "approveButton": "Goedkeuren",
+    "denyButton": "Afkeuren",
+    "response": {
+      "success": "Order aanvraag goedgekeurd!",
+      "denied": "Order aanvraag afgekeurd!"
+    }
   }
 }

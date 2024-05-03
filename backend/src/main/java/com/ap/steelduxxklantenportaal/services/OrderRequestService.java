@@ -1,10 +1,10 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestListDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestProductDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestUploadDto;
-import com.ap.steelduxxklantenportaal.enums.DocumentType;
 import com.ap.steelduxxklantenportaal.enums.OrderTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.models.OrderRequest;
@@ -15,13 +15,12 @@ import com.ap.steelduxxklantenportaal.repositories.OrderRequestDocumentRepositor
 import com.ap.steelduxxklantenportaal.repositories.OrderRequestProductRepository;
 import com.ap.steelduxxklantenportaal.repositories.OrderRequestRepository;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -32,18 +31,34 @@ public class OrderRequestService {
     private final OrderRequestDocumentRepository orderRequestDocumentRepository;
     private final CompanyRepository companyRepository;
     private final FileSystemStorageService fileSystemStorageService;
+    private final ExternalApiService externalApiService;
 
     public OrderRequestService(
             OrderRequestRepository orderRequestRepository,
             OrderRequestProductRepository orderRequestProductRepository,
             OrderRequestDocumentRepository orderRequestDocumentRepository,
             CompanyRepository companyRepository,
+            ExternalApiService externalApiService, 
             FileSystemStorageService fileSystemStorageService) {
         this.orderRequestRepository = orderRequestRepository;
         this.orderRequestProductRepository = orderRequestProductRepository;
         this.orderRequestDocumentRepository = orderRequestDocumentRepository;
         this.companyRepository = companyRepository;
         this.fileSystemStorageService = fileSystemStorageService;
+        this.externalApiService = externalApiService;
+    }
+
+
+    public ResponseEntity<Object> approveOrderRequest(Long id) {
+        OrderRequestDto orderRequestDto = getOrderRequestDto(id);
+        updateOrderRequestStatus(id, StatusEnum.APPROVED);
+        externalApiService.createOrder(orderRequestDto);
+        return ResponseHandler.generate("orderRequestReviewPage:response:success", HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<Object> denyOrderRequest(Long id ) {
+        updateOrderRequestStatus(id, StatusEnum.DENIED);
+        return ResponseHandler.generate("orderRequestReviewPage:response:denied", HttpStatus.OK);
     }
 
     public Long addOrderRequest(NewOrderRequestDto newOrderRequestDto) {
@@ -119,6 +134,20 @@ public class OrderRequestService {
                 orderRequestProductDtos);
     }
 
+    public OrderRequestDto convertOrderRequestToDTO(OrderRequest orderRequest) {
+        List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository.findAllByOrderRequestId(orderRequest.getId()).stream()
+                .map(this::convertProductsToDTO)
+                .collect(Collectors.toList());
+
+        return new OrderRequestDto(
+                orderRequest.getCustomerCode(),
+                orderRequest.getTransportType().toString(),
+                orderRequest.getPortOfOriginCode().toString(),
+                "CONTAINER",
+                orderRequestProductDtos
+        );
+    }
+
     public List<OrderRequestListDto> getAll() {
         List<OrderRequest> orderRequest = orderRequestRepository.findAll();
         return orderRequest.stream()
@@ -129,6 +158,11 @@ public class OrderRequestService {
     public OrderRequestListDto getOrderRequest(Long id) {
         OrderRequest orderRequest = orderRequestRepository.findById(id).get();
         return convertOrderRequestListToDTO(orderRequest);
+    }
+
+    public OrderRequestDto getOrderRequestDto(Long id){
+        OrderRequest orderRequest = orderRequestRepository.findById(id).get();
+        return convertOrderRequestToDTO(orderRequest);
     }
 
     public void saveOrderRequestDocument(OrderRequestUploadDto orderRequestUploadDto) {

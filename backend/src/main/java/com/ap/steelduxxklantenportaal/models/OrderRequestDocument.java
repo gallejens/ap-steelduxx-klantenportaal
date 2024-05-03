@@ -2,7 +2,6 @@ package com.ap.steelduxxklantenportaal.models;
 
 import com.ap.steelduxxklantenportaal.enums.DocumentType;
 import com.ap.steelduxxklantenportaal.models.IdClasses.OrderRequestDocumentId;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -59,7 +59,7 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     .productsList {
       width: calc(60% - 1rem);
       flex: 2;
-      max-height: 310px;
+      max-height: 330px;
       background-color: $section-background;
       padding: $order-padding;
       margin-right: 1.4rem;
@@ -78,7 +78,7 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
       .tableContainer {
         overflow-y: auto;
-        max-height: 230px;
+        max-height: 250px;
         table {
           width: 100%;
           border-collapse: collapse;

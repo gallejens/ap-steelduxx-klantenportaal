@@ -79,9 +79,11 @@ public class ExternalApiService {
         return internalRequest(user, endpoint, method, responseType, false);
     }
 
-    private <T> T internalRequest(User user, String endpoint, HttpMethod method, Class<T> responseType, boolean isRetry) {
+    private <T> T internalRequest(User user, String endpoint, HttpMethod method, Class<T> responseType,
+            boolean isRetry) {
         String token = getToken(user);
-        if (token == null) return null;
+        if (token == null)
+            return null;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
@@ -100,5 +102,28 @@ public class ExternalApiService {
             userTokens.remove(user.getId());
             return internalRequest(user, endpoint, method, responseType, true);
         }
+    }
+
+    public byte[] downloadDocument(String endpoint) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new RestClientException("Unauthorized access");
+        }
+
+        var user = (User) auth.getPrincipal();
+        String token = getToken(user);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<byte[]> response = restTemplate.exchange(baseUrl + endpoint,
+                HttpMethod.GET, entity,
+                byte[].class);
+
+        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
+            throw new RestClientException("Failed to download document");
+        }
+
+        return response.getBody();
     }
 }

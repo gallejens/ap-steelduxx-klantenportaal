@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './styles/orderDetails.module.scss';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import type { OrderDetails, OrderState, OrderTransportType } from '@/types/api';
+import { DownloadButton } from '../orderdetails/downloadButton.tsx';
 
 export const OrderDetailsPage: FC = () => {
   const { t } = useTranslation();
@@ -32,6 +33,8 @@ export const OrderDetailsPage: FC = () => {
           : undefined,
       }),
   });
+
+  console.log('Order details loaded:', orderDetail);
 
   function getStateClass(state: OrderState): string {
     switch (state) {
@@ -66,6 +69,41 @@ export const OrderDetailsPage: FC = () => {
   function formatWeight(weight: number): string {
     return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
+
+  const downloadDocument = async (downloadLink: string | null) => {
+    if (!downloadLink) {
+      console.error(
+        'Failed to download document: Invalid or missing download link'
+      );
+      return; // Exit the function if no valid download link is provided
+    }
+
+    try {
+      const blob = await doApiAction<Blob>({
+        endpoint: `/orders/download-document?endpoint=${encodeURIComponent(downloadLink)}`,
+        method: 'GET',
+        responseType: 'blob',
+      });
+
+      if (!blob) {
+        console.error('Failed to download document: No data returned');
+        return; // Exit the function if no blob is returned
+      }
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      // Ensure the filename ends with .pdf
+      const filename = (downloadLink.split('/').pop() || 'download') + '.pdf';
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to download document:', error);
+    }
+  };
 
   const getIframeContent = (imo: string) => {
     return `
@@ -147,11 +185,11 @@ export const OrderDetailsPage: FC = () => {
             <p className={styles.subTitle}>
               {t('orderDetailPage:estimatedTimeCargoOnQuay')}
             </p>
-            <p>{orderDetail?.data.estimatedTimeCargoOnQuay}</p>
+            <p>{orderDetail?.data.estimatedTimeCargoOnQuay || '?'}</p>
             <p className={styles.subTitle}>
               {t('orderDetailPage:actualTimeCargoLoaded')}
             </p>
-            <p>{orderDetail?.data.actualTimeCargoLoaded}</p>
+            <p>{orderDetail?.data.actualTimeCargoLoaded || '?'}</p>
           </section>
         </div>
         <div className={styles.shipInfo}>
@@ -228,9 +266,32 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          <p>documents</p>
-          <p>download</p>
-          <button>X</button>
+          <h2 className={styles.documentsTitle}>
+            {t('orderDetailPage:documents')}
+          </h2>
+          <div className={styles.documentItem}>
+            <p>Bill of Lading Document</p>
+            <DownloadButton
+              downloadLink={orderDetail?.data.billOfLadingDownloadLink}
+              downloadDocument={downloadDocument}
+            />
+          </div>
+          <div className={styles.documentDivider}></div>
+          <div className={styles.documentItem}>
+            <p>Packing List Document</p>
+            <DownloadButton
+              downloadLink={orderDetail?.data.packingListDownloadLink}
+              downloadDocument={downloadDocument}
+            />
+          </div>
+          <div className={styles.documentDivider}></div>
+          <div className={styles.documentItem}>
+            <p>Customs Document</p>
+            <DownloadButton
+              downloadLink={orderDetail?.data.customsDownloadLink}
+              downloadDocument={downloadDocument}
+            />
+          </div>
         </div>
       </div>
     </div>

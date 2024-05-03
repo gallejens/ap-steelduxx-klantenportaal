@@ -1,6 +1,7 @@
 import axios, { type AxiosError } from 'axios';
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type ResponseType = 'json' | 'blob';
 
 const NO_RETRY_HEADER = 'x-no-retry';
 const BASE_URL: string = import.meta.env.VITE_API_ENDPOINT;
@@ -47,6 +48,7 @@ export const doApiAction = async <T = GenericAPIResponse>(data: {
   method: Method;
   body?: unknown;
   params?: Record<string, string>;
+  responseType?: ResponseType;
   headers?: Record<string, string>;
 }): Promise<T | undefined> => {
   try {
@@ -55,6 +57,7 @@ export const doApiAction = async <T = GenericAPIResponse>(data: {
       method: data.method,
       data: data.body,
       params: data.params,
+      responseType: data.responseType || 'json',
       headers: data.headers,
     });
     return response.data;

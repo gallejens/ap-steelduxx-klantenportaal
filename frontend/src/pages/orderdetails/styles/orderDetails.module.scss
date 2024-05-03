@@ -11,7 +11,7 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
   .header {
     font-size: 24px;
-    color: #333;
+    color: black;
     margin-bottom: $section-margin;
   }
 
@@ -115,12 +115,72 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
     .documentsContainer {
-      width: calc(40% - 1rem);
-      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 20px;
+      width: 16vw;
       background-color: $section-background;
-      padding: $order-padding;
       border-radius: $border-radius;
       box-shadow: $box-shadow;
+
+      .documentsTitle {
+        font-size: 18px;
+        color: black;
+        margin-bottom: 15px;
+      }
+
+      .documentItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+
+        p {
+          flex: 1;
+          margin-right: 10px;
+          font-size: 16px;
+          color: black;
+        }
+
+        .downloadButton {
+          background-color: var(--mantine-color-primary-5);
+          border: none;
+          padding: 12px;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition:
+            background-color 0.3s,
+            transform 0.3s;
+
+          &:hover {
+            background-color: #5d4037;
+            transform: scale(1.1);
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow:
+              0 0 0 3px rgba(255, 255, 255, 0.4),
+              0 0 0 4px #6d4c41;
+          }
+
+          svg {
+            color: white;
+          }
+        }
+      }
+
+      .documentDivider {
+        height: 1px;
+        background-color: #ccc;
+        margin: 0 5%;
+      }
     }
   }
 

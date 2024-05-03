@@ -160,7 +160,8 @@
     "container": "Container",
     "containerNumber": "Container Number",
     "containerSize": "Container Size",
-    "containerType": "Container Type"
+    "containerType": "Container Type",
+    "documents": "Documents"
   },
   "newOrderPage": {
     "title": "Order Info",

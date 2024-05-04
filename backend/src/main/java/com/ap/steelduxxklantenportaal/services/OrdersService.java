@@ -17,7 +17,8 @@ public class OrdersService {
 
     public OrderDto[] getAllOrders() {
         var user = AuthService.getCurrentUser();
-        if (user == null) return new OrderDto[0];
+        if (user == null)
+            return new OrderDto[0];
 
         boolean isAdmin = user.hasPermission(PermissionEnum.ADMIN);
         String endpoint = isAdmin ? "/admin/order/all" : "/order/all";
@@ -27,7 +28,8 @@ public class OrdersService {
 
     public OrderDetailsDto getOrderDetails(long orderId, String customerCode) {
         var user = AuthService.getCurrentUser();
-        if (user == null) return null;
+        if (user == null)
+            return null;
 
         // if user is admin and customercode was provided then use admin endpoint
         boolean isAdmin = user.hasPermission(PermissionEnum.ADMIN);

@@ -1,6 +1,7 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
+import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
@@ -125,5 +126,16 @@ public class ExternalApiService {
         }
 
         return response.getBody();
+    }
+
+    public boolean uploadDocument(String endpoint, DocumentRequestDto dto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(getToken(AuthService.getCurrentUser()));
+
+        HttpEntity<DocumentRequestDto> entity = new HttpEntity<>(dto, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl + endpoint, entity, String.class);
+        return response.getStatusCode().is2xxSuccessful();
     }
 }

@@ -1,8 +1,11 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
+import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.OrdersService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
+
+import java.io.IOException;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
@@ -10,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.core.io.Resource;
 
@@ -54,4 +58,21 @@ public class OrdersController {
         }
     }
 
+    @PostMapping("/upload-document/{referenceNumber}/{documentType}")
+    @PreAuthorize("hasAuthority('ACCESS')")
+    public ResponseEntity<Object> uploadDocument(@PathVariable String referenceNumber,
+            @PathVariable String documentType, @RequestParam("file") MultipartFile file) {
+        try {
+            byte[] documentBytes = file.getBytes();
+            DocumentRequestDto dto = new DocumentRequestDto(referenceNumber, documentType, documentBytes);
+            boolean success = externalApiService.uploadDocument("/document/upload", dto);
+            if (success) {
+                return ResponseHandler.generate("Document uploaded successfully", HttpStatus.OK, null);
+            } else {
+                return ResponseHandler.generate("Failed to upload document", HttpStatus.BAD_REQUEST, null);
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing file upload");
+        }
+    }
 }

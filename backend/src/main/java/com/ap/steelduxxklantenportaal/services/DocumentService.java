@@ -2,18 +2,16 @@ package com.ap.steelduxxklantenportaal.services;
 
 import org.springframework.stereotype.Service;
 
-import com.ap.steelduxxklantenportaal.repositories.DocumentRepository;
-
 @Service
 public class DocumentService {
 
-    private final DocumentRepository documentRepository;
+    private final ExternalApiService externalApiService;
 
-    public DocumentService(DocumentRepository documentRepository) {
-        this.documentRepository = documentRepository;
+    public DocumentService(ExternalApiService externalApiService) {
+        this.externalApiService = externalApiService;
     }
 
     public boolean checkDocumentExistence(String referenceNumber, String documentType) {
-        return documentRepository.findByReferenceNumberAndDocumentType(referenceNumber, documentType).isPresent();
+        return externalApiService.checkDocumentExistence(referenceNumber, documentType);
     }
 }

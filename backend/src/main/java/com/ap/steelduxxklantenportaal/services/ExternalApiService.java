@@ -1,6 +1,7 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
+import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentExistenceResponse;
 import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.models.User;
@@ -137,5 +138,32 @@ public class ExternalApiService {
 
         ResponseEntity<String> response = restTemplate.postForEntity(baseUrl + endpoint, entity, String.class);
         return response.getStatusCode().is2xxSuccessful();
+    }
+
+    public boolean checkDocumentExistence(String referenceNumber, String documentType) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return false;
+        }
+
+        var user = (User) auth.getPrincipal();
+        if (user == null) {
+            return false;
+        }
+
+        String token = getToken(user);
+        if (token == null)
+            return false;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        String endpoint = String.format("/document/existence/%s/%s", referenceNumber, documentType);
+        ResponseEntity<DocumentExistenceResponse> response = restTemplate.exchange(baseUrl + endpoint,
+                HttpMethod.GET, entity, DocumentExistenceResponse.class);
+
+        return response.getBody().exists();
     }
 }

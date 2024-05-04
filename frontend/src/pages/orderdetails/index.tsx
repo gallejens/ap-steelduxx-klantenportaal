@@ -75,7 +75,7 @@ export const OrderDetailsPage: FC = () => {
       console.error(
         'Failed to download document: Invalid or missing download link'
       );
-      return; // Exit the function if no valid download link is provided
+      return;
     }
 
     try {
@@ -87,13 +87,12 @@ export const OrderDetailsPage: FC = () => {
 
       if (!blob) {
         console.error('Failed to download document: No data returned');
-        return; // Exit the function if no blob is returned
+        return;
       }
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      // Ensure the filename ends with .pdf
       const filename = (downloadLink.split('/').pop() || 'download') + '.pdf';
       a.download = filename;
       document.body.appendChild(a);

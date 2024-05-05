@@ -1,6 +1,6 @@
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
-import { Button, TextInput } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { ActionIcon, Button, TextInput } from '@mantine/core';
+import { IconSearch, IconTrash } from '@tabler/icons-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,7 @@ import { CreateSubaccountModal } from '@/components/modals/components/CreateSuba
 import { useModalStore } from '@/stores/useModalStore';
 import { useAuth } from '@/hooks/useAuth';
 import type { Auth } from '@/types/auth';
+import { ConfirmModal } from '@/components/modals';
 
 type Account = {
   email: string;
@@ -22,9 +23,10 @@ type Account = {
 export const AccountListPage: FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const { t } = useTranslation();
-  const { openModal } = useModalStore();
+  const { openModal, closeModal } = useModalStore();
   const { user } = useAuth();
   const client = useQueryClient();
+  // const [responseMessage, setResponseMessage] = useState<string | null>(null);
 
   const {
     data: accounts,
@@ -60,6 +62,38 @@ export const AccountListPage: FC = () => {
       />
     );
   };
+
+  const openDeleteSubAccountConfirmModal = (account: Account) => {
+    openModal(
+      <ConfirmModal
+        title={t(
+          'appshell:deleteSubAccountConfirmation:deleteSubAccountConfirmTitle'
+        )}
+        text={t(
+          'appshell:deleteSubAccountConfirmation:deleteSubAccountConfirmText'
+        )}
+        onConfirm={() => {
+          // deleteSubAccount(account);
+          closeModal();
+        }}
+      ></ConfirmModal>
+    );
+  };
+
+  // const deleteSubAccount = async (values: Account) => {
+  //   const result = await doApiAction({
+  //     endpoint: '/accounts/delete',
+  //     method: 'DELETE',
+  //     body: {
+  //       email: values.email,
+  //       firstName: values.firstName,
+  //       lastName: values.lastName,
+  //       role: values.role,
+  //     },
+  //   });
+
+  //   setResponseMessage(result?.message ?? 'failed');
+  // };
 
   return (
     <div className={styles.account_list_page}>
@@ -110,8 +144,28 @@ export const AccountListPage: FC = () => {
               transform: (role: Auth.Role) =>
                 role === 'ROLE_HEAD_ADMIN' || role === 'ROLE_HEAD_USER',
             },
+            {
+              key: 'actions',
+              emptyHeader: true,
+              disallowSorting: true,
+              disableResizing: true,
+            },
           ]}
-          data={accounts.data ?? []}
+          data={
+            accounts.data.map(a => ({
+              ...a,
+              actions:
+                a.role !== 'ROLE_HEAD_ADMIN' && a.role !== 'ROLE_HEAD_USER' ? (
+                  <ActionIcon
+                    onClick={() => openDeleteSubAccountConfirmModal(a)}
+                  >
+                    <IconTrash />
+                  </ActionIcon>
+                ) : (
+                  []
+                ),
+            })) ?? []
+          }
         />
       </div>
     </div>

@@ -32,4 +32,10 @@ public class AccountController {
     public ResponseEntity<Object> createSubAccount(@RequestBody CreateSubaccountDto createSubaccountDto) {
         return accountService.createSubaccount(createSubaccountDto);
     }
+
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAuthority('CREATE_SUB_ACCOUNTS')")
+    public ResponseEntity<Object> deleteSubAccount(@RequestBody AccountDto accountDto) {
+        return accountService.deleteSubaccount(accountDto);
+    }
 }

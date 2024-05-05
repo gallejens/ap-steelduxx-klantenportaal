@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String> {
+
     @Query(value = """
             SELECT * FROM account_view WHERE company_id = (
                 SELECT company_id

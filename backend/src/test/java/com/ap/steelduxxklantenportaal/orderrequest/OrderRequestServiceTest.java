@@ -20,86 +20,86 @@ import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
 @ExtendWith(MockitoExtension.class)
 public class OrderRequestServiceTest {
 
-    @Mock
-    private OrderRequestService orderRequestService;
+        @Mock
+        private OrderRequestService orderRequestService;
 
-    @InjectMocks
-    private OrderRequestController orderRequestController;
+        @InjectMocks
+        private OrderRequestController orderRequestController;
 
-    @Test
-    void givenOrderRequestToAdd_whenAddingOrderRequest_thenOrderRequestIsAdded() {
-        // Given
-        NewOrderRequestDto newOrderRequestDto = OrderRequestObjectMother.orderRequest1;
-        Map<String, String> expectedResponse = Map.of(
-                "message", "newOrderPage:success",
-                "status", HttpStatus.CREATED.toString());
+        @Test
+        void givenOrderRequestToAdd_whenAddingOrderRequest_thenOrderRequestIsAdded() {
+                // Given
+                NewOrderRequestDto newOrderRequestDto = OrderRequestObjectMother.orderRequest1;
+                Map<String, String> expectedResponse = Map.of(
+                                "message", "newOrderPage:success",
+                                "status", HttpStatus.CREATED.toString());
 
-        when(orderRequestService.createNewOrderRequest(newOrderRequestDto))
-                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
+                when(orderRequestService.createNewOrderRequest(newOrderRequestDto))
+                                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
 
-        // When
-        ResponseEntity<Object> response = orderRequestController.createOrderRequest(newOrderRequestDto);
+                // When
+                ResponseEntity<Object> response = orderRequestController.createOrderRequest(newOrderRequestDto);
 
-        // Then
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(expectedResponse, response.getBody());
-    }
+                // Then
+                assertEquals(HttpStatus.CREATED, response.getStatusCode());
+                assertEquals(expectedResponse, response.getBody());
+        }
 
-    @Test
-    void givenOrderRequestToAdd_whenAddingOrderRequestWithEmptyProductList_thenOrderRequestIsNotAdded() {
-        // Given
-        NewOrderRequestDto newOrderRequestDto = OrderRequestObjectMother.orderRequest2;
-        Map<String, String> expectedResponse = Map.of(
-                "message", "newOrderPage:success",
-                "status", HttpStatus.CREATED.toString());
+        @Test
+        void givenOrderRequestToAdd_whenAddingOrderRequestWithEmptyProductList_thenOrderRequestIsNotAdded() {
+                // Given
+                NewOrderRequestDto newOrderRequestDto = OrderRequestObjectMother.orderRequest2;
+                Map<String, String> expectedResponse = Map.of(
+                                "message", "newOrderPage:success",
+                                "status", HttpStatus.CREATED.toString());
 
-        when(orderRequestService.createNewOrderRequest(newOrderRequestDto))
-                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.BAD_REQUEST));
+                when(orderRequestService.createNewOrderRequest(newOrderRequestDto))
+                                .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.BAD_REQUEST));
 
-        // When
-        ResponseEntity<Object> response = orderRequestController.createOrderRequest(newOrderRequestDto);
+                // When
+                ResponseEntity<Object> response = orderRequestController.createOrderRequest(newOrderRequestDto);
 
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(expectedResponse, response.getBody());
-    }
+                // Then
+                assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+                assertEquals(expectedResponse, response.getBody());
+        }
 
-    @Test
-    void givenOrderRequestToDeny_whenDenyingOrderRequest_thenOrderRequestIsDenied() {
-        // Given
-        Long orderRequestId = 123L;
-        Map<String, String> expectedResponse = Map.of(
-                "message", "orderRequestReviewPage:response:denied",
-                "status", HttpStatus.OK.toString());
+        @Test
+        void givenOrderRequestToDeny_whenDenyingOrderRequest_thenOrderRequestIsDenied() {
+                // Given
+                Long orderRequestId = 123L;
+                Map<String, String> expectedResponse = Map.of(
+                                "message", "orderRequestReviewPage:response:denied",
+                                "status", HttpStatus.OK.toString());
 
-        when(orderRequestService.denyOrderRequest(orderRequestId))
-                .thenReturn(ResponseEntity.ok(expectedResponse));
+                when(orderRequestService.denyOrderRequest(orderRequestId))
+                                .thenReturn(ResponseEntity.ok(expectedResponse));
 
-        // When
-        ResponseEntity<Object> response = orderRequestController.denyOrderRequest(orderRequestId);
+                // When
+                ResponseEntity<Object> response = orderRequestController.denyOrderRequest(orderRequestId);
 
-        // Then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedResponse, response.getBody());
-    }
+                // Then
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(expectedResponse, response.getBody());
+        }
 
-    @Test
-    void givenOrderRequestToApprove_whenApprovingOrderRequest_thenOrderRequestIsApproved() {
-        // Given
-        Long orderRequestId = 456L;
-        Map<String, String> expectedResponse = Map.of(
-                "message", "orderRequestReviewPage:response:success",
-                "status", HttpStatus.CREATED.toString());
+        @Test
+        void givenOrderRequestToApprove_whenApprovingOrderRequest_thenOrderRequestIsApproved() {
+                // Given
+                Long orderRequestId = 456L;
+                Map<String, String> expectedResponse = Map.of(
+                                "message", "orderRequestReviewPage:response:success",
+                                "status", HttpStatus.CREATED.toString());
 
-        when(orderRequestService.approveOrderRequest(orderRequestId))
-                .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(expectedResponse));
+                when(orderRequestService.approveOrderRequest(orderRequestId))
+                                .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(expectedResponse));
 
-        // When
-        ResponseEntity<Object> response = orderRequestController.approveOrderRequest(orderRequestId);
+                // When
+                ResponseEntity<Object> response = orderRequestController.approveOrderRequest(orderRequestId);
 
-        // Then
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(expectedResponse, response.getBody());
-    }
+                // Then
+                assertEquals(HttpStatus.CREATED, response.getStatusCode());
+                assertEquals(expectedResponse, response.getBody());
+        }
 
 }

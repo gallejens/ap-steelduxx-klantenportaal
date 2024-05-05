@@ -59,7 +59,7 @@ public class OrdersController {
     }
 
     @PostMapping("/upload-document")
-    @PreAuthorize("hasAuthority('UPLOAD_DOCUMENT')")
+    @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> uploadDocument(@RequestParam("file") MultipartFile file,
             @RequestParam("type") String documentType) {
         try {

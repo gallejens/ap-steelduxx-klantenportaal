@@ -130,10 +130,10 @@ public class ExternalApiService {
 
     public boolean uploadDocument(DocumentRequestDto documentRequest) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(getToken((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
 
-        HttpEntity<byte[]> entity = new HttpEntity<>(documentRequest.document(), headers);
+        HttpEntity<DocumentRequestDto> entity = new HttpEntity<>(documentRequest, headers);
 
         try {
             ResponseEntity<Void> response = restTemplate.postForEntity(baseUrl + "/document/upload", entity,

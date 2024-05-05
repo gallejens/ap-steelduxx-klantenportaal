@@ -106,6 +106,51 @@ export const OrderDetailsPage: FC = () => {
     }
   };
 
+  const [uploadDocumentType, setUploadDocumentType] = React.useState('');
+
+  const handleUploadClick = documentType => {
+    setUploadDocumentType(documentType);
+    document.getElementById('fileUpload').click();
+  };
+
+  const handleFileChange = async event => {
+    const file = event.target.files[0];
+    if (!file) {
+      console.error('No file selected');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', uploadDocumentType);
+
+      const response = await doApiAction({
+        endpoint: '/orders/upload-document',
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response && response.status === 200) {
+        console.log('File uploaded successfully', response);
+        alert(`File for ${uploadDocumentType} uploaded successfully.`);
+      } else {
+        console.error('Failed to upload file', response);
+        alert(`Failed to upload file for ${uploadDocumentType}.`);
+      }
+    } catch (error) {
+      console.error('Upload failed', error);
+      alert(
+        `Upload failed for ${uploadDocumentType}. Check console for more details.`
+      );
+    }
+
+    event.target.value = null;
+  };
+
   const getIframeContent = (imo: string) => {
     return `
       <script type="text/javascript">
@@ -270,7 +315,7 @@ export const OrderDetailsPage: FC = () => {
           <h2 className={styles.documentsTitle}>
             {t('orderDetailPage:documents')}
           </h2>
-          {/* <div className={styles.documentItem}>
+          <div className={styles.documentItem}>
             <p>Bill of Lading Document</p>
             <DownloadButton
               downloadLink={orderDetail?.data.billOfLadingDownloadLink}
@@ -292,7 +337,30 @@ export const OrderDetailsPage: FC = () => {
               downloadLink={orderDetail?.data.customsDownloadLink}
               downloadDocument={downloadDocument}
             />
-          </div> */}
+          </div>
+        </div>
+        <div className={styles.documentsContainer}>
+          <h2 className={styles.documentsTitle}>
+            {t('orderDetailPage:documents')}
+          </h2>
+          <input
+            type='file'
+            id='fileUpload'
+            hidden
+            onChange={handleFileChange}
+          />
+          <div className={styles.documentItem}>
+            <p>Bill of Lading Document</p>
+            <button onClick={() => handleUploadClick('bl')}>Upload</button>
+          </div>
+          <div className={styles.documentItem}>
+            <p>Packing List Document</p>
+            <button onClick={() => handleUploadClick('packing')}>Upload</button>
+          </div>
+          <div className={styles.documentItem}>
+            <p>Customs Document</p>
+            <button onClick={() => handleUploadClick('customs')}>Upload</button>
+          </div>
         </div>
       </div>
     </div>

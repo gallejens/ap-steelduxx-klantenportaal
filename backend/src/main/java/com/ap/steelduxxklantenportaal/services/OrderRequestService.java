@@ -143,7 +143,7 @@ public class OrderRequestService {
                 orderRequest.getCustomerCode(),
                 orderRequest.getTransportType().toString(),
                 orderRequest.getPortOfOriginCode().toString(),
-                "CONTAINER",
+                orderRequest.getOrderType().toString(),
                 orderRequestProductDtos
         );
     }

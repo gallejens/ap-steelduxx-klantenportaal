@@ -1,7 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentExistenceResponse;
 import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.models.User;
@@ -129,41 +128,19 @@ public class ExternalApiService {
         return response.getBody();
     }
 
-    public boolean uploadDocument(String endpoint, DocumentRequestDto dto) {
+    public boolean uploadDocument(DocumentRequestDto documentRequest) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(getToken(AuthService.getCurrentUser()));
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setBearerAuth(getToken((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
 
-        HttpEntity<DocumentRequestDto> entity = new HttpEntity<>(dto, headers);
+        HttpEntity<byte[]> entity = new HttpEntity<>(documentRequest.document(), headers);
 
-        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl + endpoint, entity, String.class);
-        return response.getStatusCode().is2xxSuccessful();
-    }
-
-    public boolean checkDocumentExistence(String referenceNumber, String documentType) {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
+        try {
+            ResponseEntity<Void> response = restTemplate.postForEntity(baseUrl + "/document/upload", entity,
+                    Void.class);
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (RestClientException e) {
             return false;
         }
-
-        var user = (User) auth.getPrincipal();
-        if (user == null) {
-            return false;
-        }
-
-        String token = getToken(user);
-        if (token == null)
-            return false;
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        String endpoint = String.format("/document/existence/%s/%s", referenceNumber, documentType);
-        ResponseEntity<DocumentExistenceResponse> response = restTemplate.exchange(baseUrl + endpoint,
-                HttpMethod.GET, entity, DocumentExistenceResponse.class);
-
-        return response.getBody().exists();
     }
 }

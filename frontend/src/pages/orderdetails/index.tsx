@@ -6,14 +6,8 @@ import styles from './styles/orderDetails.module.scss';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import type { OrderDetails, OrderState, OrderTransportType } from '@/types/api';
 import { DownloadButton } from '../orderdetails/downloadButton.tsx';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { IconUpload, IconDownload } from '@tabler/icons-react';
-
-interface DocumentLinks {
-  'Bill of Lading': string | null;
-  'Packing List': string | null;
-  Customs: string | null;
-}
 
 export const OrderDetailsPage: FC = () => {
   const { t } = useTranslation();
@@ -40,12 +34,6 @@ export const OrderDetailsPage: FC = () => {
             }
           : undefined,
       }),
-  });
-
-  const [documents, setDocuments] = useState<DocumentLinks>({
-    'Bill of Lading': null,
-    'Packing List': null,
-    Customs: null,
   });
 
   console.log('Order details loaded:', orderDetail);
@@ -83,57 +71,6 @@ export const OrderDetailsPage: FC = () => {
   function formatWeight(weight: number): string {
     return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
-
-  const checkDocumentExistence = async () => {
-    const types = ['Bill of Lading', 'Packing List', 'Customs'];
-    const promises = types.map(type =>
-      doApiAction<{ exists: boolean; link?: string }>({
-        endpoint: `/documents/existence/${orderId}/${type.toLowerCase()}`,
-        method: 'GET',
-      }).then(response => ({
-        type,
-        link: response?.exists ? response.link : null,
-      }))
-    );
-
-    const results = await Promise.all(promises);
-    results.forEach(({ type, link }) => {
-      setDocuments(prev => ({ ...prev, [type]: link }));
-    });
-  };
-
-  useEffect(() => {
-    if (orderId) {
-      checkDocumentExistence();
-    }
-  }, [orderId]);
-
-  const handleFileSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-    type: string
-  ) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    const response = await doApiAction({
-      endpoint: `/orders/upload-document/${orderId}/${type.toLowerCase()}`,
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-    if (response) {
-      alert('File uploaded successfully');
-      checkDocumentExistence();
-    } else {
-      alert('Failed to upload file');
-    }
-  };
 
   const downloadDocument = async (downloadLink: string | null) => {
     if (!downloadLink) {
@@ -356,36 +293,6 @@ export const OrderDetailsPage: FC = () => {
               downloadDocument={downloadDocument}
             />
           </div> */}
-          <div className={styles.documentsContainer}>
-            {Object.keys(documents).map(type => (
-              <div
-                key={type}
-                className={styles.documentItem}
-              >
-                <p>{type} Document</p>
-                {documents[type] ? (
-                  <button onClick={() => downloadDocument(documents[type])}>
-                    <IconDownload size={24} />
-                  </button>
-                ) : (
-                  <div>
-                    <input
-                      type='file'
-                      id={`file-input-${type}`}
-                      style={{ display: 'none' }}
-                      onChange={event => handleFileSelect(event, type)}
-                    />
-                    <label htmlFor={`file-input-${type}`}>
-                      <IconUpload
-                        size={24}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    </label>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

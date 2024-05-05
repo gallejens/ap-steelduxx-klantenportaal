@@ -58,21 +58,32 @@ public class OrdersController {
         }
     }
 
-    @PostMapping("/upload-document/{referenceNumber}/{documentType}")
-    @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Object> uploadDocument(@PathVariable String referenceNumber,
-            @PathVariable String documentType, @RequestParam("file") MultipartFile file) {
+    @PostMapping("/upload-document")
+    @PreAuthorize("hasAuthority('UPLOAD_DOCUMENT')")
+    public ResponseEntity<Object> uploadDocument(@RequestParam("file") MultipartFile file,
+            @RequestParam("type") String documentType) {
         try {
-            byte[] documentBytes = file.getBytes();
-            DocumentRequestDto dto = new DocumentRequestDto(referenceNumber, documentType, documentBytes);
-            boolean success = externalApiService.uploadDocument("/document/upload", dto);
-            if (success) {
-                return ResponseHandler.generate("Document uploaded successfully", HttpStatus.OK, null);
-            } else {
-                return ResponseHandler.generate("Failed to upload document", HttpStatus.BAD_REQUEST, null);
+            if (file.isEmpty()) {
+                return ResponseHandler.generate("No file uploaded", HttpStatus.BAD_REQUEST, null);
             }
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing file upload");
+
+            byte[] fileContent = file.getBytes();
+            String originalFilename = file.getOriginalFilename() != null ? file.getOriginalFilename()
+                    : "defaultFilename";
+
+            DocumentRequestDto documentRequest = new DocumentRequestDto(
+                    originalFilename,
+                    documentType,
+                    fileContent);
+
+            boolean isUploaded = externalApiService.uploadDocument(documentRequest);
+            if (isUploaded) {
+                return ResponseHandler.generate("File uploaded successfully", HttpStatus.OK, null);
+            } else {
+                return ResponseHandler.generate("Failed to upload file", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            }
+        } catch (IOException ex) {
+            return ResponseHandler.generate("Error processing file", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 }

@@ -2,7 +2,6 @@ import type { Auth } from '@/types/auth';
 import type { RGB } from '@/types/util';
 import {
   IconHome,
-  IconList,
   IconBaselineDensityMedium,
   IconUsers,
   type TablerIconsProps,
@@ -33,14 +32,14 @@ export const TABS: {
   {
     labelKey: 'orderrequests',
     path: '/app/order-requests',
-    icon: IconList,
+    icon: IconBaselineDensityMedium,
     color: { r: 205, g: 98, b: 0 },
     requiredPermission: 'MANAGE_ORDER_REQUESTS',
   },
   {
     labelKey: 'requests',
     path: '/app/requests',
-    icon: IconList,
+    icon: IconBaselineDensityMedium,
     color: { r: 219, g: 38, b: 183 },
     requiredPermission: 'MANAGE_USER_REQUESTS',
   },

@@ -1,12 +1,5 @@
 import { Modal } from '@/components/modals';
-import {
-  Button,
-  Checkbox,
-  Divider,
-  NumberInput,
-  Select,
-  TextInput,
-} from '@mantine/core';
+import { Button, Divider, NumberInput, Select, TextInput } from '@mantine/core';
 import { type FC } from 'react';
 import styles from '../styles/orderCreate.module.scss';
 import { useForm } from '@mantine/form';
@@ -21,6 +14,7 @@ import { PRODUCT_CONTAINER_SIZES, PRODUCT_CONTAINER_TYPES } from '../constants';
 
 type NewProductModalProps = {
   onSubmit: (newProduct: Product) => void;
+  isContainerOrder: boolean;
 };
 
 type NewProductFormValues = {
@@ -28,13 +22,12 @@ type NewProductFormValues = {
   name: string;
   quantity: number;
   weight: number;
-  isContainerProduct: boolean;
-  containerNumber: string;
+  containerNumber: string | null;
   containerSize: string;
   containerType: string;
 };
 
-export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
+export const NewProductModal: FC<NewProductModalProps> = props => {
   const { t } = useTranslation();
   const { closeModal } = useModalStore();
 
@@ -44,8 +37,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
       name: '',
       quantity: 0,
       weight: 0,
-      isContainerProduct: false,
-      containerNumber: '',
+      containerNumber: null,
       containerSize: '',
       containerType: '',
     },
@@ -60,16 +52,12 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
           : null,
       weight: value =>
         !value ? t('newOrderPage:productForm:weight:weightInputError') : null,
-      containerNumber: (value, { isContainerProduct }) =>
-        !value && isContainerProduct
-          ? t('newOrderPage:productForm:container:number:numberInputError')
-          : null,
-      containerSize: (value, { isContainerProduct }) =>
-        !value && isContainerProduct
+      containerSize: value =>
+        !value && props.isContainerOrder
           ? t('newOrderPage:productForm:container:size:sizeInputError')
           : null,
-      containerType: (value, { isContainerProduct }) =>
-        !value && isContainerProduct
+      containerType: value =>
+        !value && props.isContainerOrder
           ? t('newOrderPage:productForm:container:type:typeInputError')
           : null,
     },
@@ -81,9 +69,9 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
       name: values.name,
       quantity: values.quantity,
       weight: values.weight,
-      ...(values.isContainerProduct
+      ...(props.isContainerOrder
         ? {
-            containerNumber: values.containerNumber,
+            containerNumber: values.containerNumber ?? null,
             containerSize: values.containerSize as ProductContainerSize,
             containerType: values.containerType as ProductContainerType,
           }
@@ -94,7 +82,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
           }),
     };
 
-    onSubmit(newProduct);
+    props.onSubmit(newProduct);
     closeModal();
   };
 
@@ -151,16 +139,9 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
             {...newProductForm.getInputProps('weight')}
           />
         </div>
-        <Divider />
+        {props.isContainerOrder && <Divider />}
         <div>
-          <Checkbox
-            size='md'
-            label={t(
-              'newOrderPage:productForm:checkBoxContainer:checkBoxLabel'
-            )}
-            {...newProductForm.getInputProps('isContainerProduct')}
-          />
-          {newProductForm.values.isContainerProduct && (
+          {props.isContainerOrder && (
             <TextInput
               label={t(
                 'newOrderPage:productForm:container:number:numberInputDescription'
@@ -172,7 +153,7 @@ export const NewProductModal: FC<NewProductModalProps> = ({ onSubmit }) => {
             />
           )}
         </div>
-        {newProductForm.values.isContainerProduct && (
+        {props.isContainerOrder && (
           <div>
             <Select
               label={t(

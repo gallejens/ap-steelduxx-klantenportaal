@@ -5,9 +5,9 @@ import java.util.List;
 import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;
 
 public record NewOrderRequestDto(
-        TransportTypeEnum transportType,
-        String portOfOriginCode,
-        String portOfDestinationCode,
-        List<OrderRequestProductDto> products
-) {
+                TransportTypeEnum transportType,
+                String portOfOriginCode,
+                String portOfDestinationCode,
+                boolean isContainerOrder,
+                List<OrderRequestProductDto> products) {
 }

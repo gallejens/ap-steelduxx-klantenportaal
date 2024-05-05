@@ -90,12 +90,6 @@ export const OrderListPage: FC = () => {
               key: 'customerReferenceNumber',
             },
             {
-              key: 'state',
-              transform: (value: Order['state']) => {
-                return <Badge color={getOrderStateColor(value)}>{value}</Badge>;
-              },
-            },
-            {
               key: 'transportType',
               transform: (value: Order['transportType']) => {
                 return (
@@ -104,6 +98,25 @@ export const OrderListPage: FC = () => {
                   </Badge>
                 );
               },
+            },
+            {
+              key: 'totalContainers',
+            },
+            {
+              key: 'containerTypes',
+              transform: (value: string[] | null) => {
+                if (value && value.length > 0) {
+                  return value.join(' / ');
+                } else {
+                  return 'N/A';
+                }
+              },
+            },
+            {
+              key: 'totalWeight',
+            },
+            {
+              key: 'shipName',
             },
             {
               key: 'portOfOriginCode',
@@ -118,7 +131,10 @@ export const OrderListPage: FC = () => {
               key: 'portOfDestinationName',
             },
             {
-              key: 'shipName',
+              key: 'state',
+              transform: (value: Order['state']) => {
+                return <Badge color={getOrderStateColor(value)}>{value}</Badge>;
+              },
             },
             {
               key: 'ets',
@@ -135,22 +151,6 @@ export const OrderListPage: FC = () => {
             {
               key: 'ata',
               excludeFromSearch: true,
-            },
-            {
-              key: 'totalWeight',
-            },
-            {
-              key: 'totalContainers',
-            },
-            {
-              key: 'containerTypes',
-              transform: (value: string[] | null) => {
-                if (value && value.length > 0) {
-                  return value.join(' / ');
-                } else {
-                  return 'N/A';
-                }
-              },
             },
           ]}
           data={orders.data}

@@ -5,6 +5,7 @@ import {
   TextInput,
   Title,
   Button,
+  Checkbox,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState, type FC } from 'react';
@@ -27,6 +28,7 @@ type NewOrderFormValues = {
   transportType: OrderTransportType;
   portOfDestinationCode: string;
   portOfOriginCode: string;
+  isContainerOrder: boolean;
 };
 
 export const OrderCreatePage: FC = () => {
@@ -42,6 +44,7 @@ export const OrderCreatePage: FC = () => {
       transportType: 'IMPORT',
       portOfDestinationCode: DEFAULT_PORT_CODE,
       portOfOriginCode: '',
+      isContainerOrder: false,
     },
     validate: {
       transportType: value =>
@@ -72,12 +75,21 @@ export const OrderCreatePage: FC = () => {
     }
   });
 
+  newOrderForm.watch('isContainerOrder', ({ value }) => {
+    if (value) {
+      setProducts([]);
+    } else {
+      setProducts([]);
+    }
+  });
+
   const openProductModal = () => {
     openModal(
       <NewProductModal
         onSubmit={product => {
           setProducts(s => [...s, product]);
         }}
+        isContainerOrder={newOrderForm.values.isContainerOrder}
       />
     );
   };
@@ -106,6 +118,20 @@ export const OrderCreatePage: FC = () => {
       />
     );
   };
+
+  const containerColumns = [
+    {
+      key: 'containerNumber',
+      initialWidth: 175,
+    },
+    {
+      key: 'containerSize',
+      initialWidth: 200,
+    },
+    {
+      key: 'containerType',
+    },
+  ];
 
   const createOrder = async () => {
     if (!newOrderForm.isValid()) {
@@ -217,6 +243,11 @@ export const OrderCreatePage: FC = () => {
             disabled={newOrderForm.values.transportType !== 'EXPORT'}
             {...newOrderForm.getInputProps('portOfDestinationCode')}
           />
+          <Checkbox
+            size='md'
+            label={t('newOrderPage:orderForm:checkBoxContainer:checkBoxLabel')}
+            {...newOrderForm.getInputProps('isContainerOrder')}
+          />
         </form>
         <Divider />
         <div className={styles.documents}>
@@ -262,17 +293,7 @@ export const OrderCreatePage: FC = () => {
                 key: 'weight',
                 initialWidth: 175,
               },
-              {
-                key: 'containerNumber',
-                initialWidth: 175,
-              },
-              {
-                key: 'containerSize',
-                initialWidth: 200,
-              },
-              {
-                key: 'containerType',
-              },
+              ...(newOrderForm.values.isContainerOrder ? containerColumns : []),
               {
                 key: 'actions',
                 emptyHeader: true,

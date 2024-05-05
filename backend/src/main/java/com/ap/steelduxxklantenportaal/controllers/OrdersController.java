@@ -1,17 +1,16 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
+import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.OrdersService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
-
-import java.io.IOException;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.HttpHeaders;
@@ -43,46 +42,46 @@ public class OrdersController {
         return ResponseHandler.generate("", HttpStatus.OK, orderDetails);
     }
 
-    @GetMapping("/download-document")
+    @GetMapping("/download-document/{referenceNumber}/{documentType}")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Resource> downloadDocument(@RequestParam String endpoint) {
+    public ResponseEntity<Resource> downloadDocument(@PathVariable String referenceNumber,
+            @PathVariable String documentType) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
-            byte[] data = externalApiService.downloadDocument(endpoint);
-            String fileName = endpoint.substring(endpoint.lastIndexOf('/') + 1);
+            byte[] data = externalApiService.downloadDocument(referenceNumber, documentType, user);
+            String fileName = referenceNumber + "-" + documentType + ".pdf";
             return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .contentType(MediaType.APPLICATION_PDF)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                     .body(new ByteArrayResource(data));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ByteArrayResource(new byte[] {}));
         }
     }
 
     @PostMapping("/upload-document")
     @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> uploadDocument(@RequestParam("file") MultipartFile file,
-            @RequestParam("type") String documentType) {
+            @RequestParam("referenceNumber") String referenceNumber,
+            @RequestParam("documentType") String documentType) {
+        if (file.isEmpty() || referenceNumber.isBlank() || documentType.isBlank()) {
+            return ResponseHandler.generate("Invalid request parameters", HttpStatus.BAD_REQUEST, null);
+        }
+
         try {
-            if (file.isEmpty()) {
-                return ResponseHandler.generate("No file uploaded", HttpStatus.BAD_REQUEST, null);
-            }
-
             byte[] fileContent = file.getBytes();
-            String originalFilename = file.getOriginalFilename() != null ? file.getOriginalFilename()
-                    : "defaultFilename";
-
             DocumentRequestDto documentRequest = new DocumentRequestDto(
-                    originalFilename,
-                    documentType,
-                    fileContent);
+                    referenceNumber, documentType, fileContent);
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            boolean isUploaded = externalApiService.uploadDocument(documentRequest);
+            boolean isUploaded = externalApiService.uploadDocument(documentRequest, user);
             if (isUploaded) {
                 return ResponseHandler.generate("File uploaded successfully", HttpStatus.OK, null);
             } else {
                 return ResponseHandler.generate("Failed to upload file", HttpStatus.INTERNAL_SERVER_ERROR, null);
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             return ResponseHandler.generate("Error processing file", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }

@@ -6,7 +6,7 @@ import styles from './styles/orderDetails.module.scss';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import type { OrderDetails, OrderState, OrderTransportType } from '@/types/api';
 import { DownloadButton } from '../orderdetails/downloadButton.tsx';
-import React from 'react';
+import React, { useState } from 'react';
 import { IconUpload, IconDownload } from '@tabler/icons-react';
 
 export const OrderDetailsPage: FC = () => {
@@ -17,6 +17,7 @@ export const OrderDetailsPage: FC = () => {
   const { customerCode } = useSearch({
     from: '/app/orders/$order_id',
   });
+  const [file, setFile] = useState(null);
 
   const {
     data: orderDetail,
@@ -72,59 +73,21 @@ export const OrderDetailsPage: FC = () => {
     return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
-  const downloadDocument = async (downloadLink: string | null) => {
-    if (!downloadLink) {
-      console.error(
-        'Failed to download document: Invalid or missing download link'
-      );
-      return;
-    }
-
-    try {
-      const blob = await doApiAction<Blob>({
-        endpoint: `/orders/download-document?endpoint=${encodeURIComponent(downloadLink)}`,
-        method: 'GET',
-        responseType: 'blob',
-      });
-
-      if (!blob) {
-        console.error('Failed to download document: No data returned');
-        return;
-      }
-
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      const filename = (downloadLink.split('/').pop() || 'download') + '.pdf';
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Failed to download document:', error);
-    }
+  const handleFileChange = event => {
+    setFile(event.target.files[0]);
   };
 
-  const [uploadDocumentType, setUploadDocumentType] = React.useState('');
-
-  const handleUploadClick = documentType => {
-    setUploadDocumentType(documentType);
-    document.getElementById('fileUpload').click();
-  };
-
-  const handleFileChange = async event => {
-    const file = event.target.files[0];
+  const handleUpload = async documentType => {
     if (!file) {
-      console.error('No file selected');
+      alert('Please select a file first.');
       return;
     }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('referenceNumber', orderId);
+    formData.append('documentType', documentType);
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('type', uploadDocumentType);
-
       const response = await doApiAction({
         endpoint: '/orders/upload-document',
         method: 'POST',
@@ -133,22 +96,39 @@ export const OrderDetailsPage: FC = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-
       if (response && response.status === 200) {
-        console.log('File uploaded successfully', response);
-        alert(`File for ${uploadDocumentType} uploaded successfully.`);
+        alert('Upload successful!');
       } else {
-        console.error('Failed to upload file', response);
-        alert(`Failed to upload file for ${uploadDocumentType}.`);
+        alert('Upload failed!');
       }
     } catch (error) {
-      console.error('Upload failed', error);
-      alert(
-        `Upload failed for ${uploadDocumentType}. Check console for more details.`
-      );
+      console.error('Upload error:', error);
+      alert('Upload failed!');
     }
+  };
 
-    event.target.value = null;
+  const handleDownload = async documentType => {
+    try {
+      const response = await doApiAction({
+        endpoint: `/orders/download-document/${orderId}/${documentType}`,
+        method: 'GET',
+        responseType: 'blob',
+      });
+      if (response) {
+        const url = window.URL.createObjectURL(new Blob([response]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${orderId}-${documentType}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        alert('Download failed!');
+      }
+    } catch (error) {
+      console.error('Download error:', error);
+      alert('Download failed!');
+    }
   };
 
   const getIframeContent = (imo: string) => {
@@ -312,7 +292,7 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          <h2 className={styles.documentsTitle}>
+          {/* <h2 className={styles.documentsTitle}>
             {t('orderDetailPage:documents')}
           </h2>
           <div className={styles.documentItem}>
@@ -360,6 +340,31 @@ export const OrderDetailsPage: FC = () => {
           <div className={styles.documentItem}>
             <p>Customs Document</p>
             <button onClick={() => handleUploadClick('customs')}>Upload</button>
+          </div>*/}
+          <div>
+            <h1>Order Details - {orderId}</h1>
+            <input
+              type='file'
+              onChange={handleFileChange}
+            />
+            <button onClick={() => handleUpload('bl')}>
+              Upload Bill of Lading
+            </button>
+            <button onClick={() => handleUpload('packing')}>
+              Upload Packing List
+            </button>
+            <button onClick={() => handleUpload('customs')}>
+              Upload Customs Document
+            </button>
+            <button onClick={() => handleDownload('bl')}>
+              Download Bill of Lading
+            </button>
+            <button onClick={() => handleDownload('packing')}>
+              Download Packing List
+            </button>
+            <button onClick={() => handleDownload('customs')}>
+              Download Customs Document
+            </button>
           </div>
         </div>
       </div>

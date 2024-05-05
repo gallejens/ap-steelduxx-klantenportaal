@@ -1,7 +1,6 @@
 package com.ap.steelduxxklantenportaal.orders;
 
 import com.ap.steelduxxklantenportaal.controllers.OrdersController;
-import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.OrdersService;
@@ -12,17 +11,20 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import java.util.Collections;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class OrdersControllerTest {
 
@@ -45,38 +47,37 @@ public class OrdersControllerTest {
 
     private void setupSecurityContext(User user) {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                user, null, user.getAuthorities());
+                user, null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_HEAD_ADMIN")));
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(authentication);
         SecurityContextHolder.setContext(securityContext);
     }
 
     @Test
-    @WithMockUser(roles = "HEAD_ADMIN")
+    @WithMockUser(username = "headadmin@example.com", roles = "HEAD_ADMIN")
     public void testDownloadDocumentAsHeadAdmin() throws Exception {
-        User user = new User("headadmin@example.com", "password", "Head", "Admin", RoleEnum.ROLE_HEAD_ADMIN);
+        User user = new User();
+        user.setEmail("headadmin@example.com");
         setupSecurityContext(user);
 
-        String endpoint = "http://example.com/document.pdf";
+        String referenceNumber = "123456";
+        String documentType = "bl";
         byte[] mockData = "PDF Data".getBytes();
-        when(externalApiService.downloadDocument(anyString())).thenReturn(mockData);
+        when(externalApiService.downloadDocument(eq(referenceNumber), eq(documentType), any(User.class)))
+                .thenReturn(mockData);
 
-        mockMvc.perform(get("/orders/download-document")
-                .param("endpoint", endpoint))
+        mockMvc.perform(
+                get("/orders/download-document/{referenceNumber}/{documentType}", referenceNumber, documentType))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_OCTET_STREAM))
-                .andExpect(MockMvcResultMatchers.header().string("Content-Disposition",
-                        "attachment; filename=\"document.pdf\""));
+                .andExpect(content().contentType(MediaType.APPLICATION_PDF))
+                .andExpect(header().string("Content-Disposition",
+                        "attachment; filename=\"" + referenceNumber + "-" + documentType + ".pdf\""));
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(username = "user@example.com", roles = "USER")
     public void testDownloadDocumentUnauthorizedForUserRole() throws Exception {
-        User user = new User("user@example.com", "password", "John", "Doe", RoleEnum.ROLE_USER);
-        setupSecurityContext(user);
-
-        mockMvc.perform(get("/orders/download-document")
-                .param("endpoint", "http://example.com/document.pdf"))
+        mockMvc.perform(get("/orders/download-document/{referenceNumber}/{documentType}", "123456", "bl"))
                 .andExpect(status().isForbidden());
     }
 }

@@ -105,41 +105,37 @@ public class ExternalApiService {
         }
     }
 
-    public byte[] downloadDocument(String endpoint) {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            throw new RestClientException("Unauthorized access");
-        }
-
-        var user = (User) auth.getPrincipal();
+    public byte[] downloadDocument(String referenceNumber, String documentType, User user) {
         String token = getToken(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<byte[]> response = restTemplate.exchange(baseUrl + endpoint,
-                HttpMethod.GET, entity,
-                byte[].class);
+        String downloadUrl = String.format(baseUrl + "/document/download/%s/%s", referenceNumber, documentType);
 
-        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
+        ResponseEntity<byte[]> response = restTemplate.exchange(downloadUrl, HttpMethod.GET, entity, byte[].class);
+
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            return response.getBody();
+        } else {
             throw new RestClientException("Failed to download document");
         }
-
-        return response.getBody();
     }
 
-    public boolean uploadDocument(DocumentRequestDto documentRequest) {
+    public boolean uploadDocument(DocumentRequestDto documentRequest, User user) {
+        String token = getToken(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(getToken((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
+        headers.setBearerAuth(token);
 
         HttpEntity<DocumentRequestDto> entity = new HttpEntity<>(documentRequest, headers);
+        String uploadUrl = baseUrl + "/document/upload";
 
-        try {
-            ResponseEntity<Void> response = restTemplate.postForEntity(baseUrl + "/document/upload", entity,
-                    Void.class);
-            return response.getStatusCode().is2xxSuccessful();
-        } catch (RestClientException e) {
+        ResponseEntity<Void> response = restTemplate.postForEntity(uploadUrl, entity, Void.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return true;
+        } else {
             return false;
         }
     }

@@ -47,7 +47,7 @@ public class OrderRequestController {
 
     @PostMapping("/{id}/deny")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public ResponseEntity<Object> updateOrderRequestStatus(@PathVariable Long id) {
+    public ResponseEntity<Object> denyOrderRequest(@PathVariable Long id) {
         return orderRequestService.denyOrderRequest(id);
     }
 

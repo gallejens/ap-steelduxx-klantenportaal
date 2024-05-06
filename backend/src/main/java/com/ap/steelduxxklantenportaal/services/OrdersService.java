@@ -1,8 +1,11 @@
 package com.ap.steelduxxklantenportaal.services;
 
+import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.OrderDetailsDto;
 import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.OrderDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
+import com.ap.steelduxxklantenportaal.models.User;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +44,9 @@ public class OrdersService {
         }
 
         return externalApiService.doRequest(endpoint, HttpMethod.GET, OrderDetailsDto.class);
+    }
+
+    public boolean uploadDocument(DocumentRequestDto documentRequest, User user, String customerCode) {
+        return externalApiService.uploadDocument(documentRequest, user, customerCode);
     }
 }

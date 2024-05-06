@@ -64,18 +64,17 @@ public class OrdersController {
     @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> uploadDocument(@RequestParam("file") MultipartFile file,
             @RequestParam("referenceNumber") String referenceNumber,
-            @RequestParam("documentType") String documentType) {
+            @RequestParam("documentType") String documentType,
+            @RequestParam(value = "customerCode", required = false) String customerCode) {
         if (file.isEmpty() || referenceNumber.isBlank() || documentType.isBlank()) {
             return ResponseHandler.generate("Invalid request parameters", HttpStatus.BAD_REQUEST, null);
         }
 
         try {
             byte[] fileContent = file.getBytes();
-            DocumentRequestDto documentRequest = new DocumentRequestDto(
-                    referenceNumber, documentType, fileContent);
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            boolean isUploaded = externalApiService.uploadDocument(documentRequest, user);
+            DocumentRequestDto documentRequestDto = new DocumentRequestDto(referenceNumber, documentType, fileContent);
+            boolean isUploaded = ordersService.uploadDocument(documentRequestDto, user, customerCode);
             if (isUploaded) {
                 return ResponseHandler.generate("File uploaded successfully", HttpStatus.OK, null);
             } else {
@@ -85,4 +84,5 @@ public class OrdersController {
             return ResponseHandler.generate("Error processing file", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
+
 }

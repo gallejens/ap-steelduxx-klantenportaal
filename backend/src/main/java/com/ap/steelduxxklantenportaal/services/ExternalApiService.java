@@ -3,6 +3,7 @@ package com.ap.steelduxxklantenportaal.services;
 import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
 import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
+import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -122,21 +123,28 @@ public class ExternalApiService {
         }
     }
 
-    public boolean uploadDocument(DocumentRequestDto documentRequest, User user) {
-        String token = getToken(user);
+    public boolean uploadDocument(DocumentRequestDto documentRequest, User user, String customerCode) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(token);
+        headers.setBearerAuth(getToken(user));
+
+        String uploadUrl = determineUploadEndpoint(user, documentRequest, customerCode);
 
         HttpEntity<DocumentRequestDto> entity = new HttpEntity<>(documentRequest, headers);
-        String uploadUrl = baseUrl + "/document/upload";
-
         ResponseEntity<Void> response = restTemplate.postForEntity(uploadUrl, entity, Void.class);
 
-        if (response.getStatusCode().is2xxSuccessful()) {
-            return true;
+        return response.getStatusCode().is2xxSuccessful();
+    }
+
+    private String determineUploadEndpoint(User user, DocumentRequestDto documentRequest, String customerCode) {
+        RoleEnum role = user.getRole();
+        if (role == RoleEnum.ROLE_ADMIN || role == RoleEnum.ROLE_HEAD_ADMIN) {
+            if (customerCode == null || customerCode.isEmpty()) {
+                throw new IllegalArgumentException("Customer code is required for admin upload.");
+            }
+            return baseUrl + "/admin/upload/" + customerCode;
         } else {
-            return false;
+            return baseUrl + "/document/upload";
         }
     }
 }

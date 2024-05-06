@@ -21,7 +21,7 @@ public class CompanyInfoController {
     @PreAuthorize("hasAuthority('VIEW_COMPANIES')")
     public ResponseEntity<Object> getAllAccounts() {
         var companyInfoList = companyInfoService.getAll();
-        return ResponseHandler.generate("", HttpStatus.OK, companyInfoList);
+        return ResponseEntity.ok(companyInfoList);
     }
 
     @PostMapping("/new")

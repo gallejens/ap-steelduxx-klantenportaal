@@ -18,7 +18,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Query(value = """
             SELECT c.*
-            FROM company AS c
+            FROM companies AS c
             LEFT JOIN user_company AS uc ON uc.company_id = c.id
             LEFT JOIN users AS u ON uc.user_id = u.id
             WHERE u.id = ?1

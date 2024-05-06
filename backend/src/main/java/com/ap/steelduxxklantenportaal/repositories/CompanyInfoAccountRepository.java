@@ -13,4 +13,9 @@ public interface CompanyInfoAccountRepository extends JpaRepository<CompanyInfoA
             SELECT email, first_name, last_name, role FROM company_info_accounts_view WHERE company_id = ?1
             """, nativeQuery = true)
     List<CompanyInfoAccount> findAllByCompanyId(long companyId);
+
+    @Query(value = """ 
+            SELECT email, first_name, last_name, role FROM company_info_accounts_view WHERE company_id IS NULL
+            """, nativeQuery = true)
+    List<CompanyInfoAccount> findAdmin();
 }

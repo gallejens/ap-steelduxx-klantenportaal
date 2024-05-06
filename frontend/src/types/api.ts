@@ -126,6 +126,6 @@ export type CompanyInfoAccount = {
 };
 
 export type CompanyInfo = {
-  company: Company;
+  company: Company | null;
   accounts: CompanyInfoAccount[];
 };

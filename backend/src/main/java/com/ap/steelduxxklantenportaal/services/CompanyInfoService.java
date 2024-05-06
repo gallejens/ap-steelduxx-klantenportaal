@@ -5,6 +5,7 @@ import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CompanyInfoDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
+import com.ap.steelduxxklantenportaal.models.Company;
 import com.ap.steelduxxklantenportaal.models.UserCompany;
 import com.ap.steelduxxklantenportaal.repositories.CompanyInfoAccountRepository;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
@@ -58,6 +59,9 @@ public class CompanyInfoService {
             var accounts = companyInfoAccountRepository.findAllByCompanyId(company.getId());
             companyInfoList.add(new CompanyInfoDto(company, accounts));
         }
+
+        var adminAccounts = companyInfoAccountRepository.findAdmin();
+        companyInfoList.add(new CompanyInfoDto(null, adminAccounts));
 
         return companyInfoList;
     }

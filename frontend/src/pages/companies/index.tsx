@@ -1,34 +1,25 @@
-import { doApiAction, type GenericAPIResponse } from '@/lib/api';
-import { TextInput } from '@mantine/core';
+import { Divider, TextInput } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState, type FC } from 'react';
 import styles from './styles/companies.module.scss';
-import type { CompanyInfo } from '@/types/api';
 import { CompanyCard } from './components/CompanyCard';
 import { search } from '@/lib/util/search';
+import { fetchCompanyInfoList } from './helpers';
 
 export const CompaniesPage: FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
 
-  const {
-    data: companies,
-    status,
-    error,
-  } = useQuery({
+  const { data, status, error } = useQuery({
     queryKey: ['companies'],
-    queryFn: () =>
-      doApiAction<GenericAPIResponse<CompanyInfo[]>>({
-        endpoint: '/company-info/all',
-        method: 'GET',
-      }),
+    queryFn: fetchCompanyInfoList,
   });
 
   if (status === 'pending') {
     return <div>Loading...</div>;
   }
 
-  if (status === 'error' || !companies) {
+  if (status === 'error' || !data) {
     return <div>Error: {error?.message ?? 'Unknown error'}</div>;
   }
 
@@ -43,9 +34,15 @@ export const CompaniesPage: FC = () => {
         />
       </div>
       <div className={styles.list}>
-        {search(companies.data, searchValue).map(c => (
+        {data.adminInfo && (
+          <>
+            <CompanyCard {...data.adminInfo} />
+            <Divider />
+          </>
+        )}
+        {search(data.companies, searchValue).map((c, idx) => (
           <CompanyCard
-            key={c.company.name}
+            key={c.company?.name ?? `unknown-company-${idx}`}
             {...c}
           />
         ))}

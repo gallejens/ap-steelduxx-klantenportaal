@@ -90,7 +90,7 @@ export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
   return (
     <div className={styles.company_card}>
       <div className={styles.title}>
-        <Title order={3}>{company.name}</Title>
+        <Title order={3}>{company?.name ?? 'Admins'}</Title>
         <div className={styles.buttons}>
           {user?.permissions.includes('CREATE_USER_ACCOUNTS') && (
             <ActionIcon>
@@ -105,26 +105,32 @@ export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
       <Divider my='xs' />
       <div className={styles.info}>
         <div>
-          <div>
-            <IconReport size={'1.2rem'} />
-            <Text size='sm'>{company.vatNr}</Text>
-          </div>
-          <div>
-            <IconPhone size={'1.2rem'} />
-            <Text size='sm'>{company.phoneNr}</Text>
-          </div>
-          <div>
-            <IconPin size={'1.2rem'} />
-            <Text size='sm'>
-              {company.country} - {company.postalCode} {company.district} -{' '}
-              {company.street} {company.streetNr}
-            </Text>
-          </div>
-          {company.extraInfo && (
-            <div>
-              <IconPlus size={'1.2rem'} />
-              <Text size='sm'>{company.extraInfo}</Text>
-            </div>
+          {company !== null ? (
+            <>
+              <div>
+                <IconReport size={20} />
+                <Text size='sm'>{company.vatNr}</Text>
+              </div>
+              <div>
+                <IconPhone size={20} />
+                <Text size='sm'>{company.phoneNr}</Text>
+              </div>
+              <div>
+                <IconPin size={20} />
+                <Text size='sm'>
+                  {company.country} - {company.postalCode} {company.district} -{' '}
+                  {company.street} {company.streetNr}
+                </Text>
+              </div>
+              {company.extraInfo && (
+                <div>
+                  <IconPlus size={20} />
+                  <Text size='sm'>{company.extraInfo}</Text>
+                </div>
+              )}
+            </>
+          ) : (
+            <Text>/</Text>
           )}
         </div>
         <Divider orientation='vertical' />
@@ -136,10 +142,11 @@ export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
             {t('companiesPage:headAccount')}
           </Text>
           <Text size='sm'>
-            {headAccount.lastName} {headAccount.firstName} - {headAccount.email}
+            {headAccount.firstName} {headAccount.lastName} - {headAccount.email}
           </Text>
         </div>
       </div>
+
       <Collapse
         in={opened}
         className={styles.collapsable}
@@ -147,7 +154,7 @@ export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
         <Divider my='xs' />
         <TextInput
           size='xs'
-          leftSection={<IconSearch size={'1rem'} />}
+          leftSection={<IconSearch size={16} />}
           value={searchValue}
           onChange={e => setSearchValue(e.currentTarget.value)}
           className={styles.search}

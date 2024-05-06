@@ -70,7 +70,7 @@ public class AccountServiceTest {
 
     @Test
     @WithUserDetails(value = AccountObjectMother.headNormalEmail)
-    void givenSubaccount_whenDeletingSubaccount_expectSuccessStatus() {
+    void givenSubaccount_whenDeletingSubaccount_expectEmpty() {
         var result = accountService.createSubaccount(AccountObjectMother.createSubaccountDto);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 

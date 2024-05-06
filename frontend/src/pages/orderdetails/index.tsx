@@ -293,29 +293,47 @@ export const OrderDetailsPage: FC = () => {
         </div>
         <div className={styles.documentsContainer}>
           <div className={styles.orderDetails}>
-            <h1>Order Details - {orderId}</h1>
             <input
               type='file'
               onChange={handleFileChange}
             />
-            <button onClick={() => handleUpload('bl')}>
-              Upload Bill of Lading
-            </button>
-            <button onClick={() => handleUpload('packing')}>
-              Upload Packing List
-            </button>
-            <button onClick={() => handleUpload('customs')}>
-              Upload Customs Document
-            </button>
-            <button onClick={() => handleDownload('bl')}>
-              Download Bill of Lading
-            </button>
-            <button onClick={() => handleDownload('packing')}>
-              Download Packing List
-            </button>
-            <button onClick={() => handleDownload('customs')}>
-              Download Customs Document
-            </button>
+            {orderDetail.data.billOfLadingDownloadLink !== null ? (
+              <>
+                <p>Bill of Lading Document</p>
+                <button onClick={() => handleDownload('bl')}>Download</button>
+              </>
+            ) : (
+              <>
+                <p>Bill of Lading Document</p>
+                <button onClick={() => handleUpload('bl')}>Upload</button>
+              </>
+            )}
+            {orderDetail.data.packingListDownloadLink !== null ? (
+              <>
+                <p>Packing List Document</p>
+                <button onClick={() => handleDownload('packing')}>
+                  Download
+                </button>
+              </>
+            ) : (
+              <>
+                <p>Packing List Document</p>
+                <button onClick={() => handleUpload('packing')}>Upload</button>
+              </>
+            )}
+            {orderDetail.data.customsDownloadLink !== null ? (
+              <>
+                <p>Customs Document</p>
+                <button onClick={() => handleDownload('customs')}>
+                  Download
+                </button>
+              </>
+            ) : (
+              <>
+                <p>Customs Document</p>
+                <button onClick={() => handleUpload('customs')}>Upload</button>
+              </>
+            )}
           </div>
         </div>
       </div>

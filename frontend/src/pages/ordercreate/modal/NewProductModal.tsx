@@ -116,14 +116,6 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
             {...newProductForm.getInputProps('hsCode')}
             onSuggestionAccept={handleHsCodeSelectorSuggestionAccept}
           />
-          {/* <TextInput
-            label={t('newOrderPage:productForm:hsCode:hsCodeInputDescription')}
-            placeholder={t(
-              'newOrderPage:productForm:hsCode:hsCodeInputPlaceholder'
-            )}
-            required
-            {...newProductForm.getInputProps('hsCode')}
-          /> */}
           <TextInput
             label={t('newOrderPage:productForm:name:nameInputDescription')}
             placeholder={t(

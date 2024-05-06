@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 import styles from './styles/orderDetails.module.scss';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import type { OrderDetails, OrderState, OrderTransportType } from '@/types/api';
-import { DownloadButton } from '../orderdetails/downloadButton.tsx';
-import React from 'react';
 import { IconUpload, IconDownload } from '@tabler/icons-react';
 
 export const OrderDetailsPage: FC = () => {
@@ -18,6 +16,7 @@ export const OrderDetailsPage: FC = () => {
     from: '/app/orders/$order_id',
   });
   const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState('');
 
   const {
     data: orderDetail,
@@ -74,7 +73,11 @@ export const OrderDetailsPage: FC = () => {
   }
 
   const handleFileChange = event => {
-    setFile(event.target.files[0]);
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setFileName(selectedFile.name);
+    }
   };
 
   const handleUpload = async documentType => {
@@ -292,46 +295,75 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          <div className={styles.orderDetails}>
+          <div className={styles.documentsTitle}>
+            <h2>{t('orderDetailPage:documents')}</h2>
+          </div>
+          <div className={styles.documentsFileselector}>
             <input
               type='file'
               onChange={handleFileChange}
+              accept='.pdf'
+              id='fileInput'
+              className={styles.hiddenFileInput}
             />
-            {orderDetail.data.billOfLadingDownloadLink !== null ? (
+            <button
+              className={styles.uploadButton}
+              onClick={() => document.getElementById('fileInput').click()}
+            >
+              Select File
+            </button>
+            {fileName && (
+              <span className={styles.fileNameDisplay}>{fileName}</span>
+            )}
+          </div>
+          <div className={styles.documentItem}>
+            {orderDetail?.data.billOfLadingDownloadLink ? (
               <>
                 <p>Bill of Lading Document</p>
-                <button onClick={() => handleDownload('bl')}>Download</button>
+                <button onClick={() => handleDownload('bl')}>
+                  <IconDownload size={20} />
+                </button>
               </>
             ) : (
               <>
                 <p>Bill of Lading Document</p>
-                <button onClick={() => handleUpload('bl')}>Upload</button>
+                <button onClick={() => handleUpload('bl')}>
+                  <IconUpload size={20} />
+                </button>
               </>
             )}
+          </div>
+          <div className={styles.documentItem}>
             {orderDetail.data.packingListDownloadLink !== null ? (
               <>
                 <p>Packing List Document</p>
                 <button onClick={() => handleDownload('packing')}>
-                  Download
+                  <IconDownload size={20} />
                 </button>
               </>
             ) : (
               <>
                 <p>Packing List Document</p>
-                <button onClick={() => handleUpload('packing')}>Upload</button>
+                <button onClick={() => handleUpload('packing')}>
+                  <IconUpload size={20} />
+                </button>
               </>
             )}
+          </div>
+          <div className={styles.documentItem}>
             {orderDetail.data.customsDownloadLink !== null ? (
               <>
                 <p>Customs Document</p>
                 <button onClick={() => handleDownload('customs')}>
-                  Download
+                  <IconDownload size={20} />
                 </button>
               </>
             ) : (
               <>
                 <p>Customs Document</p>
-                <button onClick={() => handleUpload('customs')}>Upload</button>
+                <button onClick={() => handleUpload('customs')}>
+                  <IconUpload size={20} />
+                </button>
               </>
             )}
           </div>

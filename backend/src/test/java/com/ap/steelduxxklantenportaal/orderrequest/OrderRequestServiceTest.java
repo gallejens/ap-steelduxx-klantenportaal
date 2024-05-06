@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.ap.steelduxxklantenportaal.controllers.OrderController;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,4 +63,43 @@ public class OrderRequestServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(expectedResponse, response.getBody());
     }
+
+    @Test
+    void givenOrderRequestToDeny_whenDenyingOrderRequest_thenOrderRequestIsDenied() {
+        // Given
+        Long orderRequestId = 123L;
+        Map<String, String> expectedResponse = Map.of(
+                "message", "orderRequestReviewPage:response:denied",
+                "status", HttpStatus.OK.toString());
+
+        when(orderRequestService.denyOrderRequest(orderRequestId))
+                .thenReturn(ResponseEntity.ok(expectedResponse));
+
+        // When
+        ResponseEntity<Object> response = orderRequestController.denyOrderRequest(orderRequestId);
+
+        // Then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse, response.getBody());
+    }
+
+    @Test
+    void givenOrderRequestToApprove_whenApprovingOrderRequest_thenOrderRequestIsApproved() {
+        // Given
+        Long orderRequestId = 456L;
+        Map<String, String> expectedResponse = Map.of(
+                "message", "orderRequestReviewPage:response:success",
+                "status", HttpStatus.CREATED.toString());
+
+        when(orderRequestService.approveOrderRequest(orderRequestId))
+                .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(expectedResponse));
+
+        // When
+        ResponseEntity<Object> response = orderRequestController.approveOrderRequest(orderRequestId);
+
+        // Then
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(expectedResponse, response.getBody());
+    }
+
 }

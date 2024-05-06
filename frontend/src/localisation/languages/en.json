@@ -400,5 +400,14 @@
     "containerNumber": "Container Number",
     "containerSize": "Container size (feet)",
     "containerType": "Container Type"
+  },
+  "orderRequestReviewPage": {
+    "backButton": "Go Back",
+    "approveButton": "Approve",
+    "denyButton": "Deny",
+    "response": {
+      "success": "Order Request approved!",
+      "denied": "Order Request denied!"
+    }
   }
 }

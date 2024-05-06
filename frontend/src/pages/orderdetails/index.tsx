@@ -146,6 +146,7 @@ export const OrderDetailsPage: FC = () => {
         var names=true;
         var imo="${imo}";
         var show_track=true;
+        var zoom=10;
       </script>
       <script type="text/javascript" src="https://www.vesselfinder.com/aismap.js"></script>
     `;
@@ -244,7 +245,7 @@ export const OrderDetailsPage: FC = () => {
           <h2 className={styles.title}>{t('orderDetailPage:shipLocation')}</h2>
           <iframe
             title='VesselFinder Map'
-            style={{ width: '100%', height: '300px' }}
+            style={{ width: '100%', height: '420px' }}
             srcDoc={
               orderDetail ? getIframeContent(orderDetail.data.shipIMO) : ''
             }

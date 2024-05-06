@@ -185,6 +185,9 @@
         "portOriginCodeInputDescription": "Vul hier de havencode van de oorsprong in",
         "portOriginCodeInputPlaceholder": "CNSHG",
         "portOriginCodeInputError": "De havencode van de oorsprong is vereist"
+      },
+      "checkBoxContainer": {
+        "checkBoxLabel": "Container order"
       }
     },
     "productForm": {
@@ -208,9 +211,6 @@
         "weightInputDescription": "Gewicht (kg)",
         "weightInputPlaceholder": "14328000",
         "weightInputError": "Gewicht van het product is vereist"
-      },
-      "checkBoxContainer": {
-        "checkBoxLabel": "Container product"
       },
       "container": {
         "number": {
@@ -400,5 +400,14 @@
     "containerNumber": "Container nummer",
     "containerSize": "Container grootte (feet)",
     "containerType": "Container type"
+  },
+  "orderRequestReviewPage": {
+    "backButton": "Terug Gaan",
+    "approveButton": "Goedkeuren",
+    "denyButton": "Afkeuren",
+    "response": {
+      "success": "Order aanvraag goedgekeurd!",
+      "denied": "Order aanvraag afgekeurd!"
+    }
   }
 }

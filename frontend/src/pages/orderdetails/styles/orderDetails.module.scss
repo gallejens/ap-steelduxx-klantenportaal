@@ -31,11 +31,12 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   .topRow {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 
     > div {
       background-color: $section-background;
       padding: 1rem;
+      padding-bottom: 0rem;
       border-radius: 4px;
       box-shadow: $box-shadow;
     }
@@ -58,7 +59,7 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     .productsList {
       width: calc(60% - 1rem);
       flex: 2;
-      max-height: 400px;
+      max-height: 330px;
       background-color: $section-background;
       padding: $order-padding;
       margin-right: 1.4rem;
@@ -77,7 +78,7 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
       .tableContainer {
         overflow-y: auto;
-        max-height: 300px;
+        max-height: 250px;
         table {
           width: 100%;
           border-collapse: collapse;
@@ -117,8 +118,8 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     .documentsContainer {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      padding: 20px;
+      gap: 5px;
+      padding: 15px;
       width: 20vw;
       background-color: $section-background;
       border-radius: $border-radius;

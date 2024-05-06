@@ -6,6 +6,8 @@ import { notifications } from '@/components/notifications';
 import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
 import { ConfirmModal } from '@/components/modals';
+import { OrderRequest } from '@/types/api';
+import { useQuery } from '@tanstack/react-query';
 
 type Props = {
   onSubmit?: () => void;
@@ -44,9 +46,9 @@ export const OrderRequestReviewHandle: FC<Props> = props => {
     const resultApprove = await doApiAction<
       GenericAPIResponse<{ message: string }>
     >({
-      endpoint: `/order-requests/${orderRequestId}/status`,
-      method: 'PUT',
-      body: 'APPROVED',
+      endpoint: `/order-requests/${orderRequestId}/approve`,
+      method: 'POST',
+      body: {},
     });
 
     notifications.add({
@@ -56,7 +58,7 @@ export const OrderRequestReviewHandle: FC<Props> = props => {
 
     props.onSubmit?.();
 
-    if (resultApprove?.message === 'userRequestReviewPage:response:success') {
+    if (resultApprove?.message === 'orderRequestReviewPage:response:success') {
       props.onSuccess?.();
     }
   };
@@ -65,9 +67,9 @@ export const OrderRequestReviewHandle: FC<Props> = props => {
     const resultDeny = await doApiAction<
       GenericAPIResponse<{ message: string }>
     >({
-      endpoint: `/order-requests/${orderRequestId}/status`,
-      method: 'PUT',
-      body: 'DENIED',
+      endpoint: `/order-requests/${orderRequestId}/deny`,
+      method: 'POST',
+      body: {},
     });
 
     notifications.add({
@@ -77,34 +79,46 @@ export const OrderRequestReviewHandle: FC<Props> = props => {
 
     props.onSubmit?.();
 
-    if (resultDeny?.message === 'userRequestReviewPage:response:denied') {
+    if (resultDeny?.message === 'orderRequestReviewPage:response:denied') {
       props.onSuccess?.();
     }
   };
 
+  const { data: orderRequest } = useQuery({
+    refetchOnWindowFocus: false,
+    queryKey: ['orderRequestValue'],
+    queryFn: () =>
+      doApiAction<OrderRequest>({
+        endpoint: `/order-requests/${orderRequestId}`,
+        method: 'GET',
+      }),
+  });
+
   return (
     <>
-      <div className={styles.button_container}>
-        <Button
-          className={styles.approve_button}
-          variant='filled'
-          color='#1F9254'
-          size='lg'
-          onClick={handleApproveClick}
-        >
-          {t('userRequestReviewPage:approveButton')}
-        </Button>
+      {orderRequest?.status === 'PENDING' && ( // Conditionally render buttons
+        <div className={styles.button_container}>
+          <Button
+            className={styles.approve_button}
+            variant='filled'
+            color='#1F9254'
+            size='lg'
+            onClick={handleApproveClick}
+          >
+            {t('userRequestReviewPage:approveButton')}
+          </Button>
 
-        <Button
-          className={styles.deny_button}
-          variant='filled'
-          color='#A30D11'
-          size='lg'
-          onClick={handleDenyClick}
-        >
-          {t('userRequestReviewPage:denyButton')}
-        </Button>
-      </div>
+          <Button
+            className={styles.deny_button}
+            variant='filled'
+            color='#A30D11'
+            size='lg'
+            onClick={handleDenyClick}
+          >
+            {t('userRequestReviewPage:denyButton')}
+          </Button>
+        </div>
+      )}
 
       {isConfirmModalOpen && (
         <ConfirmModal

@@ -2,6 +2,7 @@ package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
 import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.models.User;
@@ -145,6 +146,40 @@ public class ExternalApiService {
             return baseUrl + "/admin/upload/" + customerCode;
         } else {
             return baseUrl + "/document/upload";
+        }
+    }
+
+
+
+    public void createOrder(OrderRequestDto orderDto) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new RestClientException("Unauthorized access");
+        }
+
+        var user = (User) auth.getPrincipal();
+        if (user == null) {
+            throw new RestClientException("User not found");
+        }
+
+        String token = getToken(user);
+        if (token == null) {
+            throw new RestClientException("Failed to get token");
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+
+        HttpEntity<OrderRequestDto> entity = new HttpEntity<>(orderDto, headers);
+
+        try {
+            ResponseEntity<Void> response = restTemplate.postForEntity(baseUrl + "/order/new", entity, Void.class);
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new RestClientException("Failed to create order");
+            }
+        } catch (RestClientException e) {
+            throw new RestClientException("Failed to create order: " + e.getMessage());
         }
     }
 }

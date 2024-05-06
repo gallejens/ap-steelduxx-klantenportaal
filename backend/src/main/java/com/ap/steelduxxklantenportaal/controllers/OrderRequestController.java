@@ -2,7 +2,6 @@ package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestListDto;
-import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestUploadDto;
 import com.ap.steelduxxklantenportaal.services.OrderRequestService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
@@ -46,10 +45,16 @@ public class OrderRequestController {
         return ResponseHandler.generate("", HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/status")
+    @PostMapping("/{id}/deny")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public ResponseEntity<Object> updateOrderRequestStatus(@PathVariable Long id, @RequestBody StatusEnum status) {
-        orderRequestService.updateOrderRequestStatus(id, status);
-        return ResponseHandler.generate("", HttpStatus.OK);
+    public ResponseEntity<Object> denyOrderRequest(@PathVariable Long id) {
+        return orderRequestService.denyOrderRequest(id);
     }
+
+    @PostMapping("/{id}/approve")
+    @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
+    public ResponseEntity<Object> approveOrderRequest(@PathVariable Long id) {
+        return orderRequestService.approveOrderRequest(id);
+    }
+
 }

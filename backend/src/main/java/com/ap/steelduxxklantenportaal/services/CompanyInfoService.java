@@ -1,57 +1,74 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.Accounts.AccountDto;
 import com.ap.steelduxxklantenportaal.dtos.Accounts.CreateSubaccountDto;
-import com.ap.steelduxxklantenportaal.dtos.Accounts.DeleteSubaccountDto;
+import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CompanyInfoDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
-import com.ap.steelduxxklantenportaal.models.Account;
-import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.models.UserCompany;
-import com.ap.steelduxxklantenportaal.repositories.AccountRepository;
+import com.ap.steelduxxklantenportaal.repositories.CompanyInfoAccountRepository;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserCompanyRepository;
-import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.mail.MessagingException;
-import jakarta.transaction.Transactional;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class AccountService {
-    private final AccountRepository accountRepository;
-    private final UserRepository userRepository;
-    private final AuthService authService;
+public class CompanyInfoService {
+    private final CompanyInfoAccountRepository companyInfoAccountRepository;
     private final CompanyRepository companyRepository;
+    private final AuthService authService;
     private final UserCompanyRepository userCompanyRepository;
 
-    public AccountService(AccountRepository accountRepository, UserRepository userRepository, AuthService authService,
-            CompanyRepository companyRepository, UserCompanyRepository userCompanyRepository) {
-        this.accountRepository = accountRepository;
-        this.userRepository = userRepository;
-        this.authService = authService;
+    public CompanyInfoService(
+            CompanyInfoAccountRepository companyInfoAccountRepository,
+            CompanyRepository companyRepository,
+            AuthService authService,
+            UserCompanyRepository userCompanyRepository
+    ) {
+        this.companyInfoAccountRepository = companyInfoAccountRepository;
         this.companyRepository = companyRepository;
+        this.authService = authService;
         this.userCompanyRepository = userCompanyRepository;
     }
 
-    public List<AccountDto> getAllAccounts() {
+    public List<CompanyInfoDto> getAll() {
         var user = AuthService.getCurrentUser();
         if (user == null)
             return null;
 
         if (user.hasPermission(PermissionEnum.ADMIN)) {
-            return accountRepository.findAll().stream().map(Account::toDto).toList();
+            return getCompanyInfoForAdmin();
         }
 
-        return accountRepository.findAllFromSameCompanyAsUser(user.getId()).stream().map(Account::toDto).toList();
+        return getCompanyInfoByUserId(user.getId());
+    }
+
+    private List<CompanyInfoDto> getCompanyInfoForAdmin() {
+        var companies = companyRepository.findAll();
+
+        var companyInfoList = new ArrayList<CompanyInfoDto>();
+        for (var company : companies) {
+            var accounts = companyInfoAccountRepository.findAllByCompanyId(company.getId());
+            companyInfoList.add(new CompanyInfoDto(company, accounts));
+        }
+
+        return companyInfoList;
+    }
+
+    private List<CompanyInfoDto> getCompanyInfoByUserId(long userId) {
+        var company = companyRepository.findByUserId(userId).orElse(null);
+        if (company == null) return null;
+
+        var accounts = companyInfoAccountRepository.findAllByCompanyId(company.getId());
+
+        return List.of(new CompanyInfoDto(company, accounts));
     }
 
     public ResponseEntity<Object> createSubaccount(CreateSubaccountDto createSubaccountDto) {
@@ -92,16 +109,5 @@ public class AccountService {
         }
 
         return ResponseHandler.generate("success", HttpStatus.CREATED);
-    }
-
-    @Transactional
-    public ResponseEntity<Object> deleteSubaccount(DeleteSubaccountDto deleteSubaccountDto) {
-        Optional<User> subaccount = userRepository.findByEmail(deleteSubaccountDto.email());
-        if (subaccount.isPresent()) {
-            userRepository.deleteByEmail(deleteSubaccountDto.email());
-            return ResponseHandler.generate("Subaccount successfully deleted", HttpStatus.OK);
-        } else {
-            return ResponseHandler.generate("Subaccount not found", HttpStatus.NOT_FOUND);
-        }
     }
 }

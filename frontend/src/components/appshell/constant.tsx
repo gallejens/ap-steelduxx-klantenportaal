@@ -3,8 +3,8 @@ import type { RGB } from '@/types/util';
 import {
   IconHome,
   IconBaselineDensityMedium,
-  IconUsers,
   type TablerIconsProps,
+  IconUsers,
 } from '@tabler/icons-react';
 import type { FC } from 'react';
 
@@ -44,10 +44,10 @@ export const TABS: {
     requiredPermission: 'MANAGE_USER_REQUESTS',
   },
   {
-    labelKey: 'accounts',
-    path: '/app/accounts',
+    labelKey: 'companies',
+    path: '/app/companies',
     icon: IconUsers,
     color: { r: 219, g: 38, b: 38 },
-    requiredPermission: 'VIEW_ACCOUNTS',
+    requiredPermission: 'VIEW_COMPANIES',
   },
 ];

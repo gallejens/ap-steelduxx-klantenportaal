@@ -2,7 +2,7 @@ package com.ap.steelduxxklantenportaal.account;
 
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
-import com.ap.steelduxxklantenportaal.services.AccountService;
+import com.ap.steelduxxklantenportaal.services.CompanyInfoService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AccountServiceTest {
 
     @Autowired
-    private AccountService accountService;
+    private CompanyInfoService companyInfoService;
     @Autowired
     private UserRepository userRepository;
 
@@ -44,14 +44,14 @@ public class AccountServiceTest {
     @Test
     @WithUserDetails(value = AccountObjectMother.headAdminEmail)
     void givenLoggedInUser_whenRequestingAccounts_thenGetList() {
-        var accounts = accountService.getAllAccounts();
-        assertThat(accounts).isInstanceOf(List.class);
+        var companies = companyInfoService.getAll();
+        assertThat(companies).isInstanceOf(List.class);
     }
 
     @Test
     @WithUserDetails(value = AccountObjectMother.headAdminEmail)
     void givenHeadAdminUser_whenCreatingSubaccount_expectAccountWithAdminRole() {
-        var result = accountService.createSubaccount(AccountObjectMother.createSubaccountDto);
+        var result = companyInfoService.createSubaccount(AccountObjectMother.createSubaccountDto);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         var user = userRepository.findByEmail(AccountObjectMother.createSubaccountDto.email()).orElseThrow();
@@ -61,7 +61,7 @@ public class AccountServiceTest {
     @Test
     @WithUserDetails(value = AccountObjectMother.headNormalEmail)
     void givenHeadNormalUser_whenCreatingSubaccount_expectAccountWithUserRole() {
-        var result = accountService.createSubaccount(AccountObjectMother.createSubaccountDto);
+        var result = companyInfoService.createSubaccount(AccountObjectMother.createSubaccountDto);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         var user = userRepository.findByEmail(AccountObjectMother.createSubaccountDto.email()).orElseThrow();
@@ -71,7 +71,7 @@ public class AccountServiceTest {
     @Test
     @WithUserDetails(value = AccountObjectMother.headNormalEmail)
     void givenSubaccount_whenDeletingSubaccount_expectEmpty() {
-        var result = accountService.createSubaccount(AccountObjectMother.createSubaccountDto);
+        var result = companyInfoService.createSubaccount(AccountObjectMother.createSubaccountDto);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         var user = userRepository.findByEmail(AccountObjectMother.createSubaccountDto.email()).orElseThrow();

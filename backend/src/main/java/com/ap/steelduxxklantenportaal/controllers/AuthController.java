@@ -1,9 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.dtos.ChangePasswordDto;
-import com.ap.steelduxxklantenportaal.dtos.ChoosePasswordDto;
-import com.ap.steelduxxklantenportaal.dtos.ResetPasswordDto;
-import com.ap.steelduxxklantenportaal.dtos.SignInRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.*;
 import com.ap.steelduxxklantenportaal.services.AuthService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.mail.MessagingException;
@@ -73,5 +70,11 @@ public class AuthController {
     public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDto changePasswordDto,
             HttpServletResponse response) {
         return authService.changePassword(changePasswordDto, response);
+    }
+
+    @DeleteMapping("/delete-account")
+    @PreAuthorize("hasAnyAuthority('DELETE_USER_ACCOUNTS', 'DELETE_ADMIN_ACCOUNTS')")
+    public ResponseEntity<Object> deleteAccount(@RequestBody DeleteAccountDto deleteAccountDto) {
+        return authService.deleteAccount(deleteAccountDto);
     }
 }

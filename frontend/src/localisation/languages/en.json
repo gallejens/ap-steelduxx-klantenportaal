@@ -295,7 +295,7 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registrations",
-      "accounts": "Accounts",
+      "companies": "Company Info",
       "orderrequests": "Order Requests"
     },
     "userOptions": {
@@ -369,14 +369,14 @@
     "trueValue": "Yes",
     "falseValue": "No"
   },
-  "accountListPage": {
+  "companiesPage": {
     "table": {
       "email": "Email",
       "firstName": "First Name",
       "lastName": "Last Name",
-      "company": "Company",
-      "role": "Headaccount"
+      "actions": "Actions"
     },
+    "headAccount": "Head Account",
     "loading": "Loading...",
     "error": "An error has occured while loading accounts",
     "createSubAccount": "Create subaccount"

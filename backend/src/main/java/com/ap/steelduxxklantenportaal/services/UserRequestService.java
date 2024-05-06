@@ -39,11 +39,11 @@ public class UserRequestService {
     private final EmailService emailService;
 
     public UserRequestService(UserRequestRepository userRequestRepository,
-            UserRepository userRepository,
-            AuthService authService,
-            CompanyRepository companyRepository,
-            UserCompanyRepository userCompanyRepository,
-            EmailService emailService) {
+                              UserRepository userRepository,
+                              AuthService authService,
+                              CompanyRepository companyRepository,
+                              UserCompanyRepository userCompanyRepository,
+                              EmailService emailService) {
         this.userRequestRepository = userRequestRepository;
         this.userRepository = userRepository;
         this.authService = authService;
@@ -147,26 +147,32 @@ public class UserRequestService {
                 UUID.randomUUID().toString(),
                 userRequestDto.firstName(),
                 userRequestDto.lastName(),
-                RoleEnum.ROLE_HEAD_USER);
+                RoleEnum.ROLE_HEAD_USER
+        );
 
         // Set company values in DB
         var company = companyRepository.save(new Company(
-                userRequestDto.companyName(),
-                userRequestDto.country(),
-                userRequestDto.phoneNr(),
-                userRequestDto.vatNr(),
-                userRequestDto.postalCode(),
-                userRequestDto.district(),
-                userRequestDto.street(),
-                userRequestDto.streetNr(),
-                userRequestDto.boxNr(),
-                userRequestDto.extraInfo(),
-                companyApproveDto.referenceCode()));
+                        -1L,
+                        userRequestDto.companyName(),
+                        userRequestDto.country(),
+                        userRequestDto.phoneNr(),
+                        userRequestDto.vatNr(),
+                        userRequestDto.postalCode(),
+                        userRequestDto.district(),
+                        userRequestDto.street(),
+                        userRequestDto.streetNr(),
+                        userRequestDto.boxNr(),
+                        userRequestDto.extraInfo(),
+                        companyApproveDto.referenceCode()
+                )
+        );
 
         // Set link values in DB
         userCompanyRepository.save(new UserCompany(
-                user.getId(),
-                company.getId()));
+                        user.getId(),
+                        company.getId()
+                )
+        );
 
         authService.sendChoosePasswordEmail(userRequestDto.email(), 30 * 24 * 60 * 60); // one month
 

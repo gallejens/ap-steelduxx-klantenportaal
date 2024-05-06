@@ -11,6 +11,7 @@ import {
 } from '@/types/api';
 import { useModalStore } from '@/stores/useModalStore';
 import { PRODUCT_CONTAINER_SIZES, PRODUCT_CONTAINER_TYPES } from '../constants';
+import { HsCodeSelector } from '@/components/hscodeselector';
 
 type NewProductModalProps = {
   onSubmit: (newProduct: Product) => void;
@@ -86,6 +87,16 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
     closeModal();
   };
 
+  const handleHsCodeSelectorSuggestionAccept = (
+    hsCode: string,
+    label: string
+  ) => {
+    newProductForm.setValues({
+      hsCode,
+      name: label,
+    });
+  };
+
   return (
     <Modal
       title={t('newOrderPage:productForm:ProductInputTitle')}
@@ -96,14 +107,23 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
         onSubmit={newProductForm.onSubmit(handleSubmit)}
       >
         <div>
-          <TextInput
+          <HsCodeSelector
             label={t('newOrderPage:productForm:hsCode:hsCodeInputDescription')}
             placeholder={t(
               'newOrderPage:productForm:hsCode:hsCodeInputPlaceholder'
             )}
             required
             {...newProductForm.getInputProps('hsCode')}
+            onSuggestionAccept={handleHsCodeSelectorSuggestionAccept}
           />
+          {/* <TextInput
+            label={t('newOrderPage:productForm:hsCode:hsCodeInputDescription')}
+            placeholder={t(
+              'newOrderPage:productForm:hsCode:hsCodeInputPlaceholder'
+            )}
+            required
+            {...newProductForm.getInputProps('hsCode')}
+          /> */}
           <TextInput
             label={t('newOrderPage:productForm:name:nameInputDescription')}
             placeholder={t(

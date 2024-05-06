@@ -29,7 +29,7 @@
     align-items: center;
     gap: var(--mantine-spacing-md);
 
-    overflow: hidden;
+    overflow: scroll;
   }
 }
 
@@ -38,7 +38,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: var(--mantine-spacing-xs);
+  flex-shrink: 0;
 
   overflow: hidden;
 
@@ -83,15 +83,20 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    gap: var(--mantine-spacing-xs);
 
     & > .search {
       width: 30%;
       min-width: 15rem;
+      margin-bottom: var(--mantine-spacing-xs);
     }
 
     & > .table {
       overflow: scroll;
+
+      & .actions {
+        display: flex;
+        gap: var(--mantine-spacing-xs);
+      }
     }
   }
 }

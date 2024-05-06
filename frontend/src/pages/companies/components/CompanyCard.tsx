@@ -1,4 +1,4 @@
-import type { CompanyInfo, CompanyInfoAccount } from '@/types/api';
+import type { CompanyInfo } from '@/types/api';
 import { useMemo, useState, type FC } from 'react';
 import styles from '../styles/companies.module.scss';
 import {
@@ -17,38 +17,74 @@ import {
   IconPlus,
   IconReport,
   IconSearch,
+  IconTrash,
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { search } from '@/lib/util/search';
+import { useModalStore } from '@/stores/useModalStore';
+import { CreateSubaccountModal } from '@/components/modals/components/CreateSubaccountModal';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '@/hooks/useAuth';
+import { ConfirmModal } from '@/components/modals';
+import { doApiAction } from '@/lib/api';
+import { notifications } from '@/components/notifications';
 
 export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
   const [opened, setOpened] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const { t } = useTranslation();
+  const { openModal, closeModal } = useModalStore();
+  const client = useQueryClient();
+  const { user } = useAuth();
 
   const [headAccount, ...normalAccounts] = useMemo(() => {
     const headAccountIdx = accounts.findIndex(
       a => a.role === 'ROLE_HEAD_ADMIN' || 'ROLE_HEAD_USER'
     );
-
-    const extraAccounts: CompanyInfoAccount[] = [...new Array(25)].map(
-      (_, idx) => ({
-        firstName: 'John',
-        lastName: 'Doe',
-        email: `${idx}@mail.com`,
-        role: 'ROLE_USER',
-      })
-    );
-
     return [
       accounts[headAccountIdx],
       ...accounts.filter((_, idx) => idx !== headAccountIdx),
-      ...extraAccounts,
     ];
   }, [accounts]);
 
-  const addSubAccount = () => {
-    //
+  const openCreateSubAccountModal = () => {
+    openModal(
+      <CreateSubaccountModal
+        onConfirm={() => {
+          client.invalidateQueries({ queryKey: ['companies'] });
+        }}
+      />
+    );
+  };
+
+  const openDeleteSubAccountModal = (email: string) => {
+    openModal(
+      <ConfirmModal
+        title={t('companiesPage:deleteAccount:title')}
+        text={t('companiesPage:deleteAccount:text')}
+        onConfirm={() => {
+          closeModal();
+          deleteSubAccount(email);
+        }}
+      />
+    );
+  };
+
+  const deleteSubAccount = async (email: string) => {
+    const result = await doApiAction({
+      endpoint: '/auth/delete-account',
+      method: 'DELETE',
+      body: { email },
+    });
+
+    client.invalidateQueries({ queryKey: ['companies'] });
+
+    if (result?.message !== undefined) {
+      notifications.add({
+        message: result?.message,
+        autoClose: 10000,
+      });
+    }
   };
 
   return (
@@ -56,15 +92,17 @@ export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
       <div className={styles.title}>
         <Title order={3}>{company.name}</Title>
         <div className={styles.buttons}>
-          <ActionIcon>
-            <IconPlus onClick={() => addSubAccount} />
-          </ActionIcon>
+          {user?.permissions.includes('CREATE_USER_ACCOUNTS') && (
+            <ActionIcon>
+              <IconPlus onClick={() => openCreateSubAccountModal()} />
+            </ActionIcon>
+          )}
           <ActionIcon>
             <IconChevronDown onClick={() => setOpened(s => !s)} />
           </ActionIcon>
         </div>
       </div>
-      <Divider />
+      <Divider my='xs' />
       <div className={styles.info}>
         <div>
           <div>
@@ -106,7 +144,7 @@ export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
         in={opened}
         className={styles.collapsable}
       >
-        <Divider />
+        <Divider my='xs' />
         <TextInput
           size='xs'
           leftSection={<IconSearch size={'1rem'} />}
@@ -115,7 +153,12 @@ export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
           className={styles.search}
         />
         <div className={styles.table}>
-          <Table stickyHeader>
+          <Table
+            stickyHeader
+            withColumnBorders
+            withRowBorders={false}
+            striped
+          >
             <Table.Thead>
               <Table.Tr>
                 <Table.Th>
@@ -138,13 +181,14 @@ export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
                   <Table.Td>{a.email}</Table.Td>
                   <Table.Td>{a.firstName}</Table.Td>
                   <Table.Td>{a.lastName}</Table.Td>
-                  <Table.Td>
-                    <ActionIcon>
-                      <IconReport />
-                    </ActionIcon>
-                    <ActionIcon>
-                      <IconPlus />
-                    </ActionIcon>
+                  <Table.Td className={styles.actions}>
+                    {user?.permissions.includes('DELETE_USER_ACCOUNTS') && (
+                      <ActionIcon>
+                        <IconTrash
+                          onClick={() => openDeleteSubAccountModal(a.email)}
+                        />
+                      </ActionIcon>
+                    )}
                   </Table.Td>
                 </Table.Tr>
               ))}

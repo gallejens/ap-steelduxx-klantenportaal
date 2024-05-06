@@ -377,9 +377,10 @@
       "actions": "Acties"
     },
     "headAccount": "Hoofd Gebruiker",
-    "loading": "Laden...",
-    "error": "Er heeft zich een fout voorgedaan tijdens het laden van de accounts",
-    "createSubAccount": "Subaccount aanmaken"
+    "deleteAccount": {
+      "title": "Gebruiker Verwijderen",
+      "text": "Ben je zeker dat je deze gebruiker wil verwijderen?"
+    }
   },
   "orderRequestListPage": {
     "table": {

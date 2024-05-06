@@ -9,5 +9,8 @@ import java.util.List;
 
 @Repository
 public interface CompanyInfoAccountRepository extends JpaRepository<CompanyInfoAccount, String> {
+    @Query(value = """ 
+            SELECT email, first_name, last_name, role FROM company_info_accounts_view WHERE company_id = ?1
+            """, nativeQuery = true)
     List<CompanyInfoAccount> findAllByCompanyId(long companyId);
 }

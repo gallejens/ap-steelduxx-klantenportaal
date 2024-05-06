@@ -21,7 +21,6 @@ public class PermissionsManager {
                         PermissionEnum.CREATE_USER_ACCOUNTS,
                         PermissionEnum.DELETE_ADMIN_ACCOUNTS,
                         PermissionEnum.DELETE_USER_ACCOUNTS,
-                        PermissionEnum.CREATE_NEW_ORDERS,
                         PermissionEnum.MANAGE_ORDER_REQUESTS,
                         PermissionEnum.MANAGE_USER_REQUESTS
                 )

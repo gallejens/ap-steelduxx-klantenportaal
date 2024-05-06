@@ -22,5 +22,4 @@ public class CompanyInfoAccount {
     private String lastName;
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
-    private Long companyId;
 }

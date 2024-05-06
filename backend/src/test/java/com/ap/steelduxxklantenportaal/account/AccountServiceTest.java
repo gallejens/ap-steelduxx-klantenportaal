@@ -67,4 +67,18 @@ public class AccountServiceTest {
         var user = userRepository.findByEmail(AccountObjectMother.createSubaccountDto.email()).orElseThrow();
         assertThat(user.getRole()).isEqualTo(RoleEnum.ROLE_USER);
     }
+
+    @Test
+    @WithUserDetails(value = AccountObjectMother.headNormalEmail)
+    void givenSubaccount_whenDeletingSubaccount_expectSuccessStatus() {
+        var result = accountService.createSubaccount(AccountObjectMother.createSubaccountDto);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        var user = userRepository.findByEmail(AccountObjectMother.createSubaccountDto.email()).orElseThrow();
+
+        userRepository.deleteByEmail(user.getEmail());
+
+        var response = userRepository.findByEmail(user.getEmail());
+        assertThat(response).isEmpty();
+    }
 }

@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { type FC, useState } from 'react';
 import { useParams, useSearch } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,7 @@ import styles from './styles/orderDetails.module.scss';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import type { OrderDetails, OrderState, OrderTransportType } from '@/types/api';
 import { DownloadButton } from '../orderdetails/downloadButton.tsx';
-import React, { useState } from 'react';
+import React from 'react';
 import { IconUpload, IconDownload } from '@tabler/icons-react';
 
 export const OrderDetailsPage: FC = () => {
@@ -292,56 +292,7 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          {/* <h2 className={styles.documentsTitle}>
-            {t('orderDetailPage:documents')}
-          </h2>
-          <div className={styles.documentItem}>
-            <p>Bill of Lading Document</p>
-            <DownloadButton
-              downloadLink={orderDetail?.data.billOfLadingDownloadLink}
-              downloadDocument={downloadDocument}
-            />
-          </div>
-          <div className={styles.documentDivider}></div>
-          <div className={styles.documentItem}>
-            <p>Packing List Document</p>
-            <DownloadButton
-              downloadLink={orderDetail?.data.packingListDownloadLink}
-              downloadDocument={downloadDocument}
-            />
-          </div>
-          <div className={styles.documentDivider}></div>
-          <div className={styles.documentItem}>
-            <p>Customs Document</p>
-            <DownloadButton
-              downloadLink={orderDetail?.data.customsDownloadLink}
-              downloadDocument={downloadDocument}
-            />
-          </div>
-        </div>
-        <div className={styles.documentsContainer}>
-          <h2 className={styles.documentsTitle}>
-            {t('orderDetailPage:documents')}
-          </h2>
-          <input
-            type='file'
-            id='fileUpload'
-            hidden
-            onChange={handleFileChange}
-          />
-          <div className={styles.documentItem}>
-            <p>Bill of Lading Document</p>
-            <button onClick={() => handleUploadClick('bl')}>Upload</button>
-          </div>
-          <div className={styles.documentItem}>
-            <p>Packing List Document</p>
-            <button onClick={() => handleUploadClick('packing')}>Upload</button>
-          </div>
-          <div className={styles.documentItem}>
-            <p>Customs Document</p>
-            <button onClick={() => handleUploadClick('customs')}>Upload</button>
-          </div>*/}
-          <div>
+          <div className={styles.orderDetails}>
             <h1>Order Details - {orderId}</h1>
             <input
               type='file'

@@ -85,10 +85,14 @@ export const OrderDetailsPage: FC = () => {
       alert('Please select a file first.');
       return;
     }
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('referenceNumber', orderId);
     formData.append('documentType', documentType);
+    if (customerCode) {
+      formData.append('customerCode', customerCode);
+    }
 
     try {
       const response = await doApiAction({

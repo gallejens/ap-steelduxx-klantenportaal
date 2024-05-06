@@ -2,6 +2,7 @@ package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.Accounts.AccountDto;
 import com.ap.steelduxxklantenportaal.dtos.Accounts.CreateSubaccountDto;
+import com.ap.steelduxxklantenportaal.dtos.Accounts.DeleteSubaccountDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
@@ -14,6 +15,8 @@ import com.ap.steelduxxklantenportaal.repositories.UserCompanyRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -91,10 +94,11 @@ public class AccountService {
         return ResponseHandler.generate("success", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> deleteSubaccount(AccountDto accountDto) {
-        Optional<User> subaccount = userRepository.findByEmail(accountDto.email());
+    @Transactional
+    public ResponseEntity<Object> deleteSubaccount(DeleteSubaccountDto deleteSubaccountDto) {
+        Optional<User> subaccount = userRepository.findByEmail(deleteSubaccountDto.email());
         if (subaccount.isPresent()) {
-            userRepository.deleteByEmail(accountDto.email());
+            userRepository.deleteByEmail(deleteSubaccountDto.email());
             return ResponseHandler.generate("Subaccount successfully deleted", HttpStatus.OK);
         } else {
             return ResponseHandler.generate("Subaccount not found", HttpStatus.NOT_FOUND);

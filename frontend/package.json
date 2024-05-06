@@ -12,11 +12,11 @@
   },
   "dependencies": {
     "@mantine/core": "^7.8.0",
-    "@mantine/form": "^7.8.0",
+    "@mantine/form": "^7.9.0",
     "@mantine/hooks": "^7.8.0",
     "@tabler/icons-react": "^2.47.0",
     "@tanstack/react-query": "^5.21.4",
-    "@tanstack/react-router": "^1.22.3",
+    "@tanstack/react-router": "^1.31.20",
     "@types/uuid": "^9.0.8",
     "axios": "^1.6.7",
     "classnames": "^2.5.1",

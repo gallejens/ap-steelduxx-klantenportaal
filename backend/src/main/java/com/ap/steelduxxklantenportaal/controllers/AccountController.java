@@ -1,6 +1,7 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.dtos.Accounts.CreateSubaccountDto;
+import com.ap.steelduxxklantenportaal.dtos.Accounts.DeleteSubaccountDto;
 import com.ap.steelduxxklantenportaal.services.AccountService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public class AccountController {
 
     @DeleteMapping("/delete")
     @PreAuthorize("hasAuthority('CREATE_SUB_ACCOUNTS')")
-    public ResponseEntity<Object> deleteSubAccount(@RequestBody AccountDto accountDto) {
-        return accountService.deleteSubaccount(accountDto);
+    public ResponseEntity<Object> deleteSubAccount(@RequestBody DeleteSubaccountDto deleteSubaccountDto) {
+        return accountService.deleteSubaccount(deleteSubaccountDto);
     }
 }

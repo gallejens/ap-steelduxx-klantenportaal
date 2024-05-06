@@ -3,7 +3,6 @@ import { ActionIcon, Button, TextInput } from '@mantine/core';
 import { IconSearch, IconTrash } from '@tabler/icons-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import styles from './styles/userlist.module.scss';
 import { Table } from '@/components/table';
 import { CreateSubaccountModal } from '@/components/modals/components/CreateSubaccountModal';
@@ -11,6 +10,7 @@ import { useModalStore } from '@/stores/useModalStore';
 import { useAuth } from '@/hooks/useAuth';
 import type { Auth } from '@/types/auth';
 import { ConfirmModal } from '@/components/modals';
+import { notifications } from '@/components/notifications';
 
 type Account = {
   email: string;
@@ -22,11 +22,9 @@ type Account = {
 
 export const AccountListPage: FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
-  const { t } = useTranslation();
   const { openModal, closeModal } = useModalStore();
   const { user } = useAuth();
   const client = useQueryClient();
-  // const [responseMessage, setResponseMessage] = useState<string | null>(null);
 
   const {
     data: accounts,
@@ -42,15 +40,11 @@ export const AccountListPage: FC = () => {
   });
 
   if (status === 'pending') {
-    return <div>{t('orderListPage:loading')}</div>;
+    return <div>Loading...</div>;
   }
 
   if (status === 'error' || !accounts) {
-    return (
-      <div>
-        {t('orderListPage:error')} | {error?.message ?? 'Unknown error'}
-      </div>
-    );
+    return <div>Error: {error?.message ?? 'Unknown error'}</div>;
   }
 
   const openSubAccountModal = () => {
@@ -63,37 +57,41 @@ export const AccountListPage: FC = () => {
     );
   };
 
-  const openDeleteSubAccountConfirmModal = (account: Account) => {
+  const openDeleteSubAccountConfirmModal = (subaccountEmail: string) => {
     openModal(
       <ConfirmModal
-        title={t(
-          'appshell:deleteSubAccountConfirmation:deleteSubAccountConfirmTitle'
-        )}
-        text={t(
-          'appshell:deleteSubAccountConfirmation:deleteSubAccountConfirmText'
-        )}
+        title='Delete Sub-Account'
+        text='Are you sure you want to delete this sub-account?'
         onConfirm={() => {
-          // deleteSubAccount(account);
+          deleteSubAccount(subaccountEmail);
           closeModal();
         }}
       ></ConfirmModal>
     );
   };
 
-  // const deleteSubAccount = async (values: Account) => {
-  //   const result = await doApiAction({
-  //     endpoint: '/accounts/delete',
-  //     method: 'DELETE',
-  //     body: {
-  //       email: values.email,
-  //       firstName: values.firstName,
-  //       lastName: values.lastName,
-  //       role: values.role,
-  //     },
-  //   });
+  const deleteSubAccount = async (subaccountEmail: string) => {
+    const result = await doApiAction({
+      endpoint: '/accounts/delete',
+      method: 'DELETE',
+      body: { email: subaccountEmail },
+    });
 
-  //   setResponseMessage(result?.message ?? 'failed');
-  // };
+    const updatedSubAccounts = accounts.data.filter(
+      subAccount => subAccount.email !== subaccountEmail
+    );
+
+    client.setQueryData(['accounts'], { data: updatedSubAccounts });
+
+    if (result?.message !== undefined) {
+      notifications.add({
+        message: result?.message,
+        autoClose: 10000,
+      });
+    }
+
+    return result;
+  };
 
   return (
     <div className={styles.account_list_page}>
@@ -110,7 +108,7 @@ export const AccountListPage: FC = () => {
               openSubAccountModal();
             }}
           >
-            {t('accountListPage:createSubAccount')}
+            Create Sub-Account
           </Button>
         )}
       </div>
@@ -157,7 +155,7 @@ export const AccountListPage: FC = () => {
               actions:
                 a.role !== 'ROLE_HEAD_ADMIN' && a.role !== 'ROLE_HEAD_USER' ? (
                   <ActionIcon
-                    onClick={() => openDeleteSubAccountConfirmModal(a)}
+                    onClick={() => openDeleteSubAccountConfirmModal(a.email)}
                   >
                     <IconTrash />
                   </ActionIcon>

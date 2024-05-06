@@ -349,7 +349,7 @@
       }
     },
     "createSubaccount": {
-      "title": "Subaccount Aanmaken",
+      "title": "Subaccount aanmaken",
       "emailInputLabel": "Email",
       "emailInputError": "Vul een geldig email adres in",
       "firstNameInputLabel": "Voornaam",

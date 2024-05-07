@@ -1,3 +1,5 @@
+import type { Auth } from './auth';
+
 export type OrderState =
   | 'SAILING'
   | 'PLANNED'
@@ -99,4 +101,31 @@ export type OrderRequest = {
   portOfDestinationCode: string;
   status: string;
   product: Product[];
+};
+
+export type Company = {
+  id: number;
+  name: string;
+  country: string;
+  phoneNr: string;
+  vatNr: string;
+  postalCode: string;
+  district: string;
+  street: string;
+  streetNr: string;
+  boxNr: string | null;
+  extraInfo: string | null;
+  referenceCode: string | null;
+};
+
+export type CompanyInfoAccount = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: Auth.Role;
+};
+
+export type CompanyInfo = {
+  company: Company | null;
+  accounts: CompanyInfoAccount[];
 };

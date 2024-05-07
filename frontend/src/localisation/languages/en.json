@@ -295,7 +295,7 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registrations",
-      "accounts": "Accounts",
+      "companies": "Company Info",
       "orderrequests": "Order Requests"
     },
     "userOptions": {
@@ -369,17 +369,18 @@
     "trueValue": "Yes",
     "falseValue": "No"
   },
-  "accountListPage": {
+  "companiesPage": {
     "table": {
       "email": "Email",
       "firstName": "First Name",
       "lastName": "Last Name",
-      "company": "Company",
-      "role": "Headaccount"
+      "actions": "Actions"
     },
-    "loading": "Loading...",
-    "error": "An error has occured while loading accounts",
-    "createSubAccount": "Create subaccount"
+    "headAccount": "Head Account",
+    "deleteAccount": {
+      "title": "Delete Account",
+      "text": "Are you sure you want to delete this account?"
+    }
   },
   "orderRequestListPage": {
     "table": {

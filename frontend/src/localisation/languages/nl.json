@@ -295,7 +295,7 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registraties",
-      "accounts": "Gebruikers",
+      "companies": "Bedrijfsgegevens",
       "orderrequests": "Order Aanvragen"
     },
     "userOptions": {
@@ -369,17 +369,18 @@
     "trueValue": "Ja",
     "falseValue": "Nee"
   },
-  "accountListPage": {
+  "companiesPage": {
     "table": {
       "email": "Email",
       "firstName": "Voornaam",
       "lastName": "Achternaam",
-      "company": "Bedrijf",
-      "role": "Hoofdaccount"
+      "actions": "Acties"
     },
-    "loading": "Laden...",
-    "error": "Er heeft zich een fout voorgedaan tijdens het laden van de accounts",
-    "createSubAccount": "Subaccount aanmaken"
+    "headAccount": "Hoofd Gebruiker",
+    "deleteAccount": {
+      "title": "Gebruiker Verwijderen",
+      "text": "Ben je zeker dat je deze gebruiker wil verwijderen?"
+    }
   },
   "orderRequestListPage": {
     "table": {

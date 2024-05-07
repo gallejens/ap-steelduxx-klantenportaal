@@ -32,7 +32,7 @@ export const CreateSubaccountModal: FC<{ onConfirm: () => void }> = props => {
 
   const handleSubmit = async (values: CreateSubaccountValues) => {
     const result = await doApiAction({
-      endpoint: '/accounts/new',
+      endpoint: '/company-info/new',
       method: 'POST',
       body: {
         email: values.email,

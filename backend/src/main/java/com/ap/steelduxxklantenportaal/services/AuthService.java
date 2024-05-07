@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 
+import com.ap.steelduxxklantenportaal.dtos.DeleteAccountDto;
 import com.ap.steelduxxklantenportaal.dtos.ChangePasswordDto;
 import com.ap.steelduxxklantenportaal.dtos.SignInRequestDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
@@ -242,6 +243,19 @@ public class AuthService {
         generateRefreshTokenForUser(user, response);
 
         return ResponseHandler.generate("success", HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<Object> deleteAccount(DeleteAccountDto deleteAccountDto) {
+        var user = userRepository.findByEmail(deleteAccountDto.email()).orElse(null);
+        if (user == null) {
+            return ResponseHandler.generate("Subaccount not found", HttpStatus.NOT_FOUND);
+        }
+
+        // TODO: Add safety checks (not head account)
+
+        userRepository.deleteById(user.getId());
+        return ResponseHandler.generate("Subaccount successfully deleted", HttpStatus.OK);
     }
 
     public static User getCurrentUser() {

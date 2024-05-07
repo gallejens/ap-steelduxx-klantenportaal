@@ -8,10 +8,12 @@ export namespace Auth {
   export type Permission =
     | 'ACCESS'
     | 'ADMIN'
-    | 'CREATE_SUB_ACCOUNTS'
+    | 'VIEW_COMPANIES'
+    | 'CREATE_USER_ACCOUNTS'
+    | 'CREATE_ADMIN_ACCOUNTS'
+    | 'DELETE_USER_ACCOUNTS'
+    | 'DELETE_ADMIN_ACCOUNTS'
     | 'CREATE_NEW_ORDERS'
-    | 'VIEW_ACCOUNTS'
-    | 'EXTERNAL_API_ADMIN'
     | 'MANAGE_USER_REQUESTS'
     | 'MANAGE_ORDER_REQUESTS';
 

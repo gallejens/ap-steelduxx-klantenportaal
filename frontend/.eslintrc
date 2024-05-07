@@ -39,6 +39,8 @@
     "@typescript-eslint/space-before-function-paren": "off",
     "multiline-ternary": "off",
     "@typescript-eslint/no-namespace": "off",
-    "@typescript-eslint/prefer-reduce-type-parameter": "off"
+    "@typescript-eslint/prefer-reduce-type-parameter": "off",
+    "react/display-name": "off",
+    "react/prop-types": "off"
   },
 }

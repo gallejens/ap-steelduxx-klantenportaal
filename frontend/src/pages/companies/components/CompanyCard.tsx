@@ -1,5 +1,5 @@
 import type { CompanyInfo } from '@/types/api';
-import { useMemo, useState, type FC } from 'react';
+import { memo, useMemo, useState } from 'react';
 import styles from '../styles/companies.module.scss';
 import {
   ActionIcon,
@@ -29,7 +29,7 @@ import { ConfirmModal } from '@/components/modals';
 import { doApiAction } from '@/lib/api';
 import { notifications } from '@/components/notifications';
 
-export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
+export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
   const [opened, setOpened] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const { t } = useTranslation();
@@ -50,6 +50,7 @@ export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
   const openCreateSubAccountModal = () => {
     openModal(
       <CreateSubaccountModal
+        companyId={company?.id ?? null}
         onConfirm={() => {
           client.invalidateQueries({ queryKey: ['companies'] });
         }}
@@ -205,4 +206,4 @@ export const CompanyCard: FC<CompanyInfo> = ({ company, accounts }) => {
       </Collapse>
     </div>
   );
-};
+});

@@ -139,15 +139,15 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
               <IconPlus onClick={() => openCreateSubAccountModal()} />
             </IconButton>
           )}
-          <IconButton
-            tooltipKey={
-              opened
-                ? 'companiesPage:tooltips:collapse'
-                : 'companiesPage:tooltips:open'
-            }
-          >
-            <IconChevronDown onClick={() => setOpened(s => !s)} />
-          </IconButton>
+          {opened ? (
+            <IconButton tooltipKey='companiesPage:tooltips:collapse'>
+              <IconChevronUp onClick={() => setOpened(false)} />
+            </IconButton>
+          ) : (
+            <IconButton tooltipKey='companiesPage:tooltips:open'>
+              <IconChevronDown onClick={() => setOpened(true)} />
+            </IconButton>
+          )}
         </div>
       </div>
       <Divider my='xs' />

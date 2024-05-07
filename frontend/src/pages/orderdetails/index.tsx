@@ -1,10 +1,15 @@
-import { type FC, useState } from 'react';
+import { type ChangeEvent, type FC, useState } from 'react';
 import { useParams, useSearch } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/orderDetails.module.scss';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
-import type { OrderDetails, OrderState, OrderTransportType } from '@/types/api';
+import type {
+  OrderDetails,
+  OrderDocumentType,
+  OrderState,
+  OrderTransportType,
+} from '@/types/api';
 import { IconUpload, IconDownload } from '@tabler/icons-react';
 
 export const OrderDetailsPage: FC = () => {
@@ -15,7 +20,7 @@ export const OrderDetailsPage: FC = () => {
   const { customerCode } = useSearch({
     from: '/app/orders/$order_id',
   });
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState('');
 
   const {
@@ -72,15 +77,15 @@ export const OrderDetailsPage: FC = () => {
     return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
-  const handleFileChange = event => {
-    const selectedFile = event.target.files[0];
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
       setFileName(selectedFile.name);
     }
   };
 
-  const handleUpload = async documentType => {
+  const handleUpload = async (documentType: OrderDocumentType) => {
     if (!file) {
       alert('Please select a file first.');
       return;
@@ -114,9 +119,9 @@ export const OrderDetailsPage: FC = () => {
     }
   };
 
-  const handleDownload = async documentType => {
+  const handleDownload = async (documentType: OrderDocumentType) => {
     try {
-      const response = await doApiAction({
+      const response = await doApiAction<BlobPart>({
         endpoint: `/orders/download-document/${orderId}/${documentType}`,
         method: 'GET',
         responseType: 'blob',
@@ -325,7 +330,7 @@ export const OrderDetailsPage: FC = () => {
             />
             <button
               className={styles.uploadButton}
-              onClick={() => document.getElementById('fileInput').click()}
+              onClick={() => document.getElementById('fileInput')?.click()}
             >
               Select File
             </button>

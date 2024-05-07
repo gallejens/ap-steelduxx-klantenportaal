@@ -10,6 +10,7 @@ const api = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
   withCredentials: true,
+  responseType: 'json',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -52,18 +53,13 @@ export const doApiAction = async <T = GenericAPIResponse>(data: {
   headers?: Record<string, string>;
 }): Promise<T | undefined> => {
   try {
-    const isFormData = data.body instanceof FormData;
-
     const response = await api<T>({
       url: data.endpoint,
       method: data.method,
       data: data.body,
       params: data.params,
-      responseType: data.responseType ?? 'json',
-      headers: {
-        ...data.headers,
-        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-      },
+      responseType: data.responseType,
+      headers: data.headers,
     });
     return response.data;
   } catch (e: unknown) {

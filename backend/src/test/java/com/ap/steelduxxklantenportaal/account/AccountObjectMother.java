@@ -11,7 +11,7 @@ public class AccountObjectMother {
     static final String headNormalEmail = "normal@test.com";
     static final User headAdminUser = createNewUser(headAdminEmail, "HeadAdmin", "Test", RoleEnum.ROLE_HEAD_ADMIN);
     static final User headNormalUser = createNewUser(headNormalEmail, "HeadNormal", "Test", RoleEnum.ROLE_HEAD_USER);
-    static final CreateSubaccountDto createSubaccountDto = new CreateSubaccountDto("new@test.com", "Test", "Test" );
+    static final CreateSubaccountDto createSubaccountDto = new CreateSubaccountDto("new@test.com", "Test", "Test");
 
     private static User createNewUser(String email, String firstName, String lastName, RoleEnum role) {
         var user = new User();
@@ -22,4 +22,5 @@ public class AccountObjectMother {
         user.setRole(role);
         return user;
     }
+
 }

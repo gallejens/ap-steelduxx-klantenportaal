@@ -1,15 +1,16 @@
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
-import { Button, TextInput } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { ActionIcon, Button, TextInput } from '@mantine/core';
+import { IconSearch, IconTrash } from '@tabler/icons-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import styles from './styles/userlist.module.scss';
 import { Table } from '@/components/table';
 import { CreateSubaccountModal } from '@/components/modals/components/CreateSubaccountModal';
 import { useModalStore } from '@/stores/useModalStore';
 import { useAuth } from '@/hooks/useAuth';
 import type { Auth } from '@/types/auth';
+import { ConfirmModal } from '@/components/modals';
+import { notifications } from '@/components/notifications';
 
 type Account = {
   email: string;
@@ -21,8 +22,7 @@ type Account = {
 
 export const AccountListPage: FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
-  const { t } = useTranslation();
-  const { openModal } = useModalStore();
+  const { openModal, closeModal } = useModalStore();
   const { user } = useAuth();
   const client = useQueryClient();
 
@@ -40,15 +40,11 @@ export const AccountListPage: FC = () => {
   });
 
   if (status === 'pending') {
-    return <div>{t('orderListPage:loading')}</div>;
+    return <div>Loading...</div>;
   }
 
   if (status === 'error' || !accounts) {
-    return (
-      <div>
-        {t('orderListPage:error')} | {error?.message ?? 'Unknown error'}
-      </div>
-    );
+    return <div>Error: {error?.message ?? 'Unknown error'}</div>;
   }
 
   const openSubAccountModal = () => {
@@ -59,6 +55,42 @@ export const AccountListPage: FC = () => {
         }}
       />
     );
+  };
+
+  const openDeleteSubAccountConfirmModal = (subaccountEmail: string) => {
+    openModal(
+      <ConfirmModal
+        title='Delete Sub-Account'
+        text='Are you sure you want to delete this sub-account?'
+        onConfirm={() => {
+          deleteSubAccount(subaccountEmail);
+          closeModal();
+        }}
+      ></ConfirmModal>
+    );
+  };
+
+  const deleteSubAccount = async (subaccountEmail: string) => {
+    const result = await doApiAction({
+      endpoint: '/accounts/delete',
+      method: 'DELETE',
+      body: { email: subaccountEmail },
+    });
+
+    const updatedSubAccounts = accounts.data.filter(
+      subAccount => subAccount.email !== subaccountEmail
+    );
+
+    client.setQueryData(['accounts'], { data: updatedSubAccounts });
+
+    if (result?.message !== undefined) {
+      notifications.add({
+        message: result?.message,
+        autoClose: 10000,
+      });
+    }
+
+    return result;
   };
 
   return (
@@ -76,7 +108,7 @@ export const AccountListPage: FC = () => {
               openSubAccountModal();
             }}
           >
-            {t('accountListPage:createSubAccount')}
+            Create Sub-Account
           </Button>
         )}
       </div>
@@ -110,8 +142,28 @@ export const AccountListPage: FC = () => {
               transform: (role: Auth.Role) =>
                 role === 'ROLE_HEAD_ADMIN' || role === 'ROLE_HEAD_USER',
             },
+            {
+              key: 'actions',
+              emptyHeader: true,
+              disallowSorting: true,
+              disableResizing: true,
+            },
           ]}
-          data={accounts.data ?? []}
+          data={
+            accounts.data.map(a => ({
+              ...a,
+              actions:
+                a.role !== 'ROLE_HEAD_ADMIN' && a.role !== 'ROLE_HEAD_USER' ? (
+                  <ActionIcon
+                    onClick={() => openDeleteSubAccountConfirmModal(a.email)}
+                  >
+                    <IconTrash />
+                  </ActionIcon>
+                ) : (
+                  []
+                ),
+            })) ?? []
+          }
         />
       </div>
     </div>

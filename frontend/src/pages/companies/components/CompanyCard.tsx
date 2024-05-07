@@ -26,7 +26,7 @@ import { CreateSubaccountModal } from '@/components/modals/components/CreateSuba
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
 import { ConfirmModal } from '@/components/modals';
-import { doApiAction } from '@/lib/api';
+import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { notifications } from '@/components/notifications';
 
 export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
@@ -72,20 +72,21 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
   };
 
   const deleteSubAccount = async (email: string) => {
-    const result = await doApiAction({
-      endpoint: '/auth/delete-account',
+    const result = await doApiAction<GenericAPIResponse>({
+      endpoint: '/company-info/delete',
       method: 'DELETE',
       body: { email },
     });
 
     client.invalidateQueries({ queryKey: ['companies'] });
 
-    if (result?.message !== undefined) {
-      notifications.add({
-        message: result?.message,
-        autoClose: 10000,
-      });
-    }
+    notifications.add({
+      message: t(
+        `companiesPage:deleteAccount:responses:${result?.message}` ??
+          'notifications:genericError'
+      ),
+      autoClose: 10000,
+    });
   };
 
   return (

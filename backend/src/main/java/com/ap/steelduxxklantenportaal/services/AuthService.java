@@ -134,6 +134,10 @@ public class AuthService {
         return userRepository.findByEmail(email).isPresent();
     }
 
+    public User getUser(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
     public User addNewUser(String email, String password, String firstName, String lastName, RoleEnum role)
             throws UserAlreadyExistsException {
         if (doesUserExist(email)) {
@@ -246,16 +250,8 @@ public class AuthService {
     }
 
     @Transactional
-    public ResponseEntity<Object> deleteAccount(DeleteAccountDto deleteAccountDto) {
-        var user = userRepository.findByEmail(deleteAccountDto.email()).orElse(null);
-        if (user == null) {
-            return ResponseHandler.generate("Subaccount not found", HttpStatus.NOT_FOUND);
-        }
-
-        // TODO: Add safety checks (not head account)
-
-        userRepository.deleteById(user.getId());
-        return ResponseHandler.generate("Subaccount successfully deleted", HttpStatus.OK);
+    public void deleteAccount(long accountId) {
+        userRepository.deleteById(accountId);
     }
 
     public static User getCurrentUser() {

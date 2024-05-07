@@ -142,4 +142,38 @@ public class CompanyInfoService {
 
         return ResponseHandler.generate("success", HttpStatus.CREATED);
     }
+
+    public ResponseEntity<Object> deleteSubAccount(String email) {
+        var user = AuthService.getCurrentUser();
+        if (user == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        var userToDelete = authService.getUser(email);
+        if (userToDelete == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        boolean canDeleteUser = false;
+        switch (userToDelete.getRole()) {
+            case ROLE_ADMIN -> canDeleteUser = user.hasPermission(PermissionEnum.DELETE_ADMIN_ACCOUNTS);
+            case ROLE_USER -> {
+                if (user.hasPermission(PermissionEnum.DELETE_USER_ACCOUNTS)) {
+                    var userCompany = userCompanyRepository.findById(user.getId()).orElse(null);
+                    var userToDeleteCompany = userCompanyRepository.findById(userToDelete.getId()).orElseThrow();
+
+                    if (userCompany == null || userCompany.getCompanyId().equals(userToDeleteCompany.getCompanyId())) {
+                        canDeleteUser = true;
+                    }
+                }
+            }
+        }
+        if (!canDeleteUser) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        authService.deleteAccount(userToDelete.getId());
+
+        return ResponseHandler.generate("success", HttpStatus.OK);
+    }
 }

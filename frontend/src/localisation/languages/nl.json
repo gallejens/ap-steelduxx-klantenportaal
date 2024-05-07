@@ -379,7 +379,11 @@
     "headAccount": "Hoofd Gebruiker",
     "deleteAccount": {
       "title": "Gebruiker Verwijderen",
-      "text": "Ben je zeker dat je deze gebruiker wil verwijderen?"
+      "text": "Ben je zeker dat je deze gebruiker wil verwijderen?",
+      "responses": {
+        "success": "Gebruiker is succesvol verwijderd.",
+        "failed": "Er is iets misgegaan tijdens het verwijderen van de gebruiker, gelieve opnieuw te proberen."
+      }
     }
   },
   "orderRequestListPage": {

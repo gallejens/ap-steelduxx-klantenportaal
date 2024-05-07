@@ -84,30 +84,32 @@ public class OrdersControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-        @Test
-    @WithMockUser(username="user", authorities={"ACCESS"})
+    @Test
+    @WithMockUser(username = "user", authorities = { "ACCESS" })
     public void testUploadDocument_FailInvalidInput() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "", MediaType.APPLICATION_PDF_VALUE, new byte[0]);
 
         mockMvc.perform(multipart("/orders/upload-document")
-                        .file(file)
-                        .param("referenceNumber", "")
-                        .param("documentType", "")
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .file(file)
+                .param("referenceNumber", "")
+                .param("documentType", "")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    @WithMockUser(username="user", authorities={"ACCESS"})
+    @WithMockUser(username = "user", authorities = { "ACCESS" })
     public void testUploadDocument_FailException() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "test.pdf", MediaType.APPLICATION_PDF_VALUE, "PDF content".getBytes());
-        when(ordersService.uploadDocument(any(DocumentRequestDto.class), any(User.class), any(String.class))).thenThrow(new RuntimeException("Upload failed"));
+        MockMultipartFile file = new MockMultipartFile("file", "test.pdf", MediaType.APPLICATION_PDF_VALUE,
+                "PDF content".getBytes());
+        when(ordersService.uploadDocument(any(DocumentRequestDto.class), any(User.class), any(String.class)))
+                .thenThrow(new RuntimeException("Upload failed"));
 
         mockMvc.perform(multipart("/orders/upload-document")
-                        .file(file)
-                        .param("referenceNumber", "12345")
-                        .param("documentType", "invoice")
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .file(file)
+                .param("referenceNumber", "12345")
+                .param("documentType", "invoice")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isInternalServerError());
     }
 }

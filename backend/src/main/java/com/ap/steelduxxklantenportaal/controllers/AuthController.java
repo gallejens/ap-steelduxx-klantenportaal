@@ -71,10 +71,4 @@ public class AuthController {
             HttpServletResponse response) {
         return authService.changePassword(changePasswordDto, response);
     }
-
-    @DeleteMapping("/delete-account")
-    @PreAuthorize("hasAnyAuthority('DELETE_USER_ACCOUNTS', 'DELETE_ADMIN_ACCOUNTS')")
-    public ResponseEntity<Object> deleteAccount(@RequestBody DeleteAccountDto deleteAccountDto) {
-        return authService.deleteAccount(deleteAccountDto);
-    }
 }

@@ -79,6 +79,10 @@
     & > :first-child {
       flex-grow: 1;
     }
+
+    & > :last-child {
+      min-width: 20%;
+    }
   }
 
   & > .collapsable {

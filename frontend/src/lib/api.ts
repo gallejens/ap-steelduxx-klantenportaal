@@ -59,7 +59,7 @@ export const doApiAction = async <T = GenericAPIResponse>(data: {
       method: data.method,
       data: data.body,
       params: data.params,
-      responseType: data.responseType || 'json',
+      responseType: data.responseType ?? 'json',
       headers: {
         ...data.headers,
         ...(isFormData ? {} : { 'Content-Type': 'application/json' }),

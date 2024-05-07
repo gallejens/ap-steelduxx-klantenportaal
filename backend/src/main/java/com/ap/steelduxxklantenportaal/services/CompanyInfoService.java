@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 
+import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.ChangeCompanyHeadAccountDto;
 import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CompanyInfoDto;
 import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CreateSubAccountDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
@@ -142,4 +143,60 @@ public class CompanyInfoService {
 
         return ResponseHandler.generate("success", HttpStatus.CREATED);
     }
-}
+
+    public ResponseEntity<Object> deleteSubAccount(String email) {
+        var user = AuthService.getCurrentUser();
+        if (user == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        var userToDelete = authService.getUser(email);
+        if (userToDelete == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        boolean canDeleteUser = false;
+        switch (userToDelete.getRole()) {
+            case ROLE_ADMIN -> canDeleteUser = user.hasPermission(PermissionEnum.DELETE_ADMIN_ACCOUNTS);
+            case ROLE_USER -> {
+                if (user.hasPermission(PermissionEnum.DELETE_USER_ACCOUNTS)) {
+                    var userCompany = userCompanyRepository.findById(user.getId()).orElse(null);
+                    var userToDeleteCompany = userCompanyRepository.findById(userToDelete.getId()).orElseThrow();
+
+                    if (userCompany == null || userCompany.getCompanyId().equals(userToDeleteCompany.getCompanyId())) {
+                        canDeleteUser = true;
+                    }
+                }
+            }
+        }
+        if (!canDeleteUser) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        authService.deleteAccount(userToDelete.getId());
+
+        return ResponseHandler.generate("success", HttpStatus.OK);
+    }
+
+    public ResponseEntity<Object> changeCompanyHeadAccount(ChangeCompanyHeadAccountDto changeCompanyHeadAccountDto) {
+        var company = companyRepository.findById(changeCompanyHeadAccountDto.companyId()).orElse(null);
+        if (company == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        var currentHeadUserId = companyRepository.findHeadUserIdByCompanyId(company.getId()).orElse(null);
+        if (currentHeadUserId == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        var newHeadUser = authService.getUser(changeCompanyHeadAccountDto.email());
+        if (newHeadUser == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        authService.changeRole(currentHeadUserId, RoleEnum.ROLE_USER);
+        authService.changeRole(newHeadUser.getId(), RoleEnum.ROLE_HEAD_USER);
+
+        return ResponseHandler.generate("success", HttpStatus.OK);
+    }
+ }

@@ -2,7 +2,6 @@ import type { CompanyInfo } from '@/types/api';
 import { memo, useMemo, useState } from 'react';
 import styles from '../styles/companies.module.scss';
 import {
-  ActionIcon,
   Collapse,
   Divider,
   Table,
@@ -12,6 +11,7 @@ import {
 } from '@mantine/core';
 import {
   IconChevronDown,
+  IconChevronUp,
   IconPhone,
   IconPin,
   IconPlus,
@@ -26,8 +26,10 @@ import { CreateSubaccountModal } from '@/components/modals/components/CreateSuba
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
 import { ConfirmModal } from '@/components/modals';
-import { doApiAction } from '@/lib/api';
+import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { notifications } from '@/components/notifications';
+import { ADMINS_COMPANY_LABEL } from '../constants';
+import { IconButton } from '@/components/iconbutton';
 
 export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
   const [opened, setOpened] = useState(false);
@@ -39,7 +41,7 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
 
   const [headAccount, ...normalAccounts] = useMemo(() => {
     const headAccountIdx = accounts.findIndex(
-      a => a.role === 'ROLE_HEAD_ADMIN' || 'ROLE_HEAD_USER'
+      a => a.role === 'ROLE_HEAD_ADMIN' || a.role === 'ROLE_HEAD_USER'
     );
     return [
       accounts[headAccountIdx],
@@ -72,41 +74,86 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
   };
 
   const deleteSubAccount = async (email: string) => {
-    const result = await doApiAction({
-      endpoint: '/auth/delete-account',
+    const result = await doApiAction<GenericAPIResponse>({
+      endpoint: '/company-info/delete',
       method: 'DELETE',
       body: { email },
     });
 
     client.invalidateQueries({ queryKey: ['companies'] });
 
-    if (result?.message !== undefined) {
-      notifications.add({
-        message: result?.message,
-        autoClose: 10000,
-      });
-    }
+    notifications.add({
+      message: t(
+        `companiesPage:deleteAccount:responses:${result?.message}` ??
+          'notifications:genericError'
+      ),
+      autoClose: 10000,
+    });
   };
+
+  const openChangeHeadAccountModal = (email: string) => {
+    openModal(
+      <ConfirmModal
+        title={t('companiesPage:changeHead:title')}
+        text={t('companiesPage:changeHead:text')}
+        onConfirm={() => {
+          closeModal();
+          changeHeadAccount(email);
+        }}
+      />
+    );
+  };
+
+  const changeHeadAccount = async (email: string) => {
+    const result = await doApiAction<GenericAPIResponse>({
+      endpoint: '/company-info/change-head',
+      method: 'POST',
+      body: { email, companyId: company?.id },
+    });
+
+    client.invalidateQueries({ queryKey: ['companies'] });
+
+    notifications.add({
+      message: t(
+        `companiesPage:changeHead:responses:${result?.message}` ??
+          'notifications:genericError'
+      ),
+      autoClose: 10000,
+    });
+  };
+
+  const showDeleteSubAccount = user?.permissions.includes(
+    'DELETE_USER_ACCOUNTS'
+  );
+  const showChangeHeadAccount =
+    user?.permissions.includes('CHANGE_COMPANY_HEAD_ACCOUNT') &&
+    company !== null;
 
   return (
     <div className={styles.company_card}>
       <div className={styles.title}>
-        <Title order={3}>{company?.name ?? 'Admins'}</Title>
+        <Title order={3}>{company?.name ?? ADMINS_COMPANY_LABEL}</Title>
         <div className={styles.buttons}>
           {user?.permissions.includes('CREATE_USER_ACCOUNTS') && (
-            <ActionIcon>
+            <IconButton tooltipKey='companiesPage:tooltips:subaccount'>
               <IconPlus onClick={() => openCreateSubAccountModal()} />
-            </ActionIcon>
+            </IconButton>
           )}
-          <ActionIcon>
-            <IconChevronDown onClick={() => setOpened(s => !s)} />
-          </ActionIcon>
+          {opened ? (
+            <IconButton tooltipKey='companiesPage:tooltips:collapse'>
+              <IconChevronUp onClick={() => setOpened(false)} />
+            </IconButton>
+          ) : (
+            <IconButton tooltipKey='companiesPage:tooltips:open'>
+              <IconChevronDown onClick={() => setOpened(true)} />
+            </IconButton>
+          )}
         </div>
       </div>
       <Divider my='xs' />
       <div className={styles.info}>
         <div>
-          {company !== null ? (
+          {company !== null && (
             <>
               <div>
                 <IconReport size={20} />
@@ -130,8 +177,6 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
                 </div>
               )}
             </>
-          ) : (
-            <Text>/</Text>
           )}
         </div>
         <Divider orientation='vertical' />
@@ -147,7 +192,6 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
           </Text>
         </div>
       </div>
-
       <Collapse
         in={opened}
         className={styles.collapsable}
@@ -190,12 +234,19 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
                   <Table.Td>{a.firstName}</Table.Td>
                   <Table.Td>{a.lastName}</Table.Td>
                   <Table.Td className={styles.actions}>
-                    {user?.permissions.includes('DELETE_USER_ACCOUNTS') && (
-                      <ActionIcon>
+                    {showChangeHeadAccount && (
+                      <IconButton tooltipKey='companiesPage:tooltips:changeHead'>
+                        <IconChevronUp
+                          onClick={() => openChangeHeadAccountModal(a.email)}
+                        />
+                      </IconButton>
+                    )}
+                    {showDeleteSubAccount && (
+                      <IconButton tooltipKey='companiesPage:tooltips:delete'>
                         <IconTrash
                           onClick={() => openDeleteSubAccountModal(a.email)}
                         />
-                      </ActionIcon>
+                      </IconButton>
                     )}
                   </Table.Td>
                 </Table.Tr>

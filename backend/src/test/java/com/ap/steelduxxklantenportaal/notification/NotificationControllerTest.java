@@ -57,7 +57,7 @@ public class NotificationControllerTest {
         notification.setTitle("Title Notification");
         notification.setMessage("Create Test");
         notification.setUserId(1L);
-        when(notificationService.createNotification(Mockito.<Notification>any())).thenReturn(notification);
+        when(notificationService.createNotification(Mockito.any())).thenReturn(notification);
 
         mockMvc = standaloneSetup(notificationController).build();
 

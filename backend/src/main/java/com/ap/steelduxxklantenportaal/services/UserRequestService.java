@@ -179,8 +179,7 @@ public class UserRequestService {
         return ResponseHandler.generate("userRequestReviewPage:response:success", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> denyUserRequest(Number id, UserRequestDenyDto userRequestDenyDto)
-            throws MessagingException {
+    public ResponseEntity<Object> denyUserRequest(Number id, UserRequestDenyDto userRequestDenyDto) {
         UserRequest userRequest = userRequestRepository.findById(id);
 
         userRequest.setStatus(StatusEnum.DENIED);

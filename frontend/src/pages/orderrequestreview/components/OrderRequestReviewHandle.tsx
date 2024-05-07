@@ -6,7 +6,7 @@ import { notifications } from '@/components/notifications';
 import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
 import { ConfirmModal } from '@/components/modals';
-import { OrderRequest } from '@/types/api';
+import { type OrderRequest } from '@/types/api';
 import { useQuery } from '@tanstack/react-query';
 
 type Props = {

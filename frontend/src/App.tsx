@@ -4,6 +4,7 @@ import { Modals } from './components/modals';
 import { Notifications } from './components/notifications';
 import { router } from './router';
 import styles from './styles/app.module.scss';
+import { PageTitleHelper } from './components/pagetitlehelper';
 
 export const App: FC = () => {
   return (
@@ -13,6 +14,7 @@ export const App: FC = () => {
       </div>
       <Notifications />
       <Modals />
+      <PageTitleHelper />
     </>
   );
 };

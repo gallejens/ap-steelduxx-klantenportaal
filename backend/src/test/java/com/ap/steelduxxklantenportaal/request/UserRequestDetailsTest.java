@@ -88,8 +88,7 @@ public class UserRequestDetailsTest {
     }
 
     @Test
-    void givenUserRequestToDeactivate_whenDeactivatingUserRequest_thenUserRequestIsDeactivated()
-            throws MessagingException {
+    void givenUserRequestToDeactivate_whenDeactivatingUserRequest_thenUserRequestIsDeactivated() {
         // Given
         Long id = 3L;
         UserRequestDeleteDto userRequestDeleteDto = new UserRequestDeleteDto(id);

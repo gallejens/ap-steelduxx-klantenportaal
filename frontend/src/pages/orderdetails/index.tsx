@@ -138,6 +138,16 @@ export const OrderDetailsPage: FC = () => {
     }
   };
 
+  const sortedProducts = orderDetail?.data.products.sort((a, b) => {
+    const containerTypeComparison = (a.containerType ?? '').localeCompare(
+      b.containerType ?? ''
+    );
+    if (containerTypeComparison !== 0) {
+      return containerTypeComparison;
+    }
+    return b.quantity - a.quantity;
+  });
+
   const getIframeContent = (imo: string) => {
     return `
       <script type="text/javascript">
@@ -256,7 +266,9 @@ export const OrderDetailsPage: FC = () => {
       <div className={styles.bottomRow}>
         <div className={styles.productsList}>
           <section>
-            <h2>{t('orderDetailPage:products')}</h2>
+            <h2>
+              {t('orderDetailPage:products')} ({sortedProducts?.length})
+            </h2>
             <div className={styles.tableContainer}>
               <table>
                 <thead>
@@ -287,7 +299,7 @@ export const OrderDetailsPage: FC = () => {
                         <td>{product.containerNumber}</td>
                       )}
                       {product.containerSize != null && (
-                        <td>{product.containerSize}</td>
+                        <td>{product.containerSize} ft</td>
                       )}
                       {product.containerType != null && (
                         <td>{product.containerType}</td>

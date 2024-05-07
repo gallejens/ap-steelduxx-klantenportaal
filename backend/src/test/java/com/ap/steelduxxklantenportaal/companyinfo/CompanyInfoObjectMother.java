@@ -11,7 +11,7 @@ public class CompanyInfoObjectMother {
     static final String headNormalEmail = "normal@test.com";
     static final User headAdminUser = createNewUser(headAdminEmail, "HeadAdmin", "Test", RoleEnum.ROLE_HEAD_ADMIN);
     static final User headNormalUser = createNewUser(headNormalEmail, "HeadNormal", "Test", RoleEnum.ROLE_HEAD_USER);
-    static final Company company = new Company(null, "", "", "", "", "", "", "", "", "", "", "");
+    static final Company company = new Company( "", "", "", "", "", "", "", "", "", "", "");
     static final String createAdminSubAccountEmail = "newadmin@test.com";
     static final String createNormalSubAccountEmail = "newnormal@test.com";
 

@@ -393,6 +393,14 @@
         "failed": "Something went wrong while changing user role. Please try again."
       }
     },
+    "deleteCompany": {
+      "title": "Delete Company",
+      "text": "Are you sure you want to delete this company? All related accounts will also be deleted",
+      "responses": {
+        "success": "Company has successfully been deleted.",
+        "failed": "Something went wrong while deleting the company. Please try again."
+      }
+    },
     "tooltips": {
       "subaccount": "Create Subaccount",
       "open": "Open",

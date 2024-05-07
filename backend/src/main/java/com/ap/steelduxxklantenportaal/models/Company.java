@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "companies")
@@ -12,32 +14,37 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLRestriction("deleted=false")
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
     private String name;
-    @Column(name = "country")
     private String country;
-    @Column(name = "phone_nr")
     private String phoneNr;
-    @Column(name = "vat_nr")
     private String vatNr;
-    @Column(name = "postal_code")
     private String postalCode;
-    @Column(name = "district")
     private String district;
-    @Column(name = "street")
     private String street;
-    @Column(name = "street_nr")
     private String streetNr;
-    @Column(name = "box_nr")
     private String boxNr;
-    @Column(name = "extra_info")
     private String extraInfo;
-    @Column(name = "reference_code")
     private String referenceCode;
+    private boolean deleted = Boolean.FALSE;
+
+    public Company( String name, String country, String phoneNr, String vatNr, String postalCode, String district, String street, String streetNr, String boxNr, String extraInfo, String referenceCode) {
+        this.name = name;
+        this.country = country;
+        this.phoneNr = phoneNr;
+        this.vatNr = vatNr;
+        this.postalCode = postalCode;
+        this.district = district;
+        this.street = street;
+        this.streetNr = streetNr;
+        this.boxNr = boxNr;
+        this.extraInfo = extraInfo;
+        this.referenceCode = referenceCode;
+    }
 
     @Override
     public String toString() {

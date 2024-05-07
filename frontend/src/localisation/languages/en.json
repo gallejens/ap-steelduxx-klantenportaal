@@ -295,7 +295,7 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registrations",
-      "accounts": "Accounts",
+      "companies": "Company Info",
       "orderrequests": "Order Requests"
     },
     "userOptions": {
@@ -323,6 +323,10 @@
     "newProductConfirmation": {
       "newProductConfirmTitle": "New product",
       "newProductConfirmText": "Are you sure you want to add this product?"
+    },
+    "deleteSubAccountConfirmation": {
+      "deleteSubAccountConfirmTitle": "Delete subaccount",
+      "deleteSubAccountConfirmText": "Are you sure you want to delete this subaccount?"
     }
   },
   "modals": {
@@ -345,7 +349,7 @@
       }
     },
     "createSubaccount": {
-      "title": "Create Subaccount",
+      "title": "Create subaccount",
       "emailInputLabel": "Email",
       "emailInputError": "Enter a valid email address",
       "firstNameInputLabel": "First Name",
@@ -365,17 +369,18 @@
     "trueValue": "Yes",
     "falseValue": "No"
   },
-  "accountListPage": {
+  "companiesPage": {
     "table": {
       "email": "Email",
       "firstName": "First Name",
       "lastName": "Last Name",
-      "company": "Company",
-      "role": "Headaccount"
+      "actions": "Actions"
     },
-    "loading": "Loading...",
-    "error": "An error has occured while loading accounts",
-    "createSubAccount": "Create subaccount"
+    "headAccount": "Head Account",
+    "deleteAccount": {
+      "title": "Delete Account",
+      "text": "Are you sure you want to delete this account?"
+    }
   },
   "orderRequestListPage": {
     "table": {

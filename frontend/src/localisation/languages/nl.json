@@ -295,7 +295,7 @@
       "home": "Home",
       "orders": "Orders",
       "requests": "Registraties",
-      "accounts": "Gebruikers",
+      "companies": "Bedrijfsgegevens",
       "orderrequests": "Order Aanvragen"
     },
     "userOptions": {
@@ -323,6 +323,10 @@
     "newProductConfirmation": {
       "newOrderConfirmTitle": "Nieuw product",
       "newOrderConfirmText": "Weet je zeker dat je dit product wilt toevoegen?"
+    },
+    "deleteSubAccountConfirmation": {
+      "deleteSubAccountConfirmTitle": "Subaccount verwijderen",
+      "deleteSubAccountConfirmText": "Weet je zeker dat je dit subaccount wilt verwijderen?"
     }
   },
   "modals": {
@@ -345,7 +349,7 @@
       }
     },
     "createSubaccount": {
-      "title": "Subaccount Aanmaken",
+      "title": "Subaccount aanmaken",
       "emailInputLabel": "Email",
       "emailInputError": "Vul een geldig email adres in",
       "firstNameInputLabel": "Voornaam",
@@ -365,17 +369,18 @@
     "trueValue": "Ja",
     "falseValue": "Nee"
   },
-  "accountListPage": {
+  "companiesPage": {
     "table": {
       "email": "Email",
       "firstName": "Voornaam",
       "lastName": "Achternaam",
-      "company": "Bedrijf",
-      "role": "Hoofdaccount"
+      "actions": "Acties"
     },
-    "loading": "Laden...",
-    "error": "Er heeft zich een fout voorgedaan tijdens het laden van de accounts",
-    "createSubAccount": "Subaccount aanmaken"
+    "headAccount": "Hoofd Gebruiker",
+    "deleteAccount": {
+      "title": "Gebruiker Verwijderen",
+      "text": "Ben je zeker dat je deze gebruiker wil verwijderen?"
+    }
   },
   "orderRequestListPage": {
     "table": {

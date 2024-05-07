@@ -2,7 +2,6 @@ import {
   ActionIcon,
   Divider,
   Select,
-  TextInput,
   Title,
   Button,
   Checkbox,
@@ -23,6 +22,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { DEFAULT_PORT_CODE } from './constants';
 import type { CreateOrderDocument } from './types';
 import { OrderDocuments } from './components/OrderDocuments';
+import { PortcodesSelector } from '@/components/portcodesselector';
 
 type NewOrderFormValues = {
   transportType: OrderTransportType;
@@ -213,7 +213,7 @@ export const OrderCreatePage: FC = () => {
             allowDeselect={false}
             {...newOrderForm.getInputProps('transportType')}
           />
-          <TextInput
+          <PortcodesSelector
             label={t(
               'newOrderPage:orderForm:portOriginCode:portOriginCodeInputTitle'
             )}
@@ -223,12 +223,11 @@ export const OrderCreatePage: FC = () => {
             placeholder={t(
               'newOrderPage:orderForm:portOriginCode:portOriginCodeInputPlaceholder'
             )}
-            maxLength={5}
             required={newOrderForm.values.transportType === 'IMPORT'}
             disabled={newOrderForm.values.transportType !== 'IMPORT'}
             {...newOrderForm.getInputProps('portOfOriginCode')}
           />
-          <TextInput
+          <PortcodesSelector
             label={t(
               'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputTitle'
             )}

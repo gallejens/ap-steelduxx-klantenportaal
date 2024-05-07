@@ -12,7 +12,10 @@ type CreateSubaccountValues = {
   lastName: string;
 };
 
-export const CreateSubaccountModal: FC<{ onConfirm: () => void }> = props => {
+export const CreateSubaccountModal: FC<{
+  onConfirm: () => void;
+  companyId: number | null;
+}> = props => {
   const { t } = useTranslation();
   const form = useForm<CreateSubaccountValues>({
     initialValues: {
@@ -32,9 +35,10 @@ export const CreateSubaccountModal: FC<{ onConfirm: () => void }> = props => {
 
   const handleSubmit = async (values: CreateSubaccountValues) => {
     const result = await doApiAction({
-      endpoint: '/accounts/new',
+      endpoint: '/company-info/new',
       method: 'POST',
       body: {
+        companyId: props.companyId,
         email: values.email,
         firstName: values.firstName,
         lastName: values.lastName,

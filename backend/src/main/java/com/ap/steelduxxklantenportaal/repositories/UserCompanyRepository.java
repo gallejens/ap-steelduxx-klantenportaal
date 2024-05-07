@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.ap.steelduxxklantenportaal.models.UserCompany;
 
+import java.util.Optional;
+
 @Repository
 public interface UserCompanyRepository extends JpaRepository<UserCompany, Long> {
     void deleteById(Number id);

@@ -1,6 +1,5 @@
 package com.ap.steelduxxklantenportaal.models;
 
-import com.ap.steelduxxklantenportaal.dtos.Accounts.AccountDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,22 +10,16 @@ import org.hibernate.annotations.Immutable;
 
 @Entity
 @Immutable
-@Table(name = "ACCOUNT_VIEW")
+@Table(name = "company_info_accounts_view")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Account {
+public class CompanyInfoAccount {
     @Id
     private String email;
     private String firstName;
     private String lastName;
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
-    private String companyName;
-    private Long companyId;
-
-    public AccountDto toDto() {
-        return new AccountDto(email, firstName, lastName, companyName, role);
-    }
 }

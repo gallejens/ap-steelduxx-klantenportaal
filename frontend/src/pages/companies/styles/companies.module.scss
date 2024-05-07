@@ -1,0 +1,104 @@
+.companies_page {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+
+  & > .header {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & > .search {
+      min-width: 15rem;
+      width: 30%;
+    }
+  }
+
+  & > .list {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--mantine-spacing-md);
+
+    overflow: scroll;
+
+    & > * {
+      width: 100%;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.company_card {
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-xl);
+  border-radius: var(--mantine-radius-default);
+  border: 1px solid var(--mantine-color-default-border);
+
+  & > .title {
+    display: flex;
+    justify-content: space-between;
+
+    & > .buttons {
+      display: flex;
+      gap: var(--mantine-spacing-xs);
+    }
+  }
+
+  & > .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: var(--mantine-spacing-md);
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+
+      & > div {
+        display: flex;
+        gap: var(--mantine-spacing-xs);
+      }
+    }
+
+    & > :first-child {
+      flex-grow: 1;
+    }
+  }
+
+  & > .collapsable {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    & > .search {
+      width: 30%;
+      min-width: 15rem;
+      margin-bottom: var(--mantine-spacing-xs);
+    }
+
+    & > .table {
+      overflow: scroll;
+
+      & .actions {
+        display: flex;
+        gap: var(--mantine-spacing-xs);
+      }
+    }
+  }
+}

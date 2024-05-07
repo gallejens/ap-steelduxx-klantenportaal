@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderRequestController {
     private final OrderRequestService orderRequestService;
 
-    public OrderRequestController(OrderRequestService orderRequestService){
+    public OrderRequestController(OrderRequestService orderRequestService) {
         this.orderRequestService = orderRequestService;
     }
 
@@ -35,9 +35,10 @@ public class OrderRequestController {
 
     @GetMapping("{id}")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public OrderRequestListDto getOrderRequestById(@PathVariable String id){
+    public OrderRequestListDto getOrderRequestById(@PathVariable String id) {
         return orderRequestService.getOrderRequest(Long.parseLong(id));
     }
+
     @PostMapping("/upload-file")
     @PreAuthorize("hasAuthority('CREATE_NEW_ORDERS')")
     public ResponseEntity<Object> uploadOrderRequestFile(@ModelAttribute OrderRequestUploadDto orderRequestUploadDto) {

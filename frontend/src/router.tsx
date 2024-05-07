@@ -18,7 +18,7 @@ import { useAuthStore } from './stores/useAuthStore';
 import { OrderListPage } from './pages/orderlist';
 import { OrderDetailsPage } from './pages/orderdetails';
 import { UserRequestReviewPage } from './pages/userrequestreview';
-import { AccountListPage } from './pages/accountlist';
+import { CompaniesPage } from './pages/companies';
 import { OrderCreatePage } from './pages/ordercreate/Index';
 import { OrderRequestListPage } from './pages/orderrequestlist';
 import { OrderRequestReviewPage } from './pages/orderrequestreview';
@@ -149,10 +149,10 @@ const userRequestReviewRoute = createRoute({
   component: UserRequestReviewPage,
 });
 
-const accountListRoute = createRoute({
+const companiesRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
-  path: 'accounts',
-  component: AccountListPage,
+  path: 'companies',
+  component: CompaniesPage,
 });
 
 // Creating route tree
@@ -173,7 +173,7 @@ const routeTree = rootRoute.addChildren([
     userRequestListRoute,
     testValuesRoute,
     userRequestReviewRoute,
-    accountListRoute,
+    companiesRoute,
   ]),
 ]);
 

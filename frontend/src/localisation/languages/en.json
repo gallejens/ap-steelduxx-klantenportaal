@@ -433,5 +433,8 @@
       "success": "Order Request approved!",
       "denied": "Order Request denied!"
     }
+  },
+  "pageTitleHelper": {
+    "title": "Steelduxx - Customer Portal"
   }
 }

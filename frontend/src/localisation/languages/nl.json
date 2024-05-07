@@ -433,5 +433,8 @@
       "success": "Order aanvraag goedgekeurd!",
       "denied": "Order aanvraag afgekeurd!"
     }
+  },
+  "pageTitleHelper": {
+    "title": "Steelduxx - Klantenportaal"
   }
 }

@@ -1,11 +1,10 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.Accounts.CreateSubaccountDto;
 import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CompanyInfoDto;
+import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CreateSubAccountDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
-import com.ap.steelduxxklantenportaal.models.Company;
 import com.ap.steelduxxklantenportaal.models.UserCompany;
 import com.ap.steelduxxklantenportaal.repositories.CompanyInfoAccountRepository;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
@@ -75,7 +74,7 @@ public class CompanyInfoService {
         return List.of(new CompanyInfoDto(company, accounts));
     }
 
-    public ResponseEntity<Object> createSubaccount(CreateSubaccountDto createSubaccountDto) {
+    public ResponseEntity<Object> createSubAccount(CreateSubAccountDto createSubaccountDto) {
         var user = AuthService.getCurrentUser();
         if (user == null) {
             return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
@@ -86,7 +85,35 @@ public class CompanyInfoService {
             return ResponseHandler.generate("duplicate", HttpStatus.NO_CONTENT);
         }
 
-        var isAdmin = user.hasPermission(PermissionEnum.ADMIN);
+        PermissionEnum requiredPermission;
+        RoleEnum newAccountRole;
+        if (createSubaccountDto.companyId() == null) {
+            // If no company id is provided, target account is admin and initiating user needs create admin perm
+            requiredPermission = PermissionEnum.CREATE_ADMIN_ACCOUNTS;
+            newAccountRole = RoleEnum.ROLE_ADMIN;
+        } else {
+            // If company id is provided, target account is user and initiating user needs create user perm
+            requiredPermission = PermissionEnum.CREATE_USER_ACCOUNTS;
+            newAccountRole = RoleEnum.ROLE_USER;
+
+            // check if company exists
+            if (!companyRepository.existsById(createSubaccountDto.companyId())) {
+                return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+            }
+
+            // make sure initiating user belongs to company when head_user performs action
+            if (user.getRole() == RoleEnum.ROLE_HEAD_USER) {
+                var userCompany = userCompanyRepository.findById(user.getId());
+                if (userCompany.isEmpty() || !userCompany.get().getCompanyId().equals(createSubaccountDto.companyId())) {
+                    return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+                }
+            }
+        }
+
+        boolean hasPermission = user.hasPermission(requiredPermission);
+        if (!hasPermission) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
 
         try {
             var newUser = authService.addNewUser(
@@ -94,15 +121,16 @@ public class CompanyInfoService {
                     UUID.randomUUID().toString(),
                     createSubaccountDto.firstName(),
                     createSubaccountDto.lastName(),
-                    isAdmin ? RoleEnum.ROLE_ADMIN : RoleEnum.ROLE_USER);
+                    newAccountRole
+            );
 
-            if (!isAdmin) {
-                var company = companyRepository.findByUserId(user.getId());
-                if (company.isPresent()) {
-                    userCompanyRepository.save(new UserCompany(
-                            newUser.getId(),
-                            company.get().getId()));
-                }
+            if (createSubaccountDto.companyId() != null) {
+                userCompanyRepository.save(
+                        new UserCompany(
+                                newUser.getId(),
+                                createSubaccountDto.companyId()
+                        )
+                );
             }
 
             authService.sendChoosePasswordEmail(newUser.getEmail(), 30 * 24 * 60 * 60); // one month

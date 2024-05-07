@@ -91,6 +91,27 @@
     "confirmButton": "Confirm",
     "success": "Request has been send succesfully."
   },
+  "welcomePage": {
+    "welcomeTitle": "Welcome",
+    "cards": {
+      "orders": {
+        "title": "Orders",
+        "description": "This page displays all orders with key details like reference numbers, transport type, and shipping information. Search for specific orders or create new ones if authorized. Click on an order to view its details page. Efficiently monitor and manage your orders from this centralized hub."
+      },
+      "orderrequests": {
+        "title": "Order Requests",
+        "description": "This page displays all order requests. Search for specific order requests or create new ones if authorized. Click on an order request to view its details page and review it, by approving or denied it if authorized. Efficiently monitor and manage your order request from this centralized hub."
+      },
+      "requests": {
+        "title": "Registrations",
+        "description": "This page displays all registrations. Search for specific registration. Click on a registration to view its details page and review it, by approving or denied it if authorized. Efficiently monitor and manage your registrations from this centralized hub."
+      },
+      "companies": {
+        "title": "Company Info",
+        "description": "This page displays all companies with it's details and employees. Search for specific company. You can add new employees or promote existing ones if authorized. Efficiently monitor and manage your employees from this centralized hub."
+      }
+    }
+  },
   "userRequestListPage": {
     "newUserRequest": "New Request",
     "table": {

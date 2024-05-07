@@ -1,11 +1,11 @@
-import { type FC } from 'react';
+import { type FC, useState } from 'react';
 import { useParams, useSearch } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/orderDetails.module.scss';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import type { OrderDetails, OrderState, OrderTransportType } from '@/types/api';
-import { DownloadButton } from '../orderdetails/downloadButton.tsx';
+import { IconUpload, IconDownload } from '@tabler/icons-react';
 
 export const OrderDetailsPage: FC = () => {
   const { t } = useTranslation();
@@ -15,6 +15,8 @@ export const OrderDetailsPage: FC = () => {
   const { customerCode } = useSearch({
     from: '/app/orders/$order_id',
   });
+  const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState('');
 
   const {
     data: orderDetail,
@@ -70,38 +72,69 @@ export const OrderDetailsPage: FC = () => {
     return weight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
-  const downloadDocument = async (downloadLink: string | null) => {
-    if (!downloadLink) {
-      console.error(
-        'Failed to download document: Invalid or missing download link'
-      );
-      return; // Exit the function if no valid download link is provided
+  const handleFileChange = event => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setFileName(selectedFile.name);
+    }
+  };
+
+  const handleUpload = async documentType => {
+    if (!file) {
+      alert('Please select a file first.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('referenceNumber', orderId);
+    formData.append('documentType', documentType);
+    if (customerCode) {
+      formData.append('customerCode', customerCode);
     }
 
     try {
-      const blob = await doApiAction<Blob>({
-        endpoint: `/orders/download-document?endpoint=${encodeURIComponent(downloadLink)}`,
+      const response = await doApiAction({
+        endpoint: '/orders/upload-document',
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (response && response.status === 200) {
+        alert('Upload successful!');
+      } else {
+        alert('Upload failed!');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Upload failed!');
+    }
+  };
+
+  const handleDownload = async documentType => {
+    try {
+      const response = await doApiAction({
+        endpoint: `/orders/download-document/${orderId}/${documentType}`,
         method: 'GET',
         responseType: 'blob',
       });
-
-      if (!blob) {
-        console.error('Failed to download document: No data returned');
-        return; // Exit the function if no blob is returned
+      if (response) {
+        const url = window.URL.createObjectURL(new Blob([response]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${orderId}-${documentType}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        alert('Download failed!');
       }
-
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      // Ensure the filename ends with .pdf
-      const filename = (downloadLink.split('/').pop() || 'download') + '.pdf';
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Failed to download document:', error);
+      console.error('Download error:', error);
+      alert('Download failed!');
     }
   };
 
@@ -267,31 +300,77 @@ export const OrderDetailsPage: FC = () => {
           </section>
         </div>
         <div className={styles.documentsContainer}>
-          <h2 className={styles.documentsTitle}>
-            {t('orderDetailPage:documents')}
-          </h2>
-          <div className={styles.documentItem}>
-            <p>Bill of Lading Document</p>
-            <DownloadButton
-              downloadLink={orderDetail?.data.billOfLadingDownloadLink}
-              downloadDocument={downloadDocument}
-            />
+          <div className={styles.documentsTitle}>
+            <h2>{t('orderDetailPage:documents')}</h2>
           </div>
-          <div className={styles.documentDivider}></div>
-          <div className={styles.documentItem}>
-            <p>Packing List Document</p>
-            <DownloadButton
-              downloadLink={orderDetail?.data.packingListDownloadLink}
-              downloadDocument={downloadDocument}
+          <div className={styles.documentsFileselector}>
+            <input
+              type='file'
+              onChange={handleFileChange}
+              accept='.pdf'
+              id='fileInput'
+              className={styles.hiddenFileInput}
             />
+            <button
+              className={styles.uploadButton}
+              onClick={() => document.getElementById('fileInput').click()}
+            >
+              Select File
+            </button>
+            {fileName && (
+              <span className={styles.fileNameDisplay}>{fileName}</span>
+            )}
           </div>
-          <div className={styles.documentDivider}></div>
           <div className={styles.documentItem}>
-            <p>Customs Document</p>
-            <DownloadButton
-              downloadLink={orderDetail?.data.customsDownloadLink}
-              downloadDocument={downloadDocument}
-            />
+            {orderDetail?.data.billOfLadingDownloadLink ? (
+              <>
+                <p>Bill of Lading Document</p>
+                <button onClick={() => handleDownload('bl')}>
+                  <IconDownload size={20} />
+                </button>
+              </>
+            ) : (
+              <>
+                <p>Bill of Lading Document</p>
+                <button onClick={() => handleUpload('bl')}>
+                  <IconUpload size={20} />
+                </button>
+              </>
+            )}
+          </div>
+          <div className={styles.documentItem}>
+            {orderDetail.data.packingListDownloadLink !== null ? (
+              <>
+                <p>Packing List Document</p>
+                <button onClick={() => handleDownload('packing')}>
+                  <IconDownload size={20} />
+                </button>
+              </>
+            ) : (
+              <>
+                <p>Packing List Document</p>
+                <button onClick={() => handleUpload('packing')}>
+                  <IconUpload size={20} />
+                </button>
+              </>
+            )}
+          </div>
+          <div className={styles.documentItem}>
+            {orderDetail.data.customsDownloadLink !== null ? (
+              <>
+                <p>Customs Document</p>
+                <button onClick={() => handleDownload('customs')}>
+                  <IconDownload size={20} />
+                </button>
+              </>
+            ) : (
+              <>
+                <p>Customs Document</p>
+                <button onClick={() => handleUpload('customs')}>
+                  <IconUpload size={20} />
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

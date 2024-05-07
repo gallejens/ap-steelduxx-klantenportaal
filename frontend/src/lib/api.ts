@@ -52,13 +52,18 @@ export const doApiAction = async <T = GenericAPIResponse>(data: {
   headers?: Record<string, string>;
 }): Promise<T | undefined> => {
   try {
+    const isFormData = data.body instanceof FormData;
+
     const response = await api<T>({
       url: data.endpoint,
       method: data.method,
       data: data.body,
       params: data.params,
       responseType: data.responseType || 'json',
-      headers: data.headers,
+      headers: {
+        ...data.headers,
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+      },
     });
     return response.data;
   } catch (e: unknown) {

@@ -1,8 +1,10 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
+import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
+import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -105,27 +107,46 @@ public class ExternalApiService {
         }
     }
 
-    public byte[] downloadDocument(String endpoint) {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            throw new RestClientException("Unauthorized access");
-        }
-
-        var user = (User) auth.getPrincipal();
+    public byte[] downloadDocument(String referenceNumber, String documentType, User user) {
         String token = getToken(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<byte[]> response = restTemplate.exchange(baseUrl + endpoint,
-                HttpMethod.GET, entity,
-                byte[].class);
+        String downloadUrl = String.format(baseUrl + "/document/download/%s/%s", referenceNumber, documentType);
 
-        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
+        ResponseEntity<byte[]> response = restTemplate.exchange(downloadUrl, HttpMethod.GET, entity, byte[].class);
+
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            return response.getBody();
+        } else {
             throw new RestClientException("Failed to download document");
         }
+    }
 
-        return response.getBody();
+    public boolean uploadDocument(DocumentRequestDto documentRequest, User user, String customerCode) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(getToken(user));
+
+        String uploadUrl = determineUploadEndpoint(user, documentRequest, customerCode);
+
+        HttpEntity<DocumentRequestDto> entity = new HttpEntity<>(documentRequest, headers);
+        ResponseEntity<Void> response = restTemplate.postForEntity(uploadUrl, entity, Void.class);
+
+        return response.getStatusCode().is2xxSuccessful();
+    }
+
+    private String determineUploadEndpoint(User user, DocumentRequestDto documentRequest, String customerCode) {
+        RoleEnum role = user.getRole();
+        if (role == RoleEnum.ROLE_ADMIN || role == RoleEnum.ROLE_HEAD_ADMIN) {
+            if (customerCode == null || customerCode.isEmpty()) {
+                throw new IllegalArgumentException("Customer code is required for admin upload.");
+            }
+            return baseUrl + "/admin/upload/" + customerCode;
+        } else {
+            return baseUrl + "/document/upload";
+        }
     }
 
 

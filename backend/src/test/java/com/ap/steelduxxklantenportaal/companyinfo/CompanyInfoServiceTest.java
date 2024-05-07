@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.companyinfo;
 
+import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.ChangeCompanyHeadAccountDto;
 import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CreateSubAccountDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.models.Company;
@@ -154,5 +155,19 @@ public class CompanyInfoServiceTest {
 
         var response = userRepository.findByEmail(user.getEmail());
         assertThat(response).isEmpty();
+    }
+
+    @Test
+    @WithUserDetails(value = CompanyInfoObjectMother.headAdminEmail)
+    void givenAdminUser_whenChangingHeadAccount_expectNewHeadAccount() {
+        var createSubAccountDto = new CreateSubAccountDto(createdCompany.getId(), CompanyInfoObjectMother.createNormalSubAccountEmail, "", "");
+        companyInfoService.createSubAccount(createSubAccountDto);
+
+        var user = userRepository.findByEmail(CompanyInfoObjectMother.createNormalSubAccountEmail).orElseThrow();
+
+        companyInfoService.changeCompanyHeadAccount(new ChangeCompanyHeadAccountDto(createdCompany.getId(), user.getEmail()));
+
+        assertThat(userRepository.findByEmail(user.getEmail()).orElseThrow().getRole()).isEqualTo(RoleEnum.ROLE_HEAD_USER);
+        assertThat(userRepository.findByEmail(createdNormalUser.getEmail()).orElseThrow().getRole()).isEqualTo(RoleEnum.ROLE_USER);
     }
 }

@@ -153,7 +153,7 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
       <Divider my='xs' />
       <div className={styles.info}>
         <div>
-          {company !== null ? (
+          {company !== null && (
             <>
               <div>
                 <IconReport size={20} />
@@ -177,8 +177,6 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
                 </div>
               )}
             </>
-          ) : (
-            <Text>/</Text>
           )}
         </div>
         <Divider orientation='vertical' />

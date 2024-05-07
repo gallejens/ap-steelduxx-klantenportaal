@@ -10,7 +10,10 @@ export const IconButton: FC<PropsWithChildren<Props>> = props => {
   const { t } = useTranslation();
 
   return (
-    <Tooltip label={t(props.tooltipKey)}>
+    <Tooltip
+      label={t(props.tooltipKey)}
+      transitionProps={{ transition: 'rotate-right' }}
+    >
       <ActionIcon>{props.children}</ActionIcon>
     </Tooltip>
   );

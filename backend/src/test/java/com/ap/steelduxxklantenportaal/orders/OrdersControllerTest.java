@@ -1,6 +1,7 @@
 package com.ap.steelduxxklantenportaal.orders;
 
 import com.ap.steelduxxklantenportaal.controllers.OrdersController;
+import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.OrdersService;
@@ -10,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,6 +27,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 
 public class OrdersControllerTest {
 
@@ -79,5 +82,32 @@ public class OrdersControllerTest {
     public void testDownloadDocumentUnauthorizedForUserRole() throws Exception {
         mockMvc.perform(get("/orders/download-document/{referenceNumber}/{documentType}", "123456", "bl"))
                 .andExpect(status().isForbidden());
+    }
+
+        @Test
+    @WithMockUser(username="user", authorities={"ACCESS"})
+    public void testUploadDocument_FailInvalidInput() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file", "", MediaType.APPLICATION_PDF_VALUE, new byte[0]);
+
+        mockMvc.perform(multipart("/orders/upload-document")
+                        .file(file)
+                        .param("referenceNumber", "")
+                        .param("documentType", "")
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username="user", authorities={"ACCESS"})
+    public void testUploadDocument_FailException() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file", "test.pdf", MediaType.APPLICATION_PDF_VALUE, "PDF content".getBytes());
+        when(ordersService.uploadDocument(any(DocumentRequestDto.class), any(User.class), any(String.class))).thenThrow(new RuntimeException("Upload failed"));
+
+        mockMvc.perform(multipart("/orders/upload-document")
+                        .file(file)
+                        .param("referenceNumber", "12345")
+                        .param("documentType", "invoice")
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isInternalServerError());
     }
 }

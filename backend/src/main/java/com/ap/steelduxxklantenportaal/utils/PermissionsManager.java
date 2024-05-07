@@ -21,6 +21,7 @@ public class PermissionsManager {
                         PermissionEnum.CREATE_USER_ACCOUNTS,
                         PermissionEnum.DELETE_ADMIN_ACCOUNTS,
                         PermissionEnum.DELETE_USER_ACCOUNTS,
+                        PermissionEnum.CHANGE_COMPANY_HEAD_ACCOUNT,
                         PermissionEnum.MANAGE_ORDER_REQUESTS,
                         PermissionEnum.MANAGE_USER_REQUESTS
                 )
@@ -34,6 +35,7 @@ public class PermissionsManager {
                         PermissionEnum.VIEW_COMPANIES,
                         PermissionEnum.CREATE_USER_ACCOUNTS,
                         PermissionEnum.DELETE_USER_ACCOUNTS,
+                        PermissionEnum.CHANGE_COMPANY_HEAD_ACCOUNT,
                         PermissionEnum.MANAGE_USER_REQUESTS,
                         PermissionEnum.MANAGE_ORDER_REQUESTS,
                         PermissionEnum.MANAGE_USER_REQUESTS

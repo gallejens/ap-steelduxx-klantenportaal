@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 
+import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.ChangeCompanyHeadAccountDto;
 import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CompanyInfoDto;
 import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CreateSubAccountDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
@@ -176,4 +177,26 @@ public class CompanyInfoService {
 
         return ResponseHandler.generate("success", HttpStatus.OK);
     }
-}
+
+    public ResponseEntity<Object> changeCompanyHeadAccount(ChangeCompanyHeadAccountDto changeCompanyHeadAccountDto) {
+        var company = companyRepository.findById(changeCompanyHeadAccountDto.companyId()).orElse(null);
+        if (company == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        var currentHeadUserId = companyRepository.findHeadUserIdByCompanyId(company.getId()).orElse(null);
+        if (currentHeadUserId == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        var newHeadUser = authService.getUser(changeCompanyHeadAccountDto.email());
+        if (newHeadUser == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        authService.changeRole(currentHeadUserId, RoleEnum.ROLE_USER);
+        authService.changeRole(newHeadUser.getId(), RoleEnum.ROLE_HEAD_USER);
+
+        return ResponseHandler.generate("success", HttpStatus.OK);
+    }
+ }

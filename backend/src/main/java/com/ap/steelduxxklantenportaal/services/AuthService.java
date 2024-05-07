@@ -254,6 +254,12 @@ public class AuthService {
         userRepository.deleteById(accountId);
     }
 
+    public void changeRole(long accountId, RoleEnum role) {
+        var user = userRepository.findById(accountId).orElseThrow();
+        user.setRole(role);
+        userRepository.save(user);
+    }
+
     public static User getCurrentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null)

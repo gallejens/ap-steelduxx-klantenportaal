@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
+import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.ChangeCompanyHeadAccountDto;
 import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CreateSubAccountDto;
 import com.ap.steelduxxklantenportaal.dtos.DeleteAccountDto;
 import com.ap.steelduxxklantenportaal.services.CompanyInfoService;
@@ -33,5 +34,11 @@ public class CompanyInfoController {
     @PreAuthorize("hasAnyAuthority('DELETE_USER_ACCOUNTS', 'DELETE_ADMIN_ACCOUNTS')")
     public ResponseEntity<Object> deleteAccount(@RequestBody DeleteAccountDto deleteAccountDto) {
         return companyInfoService.deleteSubAccount(deleteAccountDto.email());
+    }
+
+    @PostMapping("/change-head")
+    @PreAuthorize("hasAuthority('CHANGE_COMPANY_HEAD_ACCOUNT')")
+    public ResponseEntity<Object> changeCompanyHeadAccount(@RequestBody ChangeCompanyHeadAccountDto changeCompanyHeadAccountDto) {
+        return companyInfoService.changeCompanyHeadAccount(changeCompanyHeadAccountDto);
     }
 }

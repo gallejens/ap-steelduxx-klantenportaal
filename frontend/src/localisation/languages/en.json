@@ -384,6 +384,21 @@
         "success": "Account has been deleted successfully.",
         "failed": "Something went wrong while deleting the account. Please try again."
       }
+    },
+    "changeHead": {
+      "title": "Head Account Company",
+      "text": "Are you sure you want to make this user the head account of this company?",
+      "responses": {
+        "success": "User has successfully been made the head account.",
+        "failed": "Something went wrong while changing user role. Please try again."
+      }
+    },
+    "tooltips": {
+      "subaccount": "Create Subaccount",
+      "open": "Open",
+      "collapse": "Collapse",
+      "changeHead": "Make Head Account",
+      "delete": "Delete"
     }
   },
   "orderRequestListPage": {

@@ -384,6 +384,21 @@
         "success": "Gebruiker is succesvol verwijderd.",
         "failed": "Er is iets misgegaan tijdens het verwijderen van de gebruiker, gelieve opnieuw te proberen."
       }
+    },
+    "changeHead": {
+      "title": "Hoofd Gebruiker Bedrijf",
+      "text": "Ben je zeker dat je deze gebruiker hoofdgebruiker wil maken van dit bedrijf?",
+      "responses": {
+        "success": "Gebruiker is succesvol hoofdaccount gemaakt",
+        "failed": "Er is iets misgegaan tijdens het veranderen van de hoofdgebruiker, gelieve opnieuw te proberen."
+      }
+    },
+    "tooltips": {
+      "subaccount": "Maak Subaccount",
+      "open": "Open",
+      "collapse": "Dichtklappen",
+      "changeHead": "Maak Hoofdgebruiker",
+      "delete": "Verwijder"
     }
   },
   "orderRequestListPage": {

@@ -39,6 +39,10 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
   const client = useQueryClient();
   const { user } = useAuth();
 
+  if (!user) throw new Error('User not found');
+
+  const isAdminCompany = company === null;
+
   const [headAccount, ...normalAccounts] = useMemo(() => {
     const headAccountIdx = accounts.findIndex(
       a => a.role === 'ROLE_HEAD_ADMIN' || a.role === 'ROLE_HEAD_USER'
@@ -73,9 +77,35 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
     );
   };
 
+  const openChangeHeadAccountModal = (email: string) => {
+    openModal(
+      <ConfirmModal
+        title={t('companiesPage:changeHead:title')}
+        text={t('companiesPage:changeHead:text')}
+        onConfirm={() => {
+          closeModal();
+          changeHeadAccount(email);
+        }}
+      />
+    );
+  };
+
+  const openDeleteCompanyModal = () => {
+    openModal(
+      <ConfirmModal
+        title={t('companiesPage:deleteCompany:title')}
+        text={t('companiesPage:deleteCompany:text')}
+        onConfirm={() => {
+          closeModal();
+          deleteCompany();
+        }}
+      />
+    );
+  };
+
   const deleteSubAccount = async (email: string) => {
     const result = await doApiAction<GenericAPIResponse>({
-      endpoint: '/company-info/delete',
+      endpoint: '/company-info/delete-user',
       method: 'DELETE',
       body: { email },
     });
@@ -91,24 +121,13 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
     });
   };
 
-  const openChangeHeadAccountModal = (email: string) => {
-    openModal(
-      <ConfirmModal
-        title={t('companiesPage:changeHead:title')}
-        text={t('companiesPage:changeHead:text')}
-        onConfirm={() => {
-          closeModal();
-          changeHeadAccount(email);
-        }}
-      />
-    );
-  };
-
   const changeHeadAccount = async (email: string) => {
+    if (!company) return;
+
     const result = await doApiAction<GenericAPIResponse>({
       endpoint: '/company-info/change-head',
       method: 'POST',
-      body: { email, companyId: company?.id },
+      body: { email, companyId: company.id },
     });
 
     client.invalidateQueries({ queryKey: ['companies'] });
@@ -122,21 +141,50 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
     });
   };
 
-  const showDeleteSubAccount = user?.permissions.includes(
-    'DELETE_USER_ACCOUNTS'
+  const deleteCompany = async () => {
+    if (!company) return;
+
+    const result = await doApiAction<GenericAPIResponse>({
+      endpoint: '/company-info/delete-company',
+      method: 'DELETE',
+      body: { companyId: company.id },
+    });
+
+    client.invalidateQueries({ queryKey: ['companies'] });
+
+    notifications.add({
+      message: t(
+        `companiesPage:deleteCompany:responses:${result?.message}` ??
+          'notifications:genericError'
+      ),
+      autoClose: 10000,
+    });
+  };
+
+  const showDeleteSubAccount = user.permissions.includes(
+    isAdminCompany ? 'DELETE_ADMIN_ACCOUNTS' : 'DELETE_USER_ACCOUNTS'
   );
   const showChangeHeadAccount =
-    user?.permissions.includes('CHANGE_COMPANY_HEAD_ACCOUNT') &&
-    company !== null;
+    user.permissions.includes('CHANGE_COMPANY_HEAD_ACCOUNT') && !isAdminCompany;
+  const showDeleteCompany =
+    user.permissions.includes('DELETE_COMPANY') && !isAdminCompany;
+  const showCreateSubAccount = user.permissions.includes(
+    isAdminCompany ? 'CREATE_ADMIN_ACCOUNTS' : 'CREATE_USER_ACCOUNTS'
+  );
 
   return (
     <div className={styles.company_card}>
       <div className={styles.title}>
         <Title order={3}>{company?.name ?? ADMINS_COMPANY_LABEL}</Title>
         <div className={styles.buttons}>
-          {user?.permissions.includes('CREATE_USER_ACCOUNTS') && (
+          {showCreateSubAccount && (
             <IconButton tooltipKey='companiesPage:tooltips:subaccount'>
               <IconPlus onClick={() => openCreateSubAccountModal()} />
+            </IconButton>
+          )}
+          {showDeleteCompany && (
+            <IconButton tooltipKey='companiesPage:tooltips:delete'>
+              <IconTrash onClick={() => openDeleteCompanyModal()} />
             </IconButton>
           )}
           {opened ? (

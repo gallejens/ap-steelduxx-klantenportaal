@@ -254,6 +254,10 @@ public class AuthService {
         userRepository.deleteById(accountId);
     }
 
+    public void setUserDeleted(long userId) {
+        userRepository.setDeleted(userId);
+    }
+
     public void changeRole(long accountId, RoleEnum role) {
         var user = userRepository.findById(accountId).orElseThrow();
         user.setRole(role);

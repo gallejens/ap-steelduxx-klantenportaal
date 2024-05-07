@@ -152,7 +152,6 @@ public class UserRequestService {
 
         // Set company values in DB
         var company = companyRepository.save(new Company(
-                        -1L,
                         userRequestDto.companyName(),
                         userRequestDto.country(),
                         userRequestDto.phoneNr(),

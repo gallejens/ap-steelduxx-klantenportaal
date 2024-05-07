@@ -12,6 +12,7 @@ import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserCompanyRepository;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -196,6 +197,24 @@ public class CompanyInfoService {
 
         authService.changeRole(currentHeadUserId, RoleEnum.ROLE_USER);
         authService.changeRole(newHeadUser.getId(), RoleEnum.ROLE_HEAD_USER);
+
+        return ResponseHandler.generate("success", HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<Object> deleteCompany(long companyId) {
+        var company = companyRepository.findById(companyId).orElse(null);
+        if (company == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+
+        var accounts = companyInfoAccountRepository.findAllByCompanyId(company.getId());
+        for (var account : accounts) {
+            var user = authService.getUser(account.getEmail());
+            authService.setUserDeleted(user.getId());
+        }
+
+        companyRepository.setDeleted(company.getId());
 
         return ResponseHandler.generate("success", HttpStatus.OK);
     }

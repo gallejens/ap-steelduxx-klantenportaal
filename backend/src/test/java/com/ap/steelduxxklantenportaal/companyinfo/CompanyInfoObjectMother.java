@@ -1,6 +1,5 @@
 package com.ap.steelduxxklantenportaal.companyinfo;
 
-import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CreateSubAccountDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.models.Company;
 import com.ap.steelduxxklantenportaal.models.User;

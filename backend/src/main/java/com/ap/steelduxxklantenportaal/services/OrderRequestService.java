@@ -142,7 +142,7 @@ public class OrderRequestService {
         return new OrderRequestDto(
                 orderRequest.getCustomerCode(),
                 orderRequest.getTransportType().toString(),
-                orderRequest.getPortOfOriginCode().toString(),
+                orderRequest.getPortOfOriginCode(),
                 orderRequest.getOrderType().toString(),
                 orderRequestProductDtos
         );
@@ -156,12 +156,12 @@ public class OrderRequestService {
     }
 
     public OrderRequestListDto getOrderRequest(Long id) {
-        OrderRequest orderRequest = orderRequestRepository.findById(id).get();
+        OrderRequest orderRequest = orderRequestRepository.findById(id).orElseThrow();
         return convertOrderRequestListToDTO(orderRequest);
     }
 
     public OrderRequestDto getOrderRequestDto(Long id){
-        OrderRequest orderRequest = orderRequestRepository.findById(id).get();
+        OrderRequest orderRequest = orderRequestRepository.findById(id).orElseThrow();
         return convertOrderRequestToDTO(orderRequest);
     }
 

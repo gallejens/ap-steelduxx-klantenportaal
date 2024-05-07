@@ -33,8 +33,7 @@ public class UserRequestFormTest {
     }
 
     @Test
-    void check_if_userRequest_isSaved_in_database_if_isNotInDenied() throws Exception {
-
+    void check_if_userRequest_isSaved_in_database_if_isNotInDenied() {
         List<StatusEnum> statusList = List.of(StatusEnum.PENDING, StatusEnum.APPROVED);
 
         Mockito.when(userRequestRepository.findByStatusInAndVatNrAndEmail(statusList,

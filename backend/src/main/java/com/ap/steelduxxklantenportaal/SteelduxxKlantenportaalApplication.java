@@ -12,34 +12,31 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class SteelduxxKlantenportaalApplication {
 
-	@Value("${admin_account.email}")
-	private String adminAccountEmail;
-	@Value("${admin_account.password}")
-	private String adminAccountPassword;
-	@Value("${admin_account.first_name}")
-	private String adminAccountFirstName;
-	@Value("${admin_account.last_name}")
-	private String adminAccountLastName;
+    @Value("${admin_account.email}")
+    private String adminAccountEmail;
+    @Value("${admin_account.password}")
+    private String adminAccountPassword;
+    @Value("${admin_account.first_name}")
+    private String adminAccountFirstName;
+    @Value("${admin_account.last_name}")
+    private String adminAccountLastName;
 
-	public static void main(String[] args) {
-		SpringApplication.run(SteelduxxKlantenportaalApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SteelduxxKlantenportaalApplication.class, args);
+    }
 
-	@Bean
-	public CommandLineRunner createAdminUser(AuthService authService) {
-		return args -> {
-			if (authService.doesUserExist(adminAccountEmail)) return;
+    @Bean
+    public CommandLineRunner createAdminUser(AuthService authService) {
+        return args -> {
+            if (authService.doesUserExist(adminAccountEmail)) return;
 
-			authService.addNewUser(adminAccountEmail, adminAccountPassword, adminAccountFirstName, adminAccountLastName, RoleEnum.ROLE_HEAD_ADMIN);
+            authService.addNewUser(adminAccountEmail, adminAccountPassword, adminAccountFirstName, adminAccountLastName, RoleEnum.ROLE_HEAD_ADMIN);
+        };
+    }
 
-		};
-	}
-
-	@Bean
-	public CommandLineRunner initFileSystemStorageService(FileSystemStorageService fileSystemStorageService) {
-		return (args) -> {
-			fileSystemStorageService.init();
-		};
-	}
+    @Bean
+    public CommandLineRunner initFileSystemStorageService(FileSystemStorageService fileSystemStorageService) {
+        return (args) -> fileSystemStorageService.init();
+    }
 }
 

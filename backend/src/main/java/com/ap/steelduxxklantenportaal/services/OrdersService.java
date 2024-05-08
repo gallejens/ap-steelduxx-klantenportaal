@@ -4,12 +4,26 @@ import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDetailsDto;
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDto;
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDocumentUploadDto;
 import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderStatusDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
+import com.ap.steelduxxklantenportaal.models.Company;
+import com.ap.steelduxxklantenportaal.models.CompanyInfoAccount;
+import com.ap.steelduxxklantenportaal.models.Notification;
 import com.ap.steelduxxklantenportaal.models.User;
-import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
+
+import com.ap.steelduxxklantenportaal.repositories.CompanyInfoAccountRepository;
+import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
+import com.ap.steelduxxklantenportaal.repositories.UserRepository;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,9 +32,19 @@ import java.io.IOException;
 public class OrdersService {
 
     private final ExternalApiService externalApiService;
+    private final NotificationService notificationService;
+    private List<OrderStatusDto> previousOrderStatuses;
 
-    public OrdersService(ExternalApiService externalApiService) {
+    private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
+    private final CompanyInfoAccountRepository companyInfoAccountRepository;
+    public OrdersService(ExternalApiService externalApiService, NotificationService notificationService, UserRepository userRepository, CompanyRepository companyRepository, CompanyInfoAccountRepository companyInfoAccountRepository) {
         this.externalApiService = externalApiService;
+        this.notificationService = notificationService;
+        this.userRepository = userRepository;
+        this.companyRepository = companyRepository;
+        this.companyInfoAccountRepository = companyInfoAccountRepository;
+        this.previousOrderStatuses = new ArrayList<>();
     }
 
     public OrderDto[] getAllOrders() {
@@ -32,6 +56,47 @@ public class OrdersService {
         String endpoint = isAdmin ? "/admin/order/all" : "/order/all";
 
         return externalApiService.doRequest(endpoint, HttpMethod.GET, OrderDto[].class);
+    }
+    public OrderDto[] getAllOrdersForCheck() {
+
+        String endpoint = "/admin/order/all";
+        return externalApiService.doSystemRequest(endpoint, HttpMethod.GET, OrderDto[].class);
+    }
+
+    public List<OrderStatusDto> getAllOrderStatus(OrderDto[] orders){
+        List<OrderStatusDto> allOrderStatuses = new ArrayList<>();
+        for (OrderDto order : orders) {
+            OrderStatusDto orderStatusDto = new OrderStatusDto(order.customerCode(), order.referenceNumber(),order.state());
+            allOrderStatuses.add(orderStatusDto);
+        }
+        return allOrderStatuses;
+    }
+    public void setPreviousOrderStatuses(List<OrderStatusDto> orders) {
+        this.previousOrderStatuses = orders;
+    }
+
+    public void checkForOrderStatusChanges(OrderDto[] orders) {
+        List<OrderStatusDto> currentOrderStatuses = getAllOrderStatus(orders);
+        for (OrderStatusDto currentOrderStatus : currentOrderStatuses) {
+            for (OrderStatusDto previousOrderStatus : previousOrderStatuses) {
+                if (currentOrderStatus.referenceNumber().equals(previousOrderStatus.referenceNumber())) {
+                    if (!(currentOrderStatus.state() == previousOrderStatus.state())) {
+                        if(currentOrderStatus.customerCode() != null) {
+                            Optional<Company> company = companyRepository.findByReferenceCode(currentOrderStatus.customerCode());
+                            List<CompanyInfoAccount> accounts = companyInfoAccountRepository.findAllByCompanyId(company.get().getId());
+                            for (CompanyInfoAccount account : accounts) {
+                                Optional<User> user = userRepository.findByEmail(account.getEmail());
+                                Notification newNotification = new Notification(user.get().getId(), null, "Status change for order : " + currentOrderStatus.referenceNumber(), "Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state(), Timestamp.valueOf(LocalDateTime.now()).getTime(), false);
+                                notificationService.createNotification(newNotification);
+                                System.out.println(newNotification + " for : " + user.get().getEmail() );
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        setPreviousOrderStatuses(currentOrderStatuses);
     }
 
     public OrderDetailsDto getOrderDetails(String orderId, String customerCode) {

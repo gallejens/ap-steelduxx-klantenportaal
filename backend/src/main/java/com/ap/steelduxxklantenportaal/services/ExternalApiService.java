@@ -22,11 +22,47 @@ public class ExternalApiService {
     @Value("${external.api.base-url}")
     private String baseUrl;
     private final HashMap<Long, String> userTokens;
+    private  String systemToken;
 
     public ExternalApiService(RestTemplate restTemplate, CompanyRepository companyRepository) {
         this.restTemplate = restTemplate;
         this.companyRepository = companyRepository;
         this.userTokens = new HashMap<>();
+    }
+    public String getSystemToken() {
+        String existingSystemToken = systemToken;
+        if(existingSystemToken != null){
+            return existingSystemToken;
+        }
+        String referenceCode = "ADMIN";
+        String token = requestToken(referenceCode);
+        systemToken = token;
+        return token;
+    }
+
+    public <T> T doSystemRequest(String endpoint, HttpMethod method, Class<T> responseType) {
+        return internalSystemRequest(endpoint, method, responseType, false);
+    }
+    private <T> T internalSystemRequest(String endpoint, HttpMethod method, Class<T> responseType,
+                                        boolean isRetry) {
+        String token = getSystemToken();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<T> response = restTemplate.exchange(baseUrl + endpoint, method, entity, responseType);
+            return response.getBody();
+        } catch (RestClientException e) {
+            if (isRetry) {
+                return null;
+            }
+
+            // if call is not a retry, remove existing token and retry;
+            return internalSystemRequest(endpoint,method,responseType,true);
+        }
     }
 
     private String getToken(User user) {

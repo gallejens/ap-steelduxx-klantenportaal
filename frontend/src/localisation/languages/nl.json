@@ -91,6 +91,27 @@
     "confirmButton": "Bevestigen",
     "success": "Aanvraag is succesvol verzonden."
   },
+  "welcomePage": {
+    "welcomeTitle": "Welkom",
+    "cards": {
+      "orders": {
+        "title": "Orders",
+        "description": "Deze pagina toont alle bestellingen met belangrijke details zoals referentienummers, transporttype en verzendinformatie. Zoek naar specifieke bestellingen of maak nieuwe aan indien gemachtigd. Klik op een bestelling om de details ervan te bekijken. Bewaak en beheer efficiënt je bestellingen vanuit dit gecentraliseerde platform."
+      },
+      "orderrequests": {
+        "title": "Order Aanvragen",
+        "description": "Deze pagina toont alle bestellingsaanvragen. Zoek naar specifieke bestellingsaanvragen of maak nieuwe aan indien gemachtigd. Klik op een bestellingsaanvraag om de details ervan te bekijken en te beoordelen, door deze goed te keuren of af te wijzen indien gemachtigd. Bewaak en beheer efficiënt je bestellingsaanvragen vanuit dit gecentraliseerde platform."
+      },
+      "requests": {
+        "title": "Registraties",
+        "description": "Deze pagina toont alle registraties. Zoek naar specifieke registraties. Klik op een registratie om de details ervan te bekijken en te beoordelen, door deze goed te keuren of af te wijzen indien gemachtigd. Bewaak en beheer efficiënt je registraties vanuit dit gecentraliseerde platform."
+      },
+      "companies": {
+        "title": "Bedrijfsgegevens",
+        "description": "Deze pagina toont alle bedrijven met hun details en werknemers. Zoek naar een specifiek bedrijf. Je kunt nieuwe werknemers toevoegen of bestaande promoten indien gemachtigd. Bewaak en beheer je werknemers efficiënt vanuit dit gecentraliseerde platform."
+      }
+    }
+  },
   "userRequestListPage": {
     "newUserRequest": "Nieuwe Aanvraag",
     "table": {

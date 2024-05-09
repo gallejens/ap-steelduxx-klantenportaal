@@ -1,85 +1,76 @@
 @use '../../../styles//mixins.scss';
 
-$order-padding: 20px;
-$section-margin: 20px;
 $section-background: #ffffff;
-$border-radius: 6px;
-$box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
 .orderDetails {
-  background-color: #f5f5f5;
+  height: 100%;
 
   .header {
-    font-size: 24px;
-    color: black;
-    margin-bottom: $section-margin;
-  }
-
-  p {
-    color: black;
-    font-weight: 500;
-  }
-  .title {
-    font-size: large;
-    padding-bottom: 0.5rem;
-  }
-  .subTitle {
-    font-weight: 100;
-    color: gray;
+    margin-bottom: var(--mantine-spacing-sm);
   }
 
   .topRow {
+    height: 47%;
+
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem;
 
-    > div {
-      background-color: $section-background;
-      padding: 1rem;
-      padding-bottom: 0rem;
-      border-radius: 4px;
-      box-shadow: $box-shadow;
+    gap: var(--mantine-spacing-sm);
+    margin-bottom: var(--mantine-spacing-md);
+
+    .orderInfo {
+      width: 70%;
+
+      display: flex;
+      column-gap: var(--mantine-spacing-md);
     }
 
     .generalInfo,
     .timeInfo,
     .shipInfo {
-      width: calc(20% - 1rem);
+      width: 33%;
+
+      background-color: $section-background;
+      border-radius: var(--mantine-radius-md);
+      box-shadow: var(--mantine-shadow-sm);
+
+      padding: var(--mantine-spacing-md);
     }
 
     .mapContainer {
-      width: calc(40% - 1rem);
+      width: 30%;
+
+      background-color: $section-background;
+      border-radius: var(--mantine-radius-md);
+      box-shadow: var(--mantine-shadow-sm);
+
+      padding: var(--mantine-spacing-md);
     }
   }
 
   .bottomRow {
+    height: 44%;
+
     display: flex;
     justify-content: space-between;
 
-    .productsList {
-      width: calc(60% - 1rem);
-      flex: 2;
-      max-height: 285px;
-      background-color: $section-background;
-      padding: $order-padding;
-      margin-right: 1.4rem;
-      border-radius: $border-radius;
-      box-shadow: $box-shadow;
-      position: relative;
+    gap: var(--mantine-spacing-sm);
 
-      h2 {
-        position: sticky;
-        top: 0;
-        background-color: inherit;
-        z-index: 10;
-        // padding: 10px 0;
-        font-size: large;
-        margin-bottom: 0;
-      }
+    .productsList {
+      width: 70%;
+
+      background-color: $section-background;
+      border-radius: var(--mantine-radius-md);
+      box-shadow: var(--mantine-shadow-sm);
+
+      padding: var(--mantine-spacing-md);
 
       .tableContainer {
         overflow-y: auto;
-        max-height: 230px;
+        max-height: 280px;
+
+        margin-top: var(--mantine-spacing-sm);
+
         table {
           width: 100%;
           border-collapse: collapse;
@@ -104,12 +95,12 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
               &:last-child {
                 border-bottom: none;
               }
-            }
 
-            td {
-              padding: 8px;
-              text-align: center;
-              vertical-align: middle;
+              td {
+                padding: 8px;
+                text-align: center;
+                vertical-align: middle;
+              }
             }
           }
         }
@@ -117,103 +108,67 @@ $box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
     .documentsContainer {
+      width: 30%;
+
+      background-color: $section-background;
+      border-radius: var(--mantine-radius-md);
+      box-shadow: var(--mantine-shadow-sm);
+
       display: flex;
       flex-direction: column;
-      padding: 15px;
-      gap: 2px;
-      width: 20vw;
-      height: 30vh;
-      background-color: $section-background;
-      border-radius: $border-radius;
-      box-shadow: $box-shadow;
 
-      .documentsTitle {
-        font-size: 18px;
-        color: black;
-        margin-bottom: 15px;
-      }
+      padding: var(--mantine-spacing-md);
 
-      .hiddenFileInput {
-        display: none;
-      }
-
-      .uploadButton {
-        padding: 10px 20px;
-        background-color: black;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-right: 10px;
-      }
-
-      .uploadButton:hover {
-        background-color: var(--mantine-color-primary-4);
-      }
-
-      .fileNameDisplay {
-        font-size: 16px;
-        color: #333;
-        margin-left: 10px;
-      }
-
-      .documentItem {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 0;
-
-        p {
-          flex: 1;
-          margin-right: 10px;
-          font-size: 16px;
-          color: black;
-        }
-
-        button {
-          background-color: black;
-          border: none;
-          cursor: pointer;
-          padding: 5px 10px;
-          border-radius: 5px;
-          color: white;
-          font-size: 14px;
-          font-weight: 500;
-          transition: background-color 0.3s;
-
-          &:hover {
-            background-color: var(--mantine-color-primary-4);
-            color: white;
-          }
-        }
+      .documentsFileselector {
+        margin-top: var(--mantine-spacing-sm);
+        margin-bottom: var(--mantine-spacing-sm);
       }
     }
   }
 
+  .subTitle {
+    font-weight: 100;
+    color: gray;
+    margin-top: 5px;
+  }
+
   .sailing {
     color: orange;
+    font-weight: bold;
   }
+
   .planned {
     color: blue;
+    font-weight: bold;
   }
+
   .created {
     color: black;
+    font-weight: bold;
   }
+
   .arrived {
     color: green;
+    font-weight: bold;
   }
+
   .closed {
     color: red;
+    font-weight: bold;
   }
+
   .loaded {
     color: purple;
+    font-weight: bold;
   }
 
   .import {
     color: blue;
+    font-weight: bold;
   }
+
   .export {
     color: red;
+    font-weight: bold;
   }
 }

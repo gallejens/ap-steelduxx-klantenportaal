@@ -178,10 +178,10 @@
     "hsCode": "HsCode",
     "name": "Name",
     "quantity": "Quantity",
-    "weight": "Weight",
+    "weight": "Weight (kg)",
     "container": "Container",
     "containerNumber": "Container Number",
-    "containerSize": "Container Size",
+    "containerSize": "Container Size (feet)",
     "containerType": "Container Type",
     "documents": "Documents"
   },

@@ -60,13 +60,21 @@ export const OrderDetailsPage: FC = () => {
       >
         {t('orderDetailPage:orderDetails')}: {orderDetail?.data.referenceNumber}
       </Title>
-      <div className={styles.topRow}>
-        <OrderInfo orderDetail={orderDetail.data} />
-        <MapInfo orderDetail={orderDetail.data} />
-      </div>
-      <div className={styles.bottomRow}>
-        <ProductList orderDetail={orderDetail.data} />
-        <DocumentUpload orderDetail={orderDetail.data} />
+      <div className={styles.container}>
+        <div className={styles.columnLeft}>
+          <div className={styles.topRow}>
+            <OrderInfo orderDetail={orderDetail.data} />
+            <DocumentUpload orderDetail={orderDetail.data} />
+          </div>
+          <div className={styles.bottomRow}>
+            <ProductList orderDetail={orderDetail.data} />
+          </div>
+        </div>
+        <div className={styles.columnRight}>
+          {orderDetail.data.state === 'SAILING' ? (
+            <MapInfo orderDetail={orderDetail.data} />
+          ) : null}
+        </div>
       </div>
     </div>
   );

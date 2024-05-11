@@ -1,11 +1,12 @@
-import { type FC } from 'react';
+import { type ChangeEvent, useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../styles/orderDetails.module.scss';
-import type { OrderDetails } from '@/types/api';
+import type { OrderDetails, OrderDocumentType } from '@/types/api';
 
-import { Input, Title } from '@mantine/core';
-import { OrderDocuments } from '@/pages/ordercreate/components/OrderDocuments';
-import type { CreateOrderDocument } from '@/pages/ordercreate/types';
+import { Button, Input, Title } from '@mantine/core';
+import { useParams, useSearch } from '@tanstack/react-router';
+import { doApiAction } from '@/lib/api';
+import { IconDownload, IconUpload } from '@tabler/icons-react';
 
 interface DocumentUploadProps {
   orderDetail: OrderDetails;
@@ -14,79 +15,79 @@ interface DocumentUploadProps {
 export const DocumentUpload: FC<DocumentUploadProps> = ({ orderDetail }) => {
   const { t } = useTranslation();
 
-  // const { order_id: orderId } = useParams({
-  //   from: '/app/orders/$order_id',
-  // });
-  // const { customerCode } = useSearch({
-  //   from: '/app/orders/$order_id',
-  // });
+  const { order_id: orderId } = useParams({
+    from: '/app/orders/$order_id',
+  });
+  const { customerCode } = useSearch({
+    from: '/app/orders/$order_id',
+  });
 
-  // const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
-  // const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFile = event.target.files?.[0];
-  //   if (selectedFile) {
-  //     setFile(selectedFile);
-  //   }
-  // };
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
+  };
 
-  // const handleDownload = async (documentType: OrderDocumentType) => {
-  //   try {
-  //     const response = await doApiAction<BlobPart>({
-  //       endpoint: `/orders/download-document/${orderId}/${documentType}`,
-  //       method: 'GET',
-  //       responseType: 'blob',
-  //     });
-  //     if (response) {
-  //       const url = window.URL.createObjectURL(new Blob([response]));
-  //       const link = document.createElement('a');
-  //       link.href = url;
-  //       link.setAttribute('download', `${orderId}-${documentType}.pdf`);
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       link.remove();
-  //     } else {
-  //       alert('Download failed!');
-  //     }
-  //   } catch (error) {
-  //     console.error('Download error:', error);
-  //     alert('Download failed!');
-  //   }
-  // };
+  const handleDownload = async (documentType: OrderDocumentType) => {
+    try {
+      const response = await doApiAction<BlobPart>({
+        endpoint: `/orders/download-document/${orderId}/${documentType}`,
+        method: 'GET',
+        responseType: 'blob',
+      });
+      if (response) {
+        const url = window.URL.createObjectURL(new Blob([response]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${orderId}-${documentType}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        alert('Download failed!');
+      }
+    } catch (error) {
+      console.error('Download error:', error);
+      alert('Download failed!');
+    }
+  };
 
-  // const handleUpload = async (documentType: OrderDocumentType) => {
-  //   if (!file) {
-  //     alert('Please select a file first.');
-  //     return;
-  //   }
+  const handleUpload = async (documentType: OrderDocumentType) => {
+    if (!file) {
+      alert('Please select a file first.');
+      return;
+    }
 
-  //   const formData = new FormData();
-  //   formData.append('file', file);
-  //   formData.append('referenceNumber', orderId);
-  //   formData.append('documentType', documentType);
-  //   if (customerCode) {
-  //     formData.append('customerCode', customerCode);
-  //   }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('referenceNumber', orderId);
+    formData.append('documentType', documentType);
+    if (customerCode) {
+      formData.append('customerCode', customerCode);
+    }
 
-  //   try {
-  //     const response = await doApiAction({
-  //       endpoint: '/orders/upload-document',
-  //       method: 'POST',
-  //       body: formData,
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-  //     if (response && response.status === 200) {
-  //       alert('Upload successful!');
-  //     } else {
-  //       alert('Upload failed!');
-  //     }
-  //   } catch (error) {
-  //     console.error('Upload error:', error);
-  //     alert('Upload failed!');
-  //   }
-  // };
+    try {
+      const response = await doApiAction({
+        endpoint: '/orders/upload-document',
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (response && response.status === 200) {
+        alert('Upload successful!');
+      } else {
+        alert('Upload failed!');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Upload failed!');
+    }
+  };
 
   return (
     <div className={styles.documentsContainer}>
@@ -95,21 +96,13 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ orderDetail }) => {
       <div className={styles.documentsFileselector}>
         <Input
           type='file'
-          // onChange={handleFileChange}
+          onChange={handleFileChange}
           accept='.pdf'
           id='fileInput'
           className={styles.hiddenFileInput}
         />
       </div>
-      <OrderDocuments
-        documents={[]}
-        setDocuments={function (
-          setter: (documents: CreateOrderDocument[]) => CreateOrderDocument[]
-        ): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-      {/* <div className={styles.documentItem}>
+      <div className={styles.documentItem}>
         {orderDetail?.billOfLadingDownloadLink ? (
           <>
             <p>Bill of Lading Document</p>
@@ -159,7 +152,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ orderDetail }) => {
             </Button>
           </>
         )}
-      </div> */}
+      </div>
     </div>
   );
 };

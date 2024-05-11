@@ -34,7 +34,7 @@ export const MapInfo: FC<MapInfoProps> = ({ orderDetail }) => {
       </Title>
       <iframe
         title='VesselFinder Map'
-        style={{ width: '100%', height: '330px' }}
+        style={{ width: '100%', height: '420px' }}
         srcDoc={orderDetail ? getIframeContent(orderDetail.shipIMO) : ''}
         frameBorder='0'
       />

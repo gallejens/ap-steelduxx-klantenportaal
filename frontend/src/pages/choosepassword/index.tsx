@@ -62,6 +62,7 @@ export const ChoosePasswordPage: FC = () => {
       title={t('choosePasswordPage:title')}
       panelWidth='55vh'
       hideBackButton
+      hideLanguageSelector
     >
       {status === 'pending' ? (
         <Loader />

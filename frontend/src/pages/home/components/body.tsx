@@ -4,8 +4,10 @@ import styles from '../styles/home.module.scss';
 import { useAuth } from '@/hooks/useAuth';
 import { CARDS } from '../constant';
 import { t } from 'i18next';
+import { useNavigate } from '@tanstack/react-router';
 
 export const Body: FC = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const visibleCARDS = useMemo(() => {
     return CARDS.filter(
@@ -29,8 +31,12 @@ export const Body: FC = () => {
           >
             <Card.Section
               component='a'
-              href={card.path}
               className={styles.iconContainer}
+              onClick={() => {
+                navigate({
+                  to: card.path as string,
+                });
+              }}
             >
               <Center>
                 <card.icon

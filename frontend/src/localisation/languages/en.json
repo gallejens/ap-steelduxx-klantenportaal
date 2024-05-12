@@ -465,5 +465,8 @@
   },
   "pageTitleHelper": {
     "title": "Steelduxx - Customer Portal"
+  },
+  "manualPage": {
+    "noAccess": "You do not have access to this page"
   }
 }

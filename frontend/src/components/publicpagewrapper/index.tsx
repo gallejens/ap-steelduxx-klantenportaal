@@ -6,7 +6,7 @@ import { useRouter } from '@tanstack/react-router';
 import { LanguagePopOver } from '../languagepopover';
 
 type Props = {
-  title: string;
+  title?: string;
   footer?: JSX.Element;
   panelWidth?: string;
   hideBackButton?: boolean;
@@ -16,32 +16,41 @@ type Props = {
 export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
   const { history } = useRouter();
 
+  const hideHeader =
+    props.title === undefined &&
+    props.hideBackButton &&
+    props.hideLanguageSelector;
+
   return (
     <div className={styles.public_page_wrapper}>
       <div
         className={styles.panel}
         style={{ width: props.panelWidth }}
       >
-        <div className={styles.header}>
-          {!props.hideBackButton && (
-            <ActionIcon
-              onClick={() => history.go(-1)}
-              className={styles.back_button}
-            >
-              <IconArrowLeft />
-            </ActionIcon>
-          )}
-          <Text>{props.title}</Text>
-          <div className={styles.lang_selector}>
-            {!props.hideLanguageSelector && (
-              <LanguagePopOver
-                textColor={'var(--mantine-color-primary-7)'}
-                paddingTop={'22px'}
-              />
-            )}
-          </div>
-        </div>
-        <Divider className={styles.divider} />
+        {!hideHeader && (
+          <>
+            <div className={styles.header}>
+              {!props.hideBackButton && (
+                <ActionIcon
+                  onClick={() => history.go(-1)}
+                  className={styles.back_button}
+                >
+                  <IconArrowLeft />
+                </ActionIcon>
+              )}
+              <Text>{props.title}</Text>
+              <div className={styles.lang_selector}>
+                {!props.hideLanguageSelector && (
+                  <LanguagePopOver
+                    textColor={'var(--mantine-color-primary-7)'}
+                    paddingTop={'22px'}
+                  />
+                )}
+              </div>
+            </div>
+            <Divider className={styles.divider} />
+          </>
+        )}
         {props.children}
         {props.footer !== undefined && (
           <>

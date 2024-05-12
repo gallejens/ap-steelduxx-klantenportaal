@@ -465,5 +465,8 @@
   },
   "pageTitleHelper": {
     "title": "Steelduxx - Klantenportaal"
+  },
+  "manualPage": {
+    "noAccess": "Je hebt geen toegang tot deze pagina"
   }
 }

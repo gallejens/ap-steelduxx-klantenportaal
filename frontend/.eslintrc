@@ -20,7 +20,7 @@
     "sourceType": "module"
   },
   "plugins": ["react"],
-  "ignorePatterns": ["*.css", "*.scss", "*.json", "*.md"],
+  "ignorePatterns": ["*.css", "*.scss", "*.json", "*.md", "vite.config.ts"],
   "rules": {
     "@typescript-eslint/comma-dangle": "off",
     "@typescript-eslint/semi": "off",

@@ -22,20 +22,24 @@ import { CompaniesPage } from './pages/companies';
 import { OrderCreatePage } from './pages/ordercreate/Index';
 import { OrderRequestListPage } from './pages/orderrequestlist';
 import { OrderRequestReviewPage } from './pages/orderrequestreview';
+import { ManualPage } from './pages/manual';
 
-const rootRoute = createRootRoute();
+const rootRoute = createRootRoute({
+  beforeLoad: async () => {
+    await useAuthStore.getState().fetchUserInfo();
+  },
+});
 
 // Unauthorized Only Routes
 const unauthorizedOnlyRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: 'unauthorized-only-route',
-  beforeLoad: async () => {
-    const userInfo = await useAuthStore.getState().fetchUserInfo();
-    if (userInfo !== null) {
-      throw redirect({
-        to: '/app/home',
-      });
-    }
+  beforeLoad: () => {
+    const userInfo = useAuthStore.getState().user;
+    if (userInfo === null) return;
+    throw redirect({
+      to: '/login',
+    });
   },
 });
 
@@ -76,13 +80,12 @@ const authorizedOnlyRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: 'app',
   component: AppShell,
-  beforeLoad: async () => {
-    const userInfo = await useAuthStore.getState().fetchUserInfo();
-    if (userInfo === null) {
-      throw redirect({
-        to: '/login',
-      });
-    }
+  beforeLoad: () => {
+    const userInfo = useAuthStore.getState().user;
+    if (userInfo !== null) return;
+    throw redirect({
+      to: '/login',
+    });
   },
 });
 
@@ -155,6 +158,19 @@ const companiesRoute = createRoute({
   component: CompaniesPage,
 });
 
+// Wiki pages
+const userManualRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/manual/user',
+  component: ManualPage,
+});
+
+const adminManualRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/manual/admin',
+  component: ManualPage,
+});
+
 // Creating route tree
 const routeTree = rootRoute.addChildren([
   choosePasswordRoute,
@@ -175,6 +191,8 @@ const routeTree = rootRoute.addChildren([
     userRequestReviewRoute,
     companiesRoute,
   ]),
+  userManualRoute,
+  adminManualRoute,
 ]);
 
 export const router = createRouter({

@@ -38,7 +38,7 @@ const unauthorizedOnlyRoute = createRoute({
     const userInfo = useAuthStore.getState().user;
     if (userInfo === null) return;
     throw redirect({
-      to: '/login',
+      to: '/app/home',
     });
   },
 });

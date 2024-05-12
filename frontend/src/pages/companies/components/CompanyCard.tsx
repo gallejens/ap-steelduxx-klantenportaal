@@ -178,23 +178,31 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
         <Title order={3}>{company?.name ?? ADMINS_COMPANY_LABEL}</Title>
         <div className={styles.buttons}>
           {showCreateSubAccount && (
-            <IconButton tooltipKey='companiesPage:tooltips:subaccount'>
-              <IconPlus onClick={() => openCreateSubAccountModal()} />
-            </IconButton>
+            <IconButton
+              tooltipKey='companiesPage:tooltips:subaccount'
+              onClick={openCreateSubAccountModal}
+              icon={<IconPlus />}
+            />
           )}
           {showDeleteCompany && (
-            <IconButton tooltipKey='companiesPage:tooltips:delete'>
-              <IconTrash onClick={() => openDeleteCompanyModal()} />
-            </IconButton>
+            <IconButton
+              tooltipKey='companiesPage:tooltips:delete'
+              onClick={openDeleteCompanyModal}
+              icon={<IconTrash />}
+            />
           )}
           {opened ? (
-            <IconButton tooltipKey='companiesPage:tooltips:collapse'>
-              <IconChevronUp onClick={() => setOpened(false)} />
-            </IconButton>
+            <IconButton
+              tooltipKey='companiesPage:tooltips:collapse'
+              onClick={() => setOpened(false)}
+              icon={<IconChevronUp />}
+            />
           ) : (
-            <IconButton tooltipKey='companiesPage:tooltips:open'>
-              <IconChevronDown onClick={() => setOpened(true)} />
-            </IconButton>
+            <IconButton
+              tooltipKey='companiesPage:tooltips:expand'
+              onClick={() => setOpened(true)}
+              icon={<IconChevronDown />}
+            />
           )}
         </div>
       </div>
@@ -283,18 +291,18 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
                   <Table.Td>{a.lastName}</Table.Td>
                   <Table.Td className={styles.actions}>
                     {showChangeHeadAccount && (
-                      <IconButton tooltipKey='companiesPage:tooltips:changeHead'>
-                        <IconChevronUp
-                          onClick={() => openChangeHeadAccountModal(a.email)}
-                        />
-                      </IconButton>
+                      <IconButton
+                        tooltipKey='companiesPage:tooltips:changeHead'
+                        onClick={() => openChangeHeadAccountModal(a.email)}
+                        icon={<IconChevronUp />}
+                      />
                     )}
                     {showDeleteSubAccount && (
-                      <IconButton tooltipKey='companiesPage:tooltips:delete'>
-                        <IconTrash
-                          onClick={() => openDeleteSubAccountModal(a.email)}
-                        />
-                      </IconButton>
+                      <IconButton
+                        tooltipKey='companiesPage:tooltips:delete'
+                        onClick={() => openDeleteSubAccountModal(a.email)}
+                        icon={<IconTrash />}
+                      />
                     )}
                   </Table.Td>
                 </Table.Tr>

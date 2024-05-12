@@ -6,8 +6,8 @@ import { Header } from './components/header';
 export const HomePage: FC = () => {
   return (
     <div className={styles.home_page}>
-      <Header></Header>
-      <Body></Body>
+      <Header />
+      <Body />
     </div>
   );
 };

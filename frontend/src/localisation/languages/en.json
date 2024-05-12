@@ -319,6 +319,12 @@
       "companies": "Company Info",
       "orderrequests": "Order Requests"
     },
+    "header": {
+      "tooltips": {
+        "notifications": "Notifications",
+        "manual": "User Manual"
+      }
+    },
     "userOptions": {
       "logout": "Logout",
       "changePassword": "Change password",
@@ -424,7 +430,7 @@
     },
     "tooltips": {
       "subaccount": "Create Subaccount",
-      "open": "Open",
+      "expand": "Expand",
       "collapse": "Collapse",
       "changeHead": "Make Head Account",
       "delete": "Delete"

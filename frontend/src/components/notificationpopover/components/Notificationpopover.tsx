@@ -6,6 +6,7 @@ import { type NotificationData } from '../types/notificationdata';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { doApiAction } from '@/lib/api';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from '@/components/iconbutton';
 
 export function NotificationPopover() {
   const { user } = useAuth();
@@ -57,10 +58,16 @@ export function NotificationPopover() {
       offset={{ mainAxis: 10, crossAxis: -50 }}
     >
       <Popover.Target>
-        <IconMessage
-          color={
-            notifications?.length ? 'red' : 'var(--mantine-color-primary-0)'
+        <IconButton
+          tooltipKey='appshell:header:tooltips:notifications'
+          icon={
+            <IconMessage
+              color={
+                notifications?.length ? 'red' : 'var(--mantine-color-primary-0)'
+              }
+            />
           }
+          transparent
         />
       </Popover.Target>
       <Popover.Dropdown bg='var(--mantine-color-body)'>

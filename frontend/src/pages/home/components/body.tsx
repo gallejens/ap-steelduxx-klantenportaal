@@ -28,16 +28,13 @@ export const Body: FC = () => {
             radius='md'
             withBorder
             className={styles.card}
+            onClick={() => {
+              navigate({
+                to: card.path as string,
+              });
+            }}
           >
-            <Card.Section
-              component='a'
-              className={styles.iconContainer}
-              onClick={() => {
-                navigate({
-                  to: card.path as string,
-                });
-              }}
-            >
+            <Card.Section className={styles.iconContainer}>
               <Center>
                 <card.icon
                   width={200}

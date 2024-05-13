@@ -64,7 +64,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
 
     let filteredRows = props.data;
     for (const searchValue of searchValues) {
-      filteredRows = props.data.filter(row => {
+      filteredRows = filteredRows.filter(row => {
         for (const columnKey of Object.keys(row) as T[]) {
           if (props.columns[columnKeyToIndex[columnKey]]?.excludeFromSearch) {
             continue;

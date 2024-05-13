@@ -1,19 +1,20 @@
 import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Tabs, TextInput } from '@mantine/core';
+import { ActionIcon, Tabs } from '@mantine/core';
 import { Table } from '@/components/table';
 import { doApiAction } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { STATUSES } from './constants';
 import styles from './styles/orderRequestList.module.scss';
 import type { OrderRequest } from '@/types/api';
-import { IconArrowRight, IconSearch } from '@tabler/icons-react';
+import { IconArrowRight } from '@tabler/icons-react';
 import { useNavigate } from '@tanstack/react-router';
+import { MultiSearch } from '@/components/multisearch';
 
 export const OrderRequestListPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValues, setSearchValues] = useState<string[]>([]);
   const { data: orderRequests, status } = useQuery({
     refetchOnWindowFocus: false,
     queryKey: ['orderRequestListValues'],
@@ -72,11 +73,9 @@ export const OrderRequestListPage: FC = () => {
   return (
     <div className={styles.orderrequest_list_page}>
       <div className={styles.header}>
-        <TextInput
-          className={styles.search_bar}
-          leftSection={<IconSearch />}
-          value={searchValue}
-          onChange={e => setSearchValue(e.target.value)}
+        <MultiSearch
+          onChange={newValues => setSearchValues(newValues)}
+          inputWidth='30rem'
         />
       </div>
       <Tabs
@@ -102,7 +101,7 @@ export const OrderRequestListPage: FC = () => {
             className={styles.orderrequest_table}
           >
             <Table
-              searchValue={searchValue}
+              searchValue={searchValues}
               storageKey='orderrequest_list'
               translationKey='orderRequestListPage:table'
               columns={[

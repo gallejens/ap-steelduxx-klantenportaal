@@ -58,7 +58,6 @@ export const OrderListPage: FC = () => {
     <div className={styles.order_list_page}>
       <div className={styles.header}>
         <MultiSearch
-          values={searchValues}
           onChange={newValues => setSearchValues(newValues)}
           inputWidth='30rem'
         />

@@ -19,7 +19,7 @@ export namespace NTable {
   export type Props<T extends string> = {
     columns: Column<T>[];
     data: Row<NoInfer<T>>[];
-    storageKey?: string; // if provided, the column widths will be saved to local storage
+    storageKey: string; // if provided, the column widths will be saved to local storage
     translationKey: string; // localizations will be gotten from that key using the column keys
     emptyCellPlaceholder?: string; // placeholder to place in empty cells (default: '-')
     searchValue?: string | string[] | null; // searchvalue to filter the table

@@ -94,24 +94,8 @@ $cell_height: 2.5rem;
 }
 
 .column_selector {
-  @include mixins.shadow;
-
-  z-index: 100;
-
-  background-color: var(--mantine-color-primary-0);
-  border-radius: var(--mantine-radius-default);
-
   display: flex;
   flex-direction: column;
-
-  padding: var(--mantine-spacing-xs);
-  margin: var(--mantine-spacing-xs);
-
-  position: absolute;
-  bottom: 2rem;
-  right: 0;
-
-  width: 20rem;
 
   & > div {
     display: flex;

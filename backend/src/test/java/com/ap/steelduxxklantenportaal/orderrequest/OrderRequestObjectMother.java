@@ -7,6 +7,7 @@ import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestProductDto;
 import com.ap.steelduxxklantenportaal.enums.ContainerSizeEnum;
 import com.ap.steelduxxklantenportaal.enums.ContainerTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;
+import com.ap.steelduxxklantenportaal.models.Company;
 
 public class OrderRequestObjectMother {
         static final OrderRequestProductDto product1 = new OrderRequestProductDto("1234", "Steel pipes", 12, 123000,
@@ -22,4 +23,7 @@ public class OrderRequestObjectMother {
         static final NewOrderRequestDto orderRequest2 = new NewOrderRequestDto(TransportTypeEnum.IMPORT, "NLROT",
                         "BEANR", true,
                         List.of());
+
+        static final Company company1 = new Company("C123", null, null, null, null, null, null, null, null, null,
+                        null);
 }

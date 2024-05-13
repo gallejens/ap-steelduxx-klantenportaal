@@ -20,7 +20,7 @@ public class OrderRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String customerCode;
+    private Long companyId;
     @Enumerated(EnumType.STRING)
     private TransportTypeEnum transportType;
     private String portOfOriginCode;
@@ -30,9 +30,9 @@ public class OrderRequest {
     @Enumerated(EnumType.STRING)
     private OrderTypeEnum orderType;
 
-    public OrderRequest(String customerCode, TransportTypeEnum transportType, String portOfOriginCode,
+    public OrderRequest(Long companyId, TransportTypeEnum transportType, String portOfOriginCode,
             String portOfDestinationCode, StatusEnum status, OrderTypeEnum orderType) {
-        this.customerCode = customerCode;
+        this.companyId = companyId;
         this.transportType = transportType;
         this.portOfOriginCode = portOfOriginCode;
         this.portOfDestinationCode = portOfDestinationCode;

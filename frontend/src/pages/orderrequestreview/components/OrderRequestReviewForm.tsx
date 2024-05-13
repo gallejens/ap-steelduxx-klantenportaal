@@ -48,9 +48,9 @@ export const OrderRequestReviewForm: FC = () => {
         />
         <TextInput
           className={styles.number_fields}
-          label={t('orderRequestForm:customerCodeInputTitle')}
+          label={t('orderRequestForm:companyNameInputTitle')}
           description={t('orderRequestForm:')}
-          value={orderRequest?.customerCode}
+          value={orderRequest?.companyName}
           disabled
         />
         <TextInput

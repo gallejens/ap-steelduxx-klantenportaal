@@ -8,7 +8,7 @@ import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;
 
 public record OrderRequestListDto(
         Long id,
-        String customerCode,
+        String companyName,
         StatusEnum status,
         OrderTypeEnum orderType,
         TransportTypeEnum transportType,

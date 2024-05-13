@@ -1,8 +1,7 @@
 import { useState, type FC } from 'react';
-import { Badge, Button, TextInput } from '@mantine/core';
+import { Badge, Button } from '@mantine/core';
 import { useNavigate } from '@tanstack/react-router';
 import styles from './styles/orderList.module.scss';
-import { IconSearch } from '@tabler/icons-react';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -10,9 +9,10 @@ import { Table } from '@/components/table';
 import type { Order } from '@/types/api';
 import { getOrderStateColor, getOrderTransportTypeColor } from './helpers';
 import { useAuth } from '@/hooks/useAuth';
+import { MultiSearch } from '@/components/multisearch';
 
 export const OrderListPage: FC = () => {
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValues, setSearchValues] = useState<string[]>([]);
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -57,11 +57,10 @@ export const OrderListPage: FC = () => {
   return (
     <div className={styles.order_list_page}>
       <div className={styles.header}>
-        <TextInput
-          className={styles.search_bar}
-          leftSection={<IconSearch />}
-          value={searchValue}
-          onChange={e => setSearchValue(e.currentTarget.value)}
+        <MultiSearch
+          values={searchValues}
+          onChange={newValues => setSearchValues(newValues)}
+          inputWidth='30rem'
         />
         {user?.permissions.includes('CREATE_NEW_ORDERS') && (
           <Button
@@ -79,7 +78,7 @@ export const OrderListPage: FC = () => {
         <Table
           storageKey='table_orderlist'
           translationKey='orderListPage:table'
-          searchValue={searchValue}
+          searchValue={searchValues}
           onRowClick={handleOrderClick}
           columns={[
             {

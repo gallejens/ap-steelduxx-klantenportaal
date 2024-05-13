@@ -17,6 +17,7 @@ import type { NTable } from './types';
 import {
   applyResizeHandlerDraggingStyles,
   buildColumnSizeStorageKey,
+  normalizeSearchValues,
 } from './util';
 import { ColumnSelector } from './components/ColumnSelector';
 import { IconEyeOff } from '@tabler/icons-react';
@@ -59,9 +60,10 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
 
   // search & sort logic
   const processedRows = useMemo(() => {
-    const searchValue = props.searchValue?.toLowerCase();
+    const searchValues = normalizeSearchValues(props.searchValue);
+
     let filteredRows = props.data;
-    if (searchValue !== undefined && searchValue.length !== 0) {
+    for (const searchValue of searchValues) {
       filteredRows = props.data.filter(row => {
         for (const columnKey of Object.keys(row) as T[]) {
           if (props.columns[columnKeyToIndex[columnKey]]?.excludeFromSearch) {

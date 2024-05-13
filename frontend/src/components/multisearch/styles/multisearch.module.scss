@@ -1,0 +1,14 @@
+.multisearch {
+  display: flex;
+  align-items: center;
+
+  gap: var(--mantine-spacing-sm);
+
+  & > .pills {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--mantine-spacing-xs);
+  }
+}

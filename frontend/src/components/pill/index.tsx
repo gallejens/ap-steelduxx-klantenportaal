@@ -16,6 +16,7 @@ export const Pill: FC<Props> = ({ text, onRemove }) => {
         <IconX
           size='16px'
           className={styles.icon}
+          onClick={onRemove}
         />
       )}
     </div>

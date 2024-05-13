@@ -34,11 +34,23 @@ public class UserRequestFormTest {
 
     @Test
     void check_if_userRequest_isSaved_in_database_if_isNotInDenied() {
+        // Given
         List<StatusEnum> statusList = List.of(StatusEnum.PENDING, StatusEnum.APPROVED);
+        UserRequest expectedUserRequest = new UserRequest();
 
-        Mockito.when(userRequestRepository.findByStatusInAndVatNrAndEmail(statusList,
-                UserRequestMotherObject.request1.vatNr(), UserRequestMotherObject.request1.email()))
-                .thenReturn(Optional.of(new UserRequest()));
+        // When
+        Mockito.when(userRequestRepository.findByStatusInAndVatNrAndEmail(
+                statusList,
+                UserRequestMotherObject.request1.vatNr(),
+                UserRequestMotherObject.request1.email()))
+                .thenReturn(Optional.of(expectedUserRequest));
+
+        // Then
+        Optional<UserRequest> actualUserRequest = userRequestRepository.findByStatusInAndVatNrAndEmail(
+                statusList,
+                UserRequestMotherObject.request1.vatNr(),
+                UserRequestMotherObject.request1.email());
+        assertThat(actualUserRequest).isPresent().contains(expectedUserRequest);
     }
 
 }

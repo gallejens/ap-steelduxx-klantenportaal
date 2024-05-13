@@ -1,6 +1,5 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.DeleteAccountDto;
 import com.ap.steelduxxklantenportaal.dtos.ChangePasswordDto;
 import com.ap.steelduxxklantenportaal.dtos.SignInRequestDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;

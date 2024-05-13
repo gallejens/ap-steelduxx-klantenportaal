@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
@@ -32,7 +31,8 @@ public class Company {
     private String referenceCode;
     private boolean deleted = Boolean.FALSE;
 
-    public Company( String name, String country, String phoneNr, String vatNr, String postalCode, String district, String street, String streetNr, String boxNr, String extraInfo, String referenceCode) {
+    public Company(String name, String country, String phoneNr, String vatNr, String postalCode, String district,
+            String street, String streetNr, String boxNr, String extraInfo, String referenceCode) {
         this.name = name;
         this.country = country;
         this.phoneNr = phoneNr;

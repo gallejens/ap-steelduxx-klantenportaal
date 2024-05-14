@@ -1,10 +1,7 @@
 package com.ap.steelduxxklantenportaal.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
@@ -14,6 +11,7 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @NoArgsConstructor
 @SQLRestriction("deleted=false")
+@ToString
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,13 +42,5 @@ public class Company {
         this.boxNr = boxNr;
         this.extraInfo = extraInfo;
         this.referenceCode = referenceCode;
-    }
-
-    @Override
-    public String toString() {
-        return "Company [id=" + id + ", name=" + name + ", country=" + country + ", phoneNr=" + phoneNr
-                + ", vatNr=" + vatNr + ", postalCode=" + postalCode + ", district=" + district + ", street=" + street
-                + ", streetNr=" + streetNr + ", boxNr=" + boxNr + ", extraInfo=" + extraInfo + ", referenceCode="
-                + referenceCode + "]";
     }
 }

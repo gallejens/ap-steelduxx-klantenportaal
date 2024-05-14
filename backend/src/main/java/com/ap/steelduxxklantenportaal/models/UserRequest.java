@@ -2,9 +2,15 @@ package com.ap.steelduxxklantenportaal.models;
 
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "user_requests")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class UserRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +49,6 @@ public class UserRequest {
     @Column(name = "deny_message")
     private String denyMessage;
 
-    public UserRequest() {
-    }
-
     public UserRequest(String companyName, String country, String phoneNr, String vatNr, String postalCode,
             String district, String street, String streetNr, String boxNr, String extraInfo, String firstName,
             String lastName,
@@ -67,150 +70,4 @@ public class UserRequest {
         this.status = status;
         this.denyMessage = denyMessage;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getPhoneNr() {
-        return phoneNr;
-    }
-
-    public void setPhoneNr(String phoneNr) {
-        this.phoneNr = phoneNr;
-    }
-
-    public String getVatNr() {
-        return vatNr;
-    }
-
-    public void setVatNr(String vatNr) {
-        this.vatNr = vatNr;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getStreetNr() {
-        return streetNr;
-    }
-
-    public void setStreetNr(String streetNr) {
-        this.streetNr = streetNr;
-    }
-
-    public String getBoxNr() {
-        return boxNr;
-    }
-
-    public String getExtraInfo() {
-        return extraInfo;
-    }
-
-    public void setExtraInfo(String extraInfo) {
-        this.extraInfo = extraInfo;
-    }
-
-    public void setBoxNr(String boxNr) {
-        this.boxNr = boxNr;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Long getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Long createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public StatusEnum getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusEnum status) {
-        this.status = status;
-    }
-
-    public String getDenyMessage() {
-        return denyMessage;
-    }
-
-    public void setDenyMessage(String denyMessage) {
-        this.denyMessage = denyMessage;
-    }
-
-    @Override
-    public String toString() {
-        return "UserRequestValue [id=" + id + ", companyName=" + companyName + ", country=" + country + ", phoneNr="
-                + phoneNr + ", vatNr=" + vatNr + ", postalCode=" + postalCode + ", district=" + district + ", street="
-                + street + ", streetNr=" + streetNr + ", boxNr=" + boxNr + ", extraInfo=" + extraInfo + ", firstName="
-                + firstName + ", lastName=" + lastName + ", email=" + email + ", createdOn=" + createdOn + ", status="
-                + status + ", denyMessage=" + denyMessage + "]";
-    }
-
 }

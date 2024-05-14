@@ -32,8 +32,7 @@ public class CompanyInfoService {
             CompanyInfoAccountRepository companyInfoAccountRepository,
             CompanyRepository companyRepository,
             AuthService authService,
-            UserCompanyRepository userCompanyRepository
-    ) {
+            UserCompanyRepository userCompanyRepository) {
         this.companyInfoAccountRepository = companyInfoAccountRepository;
         this.companyRepository = companyRepository;
         this.authService = authService;
@@ -69,7 +68,8 @@ public class CompanyInfoService {
 
     private List<CompanyInfoDto> getCompanyInfoByUserId(long userId) {
         var company = companyRepository.findByUserId(userId).orElse(null);
-        if (company == null) return null;
+        if (company == null)
+            return null;
 
         var accounts = companyInfoAccountRepository.findAllByCompanyId(company.getId());
 
@@ -90,11 +90,13 @@ public class CompanyInfoService {
         PermissionEnum requiredPermission;
         RoleEnum newAccountRole;
         if (createSubaccountDto.companyId() == null) {
-            // If no company id is provided, target account is admin and initiating user needs create admin perm
+            // If no company id is provided, target account is admin and initiating user
+            // needs create admin perm
             requiredPermission = PermissionEnum.CREATE_ADMIN_ACCOUNTS;
             newAccountRole = RoleEnum.ROLE_ADMIN;
         } else {
-            // If company id is provided, target account is user and initiating user needs create user perm
+            // If company id is provided, target account is user and initiating user needs
+            // create user perm
             requiredPermission = PermissionEnum.CREATE_USER_ACCOUNTS;
             newAccountRole = RoleEnum.ROLE_USER;
 
@@ -106,7 +108,8 @@ public class CompanyInfoService {
             // make sure initiating user belongs to company when head_user performs action
             if (user.getRole() == RoleEnum.ROLE_HEAD_USER) {
                 var userCompany = userCompanyRepository.findById(user.getId());
-                if (userCompany.isEmpty() || !userCompany.get().getCompanyId().equals(createSubaccountDto.companyId())) {
+                if (userCompany.isEmpty()
+                        || !userCompany.get().getCompanyId().equals(createSubaccountDto.companyId())) {
                     return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
                 }
             }
@@ -123,16 +126,13 @@ public class CompanyInfoService {
                     UUID.randomUUID().toString(),
                     createSubaccountDto.firstName(),
                     createSubaccountDto.lastName(),
-                    newAccountRole
-            );
+                    newAccountRole);
 
             if (createSubaccountDto.companyId() != null) {
                 userCompanyRepository.save(
                         new UserCompany(
                                 newUser.getId(),
-                                createSubaccountDto.companyId()
-                        )
-                );
+                                createSubaccountDto.companyId()));
             }
 
             authService.sendChoosePasswordEmail(newUser.getEmail(), 30 * 24 * 60 * 60); // one month
@@ -169,6 +169,7 @@ public class CompanyInfoService {
                     }
                 }
             }
+            default -> throw new IllegalArgumentException("Unexpected value: " + userToDelete.getRole());
         }
         if (!canDeleteUser) {
             return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
@@ -218,4 +219,4 @@ public class CompanyInfoService {
 
         return ResponseHandler.generate("success", HttpStatus.OK);
     }
- }
+}

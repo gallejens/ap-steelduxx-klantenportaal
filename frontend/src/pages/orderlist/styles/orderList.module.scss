@@ -15,11 +15,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
-    & > .search_bar {
-      min-width: 10rem;
-      width: 30%;
-    }
   }
 
   & > .body {

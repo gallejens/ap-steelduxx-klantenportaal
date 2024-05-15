@@ -474,5 +474,8 @@
   },
   "manualPage": {
     "noAccess": "You do not have access to this page"
+  },
+  "multisearch": {
+    "inputPlaceholder": "Search..."
   }
 }

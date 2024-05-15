@@ -473,5 +473,8 @@
   },
   "manualPage": {
     "noAccess": "Je hebt geen toegang tot deze pagina"
+  },
+  "multisearch": {
+    "inputPlaceholder": "Zoeken..."
   }
 }

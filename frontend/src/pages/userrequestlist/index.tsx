@@ -1,9 +1,9 @@
 import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Tabs, TextInput } from '@mantine/core';
+import { ActionIcon, Tabs } from '@mantine/core';
 import styles from './styles/userRequestList.module.scss';
 import { useNavigate } from '@tanstack/react-router';
-import { IconArrowRight, IconSearch, IconTrash } from '@tabler/icons-react';
+import { IconArrowRight, IconTrash } from '@tabler/icons-react';
 import { Table } from '@/components/table';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -13,11 +13,12 @@ import { notifications } from '@/components/notifications';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
 import type { UserRequest } from '@/types/api';
+import { MultiSearch } from '@/components/multisearch';
 
 export const UserRequestListPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValues, setSearchValues] = useState<string[]>([]);
   const { openModal, closeModal } = useModalStore();
   const client = useQueryClient();
 
@@ -129,11 +130,9 @@ export const UserRequestListPage: FC = () => {
   return (
     <div className={styles.userrequest_list_page}>
       <div className={styles.header}>
-        <TextInput
-          className={styles.search_bar}
-          leftSection={<IconSearch />}
-          value={searchValue}
-          onChange={e => setSearchValue(e.target.value)}
+        <MultiSearch
+          onChange={newValues => setSearchValues(newValues)}
+          inputWidth='30rem'
         />
       </div>
       <Tabs
@@ -159,7 +158,7 @@ export const UserRequestListPage: FC = () => {
             className={styles.userrequest_table}
           >
             <Table
-              searchValue={searchValue}
+              searchValue={searchValues}
               storageKey='userrequest_list'
               translationKey='userRequestListPage:table'
               columns={[

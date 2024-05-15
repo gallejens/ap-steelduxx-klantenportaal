@@ -1,24 +1,19 @@
 import { doApiAction } from '@/lib/api';
 import type { CompanyInfo } from '@/types/api';
 
-export const fetchCompanyInfoList = async (): Promise<{
-  adminInfo: CompanyInfo | null;
-  companies: CompanyInfo[];
-}> => {
+export const fetchCompanyInfoList = async () => {
   const companies = await doApiAction<CompanyInfo[]>({
     endpoint: '/company-info/all',
     method: 'GET',
   });
 
-  if (!companies) return { adminInfo: null, companies: [] };
+  if (!companies) return [];
 
   const adminCompanyIdx = companies.findIndex(c => c.company === null);
-  if (adminCompanyIdx === -1) {
-    return { adminInfo: null, companies };
-  }
+  if (adminCompanyIdx === -1) return companies;
 
-  return {
-    adminInfo: companies[adminCompanyIdx],
-    companies: companies.filter((_, i) => i !== adminCompanyIdx),
-  };
+  return [
+    companies[adminCompanyIdx],
+    ...companies.filter((_, i) => i !== adminCompanyIdx),
+  ];
 };

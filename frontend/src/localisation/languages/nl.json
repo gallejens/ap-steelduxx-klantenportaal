@@ -78,10 +78,10 @@
     "userRequestLabel": "Heeft u al een account?",
     "loginLink": "Log in",
 
-    "referenceCodeInputTitle": "Referentie code",
-    "referenceCodeInputDescription": "Selecteer de referentie code in van het bedrijf",
+    "referenceCodeInputTitle": "Bedrijfs code",
+    "referenceCodeInputDescription": "Selecteer de bedrijfs code van het bedrijf",
     "referenceCodeInputPlaceholder": "SOF1",
-    "referenceCodeInputError": "Referentie code van bedrijf is vereist",
+    "referenceCodeInputError": "Bedrijfs code van bedrijf is vereist",
 
     "denyMessageInputTitle": "Motivatie",
     "denyMessageInputDescription": "Vul hier de motivatie voor het afkeuren",
@@ -439,18 +439,17 @@
   "orderRequestListPage": {
     "table": {
       "id": "Volg ID",
-      "customerCode": "Klant Id",
+      "companyName": "Bedrijf",
       "transportType": "Transport type",
       "portOfOriginCode": "Haven van Herkomst Code",
-      "portOfDestinationCode": "Haven van Bestemming Code",
-      "navigate": "Behandel"
+      "portOfDestinationCode": "Haven van Bestemming Code"
     }
   },
   "orderRequestForm": {
     "idInputTitle": "Volg ID",
     "statusInputTitle": "Status",
     "transportTypeInputTitle": "Transport Type",
-    "customerCodeInputTitle": "Bedrijf ID",
+    "companyNameInputTitle": "Bedrijf",
     "portOfDestinationInputTitle": "Haven van bestemming",
     "portOfOriginInputTitle": "Haven van herkomst",
     "productName": "Product Naam",

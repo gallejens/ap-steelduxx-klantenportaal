@@ -78,10 +78,10 @@
     "userRequestLabel": "Already have an account?",
     "loginLink": "Log in",
 
-    "referenceCodeInputTitle": "Reference code",
-    "referenceCodeInputDescription": "Select the reference code of the company here",
+    "referenceCodeInputTitle": "Company code",
+    "referenceCodeInputDescription": "Select the company code of the company here",
     "referenceCodeInputPlaceholder": "SOF1",
-    "referenceCodeInputError": "Reference code of company is required",
+    "referenceCodeInputError": "Company code of company is required",
 
     "denyMessageInputTitle": "Motivation",
     "denyMessageInputDescription": "Fill in the motivation for the rejection here",
@@ -133,6 +133,7 @@
     "table": {
       "referenceNumber": "Reference Number",
       "customerReferenceNumber": "Customer Reference Number",
+
       "state": "State",
       "transportType": "Transport Type",
       "portOfOriginCode": "Port of Origin Code",
@@ -439,18 +440,17 @@
   "orderRequestListPage": {
     "table": {
       "id": "Follow ID",
-      "customerCode": "Company Id",
+      "companyName": "Company",
       "transportType": "Transport type",
       "portOfOriginCode": "Port of Origin Code",
-      "portOfDestinationCode": "Port of Destination Code",
-      "navigate": "Review"
+      "portOfDestinationCode": "Port of Destination Code"
     }
   },
   "orderRequestForm": {
     "idInputTitle": "Follow ID",
     "statusInputTitle": "Status",
     "transportTypeInputTitle": "Transport Type",
-    "customerCodeInputTitle": "Company ID",
+    "companyNameInputTitle": "Company",
     "portOfDestinationInputTitle": "Port of Destination",
     "portOfOriginInputTitle": "Port of Origin",
     "productName": "Product Name",

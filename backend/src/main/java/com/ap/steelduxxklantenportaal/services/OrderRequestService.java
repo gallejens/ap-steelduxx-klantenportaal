@@ -7,6 +7,7 @@ import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestProductDto;
 import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestUploadDto;
 import com.ap.steelduxxklantenportaal.enums.OrderTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
+import com.ap.steelduxxklantenportaal.models.Company;
 import com.ap.steelduxxklantenportaal.models.OrderRequest;
 import com.ap.steelduxxklantenportaal.models.OrderRequestDocument;
 import com.ap.steelduxxklantenportaal.models.OrderRequestProduct;
@@ -38,7 +39,7 @@ public class OrderRequestService {
             OrderRequestProductRepository orderRequestProductRepository,
             OrderRequestDocumentRepository orderRequestDocumentRepository,
             CompanyRepository companyRepository,
-            ExternalApiService externalApiService, 
+            ExternalApiService externalApiService,
             FileSystemStorageService fileSystemStorageService) {
         this.orderRequestRepository = orderRequestRepository;
         this.orderRequestProductRepository = orderRequestProductRepository;
@@ -48,7 +49,6 @@ public class OrderRequestService {
         this.externalApiService = externalApiService;
     }
 
-
     public ResponseEntity<Object> approveOrderRequest(Long id) {
         OrderRequestDto orderRequestDto = getOrderRequestDto(id);
         updateOrderRequestStatus(id, StatusEnum.APPROVED);
@@ -56,7 +56,7 @@ public class OrderRequestService {
         return ResponseHandler.generate("orderRequestReviewPage:response:success", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> denyOrderRequest(Long id ) {
+    public ResponseEntity<Object> denyOrderRequest(Long id) {
         updateOrderRequestStatus(id, StatusEnum.DENIED);
         return ResponseHandler.generate("orderRequestReviewPage:response:denied", HttpStatus.OK);
     }
@@ -69,13 +69,13 @@ public class OrderRequestService {
         if (company.isEmpty())
             return null;
 
-        var companyCode = company.get().getReferenceCode();
+        var companyId = company.get().getId();
 
         OrderTypeEnum orderType = newOrderRequestDto.isContainerOrder() ? OrderTypeEnum.CONTAINER
                 : OrderTypeEnum.BULK;
 
         OrderRequest orderRequest = new OrderRequest(
-                companyCode,
+                companyId,
                 newOrderRequestDto.transportType(),
                 newOrderRequestDto.portOfOriginCode(),
                 newOrderRequestDto.portOfDestinationCode(),
@@ -123,9 +123,11 @@ public class OrderRequestService {
                 .map(this::convertProductsToDTO)
                 .collect(Collectors.toList());
 
+        var company = companyRepository.findById(orderRequest.getCompanyId());
+
         return new OrderRequestListDto(
                 orderRequest.getId(),
-                orderRequest.getCustomerCode(),
+                company.get().getName(),
                 orderRequest.getStatus(),
                 orderRequest.getOrderType(),
                 orderRequest.getTransportType(),
@@ -135,17 +137,19 @@ public class OrderRequestService {
     }
 
     public OrderRequestDto convertOrderRequestToDTO(OrderRequest orderRequest) {
-        List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository.findAllByOrderRequestId(orderRequest.getId()).stream()
+        List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository
+                .findAllByOrderRequestId(orderRequest.getId()).stream()
                 .map(this::convertProductsToDTO)
                 .collect(Collectors.toList());
 
+        var company = companyRepository.findById(orderRequest.getCompanyId());
+
         return new OrderRequestDto(
-                orderRequest.getCustomerCode(),
+                company.get().getName(),
                 orderRequest.getTransportType().toString(),
                 orderRequest.getPortOfOriginCode(),
                 orderRequest.getOrderType().toString(),
-                orderRequestProductDtos
-        );
+                orderRequestProductDtos);
     }
 
     public List<OrderRequestListDto> getAll() {
@@ -160,7 +164,7 @@ public class OrderRequestService {
         return convertOrderRequestListToDTO(orderRequest);
     }
 
-    public OrderRequestDto getOrderRequestDto(Long id){
+    public OrderRequestDto getOrderRequestDto(Long id) {
         OrderRequest orderRequest = orderRequestRepository.findById(id).orElseThrow();
         return convertOrderRequestToDTO(orderRequest);
     }

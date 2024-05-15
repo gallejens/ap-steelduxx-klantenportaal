@@ -95,7 +95,7 @@ export type UserRequest = {
 
 export type OrderRequest = {
   id: string;
-  customerCode: string;
+  companyName: string;
   transportType: string;
   portOfOriginCode: string;
   portOfDestinationCode: string;

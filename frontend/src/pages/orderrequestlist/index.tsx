@@ -34,7 +34,7 @@ export const OrderRequestListPage: FC = () => {
         OrderRequest['status'],
         {
           id: string;
-          customerCode: string;
+          companyName: string;
           transportType: string;
           portOfOriginCode: string;
           portOfDestinationCode: string;
@@ -46,7 +46,7 @@ export const OrderRequestListPage: FC = () => {
     const requestsForStatus = (acc[orderRequest.status] ??= []);
     requestsForStatus.push({
       id: `#${orderRequest.id}`,
-      customerCode: orderRequest.customerCode,
+      companyName: orderRequest.companyName,
       transportType: orderRequest.transportType,
       portOfOriginCode: orderRequest.portOfOriginCode,
       portOfDestinationCode: orderRequest.portOfDestinationCode,
@@ -107,11 +107,17 @@ export const OrderRequestListPage: FC = () => {
               translationKey='orderRequestListPage:table'
               columns={[
                 { key: 'id', defaultSort: true },
-                { key: 'customerCode', initialWidth: 200 },
+                { key: 'companyName', initialWidth: 200 },
                 { key: 'transportType', initialWidth: 150 },
                 { key: 'portOfOriginCode', initialWidth: 150 },
                 { key: 'portOfDestinationCode', initialWidth: 150 },
-                { key: 'navigate', initialWidth: 50 },
+                {
+                  key: 'navigate',
+                  emptyHeader: true,
+                  initialWidth: 50,
+                  disallowSorting: true,
+                  disableResizing: true,
+                },
               ]}
               data={tableData[status] ?? []}
             />

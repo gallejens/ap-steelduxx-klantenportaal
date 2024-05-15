@@ -15,4 +15,5 @@ export default defineConfig({
     strictPort: true,
   },
   envDir: './env',
+  assetsInclude: ['**/*.md'],
 });

@@ -319,6 +319,12 @@
       "companies": "Bedrijfsgegevens",
       "orderrequests": "Order Aanvragen"
     },
+    "header": {
+      "tooltips": {
+        "notifications": "Notificaties",
+        "manual": "Gebruikershandleiding"
+      }
+    },
     "userOptions": {
       "logout": "Uitloggen",
       "changePassword": "Wachtwoord veranderen",
@@ -424,7 +430,7 @@
     },
     "tooltips": {
       "subaccount": "Maak Subaccount",
-      "open": "Open",
+      "expand": "Openklappen",
       "collapse": "Dichtklappen",
       "changeHead": "Maak Hoofdgebruiker",
       "delete": "Verwijder"
@@ -465,5 +471,8 @@
   },
   "pageTitleHelper": {
     "title": "Steelduxx - Klantenportaal"
+  },
+  "manualPage": {
+    "noAccess": "Je hebt geen toegang tot deze pagina"
   }
 }

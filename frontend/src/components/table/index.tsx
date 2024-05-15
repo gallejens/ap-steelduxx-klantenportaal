@@ -8,8 +8,8 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/table.module.scss';
-import { Button, Pagination, Text } from '@mantine/core';
-import { useElementSize } from '@mantine/hooks';
+import { Pagination, Text } from '@mantine/core';
+import { useElementSize, useLocalStorage } from '@mantine/hooks';
 import { useRemToPx } from '@/hooks/useRemToPx';
 import { DEFAULT_EMPTY_CELL_PLACEHOLDER, DEFAULT_WIDTHS } from './constants';
 import { SortButton } from './components/SortButton';
@@ -20,7 +20,6 @@ import {
   normalizeSearchValues,
 } from './util';
 import { ColumnSelector } from './components/ColumnSelector';
-import { IconEyeOff } from '@tabler/icons-react';
 
 export const Table = <T extends string>(props: NTable.Props<T>) => {
   const { t } = useTranslation();
@@ -38,8 +37,10 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
   const columnRefs = useRef<Partial<Record<T, HTMLDivElement | null>>>({});
   const [resizingColumnKey, setResizingColumnKey] = useState<T | null>(null);
 
-  const [columnSelectorOpen, setColumnSelectorOpen] = useState(false);
-  const [disabledColumns, setDisabledColumns] = useState<T[]>([]);
+  const [disabledColumns, setDisabledColumns] = useLocalStorage<T[]>({
+    key: `disabledColumns_${props.storageKey}`,
+    defaultValue: [],
+  });
 
   const tableRef = useRef<HTMLDivElement | null>(null);
 
@@ -121,8 +122,6 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
 
   // Load all column sizes from storage
   useEffect(() => {
-    if (!props.storageKey) return;
-
     const savedSizesJSON = localStorage.getItem(
       buildColumnSizeStorageKey(props.storageKey)
     );
@@ -169,21 +168,19 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
       applyResizeHandlerDraggingStyles(false);
 
       // save column sizes to storage
-      if (props.storageKey) {
-        const sizes: Record<string, string> = {};
-        for (const [key, ref] of Object.entries(columnRefs.current) as [
-          T,
-          HTMLDivElement | null,
-        ][]) {
-          if (ref === null) continue;
-          sizes[key] = ref.style.width;
-        }
-
-        localStorage.setItem(
-          buildColumnSizeStorageKey(props.storageKey),
-          JSON.stringify(sizes)
-        );
+      const sizes: Record<string, string> = {};
+      for (const [key, ref] of Object.entries(columnRefs.current) as [
+        T,
+        HTMLDivElement | null,
+      ][]) {
+        if (ref === null) continue;
+        sizes[key] = ref.style.width;
       }
+
+      localStorage.setItem(
+        buildColumnSizeStorageKey(props.storageKey),
+        JSON.stringify(sizes)
+      );
     };
   }, [resizingColumnKey]);
 
@@ -309,25 +306,14 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
           onChange={page => setActivePage(page)}
         />
         <div className={styles.right_side}>
-          <Button
-            onClick={() => {
-              setColumnSelectorOpen(s => !s);
-            }}
-            leftSection={<IconEyeOff />}
-            size='xs'
-          >
-            {t('table:columnSelectorButton')}
-          </Button>
-          {columnSelectorOpen && (
-            <ColumnSelector
-              columns={props.columns.map(c => ({
-                label: t(`${props.translationKey}:${c.key}`),
-                key: c.key,
-                disabled: disabledColumns.includes(c.key),
-              }))}
-              onClick={toggleDisableColumn}
-            />
-          )}
+          <ColumnSelector
+            columns={props.columns.map(c => ({
+              label: t(`${props.translationKey}:${c.key}`),
+              key: c.key,
+              disabled: disabledColumns.includes(c.key),
+            }))}
+            onClick={toggleDisableColumn}
+          />
         </div>
       </div>
     </div>

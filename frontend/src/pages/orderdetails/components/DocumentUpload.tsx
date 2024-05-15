@@ -9,10 +9,10 @@ import { doApiAction } from '@/lib/api';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 
 interface DocumentUploadProps {
-  orderDetail: OrderDetails;
+  orderDetails: OrderDetails;
 }
 
-export const DocumentUpload: FC<DocumentUploadProps> = ({ orderDetail }) => {
+export const DocumentUpload: FC<DocumentUploadProps> = ({ orderDetails }) => {
   const { t } = useTranslation();
 
   const { order_id: orderId } = useParams({
@@ -103,7 +103,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ orderDetail }) => {
         />
       </div>
       <div className={styles.documentItem}>
-        {orderDetail?.billOfLadingDownloadLink ? (
+        {orderDetails.billOfLadingDownloadLink ? (
           <>
             <p>Bill of Lading Document</p>
             <Button onClick={() => handleDownload('bl')}>
@@ -120,7 +120,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ orderDetail }) => {
         )}
       </div>
       <div className={styles.documentItem}>
-        {orderDetail.packingListDownloadLink !== null ? (
+        {orderDetails.packingListDownloadLink !== null ? (
           <>
             <p>Packing List Document</p>
             <Button onClick={() => handleDownload('packing')}>
@@ -137,7 +137,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ orderDetail }) => {
         )}
       </div>
       <div className={styles.documentItem}>
-        {orderDetail.customsDownloadLink !== null ? (
+        {orderDetails.customsDownloadLink !== null ? (
           <>
             <p>Customs Document</p>
             <Button onClick={() => handleDownload('customs')}>

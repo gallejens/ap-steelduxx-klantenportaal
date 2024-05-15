@@ -8,7 +8,6 @@ import type { OrderDetails } from '@/types/api';
 import { OrderInfo } from './components/OrderInfo';
 import { MapInfo } from './components/MapInfo';
 import { ProductList } from './components/ProductList';
-import { DocumentUpload } from './components/DocumentUpload';
 import { Title } from '@mantine/core';
 
 export const OrderDetailsPage: FC = () => {
@@ -38,8 +37,6 @@ export const OrderDetailsPage: FC = () => {
       }),
   });
 
-  console.log('Order details loaded:', orderDetail);
-
   if (status === 'pending') {
     return <div>{t('orderDetailsPage:loading')}</div>;
   }
@@ -64,7 +61,9 @@ export const OrderDetailsPage: FC = () => {
         <div className={styles.columnLeft}>
           <div className={styles.topRow}>
             <OrderInfo orderDetail={orderDetail.data} />
-            <DocumentUpload orderDetail={orderDetail.data} />
+            {/* <div className={styles.documentsContainer}>
+              <OrderDocuments documents={} />
+            </div> */}
           </div>
           <div className={styles.bottomRow}>
             <ProductList orderDetail={orderDetail.data} />

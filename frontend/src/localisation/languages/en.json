@@ -480,5 +480,14 @@
   },
   "publicPageWrapper": {
     "goBack": "Go back"
+  },
+  "orderDocuments": {
+    "title": "Documenten",
+    "noFile": "No Document Present",
+    "tooltips": {
+      "upload": "Upload Document",
+      "download": "Download Document",
+      "remove": "Remove Document"
+    }
   }
 }

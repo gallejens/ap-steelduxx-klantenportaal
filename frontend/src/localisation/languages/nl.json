@@ -479,5 +479,14 @@
   },
   "publicPageWrapper": {
     "goBack": "Ga terug"
+  },
+  "orderDocuments": {
+    "title": "Documenten",
+    "noFile": "Geen document aanwezig",
+    "tooltips": {
+      "upload": "Document Uploaden",
+      "download": "Document Downloaden",
+      "remove": "Document Verwijderen"
+    }
   }
 }

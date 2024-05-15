@@ -1,219 +1,292 @@
 @use '../../../styles//mixins.scss';
 
-$order-padding: 20px;
-$section-margin: 20px;
 $section-background: #ffffff;
-$border-radius: 6px;
-$box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
 .orderDetails {
-  background-color: #f5f5f5;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
   .header {
-    font-size: 24px;
-    color: black;
-    margin-bottom: $section-margin;
+    margin-bottom: var(--mantine-spacing-sm);
+    width: 100%;
   }
 
-  p {
-    color: black;
-    font-weight: 500;
-  }
-  .title {
-    font-size: large;
-    padding-bottom: 0.5rem;
-  }
-  .subTitle {
-    font-weight: 100;
-    color: gray;
-  }
-
-  .topRow {
+  .container {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+    column-gap: var(--mantine-spacing-xl);
 
-    > div {
-      background-color: $section-background;
-      padding: 1rem;
-      padding-bottom: 0rem;
-      border-radius: 4px;
-      box-shadow: $box-shadow;
-    }
+    .columnLeft {
+      width: 70%;
 
-    .generalInfo,
-    .timeInfo,
-    .shipInfo {
-      width: calc(20% - 1rem);
-    }
-
-    .mapContainer {
-      width: calc(40% - 1rem);
-    }
-  }
-
-  .bottomRow {
-    display: flex;
-    justify-content: space-between;
-
-    .productsList {
-      width: calc(60% - 1rem);
-      flex: 2;
-      max-height: 285px;
-      background-color: $section-background;
-      padding: $order-padding;
-      margin-right: 1.4rem;
-      border-radius: $border-radius;
-      box-shadow: $box-shadow;
-      position: relative;
-
-      h2 {
-        position: sticky;
-        top: 0;
-        background-color: inherit;
-        z-index: 10;
-        // padding: 10px 0;
-        font-size: large;
-        margin-bottom: 0;
-      }
-
-      .tableContainer {
-        overflow-y: auto;
-        max-height: 230px;
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          table-layout: fixed;
-
-          thead {
-            th {
-              padding: 8px;
-              border-bottom: 1px solid #ddd;
-              background-color: #f0f0f0;
-              position: sticky;
-              top: 0;
-              z-index: 5;
-              text-align: center;
-            }
-          }
-
-          tbody {
-            tr {
-              border-bottom: 1px solid #eee;
-
-              &:last-child {
-                border-bottom: none;
-              }
-            }
-
-            td {
-              padding: 8px;
-              text-align: center;
-              vertical-align: middle;
-            }
-          }
-        }
-      }
-    }
-
-    .documentsContainer {
       display: flex;
       flex-direction: column;
-      padding: 15px;
-      gap: 2px;
-      width: 20vw;
-      height: 30vh;
-      background-color: $section-background;
-      border-radius: $border-radius;
-      box-shadow: $box-shadow;
 
-      .documentsTitle {
-        font-size: 18px;
-        color: black;
-        margin-bottom: 15px;
-      }
+      .topRow {
+        height: 52%;
 
-      .hiddenFileInput {
-        display: none;
-      }
-
-      .uploadButton {
-        padding: 10px 20px;
-        background-color: black;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-right: 10px;
-      }
-
-      .uploadButton:hover {
-        background-color: var(--mantine-color-primary-4);
-      }
-
-      .fileNameDisplay {
-        font-size: 16px;
-        color: #333;
-        margin-left: 10px;
-      }
-
-      .documentItem {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 0;
+        justify-content: space-around;
 
-        p {
-          flex: 1;
-          margin-right: 10px;
-          font-size: 16px;
-          color: black;
+        gap: var(--mantine-spacing-sm);
+        margin-bottom: var(--mantine-spacing-md);
+
+        .orderInfo {
+          width: 60%;
+
+          display: flex;
+          column-gap: var(--mantine-spacing-md);
+
+          .generalInfo {
+            width: 100%;
+            flex-grow: 0;
+
+            background-color: $section-background;
+            border-radius: var(--mantine-radius-md);
+            box-shadow: var(--mantine-shadow-sm);
+
+            padding: var(--mantine-spacing-md);
+          }
+
+          .firstRow {
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+
+            padding-bottom: var(--mantine-spacing-sm);
+            margin-bottom: var(--mantine-spacing-sm);
+            border-bottom: 1.5px solid var(--mantine-color-default-border);
+
+            .titleInfo {
+              width: 64%;
+              display: flex;
+              justify-content: space-between;
+
+              margin-top: 6px;
+              margin-left: var(--mantine-spacing-sm);
+            }
+
+            .transportBadge {
+              margin-top: 3px;
+            }
+          }
+
+          .secondRow {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+
+            padding-bottom: var(--mantine-spacing-sm);
+            margin-bottom: var(--mantine-spacing-sm);
+            border-bottom: 1.5px solid var(--mantine-color-default-border);
+
+            .subColumnLeft,
+            .subColumnRight {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+            }
+            .subColumnMiddle {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+
+          .thirdRow {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+
+            align-items: center;
+
+            padding-bottom: var(--mantine-spacing-sm);
+            margin-bottom: var(--mantine-spacing-sm);
+
+            .subColumn3,
+            .subColumn4,
+            .subColumn5,
+            .subColumn6 {
+              width: 25%;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+            }
+          }
+
+          .fourthRow {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+
+            align-items: center;
+
+            padding-bottom: var(--mantine-spacing-sm);
+            margin-bottom: var(--mantine-spacing-sm);
+            border-bottom: 1.5px solid var(--mantine-color-default-border);
+
+            .subColumn7,
+            .subColumn8 {
+              width: 50%;
+
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+
+              align-items: center;
+            }
+          }
+
+          .fifthRow {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+
+            align-items: center;
+
+            .subColumn9 {
+              display: flex;
+              flex-direction: column;
+            }
+
+            .subColumn10,
+            .subColumn11 {
+              width: 33%;
+
+              display: flex;
+              flex-direction: column;
+
+              align-items: center;
+              justify-content: center;
+              gap: 5%;
+            }
+          }
         }
 
-        button {
-          background-color: black;
-          border: none;
-          cursor: pointer;
-          padding: 5px 10px;
-          border-radius: 5px;
-          color: white;
-          font-size: 14px;
-          font-weight: 500;
-          transition: background-color 0.3s;
+        .documentsContainer {
+          width: 40%;
 
-          &:hover {
-            background-color: var(--mantine-color-primary-4);
-            color: white;
+          background-color: $section-background;
+          border-radius: var(--mantine-radius-md);
+          box-shadow: var(--mantine-shadow-sm);
+
+          display: flex;
+          flex-direction: column;
+
+          padding: var(--mantine-spacing-md);
+
+          .documentsFileselector {
+            margin-top: var(--mantine-spacing-sm);
+            margin-bottom: var(--mantine-spacing-sm);
+          }
+
+          .order_documents {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mantine-spacing-md);
+
+            & > div {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+
+              padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+              border-radius: var(--mantine-radius-default);
+              border: 1px solid var(--mantine-color-default-border);
+
+              & > .info {
+                display: flex;
+                flex-direction: column;
+              }
+            }
+          }
+        }
+      }
+
+      .bottomRow {
+        height: 48%;
+        min-height: 390px;
+
+        display: flex;
+        justify-content: space-between;
+
+        gap: var(--mantine-spacing-sm);
+
+        .productsList {
+          width: 100%;
+
+          background-color: $section-background;
+          border-radius: var(--mantine-radius-md);
+          box-shadow: var(--mantine-shadow-sm);
+
+          padding: var(--mantine-spacing-md);
+
+          .tableContainer {
+            overflow-y: auto;
+            max-height: 300px;
+
+            margin-top: var(--mantine-spacing-sm);
+
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              table-layout: fixed;
+
+              thead {
+                th {
+                  padding: 8px;
+                  border-bottom: 1px solid #ddd;
+                  background-color: #f0f0f0;
+                  position: sticky;
+                  top: 0;
+                  z-index: 5;
+                  text-align: center;
+                }
+              }
+
+              tbody {
+                tr {
+                  border-bottom: 1px solid #eee;
+
+                  &:last-child {
+                    border-bottom: none;
+                  }
+
+                  td {
+                    padding: 8px;
+                    text-align: center;
+                    vertical-align: middle;
+                  }
+                }
+              }
+            }
           }
         }
       }
     }
+
+    .columnRight {
+      width: 30%;
+
+      display: flex;
+      flex-direction: column;
+
+      .mapContainer {
+        width: 100%;
+
+        background-color: $section-background;
+        border-radius: var(--mantine-radius-md);
+        box-shadow: var(--mantine-shadow-sm);
+
+        padding: var(--mantine-spacing-md);
+      }
+    }
   }
 
-  .sailing {
-    color: orange;
-  }
-  .planned {
-    color: blue;
-  }
-  .created {
-    color: black;
-  }
-  .arrived {
-    color: green;
-  }
-  .closed {
-    color: red;
-  }
-  .loaded {
-    color: purple;
-  }
-
-  .import {
-    color: blue;
-  }
-  .export {
-    color: red;
+  .subTitle {
+    font-weight: 500;
   }
 }

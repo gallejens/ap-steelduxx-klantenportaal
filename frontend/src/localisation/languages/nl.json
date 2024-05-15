@@ -177,10 +177,10 @@
     "hsCode": "HsCode",
     "name": "Naam",
     "quantity": "Aantal",
-    "weight": "Gewicht",
+    "weight": "Gewicht (kg)",
     "container": "Container",
     "containerNumber": "Container Nummer",
-    "containerSize": "Container Grootte",
+    "containerSize": "Container Grootte (voet)",
     "containerType": "Container Type",
     "documents": "Documenten"
   },
@@ -258,7 +258,7 @@
       "quantity": "Hoeveelheid",
       "weight": "Totaal gewicht (kg)",
       "containerNumber": "Container nummer",
-      "containerSize": "Container grootte (feet)",
+      "containerSize": "Container grootte (voet)",
       "containerType": "Container type"
     },
     "addOrderButton": "Maak order aanvraag aan",

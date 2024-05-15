@@ -1,9 +1,7 @@
-import { ActionIcon, Divider, Text } from '@mantine/core';
+import { Divider } from '@mantine/core';
 import type { FC, PropsWithChildren } from 'react';
 import styles from './styles/publicpagewrapper.module.scss';
-import { IconArrowLeft } from '@tabler/icons-react';
-import { useRouter } from '@tanstack/react-router';
-import { LanguagePopOver } from '../languagepopover';
+import { Header } from './components/Header';
 
 type Props = {
   title?: string;
@@ -14,12 +12,10 @@ type Props = {
 };
 
 export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
-  const { history } = useRouter();
-
-  const hideHeader =
-    props.title === undefined &&
-    props.hideBackButton &&
-    props.hideLanguageSelector;
+  const showHeader =
+    props.title !== undefined ||
+    !props.hideBackButton ||
+    !props.hideLanguageSelector;
 
   return (
     <div className={styles.public_page_wrapper}>
@@ -27,27 +23,13 @@ export const PublicPageWrapper: FC<PropsWithChildren<Props>> = props => {
         className={styles.panel}
         style={{ width: props.panelWidth }}
       >
-        {!hideHeader && (
+        {showHeader && (
           <>
-            <div className={styles.header}>
-              {!props.hideBackButton && (
-                <ActionIcon
-                  onClick={() => history.go(-1)}
-                  className={styles.back_button}
-                >
-                  <IconArrowLeft />
-                </ActionIcon>
-              )}
-              <Text>{props.title}</Text>
-              <div className={styles.lang_selector}>
-                {!props.hideLanguageSelector && (
-                  <LanguagePopOver
-                    textColor={'var(--mantine-color-primary-7)'}
-                    paddingTop={'22px'}
-                  />
-                )}
-              </div>
-            </div>
+            <Header
+              title={props.title ?? ''}
+              showBackButton={!props.hideBackButton}
+              showLanguageSelector={!props.hideLanguageSelector}
+            />
             <Divider className={styles.divider} />
           </>
         )}

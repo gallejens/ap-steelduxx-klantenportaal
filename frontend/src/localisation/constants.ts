@@ -1,15 +1,24 @@
-import { GBFlag, NLFlag } from 'mantine-flagpack';
+import { GBFlag, NLFlag, type FlagProps } from 'mantine-flagpack';
+import type { FC } from 'react';
 
-export const LANGUAGES = [
+export const LANGUAGES: {
+  key: string;
+  label: string; // ex: 'English'
+  shortLabel: string; // ex: 'EN'
+  flag: FC<FlagProps>;
+  default?: boolean;
+}[] = [
   {
     key: 'en',
-    name: 'English',
+    label: 'English',
+    shortLabel: 'EN',
     flag: GBFlag,
     default: true,
   },
   {
     key: 'nl',
-    name: 'Nederlands',
+    label: 'Nederlands',
+    shortLabel: 'NL',
     flag: NLFlag,
   },
 ];

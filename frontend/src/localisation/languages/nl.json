@@ -476,5 +476,8 @@
   },
   "multisearch": {
     "inputPlaceholder": "Zoeken..."
+  },
+  "publicPageWrapper": {
+    "goBack": "Ga terug"
   }
 }

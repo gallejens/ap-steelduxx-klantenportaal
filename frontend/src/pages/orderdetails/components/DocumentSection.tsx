@@ -1,10 +1,11 @@
 import { type FC } from 'react';
-import styles from '../styles/orderDetails.module.scss';
 import type { OrderDetails, OrderDocumentType } from '@/types/api';
 import { doApiAction } from '@/lib/api';
 import { OrderDocuments } from '@/components/orderdocuments';
 import { buildDocumentsFromOrderDetails } from '../helpers';
 import { useQueryClient } from '@tanstack/react-query';
+import { notifications } from '@/components/notifications';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   orderDetails: OrderDetails;
@@ -13,6 +14,7 @@ type Props = {
 
 export const DocumentSection: FC<Props> = props => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const documents = buildDocumentsFromOrderDetails(props.orderDetails);
 
@@ -24,20 +26,31 @@ export const DocumentSection: FC<Props> = props => {
     });
 
     try {
-      if (response) {
-        const url = window.URL.createObjectURL(new Blob([response]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${orderId}-${documentType}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      } else {
-        alert('Download failed!');
+      if (!response) {
+        throw new Error();
       }
-    } catch (error) {
-      console.error('Download error:', error);
-      alert('Download failed!');
+
+      const pdfBlob = new Blob([response], { type: 'application/pdf' });
+
+      const url = window.URL.createObjectURL(pdfBlob);
+
+      const tempLink = document.createElement('a');
+      tempLink.href = url;
+      tempLink.setAttribute(
+        'download',
+        `${props.orderDetails.referenceNumber}-${type}.pdf`
+      );
+
+      document.body.appendChild(tempLink);
+      tempLink.click();
+
+      document.body.removeChild(tempLink);
+      window.URL.revokeObjectURL(url);
+    } catch (e: unknown) {
+      notifications.add({
+        message: t('orderDetailPage:documents:downloadFailed'),
+        autoClose: 10000,
+      });
     }
   };
 
@@ -61,7 +74,12 @@ export const DocumentSection: FC<Props> = props => {
 
     queryClient.invalidateQueries({ queryKey: ['orderDetails'] });
 
-    console.log(response);
+    notifications.add({
+      message: t(
+        `orderDetailPage:documents:uploadResponse:${response?.message ?? 'failed'}`
+      ),
+      autoClose: 10000,
+    });
   };
 
   return (
@@ -69,6 +87,7 @@ export const DocumentSection: FC<Props> = props => {
       documents={documents}
       onUpload={handleUpload}
       onDownload={handleDownload}
+      allowUploadWhenDocumentPresent
     />
   );
 };

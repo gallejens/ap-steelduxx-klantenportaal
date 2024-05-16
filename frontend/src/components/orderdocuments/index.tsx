@@ -12,6 +12,8 @@ import { IconUpload, IconTrash, IconDownload } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { IconButton } from '../iconbutton';
+import { useModalStore } from '@/stores/useModalStore';
+import { ConfirmModal } from '../modals';
 
 type Props = {
   className?: string;
@@ -30,8 +32,12 @@ type Props = {
 
 export const OrderDocuments: FC<Props> = props => {
   const { t } = useTranslation();
+  const { openModal, closeModal } = useModalStore();
 
-  const handleFileChange = (type: OrderDocumentType, file: File | null) => {
+  const handleFileChange = async (
+    type: OrderDocumentType,
+    file: File | null
+  ) => {
     if (!file) return;
 
     if (file.size > MAX_DOCUMENT_FILESIZE) {
@@ -41,6 +47,24 @@ export const OrderDocuments: FC<Props> = props => {
       });
       return;
     }
+
+    const confirmed = await new Promise<boolean>(resolve => {
+      openModal(
+        <ConfirmModal
+          title={t('orderDocuments:modals:uploadTitle')}
+          text={t('orderDocuments:modals:uploadText')}
+          onConfirm={() => {
+            resolve(true);
+            closeModal();
+          }}
+          onCancel={() => {
+            resolve(false);
+            closeModal();
+          }}
+        />
+      );
+    });
+    if (!confirmed) return;
 
     if ('onSelect' in props) {
       props.onSelect(type, file);
@@ -82,7 +106,11 @@ export const OrderDocuments: FC<Props> = props => {
                     <IconButton
                       {...props}
                       icon={<IconUpload />}
-                      tooltipKey='orderDocuments:tooltips:upload'
+                      tooltipKey={
+                        fileName === null
+                          ? 'orderDocuments:tooltips:upload'
+                          : 'orderDocuments:tooltips:replace'
+                      }
                     />
                   )}
                 </FileButton>

@@ -7,9 +7,8 @@ import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,15 +54,17 @@ public class OrdersService {
     public ResponseEntity<Object> downloadDocument(String orderId, OrderDocumentType type) {
         var user = AuthService.getCurrentUser();
         if (user == null) {
-            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        ;
 
         String endpoint = String.format("/document/download/%s/%s", orderId, type);
         byte[] data = externalApiService.doRequest(endpoint, HttpMethod.GET, byte[].class);
         String fileName = String.format("%s-%s.pdf", orderId, type);
 
-        return ResponseHandler.generate("success", HttpStatus.OK, data);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(new ByteArrayResource(data));
     }
 
     public boolean uploadDocument(String orderId, MultipartFile file, OrderDocumentType type, String customerCode) {

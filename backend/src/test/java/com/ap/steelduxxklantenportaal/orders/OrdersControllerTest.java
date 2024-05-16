@@ -1,7 +1,7 @@
 package com.ap.steelduxxklantenportaal.orders;
 
 import com.ap.steelduxxklantenportaal.controllers.OrdersController;
-import com.ap.steelduxxklantenportaal.dtos.externalapi.DocumentRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.UploadDocumentDto;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.OrdersService;
@@ -102,8 +102,6 @@ class OrdersControllerTest {
     void testUploadDocument_FailException() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "test.pdf", MediaType.APPLICATION_PDF_VALUE,
                 "PDF content".getBytes());
-        when(ordersService.uploadDocument(any(DocumentRequestDto.class), any(User.class), any(String.class)))
-                .thenThrow(new RuntimeException("Upload failed"));
 
         mockMvc.perform(multipart("/orders/upload-document")
                 .file(file)

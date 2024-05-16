@@ -1,13 +1,19 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.externalapi.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDetailsDto;
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.UploadDocumentDto;
+import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.models.User;
-
+import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 public class OrdersService {
@@ -29,7 +35,7 @@ public class OrdersService {
         return externalApiService.doRequest(endpoint, HttpMethod.GET, OrderDto[].class);
     }
 
-    public OrderDetailsDto getOrderDetails(long orderId, String customerCode) {
+    public OrderDetailsDto getOrderDetails(String orderId, String customerCode) {
         var user = AuthService.getCurrentUser();
         if (user == null)
             return null;
@@ -46,7 +52,55 @@ public class OrdersService {
         return externalApiService.doRequest(endpoint, HttpMethod.GET, OrderDetailsDto.class);
     }
 
-    public boolean uploadDocument(DocumentRequestDto documentRequest, User user, String customerCode) {
-        return externalApiService.uploadDocument(documentRequest, user, customerCode);
+    public ResponseEntity<Object> downloadDocument(String orderId, OrderDocumentType type) {
+        var user = AuthService.getCurrentUser();
+        if (user == null) {
+            return ResponseHandler.generate("failed", HttpStatus.NO_CONTENT);
+        }
+        ;
+
+        String endpoint = String.format("/document/download/%s/%s", orderId, type);
+        byte[] data = externalApiService.doRequest(endpoint, HttpMethod.GET, byte[].class);
+        String fileName = String.format("%s-%s.pdf", orderId, type);
+
+        return ResponseHandler.generate("success", HttpStatus.OK, data);
+    }
+
+    public boolean uploadDocument(String orderId, MultipartFile file, OrderDocumentType type, String customerCode) {
+        var user = AuthService.getCurrentUser();
+        if (user == null) {
+            return false;
+        }
+
+        var byteArray = convertFileToByteArray(file);
+        if (byteArray == null) {
+            return false;
+        }
+
+        var uploadDocumentDto = new UploadDocumentDto(orderId, type, byteArray);
+        String endpoint = determineUploadEndpoint(user, customerCode);
+        externalApiService.doRequest(endpoint, HttpMethod.POST, uploadDocumentDto, Void.class);
+
+        return true;
+    }
+
+    private String determineUploadEndpoint(User user, String customerCode) {
+        if (!user.hasPermission(PermissionEnum.ADMIN)) {
+            return "/document/upload";
+        }
+
+        if (customerCode == null || customerCode.isEmpty()) {
+            throw new IllegalArgumentException("Customer code is required for admin upload.");
+        }
+
+        return String.format("/admin/upload/%s", customerCode);
+    }
+
+    private byte[] convertFileToByteArray(MultipartFile file) {
+        try {
+            return file.getBytes();
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

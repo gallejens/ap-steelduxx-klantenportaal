@@ -99,8 +99,6 @@ export const OrderCreatePage: FC = () => {
   };
 
   const handleCreateOrderRequestButton = () => {
-    console.log(documents);
-
     if (products.length === 0) {
       notifications.add({
         message: t('newOrderPage:emptyProducts'),

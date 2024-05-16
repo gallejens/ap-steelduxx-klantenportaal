@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal.models;
 
-import com.ap.steelduxxklantenportaal.enums.DocumentType;
+import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
 import com.ap.steelduxxklantenportaal.models.idclasses.OrderRequestDocumentId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public class OrderRequestDocument {
     @Id
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private DocumentType type;
+    private OrderDocumentType type;
 
     @Column(name = "file_name")
     private String fileName;

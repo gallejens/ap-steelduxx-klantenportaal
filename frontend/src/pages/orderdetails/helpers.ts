@@ -1,4 +1,9 @@
-import type { ProductContainerType } from '@/types/api';
+import type {
+  OrderDetails,
+  OrderDocumentType,
+  ProductContainerType,
+} from '@/types/api';
+import { ORDER_DOCUMENT_TYPE_TO_ORDERDETAIL_KEY } from './constants';
 
 export const transformProductContainerType = (
   productContainerType: ProductContainerType
@@ -17,4 +22,17 @@ export const transformProductContainerType = (
     default:
       return 'null';
   }
+};
+
+export const buildDocumentsFromOrderDetails = (orderDetails: OrderDetails) => {
+  return Object.entries(ORDER_DOCUMENT_TYPE_TO_ORDERDETAIL_KEY).reduce(
+    (acc, [type, detailsKey]) => {
+      acc[type as OrderDocumentType] =
+        orderDetails[detailsKey] !== null
+          ? `${orderDetails.referenceNumber}-${type}.pdf`
+          : null;
+      return acc;
+    },
+    {} as Record<OrderDocumentType, string | null>
+  );
 };

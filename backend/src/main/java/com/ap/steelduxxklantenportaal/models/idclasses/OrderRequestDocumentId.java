@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal.models.idclasses;
 
-import com.ap.steelduxxklantenportaal.enums.DocumentType;
+import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +14,5 @@ import java.io.Serializable;
 @Setter
 public class OrderRequestDocumentId implements Serializable {
     private long orderRequestId;
-    private DocumentType type;
+    private OrderDocumentType type;
 }

@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestDeleteDto;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.services.UserRequestService;
 
@@ -53,7 +52,7 @@ class UserRequestDetailsTest {
     void givenUserRequestToApprove_whenApprovingUserRequest_thenUserRequestIsApproved()
             throws MessagingException, UserAlreadyExistsException {
         // Given
-        Number id = 1;
+        Long id = 1L;
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:success", "status",
                 HttpStatus.CREATED.toString());
         Mockito.when(userRequestService.approveUserRequest(id,
@@ -72,7 +71,7 @@ class UserRequestDetailsTest {
     @Test
     void givenUserRequestToDeny_whenDenyingUserRequest_thenUserRequestIsDenied() {
         // Given
-        Number id = 2;
+        Long id = 2L;
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:denied", "status",
                 HttpStatus.OK.toString());
         Mockito.when(
@@ -91,13 +90,12 @@ class UserRequestDetailsTest {
     void givenUserRequestToDeactivate_whenDeactivatingUserRequest_thenUserRequestIsDeactivated() {
         // Given
         Long id = 3L;
-        UserRequestDeleteDto userRequestDeleteDto = new UserRequestDeleteDto(id);
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:deleted");
         Mockito.when(userRequestService.deleteUserRequest(id))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
         // When
-        ResponseEntity<Object> response = userRequestController.deleteRequest(userRequestDeleteDto);
+        ResponseEntity<Object> response = userRequestController.deleteRequest(id);
 
         // Then
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());

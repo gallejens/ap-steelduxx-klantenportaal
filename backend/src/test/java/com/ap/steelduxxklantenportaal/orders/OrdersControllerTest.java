@@ -1,10 +1,8 @@
 package com.ap.steelduxxklantenportaal.orders;
 
 import com.ap.steelduxxklantenportaal.controllers.OrdersController;
-import com.ap.steelduxxklantenportaal.dtos.externalapi.UploadDocumentDto;
 import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
 import com.ap.steelduxxklantenportaal.models.User;
-import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.OrdersService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +22,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,9 +34,6 @@ class OrdersControllerTest {
 
     @Mock
     private OrdersService ordersService;
-
-    @Mock
-    private ExternalApiService externalApiService;
 
     @InjectMocks
     private OrdersController ordersController;

@@ -2,7 +2,7 @@ package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDetailsDto;
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDto;
-import com.ap.steelduxxklantenportaal.dtos.externalapi.UploadDocumentDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDocumentUploadDto;
 import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.models.User;
@@ -78,9 +78,9 @@ public class OrdersService {
             return false;
         }
 
-        var uploadDocumentDto = new UploadDocumentDto(orderId, type, byteArray);
+        var orderDocumentUploadDto = new OrderDocumentUploadDto(orderId, type, byteArray);
         String endpoint = determineUploadEndpoint(user, customerCode);
-        externalApiService.doRequest(endpoint, HttpMethod.POST, uploadDocumentDto, Void.class);
+        externalApiService.doRequest(endpoint, HttpMethod.POST, orderDocumentUploadDto, Void.class);
 
         return true;
     }

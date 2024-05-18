@@ -1,8 +1,8 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.DocumentRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.models.User;
@@ -47,6 +47,10 @@ public class ExternalApiService {
 
         // Save requested token to userId
         String token = requestToken(referenceCode);
+        if (token == null) {
+            return null;
+        }
+
         userTokens.put(user.getId(), token);
 
         return token;
@@ -65,7 +69,12 @@ public class ExternalApiService {
         ResponseEntity<ExternalApiAuthDto> response = restTemplate.postForEntity(baseUrl + "/authenticate/token",
                 entity, ExternalApiAuthDto.class);
 
-        return response.getBody().token();
+        var responseBody = response.getBody();
+        if (responseBody == null) {
+            return null;
+        }
+
+        return responseBody.token();
     }
 
     public <T> T doRequest(String endpoint, HttpMethod method, Class<T> responseType) {

@@ -1,4 +1,4 @@
-package com.ap.steelduxxklantenportaal.dtos.ExternalAPI;
+package com.ap.steelduxxklantenportaal.dtos.externalapi;
 
 import com.ap.steelduxxklantenportaal.enums.OrderStateEnum;
 import com.ap.steelduxxklantenportaal.enums.OrderTransportTypeEnum;

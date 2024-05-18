@@ -1,4 +1,4 @@
-package com.ap.steelduxxklantenportaal.dtos.OrderRequests;
+package com.ap.steelduxxklantenportaal.dtos.orderrequests;
 
 import java.util.List;
 

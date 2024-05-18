@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.OrdersService;

@@ -275,6 +275,7 @@ export const OrderCreatePage: FC = () => {
         </div>
         <div className={styles.table}>
           <Table
+            storageKey='neworderproducts_list'
             columns={[
               {
                 key: 'hsCode',

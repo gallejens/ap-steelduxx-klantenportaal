@@ -1,8 +1,8 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.DocumentRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.OrderDetailsDto;
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.OrderDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.DocumentRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDetailsDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.models.User;
 

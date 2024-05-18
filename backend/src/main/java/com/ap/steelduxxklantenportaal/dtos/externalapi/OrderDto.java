@@ -1,4 +1,4 @@
-package com.ap.steelduxxklantenportaal.dtos.ExternalAPI;
+package com.ap.steelduxxklantenportaal.dtos.externalapi;
 
 import java.util.List;
 

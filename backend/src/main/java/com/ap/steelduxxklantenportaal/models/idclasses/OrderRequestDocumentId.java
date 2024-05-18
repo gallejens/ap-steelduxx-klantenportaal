@@ -1,4 +1,4 @@
-package com.ap.steelduxxklantenportaal.models.IdClasses;
+package com.ap.steelduxxklantenportaal.models.idclasses;
 
 import com.ap.steelduxxklantenportaal.enums.DocumentType;
 import lombok.AllArgsConstructor;

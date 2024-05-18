@@ -2,8 +2,8 @@ package com.ap.steelduxxklantenportaal.orderrequest;
 
 import java.util.List;
 
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestProductDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.NewOrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestProductDto;
 import com.ap.steelduxxklantenportaal.enums.ContainerSizeEnum;
 import com.ap.steelduxxklantenportaal.enums.ContainerTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;

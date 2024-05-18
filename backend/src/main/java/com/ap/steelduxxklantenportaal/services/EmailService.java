@@ -21,6 +21,8 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String mailUsername;
 
+    private final String MESSAGE_CONTENT_TYPE = "text/html; charset=utf-8";
+
     public EmailService(JavaMailSender mailSender, TemplateEngine templateEngine) {
         this.mailSender = mailSender;
         this.templateEngine = templateEngine;
@@ -47,7 +49,7 @@ public class EmailService {
         String htmlContent = "<h1>Dit is een test Spring Boot email</h1>" +
                 "<p>Nieuwe TestValue: <strong>" + body + "</strong> </p>";
 
-        message.setContent(htmlContent, "text/html; charset=utf-8");
+        message.setContent(htmlContent, "");
 
         mailSender.send(message);
     }
@@ -67,7 +69,7 @@ public class EmailService {
         String htmlContent = templateEngine.process("registration-confirmation", context);
 
         // Set the content of the message as HTML
-        message.setContent(htmlContent, "text/html; charset=utf-8");
+        message.setContent(htmlContent, MESSAGE_CONTENT_TYPE);
 
         // Send the email
         mailSender.send(message);
@@ -85,7 +87,7 @@ public class EmailService {
         context.setVariable("link", choosePasswordLink);
 
         String htmlContent = templateEngine.process("choose-password", context);
-        message.setContent(htmlContent, "text/html; charset=utf-8");
+        message.setContent(htmlContent, MESSAGE_CONTENT_TYPE);
 
         mailSender.send(message);
     }

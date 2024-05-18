@@ -1,4 +1,5 @@
 package com.ap.steelduxxklantenportaal;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import com.ap.steelduxxklantenportaal.services.EmailService;
@@ -12,7 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.thymeleaf.TemplateEngine;
 
 @ExtendWith(MockitoExtension.class)
-public class EmailServiceTest {
+class EmailServiceTest {
 
     @Mock
     private JavaMailSender mailSender;
@@ -24,7 +25,7 @@ public class EmailServiceTest {
     private EmailService emailService;
 
     @Test
-    public void testSendSimpleEmail() {
+    void testSendSimpleEmail() {
         // Mock data
         String to = "test@example.com";
         String subject = "Test Subject";

@@ -1,13 +1,12 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestListDto;
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestProductDto;
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestUploadDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.NewOrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestListDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestProductDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestUploadDto;
 import com.ap.steelduxxklantenportaal.enums.OrderTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
-import com.ap.steelduxxklantenportaal.models.Company;
 import com.ap.steelduxxklantenportaal.models.OrderRequest;
 import com.ap.steelduxxklantenportaal.models.OrderRequestDocument;
 import com.ap.steelduxxklantenportaal.models.OrderRequestProduct;
@@ -140,7 +139,7 @@ public class OrderRequestService {
         List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository
                 .findAllByOrderRequestId(orderRequest.getId()).stream()
                 .map(this::convertProductsToDTO)
-                .collect(Collectors.toList());
+                .toList();
 
         var company = companyRepository.findById(orderRequest.getCompanyId());
 
@@ -156,7 +155,7 @@ public class OrderRequestService {
         List<OrderRequest> orderRequest = orderRequestRepository.findAll();
         return orderRequest.stream()
                 .map(this::convertOrderRequestListToDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public OrderRequestListDto getOrderRequest(Long id) {

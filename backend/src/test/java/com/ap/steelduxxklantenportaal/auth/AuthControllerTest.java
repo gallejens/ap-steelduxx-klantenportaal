@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerTest {
+class AuthControllerTest {
         @Autowired
         private AuthController authController;
         @Autowired
@@ -41,13 +41,13 @@ public class AuthControllerTest {
         private User testUser;
 
         @BeforeEach
-        public void setupTest() throws UserAlreadyExistsException {
+        void setupTest() throws UserAlreadyExistsException {
                 testUser = authService.addNewUser(AuthObjectMother.validUserEmail, AuthObjectMother.validUserPassword,
                                 "Test", "Test", RoleEnum.ROLE_USER);
         }
 
         @AfterEach
-        public void finishTest() {
+        void finishTest() {
                 userRepository.deleteById(testUser.getId());
         }
 
@@ -97,12 +97,12 @@ public class AuthControllerTest {
                 assertThat(
                                 Objects.requireNonNull(refreshResult.getResponse()
                                                 .getCookie(AuthService.ACCESS_TOKEN_COOKIE_NAME)).getValue())
-                                .isEqualTo("");
+                                .isEmpty();
                 assertThat(
                                 Objects.requireNonNull(refreshResult.getResponse()
                                                 .getCookie(AuthService.REFRESH_TOKEN_COOKIE_NAME))
                                                 .getValue())
-                                .isEqualTo("");
+                                .isEmpty();
         }
 
         @Test
@@ -117,14 +117,12 @@ public class AuthControllerTest {
 
                 assertThat(authCookies).isNotNull().isNotEmpty();
 
-                var accessToken = signinResult.getResponse().getCookie(AuthService.ACCESS_TOKEN_COOKIE_NAME).getValue();
+                var accessToken = Objects.requireNonNull(signinResult.getResponse().getCookie(AuthService.ACCESS_TOKEN_COOKIE_NAME)).getValue();
 
                 var refreshResult = mockMvc.perform(post("/auth/refresh").cookie(authCookies))
                                 .andExpect(status().is(200)).andReturn();
 
-                assertThat(accessToken.equals(
-                                refreshResult.getResponse().getCookie(AuthService.ACCESS_TOKEN_COOKIE_NAME).getValue()))
-                                .isFalse();
+                assertThat(accessToken).isNotEqualTo(Objects.requireNonNull(refreshResult.getResponse().getCookie(AuthService.ACCESS_TOKEN_COOKIE_NAME)).getValue());
         }
 
         @Test
@@ -140,7 +138,7 @@ public class AuthControllerTest {
                 assertThat(result.getResponse().getStatus()).isEqualTo(200);
 
                 var choosePasswordToken = choosePasswordTokenRepository.findById(testUser.getId());
-                assertThat(choosePasswordToken.isPresent()).isTrue();
+                assertThat(choosePasswordToken).isPresent();
         }
 
         @Test
@@ -173,7 +171,7 @@ public class AuthControllerTest {
                                 .andReturn();
 
                 var choosePasswordToken = choosePasswordTokenRepository.findById(testUser.getId());
-                assertThat(choosePasswordToken.isPresent()).isTrue();
+                assertThat(choosePasswordToken).isPresent();
 
                 var result = mockMvc.perform(
                                 get("/auth/choose-password/" + choosePasswordToken.get().getToken())).andReturn();
@@ -201,7 +199,7 @@ public class AuthControllerTest {
                                 .andReturn();
 
                 var choosePasswordToken = choosePasswordTokenRepository.findById(testUser.getId());
-                assertThat(choosePasswordToken.isPresent()).isTrue();
+                assertThat(choosePasswordToken).isPresent();
 
                 var result = mockMvc.perform(
                                 post("/auth/choose-password")
@@ -215,7 +213,7 @@ public class AuthControllerTest {
                 assertThat(result.getResponse().getStatus()).isEqualTo(200);
 
                 var updatedTestUser = userRepository.findById(testUser.getId()).orElseThrow();
-                assertThat(updatedTestUser.getPassword().equals(testUser.getPassword())).isFalse();
+                assertThat(updatedTestUser.getPassword()).isNotEqualTo(testUser.getPassword());
         }
 
         @Test
@@ -276,7 +274,7 @@ public class AuthControllerTest {
 
                 String newEncodedPassword = userRepository.findByEmail(testUser.getEmail()).orElseThrow().getPassword();
 
-                assertThat(testUser.getPassword().equals(newEncodedPassword)).isFalse();
+                assertThat(testUser.getPassword()).isNotEqualTo(newEncodedPassword);
         }
 
         @Test
@@ -304,6 +302,6 @@ public class AuthControllerTest {
 
                 String newEncodedPassword = userRepository.findByEmail(testUser.getEmail()).orElseThrow().getPassword();
 
-                assertThat(testUser.getPassword().equals(newEncodedPassword)).isTrue();
+                assertThat(testUser.getPassword()).isEqualTo(newEncodedPassword);
         }
 }

@@ -1,8 +1,8 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.NewOrderRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestListDto;
-import com.ap.steelduxxklantenportaal.dtos.OrderRequests.OrderRequestUploadDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.NewOrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestListDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestUploadDto;
 import com.ap.steelduxxklantenportaal.services.OrderRequestService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import org.springframework.http.HttpStatus;
@@ -29,8 +29,9 @@ public class OrderRequestController {
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public List<OrderRequestListDto> getAllOrderRequests() {
-        return orderRequestService.getAll();
+    public ResponseEntity<List<OrderRequestListDto>> getAllOrderRequests() {
+        var orderRequests = orderRequestService.getAll();
+        return ResponseEntity.ok(orderRequests);
     }
 
     @GetMapping("{id}")

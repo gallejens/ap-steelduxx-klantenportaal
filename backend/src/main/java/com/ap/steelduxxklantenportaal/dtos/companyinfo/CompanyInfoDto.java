@@ -1,4 +1,4 @@
-package com.ap.steelduxxklantenportaal.dtos.CompanyInfo;
+package com.ap.steelduxxklantenportaal.dtos.companyinfo;
 
 import com.ap.steelduxxklantenportaal.models.Company;
 import com.ap.steelduxxklantenportaal.models.CompanyInfoAccount;

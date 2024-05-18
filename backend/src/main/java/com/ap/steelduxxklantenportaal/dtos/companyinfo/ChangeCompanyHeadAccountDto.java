@@ -1,4 +1,4 @@
-package com.ap.steelduxxklantenportaal.dtos.CompanyInfo;
+package com.ap.steelduxxklantenportaal.dtos.companyinfo;
 
 public record ChangeCompanyHeadAccountDto(long companyId, String email) {
 }

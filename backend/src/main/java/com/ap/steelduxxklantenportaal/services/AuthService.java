@@ -35,9 +35,9 @@ import java.util.UUID;
 @Service
 public class AuthService {
     public static final String ACCESS_TOKEN_COOKIE_NAME = "access_token";
-    public static final long ACCESS_TOKEN_COOKIE_MAX_AGE = 3 * 60; // 3 minutes
+    public static final long ACCESS_TOKEN_COOKIE_MAX_AGE = 3L * 60; // 3 minutes
     public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
-    public static final long REFRESH_TOKEN_COOKIE_MAX_AGE = 72 * 60 * 60; // 3 days
+    public static final long REFRESH_TOKEN_COOKIE_MAX_AGE = 72L * 60 * 60; // 3 days
     public static final String REFRESH_TOKEN_COOKIE_PATH = "/api/auth";
 
     @Value("${frontend_url}")
@@ -109,22 +109,19 @@ public class AuthService {
 
     public ResponseEntity<Object> refresh(HttpServletRequest request, HttpServletResponse response) {
         String token = Cookies.getValue(request, REFRESH_TOKEN_COOKIE_NAME);
-
-        try {
-            if (token == null)
-                throw new RuntimeException();
-
-            RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow();
-            if (refreshToken.isExpired())
-                throw new RuntimeException();
-
-            User user = userRepository.findById(refreshToken.getUserId()).orElseThrow();
-
-            String accessToken = jwtService.generateToken(user.getUsername(), ACCESS_TOKEN_COOKIE_MAX_AGE);
-            Cookies.setCookie(response, ACCESS_TOKEN_COOKIE_NAME, accessToken, ACCESS_TOKEN_COOKIE_MAX_AGE);
-        } catch (Exception e) {
+        if (token == null) {
             return ResponseHandler.generate("refresh_failed", HttpStatus.UNAUTHORIZED);
         }
+
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow();
+        if (refreshToken.isExpired()) {
+            return ResponseHandler.generate("refresh_failed", HttpStatus.UNAUTHORIZED);
+        }
+
+        User user = userRepository.findById(refreshToken.getUserId()).orElseThrow();
+
+        String accessToken = jwtService.generateToken(user.getUsername(), ACCESS_TOKEN_COOKIE_MAX_AGE);
+        Cookies.setCookie(response, ACCESS_TOKEN_COOKIE_NAME, accessToken, ACCESS_TOKEN_COOKIE_MAX_AGE);
 
         return ResponseHandler.generate("refresh_successful", HttpStatus.OK);
     }
@@ -163,8 +160,7 @@ public class AuthService {
     }
 
     public void requestPasswordReset(String email) throws MessagingException {
-        long PASSWORD_RESET_TOKEN_TIME = 30 * 60; // 30 minutes
-        sendChoosePasswordEmail(email, PASSWORD_RESET_TOKEN_TIME);
+        sendChoosePasswordEmail(email, 30L * 60);
     }
 
     public void sendChoosePasswordEmail(String email, long expiryTime) throws MessagingException {

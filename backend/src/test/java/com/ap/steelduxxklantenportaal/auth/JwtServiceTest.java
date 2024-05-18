@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class JwtServiceTest {
+class JwtServiceTest {
     @Autowired
     private JwtService jwtService;
 
@@ -31,7 +31,7 @@ public class JwtServiceTest {
         String token = jwtService.generateToken(username, 60);
 
         String extractedUsername = jwtService.extractClaim(token, Claims::getSubject);
-        assertThat(extractedUsername.equals(username)).isTrue();
+        assertThat(extractedUsername).isEqualTo(username);
     }
 
     @Test

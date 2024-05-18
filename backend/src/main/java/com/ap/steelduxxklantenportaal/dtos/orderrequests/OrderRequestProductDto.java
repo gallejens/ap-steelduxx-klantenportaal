@@ -1,4 +1,4 @@
-package com.ap.steelduxxklantenportaal.dtos.OrderRequests;
+package com.ap.steelduxxklantenportaal.dtos.orderrequests;
 
 import com.ap.steelduxxklantenportaal.enums.ContainerSizeEnum;
 import com.ap.steelduxxklantenportaal.enums.ContainerTypeEnum;

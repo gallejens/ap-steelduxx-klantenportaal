@@ -9,13 +9,13 @@ import org.springframework.mock.web.MockMultipartFile;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class FileSystemStorageServiceTest {
+class FileSystemStorageServiceTest {
 
     @Autowired
     private FileSystemStorageService fileSystemStorageService;
 
     @Test
-    public void givenFile_whenSavingToFileSystem_thenExpectCorrectFileToLoad() throws Exception {
+    void givenFile_whenSavingToFileSystem_thenExpectCorrectFileToLoad() throws Exception {
         byte[] bytes = "This is a testfile".getBytes();
         MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt",
                 "text/plain", bytes);

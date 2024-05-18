@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal;
 
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.OrderDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDto;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-public class ExternalApiServiceTest {
+class ExternalApiServiceTest {
     @Autowired
     private ExternalApiService externalApiService;
 

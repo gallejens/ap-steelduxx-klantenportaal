@@ -26,7 +26,7 @@ import com.ap.steelduxxklantenportaal.models.Notification;
 import com.ap.steelduxxklantenportaal.services.NotificationService;
 
 @ExtendWith(MockitoExtension.class)
-public class NotificationControllerTest {
+class NotificationControllerTest {
 
     private MockMvc mockMvc;
 
@@ -37,7 +37,7 @@ public class NotificationControllerTest {
     private NotificationController notificationController;
 
     @Test
-    public void testGetNotificationsByUserId() throws Exception {
+    void testGetNotificationsByUserId() throws Exception {
         Notification notification = new Notification();
         notification.setTitle("Title User Notification");
         notification.setMessage("User Notification");
@@ -52,7 +52,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void testCreateNotification() throws Exception {
+    void testCreateNotification() throws Exception {
         Notification notification = new Notification();
         notification.setTitle("Title Notification");
         notification.setMessage("Create Test");
@@ -72,7 +72,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void testGetNewNotificationsByUserId() throws Exception {
+    void testGetNewNotificationsByUserId() throws Exception {
         Notification notification = new Notification();
         notification.setTitle("New Title User Notification");
         notification.setMessage("New User Notification");
@@ -87,7 +87,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void testMarkNotificationAsRead() throws Exception {
+    void testMarkNotificationAsRead() throws Exception {
         mockMvc = standaloneSetup(notificationController).build();
 
         Long notificationId = 1L;

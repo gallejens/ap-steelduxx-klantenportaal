@@ -1,7 +1,7 @@
 package com.ap.steelduxxklantenportaal.companyinfo;
 
-import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.ChangeCompanyHeadAccountDto;
-import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CreateSubAccountDto;
+import com.ap.steelduxxklantenportaal.dtos.companyinfo.ChangeCompanyHeadAccountDto;
+import com.ap.steelduxxklantenportaal.dtos.companyinfo.CreateSubAccountDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.models.Company;
 import com.ap.steelduxxklantenportaal.models.User;
@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CompanyInfoServiceTest {
+class CompanyInfoServiceTest {
 
     @Autowired
     private CompanyInfoService companyInfoService;
@@ -74,7 +74,7 @@ public class CompanyInfoServiceTest {
     void givenNormalUser_whenRequestingCompanyInfo_thenGetList() {
         var companies = companyInfoService.getAll();
         assertThat(companies).isInstanceOf(List.class);
-        assertThat(companies.size()).isEqualTo(1);
+        assertThat(companies).hasSize(1);
         assertThat(companies.get(0).company().getId()).isEqualTo(createdCompany.getId());
     }
 

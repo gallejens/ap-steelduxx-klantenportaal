@@ -19,7 +19,7 @@ import com.ap.steelduxxklantenportaal.repositories.NotificationRepository;
 import com.ap.steelduxxklantenportaal.services.NotificationService;
 
 @ExtendWith(MockitoExtension.class)
-public class NotificationServiceTest {
+class NotificationServiceTest {
 
     @Mock
     private NotificationRepository notificationRepository;
@@ -28,7 +28,7 @@ public class NotificationServiceTest {
     private NotificationService notificationService;
 
     @Test
-    public void testGetNotificationsByUserId() {
+    void testGetNotificationsByUserId() {
         Notification notification = new Notification();
         notification.setTitle("Title Notification");
         notification.setMessage("Test Notification");
@@ -43,7 +43,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void testCreateNotification() {
+    void testCreateNotification() {
         Notification notification = new Notification();
         notification.setTitle("New Title Notification");
         notification.setMessage("New Notification");

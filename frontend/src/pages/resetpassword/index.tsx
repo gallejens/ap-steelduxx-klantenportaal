@@ -12,7 +12,7 @@ export const ResetPasswordPage: FC = () => {
     <PublicPageWrapper
       title={t('resetPasswordPage:title')}
       panelWidth='55vh'
-      hideLanguageSelector={true}
+      hideLanguageSelector
     >
       {submitted ? (
         <Text>{t('resetPasswordPage:feedback')}</Text>

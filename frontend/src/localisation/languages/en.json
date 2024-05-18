@@ -477,5 +477,8 @@
   },
   "multisearch": {
     "inputPlaceholder": "Search..."
+  },
+  "publicPageWrapper": {
+    "goBack": "Go back"
   }
 }

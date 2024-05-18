@@ -42,7 +42,7 @@ public class CompanyInfoService {
     public List<CompanyInfoDto> getAll() {
         var user = AuthService.getCurrentUser();
         if (user == null)
-            return null;
+            return List.of();
 
         if (user.hasPermission(PermissionEnum.ADMIN)) {
             return getCompanyInfoForAdmin();
@@ -69,7 +69,7 @@ public class CompanyInfoService {
     private List<CompanyInfoDto> getCompanyInfoByUserId(long userId) {
         var company = companyRepository.findByUserId(userId).orElse(null);
         if (company == null)
-            return null;
+            return List.of();
 
         var accounts = companyInfoAccountRepository.findAllByCompanyId(company.getId());
 
@@ -135,7 +135,7 @@ public class CompanyInfoService {
                                 createSubaccountDto.companyId()));
             }
 
-            authService.sendChoosePasswordEmail(newUser.getEmail(), 30 * 24 * 60 * 60); // one month
+            authService.sendChoosePasswordEmail(newUser.getEmail(), 30L * 24 * 60 * 60); // one month
         } catch (UserAlreadyExistsException e) {
             return ResponseHandler.generate("duplicate", HttpStatus.NO_CONTENT);
         } catch (MessagingException e) {

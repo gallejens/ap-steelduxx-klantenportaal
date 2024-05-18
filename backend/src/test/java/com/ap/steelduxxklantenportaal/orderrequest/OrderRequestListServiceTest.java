@@ -23,7 +23,7 @@ import com.ap.steelduxxklantenportaal.repositories.OrderRequestProductRepository
 import com.ap.steelduxxklantenportaal.services.OrderRequestService;
 
 @ExtendWith(MockitoExtension.class)
-public class OrderRequestListServiceTest {
+class OrderRequestListServiceTest {
 
     @Mock
     private CompanyRepository companyRepository;

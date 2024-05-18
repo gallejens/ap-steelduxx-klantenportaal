@@ -70,7 +70,7 @@ public class PermissionsManager {
         if (allMapped)
             return;
 
-        throw new RuntimeException("Not all roles have permissions assigned");
+        throw new IllegalStateException("Not all roles have permissions assigned");
     }
 
     public static PermissionsManager getInstance() {

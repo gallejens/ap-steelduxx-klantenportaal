@@ -24,7 +24,7 @@ import jakarta.mail.MessagingException;
 import com.ap.steelduxxklantenportaal.controllers.UserRequestController;
 
 @SpringBootTest
-public class UserRequestDetailsTest {
+class UserRequestDetailsTest {
 
     @Mock
     private UserRequestService userRequestService;
@@ -56,8 +56,8 @@ public class UserRequestDetailsTest {
         Number id = 1;
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:success", "status",
                 HttpStatus.CREATED.toString());
-        Mockito.when(userRequestService.approveUserRequest(Mockito.eq(id),
-                Mockito.eq(UserRequestMotherObject.companyApprove)))
+        Mockito.when(userRequestService.approveUserRequest(id,
+                UserRequestMotherObject.companyApprove))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
 
         // When
@@ -70,13 +70,13 @@ public class UserRequestDetailsTest {
     }
 
     @Test
-    void givenUserRequestToDeny_whenDenyingUserRequest_thenUserRequestIsDenied() throws MessagingException {
+    void givenUserRequestToDeny_whenDenyingUserRequest_thenUserRequestIsDenied() {
         // Given
         Number id = 2;
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:denied", "status",
                 HttpStatus.OK.toString());
         Mockito.when(
-                userRequestService.denyUserRequest(Mockito.eq(id), Mockito.eq(UserRequestMotherObject.companyDeny)))
+                userRequestService.denyUserRequest(id, UserRequestMotherObject.companyDeny))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
         // When
@@ -93,7 +93,7 @@ public class UserRequestDetailsTest {
         Long id = 3L;
         UserRequestDeleteDto userRequestDeleteDto = new UserRequestDeleteDto(id);
         Map<String, String> expectedResponse = Map.of("message", "userRequestReviewPage:response:deleted");
-        Mockito.when(userRequestService.deleteUserRequest(Mockito.eq(id)))
+        Mockito.when(userRequestService.deleteUserRequest(id))
                 .thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
         // When

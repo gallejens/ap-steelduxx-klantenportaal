@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 @SpringBootTest
-public class ResponseHandlerTest {
+class ResponseHandlerTest {
     @Test
     void should_returnCorrectResponseEntity_when_generating() {
         ResponseEntity<Object> responseEntity = ResponseHandler.generate("testMessage", HttpStatus.OK, List.of("item1", "item2"));

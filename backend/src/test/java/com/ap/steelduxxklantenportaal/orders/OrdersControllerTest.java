@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 
-public class OrdersControllerTest {
+class OrdersControllerTest {
 
     private MockMvc mockMvc;
 
@@ -43,12 +43,12 @@ public class OrdersControllerTest {
     private OrdersController ordersController;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(ordersController).build();
     }
 
-    private void setupSecurityContext(User user) {
+    void setupSecurityContext(User user) {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 user, null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_HEAD_ADMIN")));
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
@@ -58,7 +58,7 @@ public class OrdersControllerTest {
 
     @Test
     @WithMockUser(username = "headadmin@example.com", roles = "HEAD_ADMIN")
-    public void testDownloadDocumentAsHeadAdmin() throws Exception {
+    void testDownloadDocumentAsHeadAdmin() throws Exception {
         User user = new User();
         user.setEmail("headadmin@example.com");
         setupSecurityContext(user);
@@ -79,14 +79,14 @@ public class OrdersControllerTest {
 
     @Test
     @WithMockUser(username = "user@example.com", roles = "USER")
-    public void testDownloadDocumentUnauthorizedForUserRole() throws Exception {
+    void testDownloadDocumentUnauthorizedForUserRole() throws Exception {
         mockMvc.perform(get("/orders/download-document/{referenceNumber}/{documentType}", "123456", "bl"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(username = "user", authorities = { "ACCESS" })
-    public void testUploadDocument_FailInvalidInput() throws Exception {
+    void testUploadDocument_FailInvalidInput() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "", MediaType.APPLICATION_PDF_VALUE, new byte[0]);
 
         mockMvc.perform(multipart("/orders/upload-document")
@@ -99,7 +99,7 @@ public class OrdersControllerTest {
 
     @Test
     @WithMockUser(username = "user", authorities = { "ACCESS" })
-    public void testUploadDocument_FailException() throws Exception {
+    void testUploadDocument_FailException() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "test.pdf", MediaType.APPLICATION_PDF_VALUE,
                 "PDF content".getBytes());
         when(ordersService.uploadDocument(any(DocumentRequestDto.class), any(User.class), any(String.class)))

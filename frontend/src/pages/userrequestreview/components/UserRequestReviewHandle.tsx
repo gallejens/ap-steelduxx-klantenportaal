@@ -29,13 +29,13 @@ export const UserRequestReviewHandle: FC<Props> = props => {
   const { data: companyCodesResponse } = useQuery({
     queryKey: ['user-requests-review-company-codes'],
     queryFn: () =>
-      doApiAction<GenericAPIResponse<string[]>>({
+      doApiAction<string[]>({
         endpoint: '/user-requests/company-codes',
         method: 'GET',
       }),
   });
 
-  const companyCodes = companyCodesResponse?.data ?? [];
+  const companyCodes = companyCodesResponse ?? [];
 
   const approveForm = useForm<UserRequest.UserRequestApproveValues>({
     initialValues: {

@@ -7,6 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 
 public class Cookies {
+    private Cookies() {}
+
     public static void setCookie(HttpServletResponse response, String name, String value, long maxAge, String path) {
         ResponseCookie authTokenCookie = ResponseCookie
                 .from(name, value)

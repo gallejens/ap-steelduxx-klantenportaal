@@ -29,8 +29,9 @@ public class OrderRequestController {
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public List<OrderRequestListDto> getAllOrderRequests() {
-        return orderRequestService.getAll();
+    public ResponseEntity<List<OrderRequestListDto>> getAllOrderRequests() {
+        var orderRequests = orderRequestService.getAll();
+        return ResponseEntity.ok(orderRequests);
     }
 
     @GetMapping("{id}")

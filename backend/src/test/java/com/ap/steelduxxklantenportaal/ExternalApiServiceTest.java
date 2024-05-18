@@ -11,7 +11,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-public class ExternalApiServiceTest {
+class ExternalApiServiceTest {
     @Autowired
     private ExternalApiService externalApiService;
 

@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.IOException;
-
 @Controller
 @RequestMapping("/portcodes")
 public class PortcodesController {
@@ -21,7 +19,8 @@ public class PortcodesController {
 
     @GetMapping(value = "/")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<String> getAllPortcodes() throws IOException {
-        return ResponseEntity.ok(portcodesService.getAllPortcodes());
+    public ResponseEntity<String> getAllPortcodes() {
+        var portcodes = portcodesService.getAllPortcodes();
+        return ResponseEntity.ok(portcodes);
     }
 }

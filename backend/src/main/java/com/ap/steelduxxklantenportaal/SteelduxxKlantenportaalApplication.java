@@ -36,7 +36,7 @@ public class SteelduxxKlantenportaalApplication {
 
     @Bean
     public CommandLineRunner initFileSystemStorageService(FileSystemStorageService fileSystemStorageService) {
-        return (args) -> fileSystemStorageService.init();
+        return args -> fileSystemStorageService.init();
     }
 }
 

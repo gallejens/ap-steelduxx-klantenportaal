@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import com.ap.steelduxxklantenportaal.dtos.orderrequests.NewOrderRequestDto;
 
 @ExtendWith(MockitoExtension.class)
-public class OrderRequestServiceTest {
+class OrderRequestServiceTest {
 
         @Mock
         private OrderRequestService orderRequestService;

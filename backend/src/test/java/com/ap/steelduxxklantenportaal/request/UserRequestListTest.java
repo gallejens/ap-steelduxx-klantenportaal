@@ -15,7 +15,7 @@ import com.ap.steelduxxklantenportaal.services.UserRequestService;
 import com.ap.steelduxxklantenportaal.controllers.UserRequestController;
 
 @SpringBootTest
-public class UserRequestListTest {
+class UserRequestListTest {
 
     @Mock
     private UserRequestService userRequestService;
@@ -40,6 +40,6 @@ public class UserRequestListTest {
         List<UserRequestDto> savedUserRequests = userRequestController.getAllUserRequests();
 
         // Then
-        assertThat(savedUserRequests.size()).isEqualTo(mockUserRequests.size());
+        assertThat(savedUserRequests).hasSameSizeAs(mockUserRequests.size());
     }
 }

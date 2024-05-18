@@ -139,7 +139,7 @@ public class OrderRequestService {
         List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository
                 .findAllByOrderRequestId(orderRequest.getId()).stream()
                 .map(this::convertProductsToDTO)
-                .collect(Collectors.toList());
+                .toList();
 
         var company = companyRepository.findById(orderRequest.getCompanyId());
 
@@ -155,7 +155,7 @@ public class OrderRequestService {
         List<OrderRequest> orderRequest = orderRequestRepository.findAll();
         return orderRequest.stream()
                 .map(this::convertOrderRequestListToDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public OrderRequestListDto getOrderRequest(Long id) {

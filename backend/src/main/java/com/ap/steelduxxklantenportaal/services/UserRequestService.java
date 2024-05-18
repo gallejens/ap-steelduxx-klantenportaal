@@ -78,7 +78,7 @@ public class UserRequestService {
 
         return userRequest.stream()
                 .map(this::convertUserRequestToDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public UserRequestDto getUserRequest(Number id) {
@@ -173,7 +173,7 @@ public class UserRequestService {
                 )
         );
 
-        authService.sendChoosePasswordEmail(userRequestDto.email(), 30 * 24 * 60 * 60); // one month
+        authService.sendChoosePasswordEmail(userRequestDto.email(), 30L * 24 * 60 * 60); // one month
 
         return ResponseHandler.generate("userRequestReviewPage:response:success", HttpStatus.CREATED);
     }
@@ -190,8 +190,11 @@ public class UserRequestService {
         return ResponseHandler.generate("userRequestReviewPage:response:denied", HttpStatus.OK);
     }
 
-    public ResponseEntity<Object> deleteUserRequest(Number id) {
-        UserRequest userRequest = userRequestRepository.findById(id);
+    public ResponseEntity<Object> deleteUserRequest(Long id) {
+        var userRequest = userRequestRepository.findById(id).orElse(null);
+        if (userRequest == null) {
+            return ResponseHandler.generate("userRequestReviewPage:response:deleted", HttpStatus.NO_CONTENT);
+        }
 
         // Delete UserRequest when Denied
         userRequestRepository.deleteById(id);

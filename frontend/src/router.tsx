@@ -9,7 +9,6 @@ import {
 import { AppShell } from './components/appshell';
 import { HomePage } from './pages/home';
 import { LoginPage } from './pages/login';
-import { TestValuesPage } from './pages/testvaluespage';
 import { UserRequestPage } from './pages/userrequest';
 import { UserRequestListPage } from './pages/userrequestlist';
 import { ResetPasswordPage } from './pages/resetpassword';
@@ -93,12 +92,6 @@ const homeRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
   path: 'home',
   component: HomePage,
-});
-
-const testValuesRoute = createRoute({
-  getParentRoute: () => authorizedOnlyRoute,
-  path: 'testvalues',
-  component: TestValuesPage,
 });
 
 const userRequestListRoute = createRoute({
@@ -187,7 +180,6 @@ const routeTree = rootRoute.addChildren([
     orderDetailsRoute,
     orderCreateRoute,
     userRequestListRoute,
-    testValuesRoute,
     userRequestReviewRoute,
     companiesRoute,
   ]),

@@ -1,8 +1,4 @@
-import type {
-  OrderDocumentType,
-  ProductContainerSize,
-  ProductContainerType,
-} from '@/types/api';
+import type { ProductContainerSize, ProductContainerType } from '@/types/api';
 
 export const PRODUCT_CONTAINER_SIZES: ProductContainerSize[] = ['20', '40'];
 

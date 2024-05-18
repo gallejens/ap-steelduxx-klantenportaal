@@ -44,11 +44,8 @@ export const UserRequestListPage: FC = () => {
 
   const deleteUserRequest = async (userRequest: UserRequest) => {
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
-      endpoint: '/user-requests/deactivate',
+      endpoint: `/user-requests/${userRequest.followId}/delete`,
       method: 'POST',
-      body: {
-        id: userRequest.followId,
-      },
     });
 
     notifications.add({

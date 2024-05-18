@@ -3,13 +3,13 @@ import { useParams, useSearch } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/orderDetails.module.scss';
-import { doApiAction, type GenericAPIResponse } from '@/lib/api';
+import { doApiAction } from '@/lib/api';
 import type { OrderDetails } from '@/types/api';
 import { OrderInfo } from './components/OrderInfo';
 import { MapInfo } from './components/MapInfo';
 import { ProductList } from './components/ProductList';
-import { DocumentUpload } from './components/DocumentUpload';
 import { Title } from '@mantine/core';
+import { DocumentSection } from './components/DocumentSection';
 
 export const OrderDetailsPage: FC = () => {
   const { t } = useTranslation();
@@ -21,13 +21,13 @@ export const OrderDetailsPage: FC = () => {
   });
 
   const {
-    data: orderDetail,
+    data: orderDetails,
     status,
     error,
   } = useQuery({
-    queryKey: ['orderDetail', orderId],
+    queryKey: ['orderDetails', orderId],
     queryFn: () =>
-      doApiAction<GenericAPIResponse<OrderDetails>>({
+      doApiAction<OrderDetails>({
         endpoint: `/orders/${orderId}`,
         method: 'GET',
         params: customerCode
@@ -38,13 +38,11 @@ export const OrderDetailsPage: FC = () => {
       }),
   });
 
-  console.log('Order details loaded:', orderDetail);
-
   if (status === 'pending') {
     return <div>{t('orderDetailsPage:loading')}</div>;
   }
 
-  if (status === 'error' || !orderDetail) {
+  if (status === 'error' || !orderDetails) {
     return (
       <div>
         {t('orderDetailsPage:error')} | {error?.message ?? 'Unknown Error'}
@@ -58,21 +56,26 @@ export const OrderDetailsPage: FC = () => {
         order={2}
         className={styles.header}
       >
-        {t('orderDetailPage:orderDetails')}: {orderDetail?.data.referenceNumber}
+        {t('orderDetailPage:orderDetails')}: {orderDetails.referenceNumber}
       </Title>
       <div className={styles.container}>
         <div className={styles.columnLeft}>
           <div className={styles.topRow}>
-            <OrderInfo orderDetail={orderDetail.data} />
-            <DocumentUpload orderDetail={orderDetail.data} />
+            <OrderInfo orderDetail={orderDetails} />
+            <div className={styles.documentsContainer}>
+              <DocumentSection
+                orderDetails={orderDetails}
+                customerCode={customerCode}
+              />
+            </div>
           </div>
           <div className={styles.bottomRow}>
-            <ProductList orderDetail={orderDetail.data} />
+            <ProductList orderDetail={orderDetails} />
           </div>
         </div>
         <div className={styles.columnRight}>
-          {orderDetail.data.state === 'SAILING' ? (
-            <MapInfo orderDetail={orderDetail.data} />
+          {orderDetails.state === 'SAILING' ? (
+            <MapInfo orderDetail={orderDetails} />
           ) : null}
         </div>
       </div>

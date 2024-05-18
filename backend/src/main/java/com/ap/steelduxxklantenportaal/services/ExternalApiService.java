@@ -1,10 +1,8 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
-import com.ap.steelduxxklantenportaal.dtos.externalapi.DocumentRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
-import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,6 +76,10 @@ public class ExternalApiService {
     }
 
     public <T> T doRequest(String endpoint, HttpMethod method, Class<T> responseType) {
+        return doRequest(endpoint, method, null, responseType);
+    }
+
+    public <T> T doRequest(String endpoint, HttpMethod method, Object body, Class<T> responseType) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated()) {
             return null;
@@ -88,10 +90,10 @@ public class ExternalApiService {
             return null;
         }
 
-        return internalRequest(user, endpoint, method, responseType, false);
+        return internalRequest(user, endpoint, method, body, responseType, false);
     }
 
-    private <T> T internalRequest(User user, String endpoint, HttpMethod method, Class<T> responseType,
+    private <T> T internalRequest(User user, String endpoint, HttpMethod method, Object body, Class<T> responseType,
             boolean isRetry) {
         String token = getToken(user);
         if (token == null)
@@ -100,7 +102,7 @@ public class ExternalApiService {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+        HttpEntity<Object> entity = new HttpEntity<>(body, headers);
 
         try {
             ResponseEntity<T> response = restTemplate.exchange(baseUrl + endpoint, method, entity, responseType);
@@ -112,53 +114,9 @@ public class ExternalApiService {
 
             // if call is not a retry, remove existing token and retry;
             userTokens.remove(user.getId());
-            return internalRequest(user, endpoint, method, responseType, true);
+            return internalRequest(user, endpoint, method, body, responseType, true);
         }
     }
-
-    public byte[] downloadDocument(String referenceNumber, String documentType, User user) {
-        String token = getToken(user);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        String downloadUrl = String.format(baseUrl + "/document/download/%s/%s", referenceNumber, documentType);
-
-        ResponseEntity<byte[]> response = restTemplate.exchange(downloadUrl, HttpMethod.GET, entity, byte[].class);
-
-        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            return response.getBody();
-        } else {
-            throw new RestClientException("Failed to download document");
-        }
-    }
-
-    public boolean uploadDocument(DocumentRequestDto documentRequest, User user, String customerCode) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(getToken(user));
-
-        String uploadUrl = determineUploadEndpoint(user, documentRequest, customerCode);
-
-        HttpEntity<DocumentRequestDto> entity = new HttpEntity<>(documentRequest, headers);
-        ResponseEntity<Void> response = restTemplate.postForEntity(uploadUrl, entity, Void.class);
-
-        return response.getStatusCode().is2xxSuccessful();
-    }
-
-    private String determineUploadEndpoint(User user, DocumentRequestDto documentRequest, String customerCode) {
-        RoleEnum role = user.getRole();
-        if (role == RoleEnum.ROLE_ADMIN || role == RoleEnum.ROLE_HEAD_ADMIN) {
-            if (customerCode == null || customerCode.isEmpty()) {
-                throw new IllegalArgumentException("Customer code is required for admin upload.");
-            }
-            return baseUrl + "/admin/upload/" + customerCode;
-        } else {
-            return baseUrl + "/document/upload";
-        }
-    }
-
-
 
     public void createOrder(OrderRequestDto orderDto) {
         var auth = SecurityContextHolder.getContext().getAuthentication();

@@ -1,7 +1,7 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.userrequestreview.CompanyApproveDto;
+import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestApproveDto;
 import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.enums.RoleEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class UserRequestService {
@@ -124,10 +123,10 @@ public class UserRequestService {
         return ResponseHandler.generate("userRequestForm:userRequestRequested", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> approveUserRequest(Number id, CompanyApproveDto companyApproveDto)
+    public ResponseEntity<Object> approveUserRequest(Number id, UserRequestApproveDto userRequestApproveDto)
             throws MessagingException, UserAlreadyExistsException {
         boolean requestForCompanyExists = companyRepository
-                .findByReferenceCode(companyApproveDto.referenceCode())
+                .findByReferenceCode(userRequestApproveDto.referenceCode())
                 .isPresent();
 
         if (requestForCompanyExists) {
@@ -162,7 +161,7 @@ public class UserRequestService {
                         userRequestDto.streetNr(),
                         userRequestDto.boxNr(),
                         userRequestDto.extraInfo(),
-                        companyApproveDto.referenceCode()
+                        userRequestApproveDto.referenceCode()
                 )
         );
 

@@ -128,7 +128,7 @@
   },
   "orderListPage": {
     "header": {
-      "newOrder": "Niew Order"
+      "newOrder": "Nieuw Order"
     },
     "table": {
       "referenceNumber": "Referentienummer",
@@ -182,12 +182,17 @@
     "containerNumber": "Container Nummer",
     "containerSize": "Container Grootte (voet)",
     "containerType": "Container Type",
-    "documents": "Documenten"
+    "documents": {
+      "downloadFailed": "Kon bestand niet downloaden",
+      "uploadResponse": {
+        "success": "Document is succesvol geupload",
+        "failed": "Kon document niet uploaden"
+      }
+    }
   },
   "newOrderPage": {
     "title": "Order Informatie",
     "products": "Producten",
-    "documents": "Documenten",
     "orderForm": {
       "transportType": {
         "transportTypeInputTitle": "Transport type",
@@ -479,5 +484,19 @@
   },
   "publicPageWrapper": {
     "goBack": "Ga terug"
+  },
+  "orderDocuments": {
+    "title": "Documenten",
+    "noFile": "Geen document aanwezig",
+    "modals": {
+      "uploadTitle": "Document Uploaden",
+      "uploadText": "Ben je zeker dat je dit bestand wil uploaden"
+    },
+    "tooltips": {
+      "upload": "Document Uploaden",
+      "download": "Document Downloaden",
+      "remove": "Document Verwijderen",
+      "replace": "Document Vervangen"
+    }
   }
 }

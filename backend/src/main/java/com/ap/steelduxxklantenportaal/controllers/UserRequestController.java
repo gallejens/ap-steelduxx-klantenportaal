@@ -1,8 +1,7 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.userrequestreview.CompanyApproveDto;
-import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestDeleteDto;
+import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestApproveDto;
 import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
@@ -47,23 +46,23 @@ public class UserRequestController {
 
     @PostMapping("/{id}/approve")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
-    public ResponseEntity<Object> approveRequest(@PathVariable Number id,
-                                                 @RequestBody CompanyApproveDto companyApproveDto)
+    public ResponseEntity<Object> approveRequest(@PathVariable Long id,
+                                                 @RequestBody UserRequestApproveDto userRequestApproveDto)
             throws MessagingException, UserAlreadyExistsException {
-        return userRequestValueService.approveUserRequest(id, companyApproveDto);
+        return userRequestValueService.approveUserRequest(id, userRequestApproveDto);
     }
 
     @PostMapping("/{id}/deny")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
-    public ResponseEntity<Object> denyRequest(@PathVariable Number id,
+    public ResponseEntity<Object> denyRequest(@PathVariable Long id,
                                               @RequestBody UserRequestDenyDto userRequestDenyDto) {
         return userRequestValueService.denyUserRequest(id, userRequestDenyDto);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{id}/delete")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
-    public ResponseEntity<Object> deleteRequest(@RequestBody UserRequestDeleteDto userRequestDeleteDto) {
-        return userRequestValueService.deleteUserRequest(userRequestDeleteDto.id());
+    public ResponseEntity<Object> deleteRequest(@PathVariable Long id) {
+        return userRequestValueService.deleteUserRequest(id);
     }
 
     @GetMapping("/company-codes")

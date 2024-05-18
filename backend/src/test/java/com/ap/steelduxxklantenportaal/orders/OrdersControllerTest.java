@@ -1,9 +1,8 @@
 package com.ap.steelduxxklantenportaal.orders;
 
 import com.ap.steelduxxklantenportaal.controllers.OrdersController;
-import com.ap.steelduxxklantenportaal.dtos.externalapi.DocumentRequestDto;
+import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
 import com.ap.steelduxxklantenportaal.models.User;
-import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.OrdersService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,9 +34,6 @@ class OrdersControllerTest {
 
     @Mock
     private OrdersService ordersService;
-
-    @Mock
-    private ExternalApiService externalApiService;
 
     @InjectMocks
     private OrdersController ordersController;
@@ -64,10 +60,10 @@ class OrdersControllerTest {
         setupSecurityContext(user);
 
         String referenceNumber = "123456";
-        String documentType = "bl";
+        OrderDocumentType documentType = OrderDocumentType.bl;
         byte[] mockData = "PDF Data".getBytes();
-        when(externalApiService.downloadDocument(eq(referenceNumber), eq(documentType), any(User.class)))
-                .thenReturn(mockData);
+        when(ordersService.downloadDocument(eq(referenceNumber), eq(documentType)))
+                .thenReturn(ResponseEntity.ok().body(mockData));
 
         mockMvc.perform(
                 get("/orders/download-document/{referenceNumber}/{documentType}", referenceNumber, documentType))
@@ -102,8 +98,6 @@ class OrdersControllerTest {
     void testUploadDocument_FailException() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "test.pdf", MediaType.APPLICATION_PDF_VALUE,
                 "PDF content".getBytes());
-        when(ordersService.uploadDocument(any(DocumentRequestDto.class), any(User.class), any(String.class)))
-                .thenThrow(new RuntimeException("Upload failed"));
 
         mockMvc.perform(multipart("/orders/upload-document")
                 .file(file)

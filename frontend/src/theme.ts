@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   FileInput,
   Input,
   NumberInput,
@@ -77,6 +78,13 @@ export const theme = createTheme({
       },
     }),
     FileInput: FileInput.extend({
+      defaultProps: {
+        classNames: {
+          label: styles.input_label,
+        },
+      },
+    }),
+    Autocomplete: Autocomplete.extend({
       defaultProps: {
         classNames: {
           label: styles.input_label,

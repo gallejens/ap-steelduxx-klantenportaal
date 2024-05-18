@@ -183,12 +183,17 @@
     "containerNumber": "Container Number",
     "containerSize": "Container Size (feet)",
     "containerType": "Container Type",
-    "documents": "Documents"
+    "documents": {
+      "downloadFailed": "Failed to download document",
+      "uploadResponse": {
+        "success": "Document has been successfully uploaded",
+        "failed": "Failed to upload document"
+      }
+    }
   },
   "newOrderPage": {
     "title": "Order Info",
     "products": "Products",
-    "documents": "Documents",
     "orderForm": {
       "transportType": {
         "transportTypeInputTitle": "Transport type",
@@ -480,5 +485,19 @@
   },
   "publicPageWrapper": {
     "goBack": "Go back"
+  },
+  "orderDocuments": {
+    "title": "Documenten",
+    "noFile": "No Document Present",
+    "modals": {
+      "uploadTitle": "Upload Document",
+      "uploadText": "Are you sure you want to upload this file?"
+    },
+    "tooltips": {
+      "upload": "Upload Document",
+      "download": "Download Document",
+      "remove": "Remove Document",
+      "replace": "Replace Document"
+    }
   }
 }

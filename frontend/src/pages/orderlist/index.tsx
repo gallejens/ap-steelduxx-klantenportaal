@@ -2,7 +2,7 @@ import { useState, type FC } from 'react';
 import { Badge, Button } from '@mantine/core';
 import { useNavigate } from '@tanstack/react-router';
 import styles from './styles/orderList.module.scss';
-import { doApiAction, type GenericAPIResponse } from '@/lib/api';
+import { doApiAction } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Table } from '@/components/table';
@@ -24,7 +24,7 @@ export const OrderListPage: FC = () => {
   } = useQuery({
     queryKey: ['orders'],
     queryFn: () =>
-      doApiAction<GenericAPIResponse<Order[]>>({
+      doApiAction<Order[]>({
         endpoint: '/orders/all',
         method: 'GET',
       }),
@@ -151,7 +151,7 @@ export const OrderListPage: FC = () => {
               excludeFromSearch: true,
             },
           ]}
-          data={orders.data}
+          data={orders}
         />
       </div>
     </div>

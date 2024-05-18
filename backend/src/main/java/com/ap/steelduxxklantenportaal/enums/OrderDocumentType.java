@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal.enums;
 
-public enum DocumentType {
+public enum OrderDocumentType {
     bl,
     packing,
     customs

@@ -1,0 +1,32 @@
+.order_documents {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+
+  & > .list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mantine-spacing-md);
+
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+      border-radius: var(--mantine-radius-default);
+      border: 1px solid var(--mantine-color-default-border);
+
+      & > .info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mantine-spacing-xs);
+      }
+
+      & > .actions {
+        display: flex;
+        gap: var(--mantine-spacing-xs);
+      }
+    }
+  }
+}

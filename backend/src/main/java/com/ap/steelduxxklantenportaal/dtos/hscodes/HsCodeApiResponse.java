@@ -8,5 +8,3 @@ public record HsCodeApiResponse(
         HsCodeApiSuggestion[] suggestions
 ) {
 }
-
-

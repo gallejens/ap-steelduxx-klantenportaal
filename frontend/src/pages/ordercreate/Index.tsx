@@ -9,7 +9,11 @@ import {
 import { useForm } from '@mantine/form';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type Product, type OrderTransportType } from '@/types/api';
+import {
+  type Product,
+  type OrderTransportType,
+  type OrderDocumentType,
+} from '@/types/api';
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
 import styles from './styles/orderCreate.module.scss';
@@ -20,9 +24,9 @@ import { notifications } from '@/components/notifications';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useNavigate } from '@tanstack/react-router';
 import { DEFAULT_PORT_CODE } from './constants';
-import type { CreateOrderDocument } from './types';
-import { OrderDocuments } from './components/OrderDocuments';
 import { PortcodesSelector } from '@/components/portcodesselector';
+import { OrderDocuments } from '@/components/orderdocuments';
+import { transformDocumentsToFileNames } from './helpers';
 
 type NewOrderFormValues = {
   transportType: OrderTransportType;
@@ -35,8 +39,11 @@ export const OrderCreatePage: FC = () => {
   const { t } = useTranslation();
   const { openModal, closeModal } = useModalStore();
   const navigate = useNavigate();
+
   const [products, setProducts] = useState<Product[]>([]);
-  const [documents, setDocuments] = useState<CreateOrderDocument[]>([]);
+  const [documents, setDocuments] = useState<
+    Record<OrderDocumentType, File | null>
+  >({ bl: null, packing: null, customs: null });
   const [loading, setLoading] = useState(false);
 
   const newOrderForm = useForm<NewOrderFormValues>({
@@ -48,19 +55,16 @@ export const OrderCreatePage: FC = () => {
     },
     validate: {
       transportType: value =>
-        !value
-          ? t('newOrderPage:orderForm:transportType:transportTypeInputError')
-          : null,
+        !value &&
+        t('newOrderPage:orderForm:transportType:transportTypeInputError'),
       portOfDestinationCode: value =>
-        !value || value.length !== 5
-          ? t(
-              'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputError'
-            )
-          : null,
+        !value &&
+        t(
+          'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputError'
+        ),
       portOfOriginCode: value =>
-        !value || value.length !== 5
-          ? t('newOrderPage:orderForm:portOriginCode:portOriginCodeInputError')
-          : null,
+        !value &&
+        t('newOrderPage:orderForm:portOriginCode:portOriginCodeInputError'),
     },
     validateInputOnBlur: true,
   });
@@ -75,12 +79,8 @@ export const OrderCreatePage: FC = () => {
     }
   });
 
-  newOrderForm.watch('isContainerOrder', ({ value }) => {
-    if (value) {
-      setProducts([]);
-    } else {
-      setProducts([]);
-    }
+  newOrderForm.watch('isContainerOrder', () => {
+    setProducts([]);
   });
 
   const openProductModal = () => {
@@ -164,11 +164,13 @@ export const OrderCreatePage: FC = () => {
       return;
     }
 
-    for (const doc of documents) {
+    for (const [type, file] of Object.entries(documents)) {
+      if (!file) continue;
+
       const formData = new FormData();
       formData.set('orderRequestId', result.data.toString());
-      formData.set('file', doc.file);
-      formData.set('type', doc.type);
+      formData.set('file', file);
+      formData.set('type', type);
 
       await doApiAction({
         endpoint: '/order-requests/upload-file',
@@ -249,13 +251,12 @@ export const OrderCreatePage: FC = () => {
           />
         </form>
         <Divider />
-        <div className={styles.documents}>
-          <Title order={3}>{t('newOrderPage:documents')}</Title>
-          <OrderDocuments
-            documents={documents}
-            setDocuments={setDocuments}
-          />
-        </div>
+        <OrderDocuments
+          className={styles.documents}
+          documents={transformDocumentsToFileNames(documents)}
+          onSelect={(type, file) => setDocuments(s => ({ ...s, [type]: file }))}
+          onDelete={type => setDocuments(s => ({ ...s, [type]: null }))}
+        />
         <Divider />
         <Button
           onClick={handleCreateOrderRequestButton}

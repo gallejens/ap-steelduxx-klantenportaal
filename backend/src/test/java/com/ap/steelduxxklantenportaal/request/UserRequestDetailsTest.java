@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDeleteDto;
+import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestDeleteDto;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.services.UserRequestService;
 

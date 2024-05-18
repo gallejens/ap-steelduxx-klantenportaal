@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.HsCodes.HsCodeApiResponse;
+import com.ap.steelduxxklantenportaal.dtos.hscodes.HsCodeApiResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

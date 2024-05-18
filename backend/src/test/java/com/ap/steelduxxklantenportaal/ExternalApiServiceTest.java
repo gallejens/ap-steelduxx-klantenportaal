@@ -1,6 +1,6 @@
 package com.ap.steelduxxklantenportaal;
 
-import com.ap.steelduxxklantenportaal.dtos.ExternalAPI.OrderDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDto;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

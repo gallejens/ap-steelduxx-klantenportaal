@@ -1,8 +1,8 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.ChangeCompanyHeadAccountDto;
-import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.CreateSubAccountDto;
-import com.ap.steelduxxklantenportaal.dtos.CompanyInfo.DeleteCompanyDto;
+import com.ap.steelduxxklantenportaal.dtos.companyinfo.ChangeCompanyHeadAccountDto;
+import com.ap.steelduxxklantenportaal.dtos.companyinfo.CreateSubAccountDto;
+import com.ap.steelduxxklantenportaal.dtos.companyinfo.DeleteCompanyDto;
 import com.ap.steelduxxklantenportaal.dtos.DeleteAccountDto;
 import com.ap.steelduxxklantenportaal.services.CompanyInfoService;
 import org.springframework.http.ResponseEntity;

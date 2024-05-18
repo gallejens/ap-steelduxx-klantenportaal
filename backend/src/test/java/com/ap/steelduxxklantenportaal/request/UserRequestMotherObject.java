@@ -1,8 +1,8 @@
 package com.ap.steelduxxklantenportaal.request;
 
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.CompanyApproveDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDenyDto;
+import com.ap.steelduxxklantenportaal.dtos.userrequestreview.CompanyApproveDto;
+import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 
 public class UserRequestMotherObject {

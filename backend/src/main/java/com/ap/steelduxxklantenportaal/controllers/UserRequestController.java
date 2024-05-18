@@ -1,9 +1,9 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.CompanyApproveDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDeleteDto;
-import com.ap.steelduxxklantenportaal.dtos.UserRequestReview.UserRequestDenyDto;
+import com.ap.steelduxxklantenportaal.dtos.userrequestreview.CompanyApproveDto;
+import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestDeleteDto;
+import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.UserRequestService;

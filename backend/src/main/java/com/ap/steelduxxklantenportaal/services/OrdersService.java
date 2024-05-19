@@ -6,7 +6,6 @@ import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDocumentUploadDto;
 import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderStatusDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
-import com.ap.steelduxxklantenportaal.models.Company;
 import com.ap.steelduxxklantenportaal.models.CompanyInfoAccount;
 import com.ap.steelduxxklantenportaal.models.Notification;
 import com.ap.steelduxxklantenportaal.models.User;
@@ -16,17 +15,20 @@ import org.springframework.http.*;
 import com.ap.steelduxxklantenportaal.repositories.CompanyInfoAccountRepository;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
+
+import io.jsonwebtoken.io.IOException;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class OrdersService {
@@ -77,29 +79,41 @@ public class OrdersService {
 
     public void checkForOrderStatusChanges(OrderDto[] orders) {
         List<OrderStatusDto> currentOrderStatuses = getAllOrderStatus(orders);
+    
+        Map<String, OrderStatusDto> previousOrderStatusMap = previousOrderStatuses.stream()
+            .collect(Collectors.toMap(OrderStatusDto::referenceNumber, Function.identity()));
+    
         for (OrderStatusDto currentOrderStatus : currentOrderStatuses) {
-            for (OrderStatusDto previousOrderStatus : previousOrderStatuses) {
-                if (currentOrderStatus.referenceNumber().equals(previousOrderStatus.referenceNumber())) {
-                    if (!(currentOrderStatus.state() == previousOrderStatus.state())) {
-                        if(currentOrderStatus.customerCode() != null) {
-                            Optional<Company> company = companyRepository.findByReferenceCode(currentOrderStatus.customerCode());
-                            List<CompanyInfoAccount> accounts = companyInfoAccountRepository.findAllByCompanyId(company.get().getId());
-                            for (CompanyInfoAccount account : accounts) {
-                                Optional<User> user = userRepository.findByEmail(account.getEmail());
-                                Notification newNotification = new Notification(user.get().getId(), null, "Status change for order : " + currentOrderStatus.referenceNumber(), "Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state(), Timestamp.valueOf(LocalDateTime.now()).getTime(), false);
+            OrderStatusDto previousOrderStatus = previousOrderStatusMap.get(currentOrderStatus.referenceNumber());
+    
+            if (previousOrderStatus != null && currentOrderStatus.state() != previousOrderStatus.state()) {
+                if (currentOrderStatus.customerCode() != null) {
+                    companyRepository.findByReferenceCode(currentOrderStatus.customerCode()).ifPresent(company -> {
+                        List<CompanyInfoAccount> accounts = companyInfoAccountRepository.findAllByCompanyId(company.getId());
+                        accounts.forEach(account -> {
+                            userRepository.findByEmail(account.getEmail()).ifPresent(user -> {
+                                Notification newNotification = new Notification(
+                                    user.getId(),
+                                    null, "Status change for order: " + currentOrderStatus.referenceNumber(),
+                                    "Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state(),
+                                    Timestamp.valueOf(LocalDateTime.now()).getTime(), false
+                                );
                                 notificationService.createNotification(newNotification);
-                                System.out.println(newNotification + " for : " + user.get().getEmail() );
-                            }
-                        }
-                    }
-                    break;
+                                System.out.println(newNotification + " for: " + user.getEmail());
+                            });
+                        });
+                    });
                 }
+                System.out.println(currentOrderStatus.referenceNumber() + " status is veranderd van: " + previousOrderStatus.state() + " naar: " + currentOrderStatus.state());
             }
         }
+    
         setPreviousOrderStatuses(currentOrderStatuses);
     }
+    
+    
 
-    public OrderDetailsDto getOrderDetails(String orderId, String customerCode) {
+    public OrderDetailsDto getOrderDetails(long orderId, String customerCode) {
         var user = AuthService.getCurrentUser();
         if (user == null)
             return null;
@@ -132,7 +146,7 @@ public class OrdersService {
                 .body(new ByteArrayResource(data));
     }
 
-    public boolean uploadDocument(String orderId, MultipartFile file, OrderDocumentType type, String customerCode) {
+    public boolean uploadDocument(String orderId, MultipartFile file, OrderDocumentType type, String customerCode) throws java.io.IOException {
         var user = AuthService.getCurrentUser();
         if (user == null) {
             return false;
@@ -162,7 +176,7 @@ public class OrdersService {
         return String.format("/admin/upload/%s", customerCode);
     }
 
-    private byte[] convertFileToByteArray(MultipartFile file) {
+    private byte[] convertFileToByteArray(MultipartFile file) throws java.io.IOException {
         try {
             return file.getBytes();
         } catch (IOException e) {

@@ -17,6 +17,7 @@ import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 
 import io.jsonwebtoken.io.IOException;
+import jakarta.mail.MessagingException;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -35,17 +36,19 @@ public class OrdersService {
 
     private final ExternalApiService externalApiService;
     private final NotificationService notificationService;
+    private final EmailService emailService;
     private List<OrderStatusDto> previousOrderStatuses;
 
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final CompanyInfoAccountRepository companyInfoAccountRepository;
-    public OrdersService(ExternalApiService externalApiService, NotificationService notificationService, UserRepository userRepository, CompanyRepository companyRepository, CompanyInfoAccountRepository companyInfoAccountRepository) {
+    public OrdersService(ExternalApiService externalApiService, NotificationService notificationService, UserRepository userRepository, CompanyRepository companyRepository, CompanyInfoAccountRepository companyInfoAccountRepository, EmailService emailService) {
         this.externalApiService = externalApiService;
         this.notificationService = notificationService;
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
         this.companyInfoAccountRepository = companyInfoAccountRepository;
+        this.emailService = emailService;
         this.previousOrderStatuses = new ArrayList<>();
     }
 
@@ -99,7 +102,12 @@ public class OrdersService {
                                     Timestamp.valueOf(LocalDateTime.now()).getTime(), false
                                 );
                                 notificationService.createNotification(newNotification);
-                                System.out.println(newNotification + " for: " + user.getEmail());
+                                try {
+                                    emailService.sendHtmlEmail(account.getEmail(), "Status change for order : " + currentOrderStatus.referenceNumber(),"Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state() );
+                                } catch (MessagingException e) {
+                                    e.printStackTrace();
+                                }
+
                             });
                         });
                     });

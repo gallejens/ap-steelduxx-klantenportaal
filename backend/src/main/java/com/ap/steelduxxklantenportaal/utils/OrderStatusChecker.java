@@ -1,6 +1,9 @@
 package com.ap.steelduxxklantenportaal.utils;
 
 import com.ap.steelduxxklantenportaal.services.OrdersService;
+
+import jakarta.annotation.PostConstruct;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +14,20 @@ public class OrderStatusChecker {
     public OrderStatusChecker(OrdersService ordersService) {
         this.ordersService = ordersService;
     }
-    @Scheduled(fixedRate = 50000)
 
+    @PostConstruct
+    public void init() {
+        checkAllOrderStatus();
+    }
+
+    @Scheduled(fixedRate = 60000*15)
     public void checkAllOrderStatus(){
         var orders = ordersService.getAllOrdersForCheck();
-        System.out.println(orders.length);
-        ordersService.checkForOrderStatusChanges(orders);
+        if (orders != null) {
+            System.out.println("Number of orders to check: " + orders.length);
+            ordersService.checkForOrderStatusChanges(orders);
+        } else {
+            System.err.println("Failed to retrieve orders: orders is null");
+        }
     }
 }

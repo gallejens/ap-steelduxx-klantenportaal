@@ -111,7 +111,6 @@ public class OrdersService {
                         });
                     });
                 }
-                System.out.println(currentOrderStatus.referenceNumber() + " status is veranderd van: " + previousOrderStatus.state() + " naar: " + currentOrderStatus.state());
             }
         }
     

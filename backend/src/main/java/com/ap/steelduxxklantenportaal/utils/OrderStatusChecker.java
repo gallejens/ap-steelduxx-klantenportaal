@@ -24,10 +24,7 @@ public class OrderStatusChecker {
     public void checkAllOrderStatus(){
         var orders = ordersService.getAllOrdersForCheck();
         if (orders != null) {
-            System.out.println("Number of orders to check: " + orders.length);
             ordersService.checkForOrderStatusChanges(orders);
-        } else {
-            System.err.println("Failed to retrieve orders: orders is null");
         }
     }
 }

@@ -26,47 +26,46 @@ export const OrderRequestReviewForm: FC = () => {
 
   return (
     <form className={styles.orderrequest_review_page_form}>
-      <div className={styles.company_detail_fields}></div>
-      <div className={styles.name_fields}>
-        <TextInput
-          className={styles.number_fields}
-          label={t('orderRequestForm:idInputTitle')}
-          value={orderRequest?.id}
-          disabled
-        />
-        <TextInput
-          className={styles.status_field}
-          label={t('orderRequestForm:statusInputTitle')}
-          value={orderRequest?.status}
-          disabled
-        />
-        <TextInput
-          className={styles.number_fields}
-          label={t('orderRequestForm:transportTypeInputTitle')}
-          value={orderRequest?.transportType}
-          disabled
-        />
-        <TextInput
-          className={styles.number_fields}
-          label={t('orderRequestForm:companyNameInputTitle')}
-          description={t('orderRequestForm:')}
-          value={orderRequest?.companyName}
-          disabled
-        />
-        <TextInput
-          className={styles.number_fields}
-          label={t('orderRequestForm:portOfDestinationInputTitle')}
-          description={t('orderRequestForm:')}
-          value={orderRequest?.portOfDestinationCode}
-          disabled
-        />
-        <TextInput
-          className={styles.number_fields}
-          label={t('orderRequestForm:portOfOriginInputTitle')}
-          description={t('orderRequestForm:')}
-          value={orderRequest?.portOfOriginCode}
-          disabled
-        />
+      <div className={styles.company_detail_fields}>
+        <div className={styles.first_row}>
+          <TextInput
+            className={styles.status_field}
+            label={t('orderRequestForm:statusInputTitle')}
+            value={orderRequest?.status}
+            disabled
+          />
+          <TextInput
+            className={styles.transport_type_field}
+            label={t('orderRequestForm:transportTypeInputTitle')}
+            value={orderRequest?.transportType}
+            disabled
+          />
+        </div>
+        <div className={styles.second_row}>
+          <TextInput
+            className={styles.company_name_field}
+            label={t('orderRequestForm:companyNameInputTitle')}
+            description={t('orderRequestForm:')}
+            value={orderRequest?.companyName}
+            disabled
+          />
+        </div>
+        <div className={styles.third_row}>
+          <TextInput
+            className={styles.port_origin_code_field}
+            label={t('orderRequestForm:portOfOriginInputTitle')}
+            description={t('orderRequestForm:')}
+            value={orderRequest?.portOfOriginCode}
+            disabled
+          />
+          <TextInput
+            className={styles.port_dest_code_field}
+            label={t('orderRequestForm:portOfDestinationInputTitle')}
+            description={t('orderRequestForm:')}
+            value={orderRequest?.portOfDestinationCode}
+            disabled
+          />
+        </div>
       </div>
       <div className={styles.product_table}>
         <table>

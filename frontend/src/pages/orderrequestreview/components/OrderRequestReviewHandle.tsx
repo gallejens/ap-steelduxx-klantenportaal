@@ -6,8 +6,6 @@ import { notifications } from '@/components/notifications';
 import { type GenericAPIResponse, doApiAction } from '@/lib/api';
 import { useParams } from '@tanstack/react-router';
 import { ConfirmModal } from '@/components/modals';
-import { type OrderRequest } from '@/types/api';
-import { useQuery } from '@tanstack/react-query';
 
 type Props = {
   onSubmit?: () => void;
@@ -84,41 +82,29 @@ export const OrderRequestReviewHandle: FC<Props> = props => {
     }
   };
 
-  const { data: orderRequest } = useQuery({
-    refetchOnWindowFocus: false,
-    queryKey: ['orderRequestValue'],
-    queryFn: () =>
-      doApiAction<OrderRequest>({
-        endpoint: `/order-requests/${orderRequestId}`,
-        method: 'GET',
-      }),
-  });
-
   return (
     <>
-      {orderRequest?.status === 'PENDING' && ( // Conditionally render buttons
-        <div className={styles.button_container}>
-          <Button
-            className={styles.approve_button}
-            variant='filled'
-            color='#1F9254'
-            size='lg'
-            onClick={handleApproveClick}
-          >
-            {t('userRequestReviewPage:approveButton')}
-          </Button>
+      <div className={styles.button_container}>
+        <Button
+          className={styles.approve_button}
+          variant='filled'
+          color='#1F9254'
+          size='lg'
+          onClick={handleApproveClick}
+        >
+          {t('userRequestReviewPage:approveButton')}
+        </Button>
 
-          <Button
-            className={styles.deny_button}
-            variant='filled'
-            color='#A30D11'
-            size='lg'
-            onClick={handleDenyClick}
-          >
-            {t('userRequestReviewPage:denyButton')}
-          </Button>
-        </div>
-      )}
+        <Button
+          className={styles.deny_button}
+          variant='filled'
+          color='#A30D11'
+          size='lg'
+          onClick={handleDenyClick}
+        >
+          {t('userRequestReviewPage:denyButton')}
+        </Button>
+      </div>
 
       {isConfirmModalOpen && (
         <ConfirmModal

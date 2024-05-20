@@ -4,23 +4,52 @@ import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDetailsDto;
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDto;
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDocumentUploadDto;
 import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderStatusDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
+import com.ap.steelduxxklantenportaal.models.CompanyInfoAccount;
+import com.ap.steelduxxklantenportaal.models.Notification;
 import com.ap.steelduxxklantenportaal.models.User;
-import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
+
+import com.ap.steelduxxklantenportaal.repositories.CompanyInfoAccountRepository;
+import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
+import com.ap.steelduxxklantenportaal.repositories.UserRepository;
+
+import io.jsonwebtoken.io.IOException;
+import jakarta.mail.MessagingException;
+
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class OrdersService {
 
     private final ExternalApiService externalApiService;
+    private final NotificationService notificationService;
+    private final EmailService emailService;
+    private List<OrderStatusDto> previousOrderStatuses;
 
-    public OrdersService(ExternalApiService externalApiService) {
+    private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
+    private final CompanyInfoAccountRepository companyInfoAccountRepository;
+    public OrdersService(ExternalApiService externalApiService, NotificationService notificationService, UserRepository userRepository, CompanyRepository companyRepository, CompanyInfoAccountRepository companyInfoAccountRepository, EmailService emailService) {
         this.externalApiService = externalApiService;
+        this.notificationService = notificationService;
+        this.userRepository = userRepository;
+        this.companyRepository = companyRepository;
+        this.companyInfoAccountRepository = companyInfoAccountRepository;
+        this.emailService = emailService;
+        this.previousOrderStatuses = new ArrayList<>();
     }
 
     public OrderDto[] getAllOrders() {
@@ -33,6 +62,62 @@ public class OrdersService {
 
         return externalApiService.doRequest(endpoint, HttpMethod.GET, OrderDto[].class);
     }
+    public OrderDto[] getAllOrdersForCheck() {
+
+        String endpoint = "/admin/order/all";
+        return externalApiService.doSystemRequest(endpoint, HttpMethod.GET, OrderDto[].class);
+    }
+
+    public List<OrderStatusDto> getAllOrderStatus(OrderDto[] orders){
+        List<OrderStatusDto> allOrderStatuses = new ArrayList<>();
+        for (OrderDto order : orders) {
+            OrderStatusDto orderStatusDto = new OrderStatusDto(order.customerCode(), order.referenceNumber(),order.state());
+            allOrderStatuses.add(orderStatusDto);
+        }
+        return allOrderStatuses;
+    }
+    public void setPreviousOrderStatuses(List<OrderStatusDto> orders) {
+        this.previousOrderStatuses = orders;
+    }
+
+    public void checkForOrderStatusChanges(OrderDto[] orders) {
+        List<OrderStatusDto> currentOrderStatuses = getAllOrderStatus(orders);
+    
+        Map<String, OrderStatusDto> previousOrderStatusMap = previousOrderStatuses.stream()
+            .collect(Collectors.toMap(OrderStatusDto::referenceNumber, Function.identity()));
+    
+        for (OrderStatusDto currentOrderStatus : currentOrderStatuses) {
+            OrderStatusDto previousOrderStatus = previousOrderStatusMap.get(currentOrderStatus.referenceNumber());
+    
+            if (previousOrderStatus != null && currentOrderStatus.state() != previousOrderStatus.state()) {
+                if (currentOrderStatus.customerCode() != null) {
+                    companyRepository.findByReferenceCode(currentOrderStatus.customerCode()).ifPresent(company -> {
+                        List<CompanyInfoAccount> accounts = companyInfoAccountRepository.findAllByCompanyId(company.getId());
+                        accounts.forEach(account -> {
+                            userRepository.findByEmail(account.getEmail()).ifPresent(user -> {
+                                Notification newNotification = new Notification(
+                                    user.getId(), "Status change for order: " + currentOrderStatus.referenceNumber(),
+                                    "Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state(),
+                                    Timestamp.valueOf(LocalDateTime.now()).getTime(), false
+                                );
+                                notificationService.createNotification(newNotification);
+                                try {
+                                    emailService.sendHtmlEmail(account.getEmail(), "Status change for order : " + currentOrderStatus.referenceNumber(),"Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state() );
+                                } catch (MessagingException e) {
+                                    e.printStackTrace();
+                                }
+
+                            });
+                        });
+                    });
+                }
+            }
+        }
+    
+        setPreviousOrderStatuses(currentOrderStatuses);
+    }
+    
+    
 
     public OrderDetailsDto getOrderDetails(String orderId, String customerCode) {
         var user = AuthService.getCurrentUser();
@@ -67,7 +152,7 @@ public class OrdersService {
                 .body(new ByteArrayResource(data));
     }
 
-    public boolean uploadDocument(String orderId, MultipartFile file, OrderDocumentType type, String customerCode) {
+    public boolean uploadDocument(String orderId, MultipartFile file, OrderDocumentType type, String customerCode) throws java.io.IOException {
         var user = AuthService.getCurrentUser();
         if (user == null) {
             return false;
@@ -97,7 +182,7 @@ public class OrdersService {
         return String.format("/admin/upload/%s", customerCode);
     }
 
-    private byte[] convertFileToByteArray(MultipartFile file) {
+    private byte[] convertFileToByteArray(MultipartFile file) throws java.io.IOException {
         try {
             return file.getBytes();
         } catch (IOException e) {

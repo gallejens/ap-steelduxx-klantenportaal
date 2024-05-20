@@ -96,8 +96,7 @@ public class OrdersService {
                         accounts.forEach(account -> {
                             userRepository.findByEmail(account.getEmail()).ifPresent(user -> {
                                 Notification newNotification = new Notification(
-                                    user.getId(),
-                                    null, "Status change for order: " + currentOrderStatus.referenceNumber(),
+                                    user.getId(), "Status change for order: " + currentOrderStatus.referenceNumber(),
                                     "Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state(),
                                     Timestamp.valueOf(LocalDateTime.now()).getTime(), false
                                 );
@@ -121,7 +120,7 @@ public class OrdersService {
     
     
 
-    public OrderDetailsDto getOrderDetails(long orderId, String customerCode) {
+    public OrderDetailsDto getOrderDetails(String orderId, String customerCode) {
         var user = AuthService.getCurrentUser();
         if (user == null)
             return null;

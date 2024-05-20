@@ -25,4 +25,12 @@ public class Notification {
     private String message;
     private Long createdAt = new Date().getTime();
     private boolean isRead = false;
+
+    public Notification(Long userId, String title, String message, Long createdAt, boolean isRead) {
+        this.userId = userId;
+        this.title = title;
+        this.message = message;
+        this.createdAt = createdAt;
+        this.isRead = isRead;
+    }
 }

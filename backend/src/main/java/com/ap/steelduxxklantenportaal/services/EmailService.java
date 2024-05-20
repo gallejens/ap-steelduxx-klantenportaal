@@ -40,17 +40,11 @@ public class EmailService {
 
     public void sendHtmlEmail(String to, String subject, String body) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
-
         message.setFrom(new InternetAddress(mailUsername));
         message.setRecipients(MimeMessage.RecipientType.TO, to);
         message.setSubject(subject);
-
-        // Voeg de body toe als een <p> in de HTML-content
-        String htmlContent = "<h1>Dit is een test Spring Boot email</h1>" +
-                "<p>Nieuwe TestValue: <strong>" + body + "</strong> </p>";
-
-        message.setContent(htmlContent, "");
-
+        String htmlContent = body;
+        message.setContent(htmlContent, MESSAGE_CONTENT_TYPE);
         mailSender.send(message);
     }
 

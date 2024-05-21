@@ -7,7 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Table } from '@/components/table';
 import type { Order } from '@/types/api';
-import { getOrderStateColor, getOrderTransportTypeColor } from './helpers';
+import {
+  getOrderStateColor,
+  getOrderTransportTypeColor,
+  transformContainerTypesLabel,
+} from './helpers';
 import { useAuth } from '@/hooks/useAuth';
 import { MultiSearch } from '@/components/multisearch';
 import LoaderComponent from '@/components/loader';
@@ -103,13 +107,7 @@ export const OrderListPage: FC = () => {
             },
             {
               key: 'containerTypes',
-              transform: (value: string[] | null) => {
-                if (value && value.length > 0) {
-                  return value.join(' / ');
-                } else {
-                  return 'N/A';
-                }
-              },
+              transform: transformContainerTypesLabel,
             },
             {
               key: 'totalWeight',

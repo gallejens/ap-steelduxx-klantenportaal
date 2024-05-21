@@ -145,7 +145,7 @@
       "ats": "ATS",
       "eta": "ETA",
       "ata": "ATA",
-      "totalWeight": "Total Weight",
+      "totalWeight": "Total Weight (kg)",
       "totalContainers": "Total Containers",
       "containerTypes": "Container Types"
     },
@@ -181,7 +181,7 @@
     "weight": "Weight (kg)",
     "container": "Container",
     "containerNumber": "Container Number",
-    "containerSize": "Container Size (feet)",
+    "containerSize": "Container Size (ft)",
     "containerType": "Container Type",
     "documents": {
       "downloadFailed": "Failed to download document",
@@ -246,7 +246,7 @@
           "numberInputError": "Container number of product is required"
         },
         "size": {
-          "sizeInputDescription": "Container size (feet)",
+          "sizeInputDescription": "Container size (ft)",
           "sizeInputPlaceholder": "20",
           "sizeInputError": "Container size of product is required"
         },
@@ -262,9 +262,9 @@
       "hsCode": "HsCode",
       "name": "Name",
       "quantity": "Quantity",
-      "weight": "Total weight (kg)",
+      "weight": "Total Weight (kg)",
       "containerNumber": "Container number",
-      "containerSize": "Container size (feet)",
+      "containerSize": "Container size (ft)",
       "containerType": "Container type"
     },
     "addOrderButton": "Create order request",
@@ -466,7 +466,7 @@
     "quantity": "Quantity",
     "weight": "Weight",
     "containerNumber": "Container Number",
-    "containerSize": "Container size (feet)",
+    "containerSize": "Container size (ft)",
     "containerType": "Container Type"
   },
   "orderRequestReviewPage": {

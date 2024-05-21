@@ -144,7 +144,7 @@
       "ats": "ATS",
       "eta": "ETA",
       "ata": "ATA",
-      "totalWeight": "Totaal Gewicht",
+      "totalWeight": "Totaal Gewicht (kg)",
       "totalContainers": "Aantal Containers",
       "containerTypes": "Container Types"
     },
@@ -180,7 +180,7 @@
     "weight": "Gewicht (kg)",
     "container": "Container",
     "containerNumber": "Container Nummer",
-    "containerSize": "Container Grootte (voet)",
+    "containerSize": "Container Grootte (ft)",
     "containerType": "Container Type",
     "documents": {
       "downloadFailed": "Kon bestand niet downloaden",
@@ -245,7 +245,7 @@
           "numberInputError": "Container nummer van product is vereist"
         },
         "size": {
-          "sizeInputDescription": "Container grootte (feet)",
+          "sizeInputDescription": "Container grootte (ft)",
           "sizeInputPlaceholder": "20",
           "sizeInputError": "Container grootte van product is vereist"
         },
@@ -261,9 +261,9 @@
       "hsCode": "HsCode",
       "name": "Name",
       "quantity": "Hoeveelheid",
-      "weight": "Totaal gewicht (kg)",
+      "weight": "Totaal Gewicht (kg)",
       "containerNumber": "Container nummer",
-      "containerSize": "Container grootte (voet)",
+      "containerSize": "Container grootte (ft)",
       "containerType": "Container type"
     },
     "addOrderButton": "Maak order aanvraag aan",
@@ -465,7 +465,7 @@
     "quantity": "Aantal",
     "weight": "Gewicht",
     "containerNumber": "Container nummer",
-    "containerSize": "Container grootte (feet)",
+    "containerSize": "Container grootte (ft)",
     "containerType": "Container type"
   },
   "orderRequestReviewPage": {

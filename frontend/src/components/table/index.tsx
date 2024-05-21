@@ -211,6 +211,8 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
         >
           {props.columns.map(column => {
             if (disabledColumns.includes(column.key)) return null;
+            if (column.emptyHeader && rows.length === 0) return null;
+
             return (
               <div
                 ref={ref => (columnRefs.current[column.key] = ref)}

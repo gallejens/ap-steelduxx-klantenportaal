@@ -44,10 +44,6 @@
 
   overflow: hidden;
 
-  padding: var(--mantine-spacing-xs) var(--mantine-spacing-xl);
-  border-radius: var(--mantine-radius-default);
-  border: 1px solid var(--mantine-color-default-border);
-
   & > .title {
     display: flex;
     justify-content: space-between;

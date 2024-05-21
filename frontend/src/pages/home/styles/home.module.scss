@@ -2,59 +2,48 @@
   width: 100%;
   height: 100%;
 
-  & > .header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+
+  & > * {
     width: 100%;
-    height: 13%;
-
-    border-bottom: 1.5px solid var(--mantine-color-default-border);
-
-    padding-top: var(--mantine-spacing-md);
-    padding-left: var(--mantine-spacing-md);
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
   }
 
-  .body {
-    width: 100%;
-    height: 74%;
-    padding: var(--mantine-spacing-xl);
+  & > .header {
+    height: 5rem;
+
     display: flex;
     justify-content: center;
     align-items: center;
+  }
 
-    .cardContainer {
+  & > .body {
+    flex-grow: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--mantine-spacing-md);
+
+    & > .card {
+      width: 17rem;
+      height: 25rem;
+
       display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
+      flex-direction: column;
 
-      .card {
-        width: 300px;
+      & > .icon {
+        width: 100%;
+        aspect-ratio: 1.5;
 
-        .iconContainer {
-          height: 200px; // Increase the height of the icon container
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-        .cardTitle {
-          max-width: 200px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .cardDescription {
-          max-width: 280px;
-          white-space: normal;
-          word-wrap: break-word;
-        }
-
-        &:hover {
-          cursor: pointer;
-        }
+      &:hover {
+        cursor: pointer;
       }
     }
   }

@@ -91,8 +91,8 @@
     "confirmButton": "Confirm",
     "success": "Request has been send succesfully."
   },
-  "welcomePage": {
-    "welcomeTitle": "Welcome",
+  "homePage": {
+    "title": "Welcome",
     "cards": {
       "orders": {
         "title": "Orders",

@@ -4,6 +4,7 @@ import styles from '../styles/companies.module.scss';
 import {
   Collapse,
   Divider,
+  Paper,
   Table,
   Text,
   TextInput,
@@ -173,7 +174,7 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
   );
 
   return (
-    <div className={styles.company_card}>
+    <Paper className={styles.company_card}>
       <div className={styles.title}>
         <Title order={3}>{company?.name ?? ADMINS_COMPANY_LABEL}</Title>
         <div className={styles.buttons}>
@@ -322,6 +323,6 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
           <Text>{t('companiesPage:noSubAccounts')}</Text>
         )}
       </Collapse>
-    </div>
+    </Paper>
   );
 });

@@ -400,7 +400,8 @@
   "table": {
     "columnSelectorButton": "Kolommen",
     "trueValue": "Ja",
-    "falseValue": "Nee"
+    "falseValue": "Nee",
+    "rowsAmount": "Aantal rijen"
   },
   "companiesPage": {
     "table": {

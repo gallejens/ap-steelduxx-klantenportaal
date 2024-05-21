@@ -401,7 +401,8 @@
   "table": {
     "columnSelectorButton": "Columns",
     "trueValue": "Yes",
-    "falseValue": "No"
+    "falseValue": "No",
+    "rowsAmount": "Amount of rows"
   },
   "companiesPage": {
     "table": {

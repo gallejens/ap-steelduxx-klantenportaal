@@ -313,6 +313,14 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
         </div>
       </div>
       <div className={styles.footer}>
+        <div className={styles.left_side}>
+          <Text
+            fs='italic'
+            c='dimmed'
+          >
+            {t('table:rowsAmount')}: {processedRows.length}
+          </Text>
+        </div>
         <Pagination
           total={totalPages}
           value={activePage}

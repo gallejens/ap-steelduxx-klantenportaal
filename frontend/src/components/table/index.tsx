@@ -20,6 +20,7 @@ import {
   normalizeSearchValues,
 } from './util';
 import { ColumnSelector } from './components/ColumnSelector';
+import classNames from 'classnames';
 
 export const Table = <T extends string>(props: NTable.Props<T>) => {
   const { t } = useTranslation();
@@ -244,47 +245,59 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                     />
                   )}
                 </div>
-                {rows.map((row, idx) => {
-                  let value: ReactNode = row[column.key];
-                  let showInTextElement = true;
+                {rows.length > 0 ? (
+                  rows.map((row, idx) => {
+                    let value: ReactNode = row[column.key];
+                    let showInTextElement = true;
 
-                  if (column.transform) {
-                    showInTextElement = false;
-                    value = column.transform(value);
-                  }
-
-                  if (typeof value === 'boolean') {
-                    showInTextElement = true;
-                    if (value) {
-                      value = t('table:trueValue');
-                    } else {
-                      value = t('table:falseValue');
+                    if (column.transform) {
+                      showInTextElement = false;
+                      value = column.transform(value);
                     }
-                  } else if (typeof value === 'string') {
-                    showInTextElement = true;
-                  }
 
-                  return (
-                    <div
-                      key={`cell_${column.key}_${idx}`}
-                      className={`${styles.cell} ${props.onRowClick ? styles.cellPointer : ''}`}
-                      onClick={() => props.onRowClick?.(row)}
-                    >
-                      {showInTextElement ? (
-                        <Text
-                          truncate='end'
-                          size='xs'
-                        >
-                          {value ??
-                            column.emptyCellPlaceholder ??
-                            emptyCellPlaceholder}
-                        </Text>
-                      ) : (
-                        value
-                      )}
-                    </div>
-                  );
-                })}
+                    if (typeof value === 'boolean') {
+                      showInTextElement = true;
+                      if (value) {
+                        value = t('table:trueValue');
+                      } else {
+                        value = t('table:falseValue');
+                      }
+                    } else if (typeof value === 'string') {
+                      showInTextElement = true;
+                    }
+
+                    return (
+                      <div
+                        key={`cell_${column.key}_${idx}`}
+                        className={classNames(
+                          styles.cell,
+                          props.onRowClick && styles.cellPointer
+                        )}
+                        onClick={() => props.onRowClick?.(row)}
+                      >
+                        {showInTextElement ? (
+                          <Text
+                            truncate='end'
+                            size='xs'
+                          >
+                            {value ??
+                              column.emptyCellPlaceholder ??
+                              emptyCellPlaceholder}
+                          </Text>
+                        ) : (
+                          value
+                        )}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div
+                    key={`cell_${column.key}_empty`}
+                    className={styles.cell}
+                  >
+                    -
+                  </div>
+                )}
                 {!column.disableResizing && (
                   <div
                     className={styles.resize_handle}

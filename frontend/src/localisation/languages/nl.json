@@ -124,7 +124,12 @@
     },
     "tableLoading": "Bezig met laden...",
     "tableError": "Kan aanvragen niet laden",
-    "tableEmpty": "Geen aanvragen"
+    "tableEmpty": "Geen aanvragen",
+    "tabs": {
+      "PENDING": "Openstaand",
+      "APPROVED": "Goedgekeurd",
+      "DENIED": "Afgekeurd"
+    }
   },
   "orderListPage": {
     "header": {
@@ -452,6 +457,11 @@
       "transportType": "Transport type",
       "portOfOriginCode": "Haven van Herkomst Code",
       "portOfDestinationCode": "Haven van Bestemming Code"
+    },
+    "tabs": {
+      "PENDING": "Openstaand",
+      "APPROVED": "Goedgekeurd",
+      "DENIED": "Afgekeurd"
     }
   },
   "orderRequestForm": {

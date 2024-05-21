@@ -124,7 +124,12 @@
     },
     "tableLoading": "Loading...",
     "tableError": "Can't load requests",
-    "tableEmpty": "No requests"
+    "tableEmpty": "No requests",
+    "tabs": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "DENIED": "Denied"
+    }
   },
   "orderListPage": {
     "header": {
@@ -453,6 +458,11 @@
       "transportType": "Transport type",
       "portOfOriginCode": "Port of Origin Code",
       "portOfDestinationCode": "Port of Destination Code"
+    },
+    "tabs": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "DENIED": "Denied"
     }
   },
   "orderRequestForm": {

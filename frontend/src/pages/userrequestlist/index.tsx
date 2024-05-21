@@ -142,9 +142,7 @@ export const UserRequestListPage: FC = () => {
             <Tabs.Tab
               key={status}
               value={status}
-              leftSection={
-                status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()
-              }
+              leftSection={t(`userRequestListPage:tabs:${status}`)}
             />
           ))}
         </Tabs.List>

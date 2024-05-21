@@ -412,6 +412,8 @@
       "actions": "Actions"
     },
     "headAccount": "Head Account",
+    "subAccounts": "Subaccounts",
+    "noSubAccounts": "There are no subaccounts for this company",
     "deleteAccount": {
       "title": "Delete Account",
       "text": "Are you sure you want to delete this account?",

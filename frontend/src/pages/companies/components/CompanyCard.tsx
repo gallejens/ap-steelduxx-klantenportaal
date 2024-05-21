@@ -253,63 +253,74 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
         className={styles.collapsable}
       >
         <Divider my='xs' />
-        <TextInput
-          size='xs'
-          leftSection={<IconSearch size={16} />}
-          value={searchValue}
-          onChange={e => setSearchValue(e.currentTarget.value)}
-          className={styles.search}
-        />
-        <div className={styles.table}>
-          <Table
-            stickyHeader
-            withColumnBorders
-            withRowBorders={false}
-            striped
-          >
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>
-                  <Text size='sm'>{t('companiesPage:table:email')}</Text>
-                </Table.Th>
-                <Table.Th>
-                  <Text size='sm'>{t('companiesPage:table:firstName')}</Text>
-                </Table.Th>
-                <Table.Th>
-                  <Text size='sm'>{t('companiesPage:table:lastName')}</Text>
-                </Table.Th>
-                <Table.Th>
-                  <Text size='sm'>{t('companiesPage:table:actions')}</Text>
-                </Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {search(normalAccounts, searchValue).map(a => (
-                <Table.Tr key={a.email}>
-                  <Table.Td>{a.email}</Table.Td>
-                  <Table.Td>{a.firstName}</Table.Td>
-                  <Table.Td>{a.lastName}</Table.Td>
-                  <Table.Td className={styles.actions}>
-                    {showChangeHeadAccount && (
-                      <IconButton
-                        tooltipKey='companiesPage:tooltips:changeHead'
-                        onClick={() => openChangeHeadAccountModal(a.email)}
-                        icon={<IconChevronUp />}
-                      />
-                    )}
-                    {showDeleteSubAccount && (
-                      <IconButton
-                        tooltipKey='companiesPage:tooltips:delete'
-                        onClick={() => openDeleteSubAccountModal(a.email)}
-                        icon={<IconTrash />}
-                      />
-                    )}
-                  </Table.Td>
-                </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
-        </div>
+        {normalAccounts.length > 0 ? (
+          <>
+            <div className={styles.header}>
+              <Title order={5}>{t('companiesPage:subAccounts')}</Title>
+              <TextInput
+                size='xs'
+                leftSection={<IconSearch size={16} />}
+                value={searchValue}
+                onChange={e => setSearchValue(e.currentTarget.value)}
+                className={styles.search}
+              />
+            </div>
+            <div className={styles.table}>
+              <Table
+                stickyHeader
+                withColumnBorders
+                withRowBorders={false}
+                striped
+              >
+                <Table.Thead>
+                  <Table.Tr>
+                    <Table.Th>
+                      <Text size='sm'>{t('companiesPage:table:email')}</Text>
+                    </Table.Th>
+                    <Table.Th>
+                      <Text size='sm'>
+                        {t('companiesPage:table:firstName')}
+                      </Text>
+                    </Table.Th>
+                    <Table.Th>
+                      <Text size='sm'>{t('companiesPage:table:lastName')}</Text>
+                    </Table.Th>
+                    <Table.Th>
+                      <Text size='sm'>{t('companiesPage:table:actions')}</Text>
+                    </Table.Th>
+                  </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                  {search(normalAccounts, searchValue).map(a => (
+                    <Table.Tr key={a.email}>
+                      <Table.Td>{a.email}</Table.Td>
+                      <Table.Td>{a.firstName}</Table.Td>
+                      <Table.Td>{a.lastName}</Table.Td>
+                      <Table.Td className={styles.actions}>
+                        {showChangeHeadAccount && (
+                          <IconButton
+                            tooltipKey='companiesPage:tooltips:changeHead'
+                            onClick={() => openChangeHeadAccountModal(a.email)}
+                            icon={<IconChevronUp />}
+                          />
+                        )}
+                        {showDeleteSubAccount && (
+                          <IconButton
+                            tooltipKey='companiesPage:tooltips:delete'
+                            onClick={() => openDeleteSubAccountModal(a.email)}
+                            icon={<IconTrash />}
+                          />
+                        )}
+                      </Table.Td>
+                    </Table.Tr>
+                  ))}
+                </Table.Tbody>
+              </Table>
+            </div>
+          </>
+        ) : (
+          <Text>{t('companiesPage:noSubAccounts')}</Text>
+        )}
       </Collapse>
     </div>
   );

@@ -411,6 +411,8 @@
       "actions": "Acties"
     },
     "headAccount": "Hoofd Gebruiker",
+    "subAccounts": "Subaccounts",
+    "noSubAccounts": "Er zijn geen subaccounts voor dit bedrijf",
     "deleteAccount": {
       "title": "Gebruiker Verwijderen",
       "text": "Ben je zeker dat je deze gebruiker wil verwijderen?",

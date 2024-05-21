@@ -90,10 +90,18 @@
     flex-direction: column;
     overflow: hidden;
 
-    & > .search {
-      width: 30%;
-      min-width: 15rem;
+    & > .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--mantine-spacing-xs);
+
       margin-bottom: var(--mantine-spacing-xs);
+
+      & > .search {
+        width: 30%;
+        min-width: 15rem;
+      }
     }
 
     & > .table {

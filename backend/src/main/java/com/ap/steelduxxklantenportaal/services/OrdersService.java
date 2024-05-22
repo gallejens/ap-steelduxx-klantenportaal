@@ -9,6 +9,8 @@ import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.models.CompanyInfoAccount;
 import com.ap.steelduxxklantenportaal.models.Notification;
 import com.ap.steelduxxklantenportaal.models.User;
+import com.ap.steelduxxklantenportaal.models.UserPreference;
+import com.ap.steelduxxklantenportaal.repositories.UserPreferenceRepository;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 
@@ -28,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -42,13 +45,15 @@ public class OrdersService {
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final CompanyInfoAccountRepository companyInfoAccountRepository;
-    public OrdersService(ExternalApiService externalApiService, NotificationService notificationService, UserRepository userRepository, CompanyRepository companyRepository, CompanyInfoAccountRepository companyInfoAccountRepository, EmailService emailService) {
+    private final UserPreferenceRepository userPreferenceRepository;
+    public OrdersService(ExternalApiService externalApiService, NotificationService notificationService, UserRepository userRepository, CompanyRepository companyRepository, CompanyInfoAccountRepository companyInfoAccountRepository, EmailService emailService, UserPreferenceRepository userPreferenceRepository) {
         this.externalApiService = externalApiService;
         this.notificationService = notificationService;
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
         this.companyInfoAccountRepository = companyInfoAccountRepository;
         this.emailService = emailService;
+        this.userPreferenceRepository = userPreferenceRepository;
         this.previousOrderStatuses = new ArrayList<>();
     }
 
@@ -95,16 +100,24 @@ public class OrdersService {
                         List<CompanyInfoAccount> accounts = companyInfoAccountRepository.findAllByCompanyId(company.getId());
                         accounts.forEach(account -> {
                             userRepository.findByEmail(account.getEmail()).ifPresent(user -> {
-                                Notification newNotification = new Notification(
-                                    user.getId(), "Status change for order: " + currentOrderStatus.referenceNumber(),
-                                    "Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state(),
-                                    Timestamp.valueOf(LocalDateTime.now()).getTime(), false
-                                );
-                                notificationService.createNotification(newNotification);
-                                try {
-                                    emailService.sendHtmlEmail(account.getEmail(), "Status change for order : " + currentOrderStatus.referenceNumber(),"Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state() );
-                                } catch (MessagingException e) {
-                                    e.printStackTrace();
+                                Optional<UserPreference> userPreference = userPreferenceRepository.findByUserId(user.getId());
+                                if(userPreference.isPresent()){
+                                    if(userPreference.get().isSystemNotificationOrderStatus()){
+                                        Notification newNotification = new Notification(
+                                                user.getId(), "Status change for order: " + currentOrderStatus.referenceNumber(),
+                                                "Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state(),
+                                                Timestamp.valueOf(LocalDateTime.now()).getTime(), false
+                                        );
+                                        notificationService.createNotification(newNotification);
+                                    }
+                                    if(userPreference.get().isEmailNotificationOrderStatus()) {
+
+                                        try {
+                                            emailService.sendHtmlEmail(account.getEmail(), "Status change for order : " + currentOrderStatus.referenceNumber(), "Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state());
+                                        } catch (MessagingException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                                 }
 
                             });

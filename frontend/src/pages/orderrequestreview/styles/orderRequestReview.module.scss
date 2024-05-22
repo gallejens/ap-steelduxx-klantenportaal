@@ -10,108 +10,127 @@
     width: calc(1.4 / 2 * 100%);
 
     padding: var(--mantine-spacing-xl);
-    border-right: 1.5px solid var(--mantine-color-default-border);
 
-    & > .company_detail_fields {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+    &:only-child {
       width: 100%;
-
-      & > .company_fields {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-
-        & > .companyName_field {
-          width: calc(0.95 / 2 * 100%);
-        }
-
-        & > .status_field {
-          width: calc(0.95 / 2 * 100%);
-        }
-      }
-
-      & > .email_field {
-        margin-top: var(--mantine-spacing-md);
-      }
-
-      & > .number_fields,
-      & > .place_fields {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-top: var(--mantine-spacing-md);
-
-        & > .status_field {
-          width: calc(0.95 / 2 * 100%);
-        }
-      }
     }
   }
-  & > .userrequest_handle {
-    width: calc(0.6 / 2 * 100%);
-    height: 100%;
+}
 
-    padding: var(--mantine-spacing-xl);
+.orderrequest_review_page_form {
+  & > .company_detail_fields {
+    width: 100%;
 
-    & > .button_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    & > .first_row {
+      width: 100%;
+
       display: flex;
       flex-direction: row;
-      gap: var(--mantine-spacing-xl);
+      justify-content: space-between;
 
-      & > .approve_button {
-        width: calc(1 / 2 * 100%);
+      gap: 5%;
 
-        font-weight: bold;
+      margin-bottom: var(--mantine-spacing-lg);
 
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      & > .deny_button {
-        width: calc(1 / 2 * 100%);
-
-        font-weight: bold;
-
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      & > .id_field,
+      .status_field,
+      .transport_type_field {
+        width: 100%;
       }
     }
 
-    & > .handle_container {
-      margin-top: var(--mantine-spacing-md);
-    }
+    & > .third_row {
+      width: 100%;
 
-    .confirm_button {
-      margin-top: var(--mantine-spacing-md);
       display: flex;
-      justify-content: end;
+      flex-direction: row;
+      justify-content: start;
+
+      gap: 5%;
+
+      margin-bottom: var(--mantine-spacing-lg);
+
+      & > .port_origin_code_field,
+      .port_dest_code_field {
+        width: 100%;
+      }
+    }
+
+    & > .second_row {
+      margin-bottom: var(--mantine-spacing-lg);
+      width: 100%;
     }
   }
-  .product_table {
-    margin-top: var(--mantine-spacing-lg);
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+.userrequest_handle {
+  width: calc(0.6 / 2 * 100%);
+  height: 100%;
 
-      th,
-      td {
-        padding: var(--mantine-spacing-sm);
-        border: 1px solid var(--mantine-color-default-border);
-        font-size: 0.8em;
-      }
+  padding: var(--mantine-spacing-xl);
 
-      th {
-        background-color: var(--mantine-color-primary);
-        color: black;
-        text-align: left;
-      }
-      th:nth-child(5),
-      td:nth-child(5),
-      th:nth-child(6),
-      td:nth-child(6) {
-        width: 10%;
-      }
+  border-left: 1.5px solid var(--mantine-color-default-border);
+
+  & > .button_container {
+    display: flex;
+    flex-direction: row;
+    gap: var(--mantine-spacing-xl);
+
+    & > .approve_button {
+      width: calc(1 / 2 * 100%);
+
+      font-weight: bold;
+
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    & > .deny_button {
+      width: calc(1 / 2 * 100%);
+
+      font-weight: bold;
+
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  & > .handle_container {
+    margin-top: var(--mantine-spacing-md);
+  }
+
+  .confirm_button {
+    margin-top: var(--mantine-spacing-md);
+    display: flex;
+    justify-content: end;
+  }
+}
+.product_table {
+  margin-top: var(--mantine-spacing-lg);
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: var(--mantine-spacing-sm);
+      border: 1px solid var(--mantine-color-default-border);
+      font-size: 0.8em;
+    }
+
+    th {
+      background-color: var(--mantine-color-primary);
+      color: black;
+      text-align: left;
+    }
+    th:nth-child(5),
+    td:nth-child(5),
+    th:nth-child(6),
+    td:nth-child(6) {
+      width: 10%;
     }
   }
 }

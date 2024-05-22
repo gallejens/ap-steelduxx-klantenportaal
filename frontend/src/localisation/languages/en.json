@@ -503,11 +503,10 @@
   },
   "preferences": {
     "title": "Preferences",
-    "notificationOrderStatusTitle": "Notifications for order status",
-    "notificationOrderRequestTitle": "Notifications for order request",
-    "systemNotificationOrderStatus": "System Notifications",
-    "emailNotificationOrderStatus": "Email Notifications",
-    "systemNotificationOrderRequest": "System Notifications",
-    "emailNotificationOrderRequest": "Email Notifications"
+    "notificationTitle": "Notifications ",
+    "notificationOrderStatusTitle": "Order status",
+    "notificationOrderRequestTitle": "Order request",
+    "systemNotification": "System Notifications",
+    "emailNotification": "Email Notifications"
   }
 }

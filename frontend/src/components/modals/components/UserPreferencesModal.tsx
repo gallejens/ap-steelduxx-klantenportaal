@@ -1,14 +1,13 @@
-import { Switch, Group, Title, Flex } from '@mantine/core';
+import { Checkbox, Grid, Text, Tooltip } from '@mantine/core';
 import type { FC } from 'react';
 import { useState, useEffect } from 'react';
-import { Modal } from '..';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { doApiAction } from '@/lib/api';
 import { UserPreferences } from '@/types/userpreferences';
-import { IconCheck, IconX } from '@tabler/icons-react';
-import { useMantineTheme, rem } from '@mantine/core';
+import { Modal } from '..';
+import { IconMail, IconMessage } from '@tabler/icons-react';
 
 const mapToPreferenceType = (key: keyof UserPreferences): number | null => {
   switch (key) {
@@ -28,7 +27,6 @@ const mapToPreferenceType = (key: keyof UserPreferences): number | null => {
 export const UserPreferencesModal: FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const theme = useMantineTheme();
 
   const { data: userpreferences } = useQuery({
     queryKey: ['preferences'],
@@ -47,7 +45,7 @@ export const UserPreferencesModal: FC = () => {
     }
   }, [userpreferences]);
 
-  const handleSwitchChange =
+  const handleCheckboxChange =
     (preferenceKey: keyof UserPreferences) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (preferences) {
@@ -74,107 +72,63 @@ export const UserPreferencesModal: FC = () => {
 
   return (
     <Modal title={t('preferences:title')}>
-      <Flex
-        direction='column'
-        gap='md'
-      >
-        <Title order={3}>{t('preferences:notificationOrderStatusTitle')}</Title>
-        <Group>
-          <Switch
+      <Grid align='center'>
+        <Grid.Col span={6}>
+          <Text fw={500}>{t('preferences:notificationTitle')}</Text>
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <Tooltip
+            label={t(`preferences:systemNotification`)}
+            position='right'
+            transitionProps={{ transition: 'rotate-right', duration: 300 }}
+          >
+            <IconMessage size={20} />
+          </Tooltip>
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <Tooltip
+            label={t(`preferences:emailNotification`)}
+            position='right'
+            transitionProps={{ transition: 'rotate-right', duration: 300 }}
+          >
+            <IconMail size={20} />
+          </Tooltip>
+        </Grid.Col>
+      </Grid>
+      <Grid align='center'>
+        <Grid.Col span={6}>
+          <Text>{t('preferences:notificationOrderStatusTitle')}</Text>
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <Checkbox
             checked={preferences.systemNotificationOrderStatus}
-            onChange={handleSwitchChange('systemNotificationOrderStatus')}
-            label={t('preferences:systemNotificationOrderStatus')}
-            color='teal'
-            size='md'
-            thumbIcon={
-              preferences.systemNotificationOrderStatus ? (
-                <IconCheck
-                  style={{ width: rem(12), height: rem(12) }}
-                  color={theme.colors.teal[6]}
-                  stroke={3}
-                />
-              ) : (
-                <IconX
-                  style={{ width: rem(12), height: rem(12) }}
-                  color={theme.colors.red[6]}
-                  stroke={3}
-                />
-              )
-            }
+            onChange={handleCheckboxChange('systemNotificationOrderStatus')}
           />
-          <Switch
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <Checkbox
             checked={preferences.emailNotificationOrderStatus}
-            onChange={handleSwitchChange('emailNotificationOrderStatus')}
-            label={t('preferences:emailNotificationOrderStatus')}
-            color='teal'
-            size='md'
-            thumbIcon={
-              preferences.emailNotificationOrderStatus ? (
-                <IconCheck
-                  style={{ width: rem(12), height: rem(12) }}
-                  color={theme.colors.teal[6]}
-                  stroke={3}
-                />
-              ) : (
-                <IconX
-                  style={{ width: rem(12), height: rem(12) }}
-                  color={theme.colors.red[6]}
-                  stroke={3}
-                />
-              )
-            }
+            onChange={handleCheckboxChange('emailNotificationOrderStatus')}
           />
-        </Group>
-        <Title order={3}>
-          {t('preferences:notificationOrderRequestTitle')}
-        </Title>
-        <Group>
-          <Switch
+        </Grid.Col>
+      </Grid>
+      <Grid align='center'>
+        <Grid.Col span={6}>
+          <Text>{t('preferences:notificationOrderRequestTitle')}</Text>
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <Checkbox
             checked={preferences.systemNotificationOrderRequest}
-            onChange={handleSwitchChange('systemNotificationOrderRequest')}
-            label={t('preferences:systemNotificationOrderRequest')}
-            color='teal'
-            size='md'
-            thumbIcon={
-              preferences.systemNotificationOrderRequest ? (
-                <IconCheck
-                  style={{ width: rem(12), height: rem(12) }}
-                  color={theme.colors.teal[6]}
-                  stroke={3}
-                />
-              ) : (
-                <IconX
-                  style={{ width: rem(12), height: rem(12) }}
-                  color={theme.colors.red[6]}
-                  stroke={3}
-                />
-              )
-            }
+            onChange={handleCheckboxChange('systemNotificationOrderRequest')}
           />
-          <Switch
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <Checkbox
             checked={preferences.emailNotificationOrderRequest}
-            onChange={handleSwitchChange('emailNotificationOrderRequest')}
-            label={t('preferences:emailNotificationOrderRequest')}
-            color='teal'
-            size='md'
-            thumbIcon={
-              preferences.emailNotificationOrderRequest ? (
-                <IconCheck
-                  style={{ width: rem(12), height: rem(12) }}
-                  color={theme.colors.teal[6]}
-                  stroke={3}
-                />
-              ) : (
-                <IconX
-                  style={{ width: rem(12), height: rem(12) }}
-                  color={theme.colors.red[6]}
-                  stroke={3}
-                />
-              )
-            }
+            onChange={handleCheckboxChange('emailNotificationOrderRequest')}
           />
-        </Group>
-      </Flex>
+        </Grid.Col>
+      </Grid>
     </Modal>
   );
 };

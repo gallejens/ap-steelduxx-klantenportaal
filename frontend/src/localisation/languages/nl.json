@@ -502,11 +502,10 @@
   },
   "preferences": {
     "title": "Instellingen",
-    "notificationOrderStatusTitle": "Notificaties voor order status",
-    "notificationOrderRequestTitle": "Notifications voor order aanvragen",
-    "systemNotificationOrderStatus": "Systeem Notificaties",
-    "emailNotificationOrderStatus": "Email Notificaties",
-    "systemNotificationOrderRequest": "Systeem Notificaties",
-    "emailNotificationOrderRequest": "Email Notificaties"
+    "notificationTitle": "Notificaties ",
+    "notificationOrderStatusTitle": "Order status",
+    "notificationOrderRequestTitle": "Order aanvragen",
+    "systemNotification": "Systeem Notificaties",
+    "emailNotification": "Email Notificaties"
   }
 }

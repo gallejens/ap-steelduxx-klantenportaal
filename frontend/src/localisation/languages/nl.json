@@ -334,7 +334,8 @@
       "logout": "Uitloggen",
       "changePassword": "Wachtwoord veranderen",
       "logoutConfirmTitle": "Uitloggen",
-      "logoutConfirmText": "Weet u zeker dat u wilt uitloggen?"
+      "logoutConfirmText": "Weet u zeker dat u wilt uitloggen?",
+      "preferences": "Instellingen"
     },
     "deleteRequestConfirmation": {
       "deleteConfirmTitle": "Aanvraag verwijderen",

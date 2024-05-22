@@ -1,0 +1,9 @@
+package com.ap.steelduxxklantenportaal.enums;
+
+public enum UserPreferenceType {
+    SYSTEMNOTIFICATIONORDERSTATUS,
+    EMAILNOTIFICATIONORDERSTATUS,
+    SYSTEMNOTIFICATIONORDERREQUEST,
+    EMAILNOTIFICATIONORDERREQUEST
+
+}

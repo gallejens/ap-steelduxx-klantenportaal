@@ -335,7 +335,8 @@
       "logout": "Logout",
       "changePassword": "Change password",
       "logoutConfirmTitle": "Logout",
-      "logoutConfirmText": "Are you sure you want to log out?"
+      "logoutConfirmText": "Are you sure you want to log out?",
+      "preferences": "Preferences"
     },
     "deleteRequestConfirmation": {
       "deleteConfirmTitle": "Delete request",

@@ -123,4 +123,31 @@ Once you fill everything in you can press the 'Add product' button on the bottom
 
 You can add as many products as you want but you have to add atleast one.
 
+Once you filled everything in as needed then you can press the bottom left button 'Create order request' to request the new order.
+
+## Order Details page
+
+The order details page is split up into 4 sections.
+
+**General info**
+
+This section has the most information. You can find almost everything there like the port of origin/destination, shiping state, ETS, ATS, ETA, ATA, IMO, MMSI and more.
+
+**Document**
+
+In this section you can upload, download or replace 3 types of documents. When there isn't a document present you can click the upload icon to upload a file.
+
+Once there is a file accessible for a documenttype you can donwload that file by clicking the download icon or replace it by clicking the upload icon.
+
+**Ship location**
+
+This shows a map of the ship that is transporting said order. On the map you can click the green button that says 'Details' to see more info about the ship.
+
+**Products**
+
+This table shows all the products that are in th order.
+
+## Company Info page
+
+
 

@@ -74,7 +74,7 @@ export const UserPreferencesModal: FC = () => {
     <Modal title={t('preferences:title')}>
       <Grid align='center'>
         <Grid.Col span={6}>
-          <Text fw={500}>{t('preferences:notificationTitle')}</Text>
+          <Text fw={700}>{t('preferences:notificationTitle')}</Text>
         </Grid.Col>
         <Grid.Col span={3}>
           <Tooltip

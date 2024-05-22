@@ -4,24 +4,31 @@ import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestApproveDto;
 import com.ap.steelduxxklantenportaal.dtos.userrequestreview.UserRequestDenyDto;
 import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
+import com.ap.steelduxxklantenportaal.models.Company;
+import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import com.ap.steelduxxklantenportaal.services.ExternalApiService;
 import com.ap.steelduxxklantenportaal.services.UserRequestService;
 import jakarta.mail.MessagingException;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("user-requests")
 public class UserRequestController {
     private final UserRequestService userRequestValueService;
+    private final CompanyRepository companyRepository;
     private final ExternalApiService externalApiService;
 
-    public UserRequestController(UserRequestService userRequestValueService, ExternalApiService externalApiService) {
+    public UserRequestController(UserRequestService userRequestValueService, CompanyRepository companyRepository,
+            ExternalApiService externalApiService) {
         this.userRequestValueService = userRequestValueService;
+        this.companyRepository = companyRepository;
         this.externalApiService = externalApiService;
     }
 
@@ -47,7 +54,7 @@ public class UserRequestController {
     @PostMapping("/{id}/approve")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
     public ResponseEntity<Object> approveRequest(@PathVariable Long id,
-                                                 @RequestBody UserRequestApproveDto userRequestApproveDto)
+            @RequestBody UserRequestApproveDto userRequestApproveDto)
             throws MessagingException, UserAlreadyExistsException {
         return userRequestValueService.approveUserRequest(id, userRequestApproveDto);
     }
@@ -55,7 +62,7 @@ public class UserRequestController {
     @PostMapping("/{id}/deny")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
     public ResponseEntity<Object> denyRequest(@PathVariable Long id,
-                                              @RequestBody UserRequestDenyDto userRequestDenyDto) {
+            @RequestBody UserRequestDenyDto userRequestDenyDto) {
         return userRequestValueService.denyUserRequest(id, userRequestDenyDto);
     }
 
@@ -68,7 +75,14 @@ public class UserRequestController {
     @GetMapping("/company-codes")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
     public ResponseEntity<String[]> getCompanyCodes() {
-        var referenceCodes = externalApiService.doRequest("/admin/company-codes/all", HttpMethod.GET, String[].class);
-        return ResponseEntity.ok(referenceCodes);
+        var allReferenceCodes = externalApiService.doRequest("/admin/company-codes/all", HttpMethod.GET,
+                String[].class);
+
+        var usedReferenceCodes = companyRepository.findAll().stream().map(Company::getReferenceCode).toList();
+
+        var availableReferencesCodes = Arrays.stream(allReferenceCodes)
+                .filter(code -> !usedReferenceCodes.contains(code)).toArray(String[]::new);
+
+        return ResponseEntity.ok(availableReferencesCodes);
     }
 }

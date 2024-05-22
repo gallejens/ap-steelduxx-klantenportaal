@@ -473,6 +473,14 @@
     "response": {
       "success": "Order Request approved!",
       "denied": "Order Request denied!"
+    },
+    "editProductModal": {
+      "title": "Edit product",
+      "confirmButton": "Edit",
+      "response": {
+        "failed": "Something went wrong while editing the product. Please try again.",
+        "success": "Product has been successfully edited."
+      }
     }
   },
   "pageTitleHelper": {

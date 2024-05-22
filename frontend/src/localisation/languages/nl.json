@@ -472,6 +472,14 @@
     "response": {
       "success": "Order aanvraag goedgekeurd!",
       "denied": "Order aanvraag afgekeurd!"
+    },
+    "editProductModal": {
+      "title": "Product bewerken",
+      "confirmButton": "Bewerken",
+      "response": {
+        "failed": "Er is iets misgegaan tijdens het bewerken van het product, gelieve opnieuw te proberen.",
+        "success": "Product is succesvol bewerkt."
+      }
     }
   },
   "pageTitleHelper": {

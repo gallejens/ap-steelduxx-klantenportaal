@@ -239,7 +239,6 @@ export const OrderCreatePage: FC = () => {
             placeholder={t(
               'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputPlaceholder'
             )}
-            maxLength={5}
             required={newOrderForm.values.transportType === 'EXPORT'}
             disabled={newOrderForm.values.transportType !== 'EXPORT'}
             {...newOrderForm.getInputProps('portOfDestinationCode')}

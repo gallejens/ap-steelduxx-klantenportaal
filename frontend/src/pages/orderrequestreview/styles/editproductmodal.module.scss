@@ -1,0 +1,43 @@
+.edit_product_modal {
+  & > .product_form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: var(--mantine-spacing-xs);
+
+    & > div {
+      display: flex;
+      flex-direction: row;
+      gap: var(--mantine-spacing-xl);
+      margin-top: var(--mantine-spacing-md);
+
+      align-items: center;
+
+      & > .hsCode_field {
+        width: calc(1 / 3 * 100%);
+      }
+
+      & > * {
+        width: 100%;
+      }
+    }
+
+    & > * {
+      width: 100%;
+    }
+
+    & > .confirm_button {
+      align-self: end;
+      width: var(--mantine-width-md);
+    }
+  }
+
+  & > .response_message {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

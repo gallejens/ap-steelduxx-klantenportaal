@@ -500,5 +500,14 @@
       "remove": "Remove Document",
       "replace": "Replace Document"
     }
+  },
+  "preferences": {
+    "title": "Preferences",
+    "notificationOrderStatusTitle": "Notifications for order status",
+    "notificationOrderRequestTitle": "Notifications for order request",
+    "systemNotificationOrderStatus": "System Notifications",
+    "emailNotificationOrderStatus": "Email Notifications",
+    "systemNotificationOrderRequest": "System Notifications",
+    "emailNotificationOrderRequest": "Email Notifications"
   }
 }

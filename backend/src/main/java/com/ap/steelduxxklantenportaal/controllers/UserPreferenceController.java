@@ -1,7 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
 
-import com.ap.steelduxxklantenportaal.enums.UserPreferenceType;
 import com.ap.steelduxxklantenportaal.services.UserPreferenceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,13 +25,13 @@ public class UserPreferenceController {
 
     @PostMapping("/{userId}/on")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
-    public ResponseEntity<Object> onRequest(@PathVariable Long userId, @RequestBody UserPreferenceType userPreferenceType) {
+    public ResponseEntity<Object> onRequest(@PathVariable Long userId, @RequestBody Integer userPreferenceType) {
         return userPreferenceService.enableNotification(userId, userPreferenceType);
     }
 
     @PostMapping("/{userId}/off")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
-    public ResponseEntity<Object> offRequest(@PathVariable Long userId, @RequestBody UserPreferenceType userPreferenceType)
+    public ResponseEntity<Object> offRequest(@PathVariable Long userId, @RequestBody Integer userPreferenceType)
     {
         return userPreferenceService.disableNotification(userId, userPreferenceType);
     }

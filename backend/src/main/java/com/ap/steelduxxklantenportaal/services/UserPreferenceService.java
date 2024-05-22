@@ -1,7 +1,6 @@
 package com.ap.steelduxxklantenportaal.services;
 
 import com.ap.steelduxxklantenportaal.dtos.UserPreferenceDto;
-import com.ap.steelduxxklantenportaal.enums.UserPreferenceType;
 import com.ap.steelduxxklantenportaal.models.UserPreference;
 import com.ap.steelduxxklantenportaal.repositories.UserPreferenceRepository;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
@@ -9,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.function.Consumer;
 
 @Service
 public class UserPreferenceService {
@@ -25,43 +24,52 @@ public class UserPreferenceService {
                 userPreference.isSystemNotificationOrderStatus(),
                 userPreference.isEmailNotificationOrderStatus(),
                 userPreference.isSystemNotificationOrderRequest(),
-                userPreference.isEmailNotificationOrderRequest());
-    }
-    public UserPreferenceDto getPreferences(Long userId){
-        Optional<UserPreference> userPreference = userPreferenceRepository.findByUserId(userId);
-        return convertToDto(userPreference.get());
+                userPreference.isEmailNotificationOrderRequest()
+        );
     }
 
-    public ResponseEntity<Object> enableNotification(Long userId, UserPreferenceType userPreferenceType) {
-        Optional<UserPreference> userPreference = userPreferenceRepository.findByUserId(userId);
-        UserPreferenceDto userPreferenceDto = convertToDto(userPreference.get());
-        updateSystemNotificationOrderStatus(userPreferenceDto, userPreferenceType);
-        return ResponseHandler.generate("userPreference:response:success", HttpStatus.CREATED);
-    }
-    public ResponseEntity<Object> disableNotification(Long userId,UserPreferenceType userPreferenceType) {
-        Optional<UserPreference> userPreference = userPreferenceRepository.findByUserId(userId);
-        UserPreferenceDto userPreferenceDto = convertToDto(userPreference.get());
-        updateSystemNotificationOrderStatus(userPreferenceDto, userPreferenceType);
-        return ResponseHandler.generate("userPreference:response:success", HttpStatus.CREATED);
+    public UserPreferenceDto getPreferences(Long userId) {
+        return userPreferenceRepository.findByUserId(userId)
+                .map(this::convertToDto)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 
-    public void updateSystemNotificationOrderStatus(UserPreferenceDto userPreferenceDto, UserPreferenceType userPreferenceType){
-        Optional<UserPreference> optionalUserPreference = userPreferenceRepository.findByUserId(userPreferenceDto.userId());
-        if(optionalUserPreference.isPresent()){
-            UserPreference userPreference = optionalUserPreference.get();
-            if(userPreferenceType == UserPreferenceType.SYSTEMNOTIFICATIONORDERSTATUS){
-                userPreference.setSystemNotificationOrderStatus(userPreferenceDto.systemNotificationOrderStatus());
-            }
-            if(userPreferenceType == UserPreferenceType.EMAILNOTIFICATIONORDERSTATUS){
-                userPreference.setEmailNotificationOrderStatus(userPreferenceDto.emailNotificationOrderStatus());
-            }
-            if(userPreferenceType == UserPreferenceType.SYSTEMNOTIFICATIONORDERREQUEST){
-                userPreference.setSystemNotificationOrderRequest(userPreferenceDto.systemNotificationOrderRequest());
-            }
-            if(userPreferenceType == UserPreferenceType.EMAILNOTIFICATIONORDERREQUEST){
-                userPreference.setEmailNotificationOrderRequest(userPreferenceDto.emailNotificationOrderRequest());
-            }
-            userPreferenceRepository.save(userPreference);
+    public ResponseEntity<Object> updateNotification(Long userId, Integer userPreferenceType, boolean enabled) {
+        return userPreferenceRepository.findByUserId(userId)
+                .map(userPreference -> {
+                    updatePreference(userPreference, userPreferenceType, enabled);
+                    userPreferenceRepository.save(userPreference);
+                    return ResponseHandler.generate("userPreference:response:success", HttpStatus.CREATED);
+                })
+                .orElseGet(() -> ResponseHandler.generate("userPreference:response:not found", HttpStatus.NOT_FOUND));
+    }
+
+    private void updatePreference(UserPreference userPreference, Integer userPreferenceType, boolean status) {
+        Consumer<Boolean> updater;
+        switch (userPreferenceType) {
+            case 1:
+                updater = userPreference::setSystemNotificationOrderStatus;
+                break;
+            case 2:
+                updater = userPreference::setEmailNotificationOrderStatus;
+                break;
+            case 3:
+                updater = userPreference::setSystemNotificationOrderRequest;
+                break;
+            case 4:
+                updater = userPreference::setEmailNotificationOrderRequest;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid preference type");
         }
+        updater.accept(status);
+    }
+
+    public ResponseEntity<Object> enableNotification(Long userId, Integer userPreferenceType) {
+        return updateNotification(userId, userPreferenceType, true);
+    }
+
+    public ResponseEntity<Object> disableNotification(Long userId, Integer userPreferenceType) {
+        return updateNotification(userId, userPreferenceType, false);
     }
 }

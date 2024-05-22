@@ -10,8 +10,8 @@ import {
   type ProductContainerType,
 } from '@/types/api';
 import { useModalStore } from '@/stores/useModalStore';
-import { PRODUCT_CONTAINER_SIZES, PRODUCT_CONTAINER_TYPES } from '../constants';
 import { HsCodeSelector } from '@/components/hscodeselector';
+import { PRODUCT_CONTAINER_SIZES, PRODUCT_CONTAINER_TYPES } from '@/constants';
 
 type NewProductModalProps = {
   onSubmit: (newProduct: Product) => void;
@@ -53,6 +53,10 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
           : null,
       weight: value =>
         !value ? t('newOrderPage:productForm:weight:weightInputError') : null,
+      containerNumber: value =>
+        !value && props.isContainerOrder
+          ? t('newOrderPage:productForm:container:number:numberInputError')
+          : null,
       containerSize: value =>
         !value && props.isContainerOrder
           ? t('newOrderPage:productForm:container:size:sizeInputError')
@@ -162,6 +166,7 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
               placeholder={t(
                 'newOrderPage:productForm:container:number:numberInputPlaceholder'
               )}
+              withAsterisk
               {...newProductForm.getInputProps('containerNumber')}
             />
           )}

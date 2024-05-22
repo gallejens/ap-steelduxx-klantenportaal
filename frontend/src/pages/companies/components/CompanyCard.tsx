@@ -31,6 +31,7 @@ import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { notifications } from '@/components/notifications';
 import { ADMINS_COMPANY_LABEL } from '../constants';
 import { IconButton } from '@/components/iconbutton';
+import { IconListItem } from '@/components/iconlistitem';
 
 export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
   const [opened, setOpened] = useState(false);
@@ -212,26 +213,23 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
         <div>
           {company !== null && (
             <>
-              <div>
-                <IconReport size={20} />
-                <Text size='sm'>{company.vatNr}</Text>
-              </div>
-              <div>
-                <IconPhone size={20} />
-                <Text size='sm'>{company.phoneNr}</Text>
-              </div>
-              <div>
-                <IconPin size={20} />
-                <Text size='sm'>
-                  {company.country} - {company.postalCode} {company.district} -{' '}
-                  {company.street} {company.streetNr}
-                </Text>
-              </div>
+              <IconListItem
+                icon={IconReport}
+                text={company.vatNr}
+              />
+              <IconListItem
+                icon={IconPhone}
+                text={company.phoneNr}
+              />
+              <IconListItem
+                icon={IconPin}
+                text={`${company.country} - ${company.postalCode} ${company.district} - ${company.street} ${company.streetNr}`}
+              />
               {company.extraInfo && (
-                <div>
-                  <IconPlus size={20} />
-                  <Text size='sm'>{company.extraInfo}</Text>
-                </div>
+                <IconListItem
+                  icon={IconPlus}
+                  text={company.extraInfo}
+                />
               )}
             </>
           )}

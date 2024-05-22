@@ -60,8 +60,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
     }));
   };
 
-  // search & sort logic
-  const processedRows = useMemo(() => {
+  const filteredRows = useMemo(() => {
     const searchValues = normalizeSearchValues(props.searchValue);
 
     let filteredRows = props.data;
@@ -79,6 +78,10 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
       });
     }
 
+    return filteredRows;
+  }, [props.data, props.columns, props.searchValue]);
+
+  const processedRows = useMemo(() => {
     return [...filteredRows].sort((a, b) => {
       const aValue = a[sort.column];
       const bValue = b[sort.column];
@@ -98,7 +101,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
 
       return 0;
     });
-  }, [props.data, props.searchValue, props.columns, sort]);
+  }, [filteredRows, sort]);
 
   // calculate amount of rows per page based on available space and amount of rows
   const pageSize = Math.floor(tableHeight / cellHeightInPx) - 1; // offset for header

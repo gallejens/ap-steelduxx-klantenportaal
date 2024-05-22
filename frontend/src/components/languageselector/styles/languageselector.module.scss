@@ -8,6 +8,10 @@
     padding: calc(var(--mantine-spacing-xs) / 2) var(--mantine-spacing-xs);
 
     border-radius: var(--mantine-radius-default);
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &_dropdown {

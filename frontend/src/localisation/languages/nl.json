@@ -197,7 +197,6 @@
   },
   "newOrderPage": {
     "title": "Order Informatie",
-    "products": "Producten",
     "orderForm": {
       "transportType": {
         "transportTypeInputTitle": "Transport type",
@@ -530,5 +529,12 @@
     "notificationOrderRequestTitle": "Order aanvragen",
     "systemNotification": "Systeem Notificaties",
     "emailNotification": "Email Notificaties"
+  },
+  "productsList": {
+    "title": "Producten",
+    "tooltips": {
+      "add": "Product Toevoegen",
+      "remove": "Product Verwijderen"
+    }
   }
 }

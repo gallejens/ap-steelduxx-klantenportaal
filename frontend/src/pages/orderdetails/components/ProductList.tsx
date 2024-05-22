@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styles from '../styles/orderDetails.module.scss';
 import type { OrderDetails } from '@/types/api';
 import { Title } from '@mantine/core';
-import { transformProductContainerType } from '../helpers';
+import { PRODUCT_CONTAINER_TYPES } from '@/constants';
 
 interface ProductListProps {
   orderDetail: OrderDetails;
@@ -61,9 +61,7 @@ export const ProductList: FC<ProductListProps> = ({ orderDetail }) => {
                     <td>{product.containerSize} ft</td>
                   )}
                   {product.containerType != null && (
-                    <td>
-                      {transformProductContainerType(product.containerType)}
-                    </td>
+                    <td>{PRODUCT_CONTAINER_TYPES[product.containerType]}</td>
                   )}
                 </tr>
               ))}

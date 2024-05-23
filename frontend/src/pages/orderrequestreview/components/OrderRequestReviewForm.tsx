@@ -5,7 +5,7 @@ import { ActionIcon, Select, TextInput } from '@mantine/core';
 import { useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { doApiAction } from '@/lib/api';
-import type { OrderTransportType, OrderRequest, Product } from '@/types/api';
+import type { OrderRequest, Product } from '@/types/api';
 import { useForm } from '@mantine/form';
 import { PortcodesSelector } from '@/components/portcodesselector';
 import { IconEdit } from '@tabler/icons-react';
@@ -13,7 +13,7 @@ import { useModalStore } from '@/stores/useModalStore';
 import { EditProductModal } from '../modal/EditProductModal';
 
 type EditOrderFormValues = {
-  transportType: OrderTransportType;
+  transportType: string;
   portOfDestinationCode: string;
   portOfOriginCode: string;
 };
@@ -40,9 +40,7 @@ export const OrderRequestReviewForm: FC = () => {
 
   const editOrderForm = useForm<EditOrderFormValues>({
     initialValues: {
-      transportType: (orderRequest?.transportType === 'IMPORT'
-        ? 'IMPORT'
-        : 'EXPORT') as OrderTransportType,
+      transportType: orderRequest?.transportType ?? '',
       portOfDestinationCode: orderRequest?.portOfDestinationCode ?? '',
       portOfOriginCode: orderRequest?.portOfOriginCode ?? '',
     },

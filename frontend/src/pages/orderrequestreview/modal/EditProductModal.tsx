@@ -12,11 +12,7 @@ import {
 import { useForm } from '@mantine/form';
 import styles from '../styles/editproductmodal.module.scss';
 import { doApiAction } from '@/lib/api';
-import type {
-  Product,
-  ProductContainerSize,
-  ProductContainerType,
-} from '@/types/api';
+import type { Product } from '@/types/api';
 import {
   PRODUCT_CONTAINER_SIZES,
   PRODUCT_CONTAINER_TYPES,
@@ -26,8 +22,8 @@ type EditProductValues = {
   quantity: number;
   weight: number;
   containerNumber: string;
-  containerSize: ProductContainerSize;
-  containerType: ProductContainerType;
+  containerSize: string;
+  containerType: string;
 };
 
 export const EditProductModal: FC<{
@@ -36,13 +32,12 @@ export const EditProductModal: FC<{
 }> = props => {
   const { t } = useTranslation();
   const editProductForm = useForm<EditProductValues>({
-    // TODO
     initialValues: {
       quantity: props.product.quantity,
       weight: props.product.weight,
       containerNumber: props.product.containerNumber ?? '',
-      containerSize: '20',
-      containerType: 'DV',
+      containerSize: props.product.containerSize ?? '',
+      containerType: props.product.containerType ?? '',
     },
     validate: {
       quantity: value =>
@@ -61,10 +56,14 @@ export const EditProductModal: FC<{
           : null,
     },
   });
+
+  console.log(props.product.containerSize);
+
   const isContainerProduct =
     props.product.containerNumber !== null &&
     props.product.containerSize !== null &&
     props.product.containerType !== null;
+
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
 
   const handleSubmit = async (values: EditProductValues) => {
@@ -148,6 +147,7 @@ export const EditProductModal: FC<{
                 placeholder={t(
                   'newOrderPage:productForm:container:number:numberInputPlaceholder'
                 )}
+                required={isContainerProduct}
                 {...editProductForm.getInputProps('containerNumber')}
               />
             )}
@@ -162,6 +162,7 @@ export const EditProductModal: FC<{
                   'newOrderPage:productForm:container:size:sizeInputPlaceholder'
                 )}
                 data={PRODUCT_CONTAINER_SIZES}
+                allowDeselect={false}
                 {...editProductForm.getInputProps('containerSize')}
               />
               <Select
@@ -177,6 +178,7 @@ export const EditProductModal: FC<{
                   acc.push({ value: key, label: value });
                   return acc;
                 }, [])}
+                allowDeselect={false}
                 {...editProductForm.getInputProps('containerType')}
               />
             </div>

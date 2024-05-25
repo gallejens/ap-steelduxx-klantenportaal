@@ -1,26 +1,3 @@
-# H1
-
-## H2 
-
-### H3 Title
-
-**Bold Text**
-
-*Italic Text*
-
-[Link Text](https://www.google.com)
-
-- List Item 1
-- List Item 2
-- List Item 3
-
-1. Numbered List Item 1
-2. Numbered List Item 2
-3. Numbered List Item 3
-
-
-This is a link inside a textblock, [clickhere](https://www.google.com)
-
 # User Manual 
 
 ## Top Navbar
@@ -149,5 +126,17 @@ This table shows all the products that are in th order.
 
 ## Company Info page
 
+On this page you can see information about your company like phonenumber, adress, headccount (name, lastname and email).
 
+When you press the arrow button ont the top right corner of the company card it will expand the company card.
+
+Expanding this card show all the subaccount created for this company. 
+
+To create a subaccount you need to press the plus button to the left of the arrow button (that expands/collapses the company card).
+
+Once pressed, you have to enter the email, firstname and lastname of the person that the subaccount will belong to.
+
+The headaccount can also delete subaccounts by pressing the trashcan icon next to the subaccounts information.
+
+The headaccount can also promote a subaccount to be a headaccount which in exchange will make the headaccount a subaccount.
 

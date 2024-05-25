@@ -22,7 +22,10 @@ public enum ContainerSizeEnum {
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static ContainerSizeEnum fromValue(int value) {
+    public static ContainerSizeEnum fromValue(Integer value) {
+        if (value == null) {
+            return null;
+        }
         for (ContainerSizeEnum cse : ContainerSizeEnum.values()) {
             if (cse.getValue() == value) {
                 return cse;

@@ -469,9 +469,11 @@
     "backButton": "Terug Gaan",
     "approveButton": "Goedkeuren",
     "denyButton": "Afkeuren",
+    "confirmButton": "Order aanvraag bewerken",
     "response": {
       "success": "Order aanvraag goedgekeurd!",
-      "denied": "Order aanvraag afgekeurd!"
+      "denied": "Order aanvraag afgekeurd!",
+      "edited": "Order aanvraag bewerkt!"
     },
     "editProductModal": {
       "title": "Product bewerken",

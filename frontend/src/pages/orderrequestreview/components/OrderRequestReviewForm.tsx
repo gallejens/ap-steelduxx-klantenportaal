@@ -1,7 +1,7 @@
-import { type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../styles/orderRequestReview.module.scss';
-import { ActionIcon, Select, TextInput } from '@mantine/core';
+import { ActionIcon, Button, Select, TextInput } from '@mantine/core';
 import { useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { doApiAction } from '@/lib/api';
@@ -11,6 +11,7 @@ import { PortcodesSelector } from '@/components/portcodesselector';
 import { IconEdit } from '@tabler/icons-react';
 import { useModalStore } from '@/stores/useModalStore';
 import { EditProductModal } from '../modal/EditProductModal';
+import { notifications } from '@/components/notifications/lib';
 
 type EditOrderFormValues = {
   transportType: string;
@@ -60,6 +61,43 @@ export const OrderRequestReviewForm: FC = () => {
     validateInputOnBlur: true,
   });
 
+  useEffect(() => {
+    if (orderRequest) {
+      editOrderForm.setValues({
+        transportType: orderRequest.transportType,
+        portOfDestinationCode: orderRequest.portOfDestinationCode,
+        portOfOriginCode: orderRequest.portOfOriginCode,
+      });
+    }
+  }, [orderRequest, editOrderForm.setValues]);
+
+  const [prevTransportType, setPrevTransportType] = useState('');
+
+  useEffect(() => {
+    if (editOrderForm.values.transportType !== prevTransportType) {
+      if (editOrderForm.values.transportType === 'IMPORT') {
+        editOrderForm.setFieldValue(
+          'portOfOriginCode',
+          orderRequest?.portOfDestinationCode ?? ''
+        );
+        editOrderForm.setFieldValue(
+          'portOfDestinationCode',
+          orderRequest?.portOfOriginCode ?? ''
+        );
+      } else if (editOrderForm.values.transportType === 'EXPORT') {
+        editOrderForm.setFieldValue(
+          'portOfOriginCode',
+          orderRequest?.portOfOriginCode ?? ''
+        );
+        editOrderForm.setFieldValue(
+          'portOfDestinationCode',
+          orderRequest?.portOfDestinationCode ?? ''
+        );
+      }
+      setPrevTransportType(editOrderForm.values.transportType);
+    }
+  }, [editOrderForm.values.transportType, prevTransportType, orderRequest]);
+
   const openEditProductModal = (product: Product) => {
     openModal(
       <EditProductModal
@@ -67,12 +105,33 @@ export const OrderRequestReviewForm: FC = () => {
         onConfirm={() => {
           closeModal();
         }}
+        orderRequestId={orderrequestId}
       />
     );
   };
 
+  const handleSubmit = async (values: EditOrderFormValues) => {
+    const result = await doApiAction({
+      endpoint: `order-requests/${orderrequestId}/edit`,
+      method: 'PUT',
+      body: {
+        transportType: values.transportType,
+        portOfOriginCode: values.portOfOriginCode,
+        portOfDestinationCode: values.portOfDestinationCode,
+      },
+    });
+
+    notifications.add({
+      message: t(result?.message ?? 'notifications:genericError'),
+      autoClose: 10000,
+    });
+  };
+
   return (
-    <form className={styles.orderrequest_review_page_form}>
+    <form
+      className={styles.orderrequest_review_page_form}
+      onSubmit={editOrderForm.onSubmit(values => handleSubmit(values))}
+    >
       <div className={styles.company_detail_fields}>
         <div className={styles.first_row}>
           <TextInput
@@ -153,6 +212,14 @@ export const OrderRequestReviewForm: FC = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className={styles.confirm_button}>
+        <Button
+          type='submit'
+          disabled={!editOrderForm.isDirty()}
+        >
+          {t('orderRequestReviewPage:confirmButton')}
+        </Button>
       </div>
     </form>
   );

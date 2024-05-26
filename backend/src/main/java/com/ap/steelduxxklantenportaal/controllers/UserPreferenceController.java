@@ -24,13 +24,13 @@ public class UserPreferenceController {
     }
 
     @PostMapping("/{userId}/on")
-    @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
+    @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> onRequest(@PathVariable Long userId, @RequestBody Integer userPreferenceType) {
         return userPreferenceService.enableNotification(userId, userPreferenceType);
     }
 
     @PostMapping("/{userId}/off")
-    @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
+    @PreAuthorize("hasAuthority('ACCESS')")
     public ResponseEntity<Object> offRequest(@PathVariable Long userId, @RequestBody Integer userPreferenceType)
     {
         return userPreferenceService.disableNotification(userId, userPreferenceType);

@@ -85,4 +85,35 @@ public class EmailService {
 
         mailSender.send(message);
     }
+
+     void sendOrderStatusUpdate(User user, String id, String newStatus) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        message.setFrom(new InternetAddress(mailUsername));
+        message.setRecipients(MimeMessage.RecipientType.TO, user.getEmail());
+        message.setSubject("Order: " + id + " is " + newStatus);
+
+        Context context = new Context();
+        context.setVariable("user", user);
+        context.setVariable("orderId", id);
+        context.setVariable("status", newStatus);
+
+        String htmlContent = templateEngine.process("order-status-update", context);
+        message.setContent(htmlContent, MESSAGE_CONTENT_TYPE);
+        mailSender.send(message);
+    }
+    void sendOrderRequestStatusUpdate(User user, String id, String newStatus) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        message.setFrom(new InternetAddress(mailUsername));
+        message.setRecipients(MimeMessage.RecipientType.TO, user.getEmail());
+        message.setSubject("Order request: " + id + " is " + newStatus);
+
+        Context context = new Context();
+        context.setVariable("user", user);
+        context.setVariable("orderId", id);
+        context.setVariable("status", newStatus);
+
+        String htmlContent = templateEngine.process("order-request-status-update", context);
+        message.setContent(htmlContent, MESSAGE_CONTENT_TYPE);
+        mailSender.send(message);
+    }
 }

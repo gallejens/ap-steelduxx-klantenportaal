@@ -113,7 +113,7 @@ public class OrdersService {
                                     if(userPreference.get().isEmailNotificationOrderStatus()) {
 
                                         try {
-                                            emailService.sendHtmlEmail(account.getEmail(), "Status change for order : " + currentOrderStatus.referenceNumber(), "Changed from: " + previousOrderStatus.state() + " to " + currentOrderStatus.state());
+                                            emailService.sendOrderStatusUpdate(user, currentOrderStatus.referenceNumber(), currentOrderStatus.state().toString());
                                         } catch (MessagingException e) {
                                             e.printStackTrace();
                                         }

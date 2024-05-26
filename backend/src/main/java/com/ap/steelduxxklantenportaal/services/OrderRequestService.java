@@ -7,19 +7,17 @@ import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestProductDto;
 import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestUploadDto;
 import com.ap.steelduxxklantenportaal.enums.OrderTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
-import com.ap.steelduxxklantenportaal.models.OrderRequest;
-import com.ap.steelduxxklantenportaal.models.OrderRequestDocument;
-import com.ap.steelduxxklantenportaal.models.OrderRequestProduct;
-import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
-import com.ap.steelduxxklantenportaal.repositories.OrderRequestDocumentRepository;
-import com.ap.steelduxxklantenportaal.repositories.OrderRequestProductRepository;
-import com.ap.steelduxxklantenportaal.repositories.OrderRequestRepository;
+import com.ap.steelduxxklantenportaal.models.*;
+import com.ap.steelduxxklantenportaal.repositories.*;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +28,11 @@ public class OrderRequestService {
     private final OrderRequestProductRepository orderRequestProductRepository;
     private final OrderRequestDocumentRepository orderRequestDocumentRepository;
     private final CompanyRepository companyRepository;
+    private final UserCompanyRepository userCompanyRepository;
+    private final UserRepository userRepository;
+    private final UserPreferenceRepository userPreferenceRepository;
+    private final NotificationService notificationService;
+    private final EmailService emailService;
     private final FileSystemStorageService fileSystemStorageService;
     private final ExternalApiService externalApiService;
 
@@ -37,13 +40,18 @@ public class OrderRequestService {
             OrderRequestRepository orderRequestRepository,
             OrderRequestProductRepository orderRequestProductRepository,
             OrderRequestDocumentRepository orderRequestDocumentRepository,
-            CompanyRepository companyRepository,
+            CompanyRepository companyRepository, UserCompanyRepository userCompanyRepository, UserRepository userRepository, UserPreferenceRepository userPreferenceRepository, NotificationService notificationService, EmailService emailService,
             ExternalApiService externalApiService,
             FileSystemStorageService fileSystemStorageService) {
         this.orderRequestRepository = orderRequestRepository;
         this.orderRequestProductRepository = orderRequestProductRepository;
         this.orderRequestDocumentRepository = orderRequestDocumentRepository;
         this.companyRepository = companyRepository;
+        this.userCompanyRepository = userCompanyRepository;
+        this.userRepository = userRepository;
+        this.userPreferenceRepository = userPreferenceRepository;
+        this.notificationService = notificationService;
+        this.emailService = emailService;
         this.fileSystemStorageService = fileSystemStorageService;
         this.externalApiService = externalApiService;
     }
@@ -52,12 +60,52 @@ public class OrderRequestService {
         OrderRequestDto orderRequestDto = getOrderRequestDto(id);
         updateOrderRequestStatus(id, StatusEnum.APPROVED);
         externalApiService.createOrder(orderRequestDto);
+        notifyUsers(id, StatusEnum.APPROVED);
         return ResponseHandler.generate("orderRequestReviewPage:response:success", HttpStatus.CREATED);
     }
 
     public ResponseEntity<Object> denyOrderRequest(Long id) {
         updateOrderRequestStatus(id, StatusEnum.DENIED);
+        notifyUsers(id, StatusEnum.DENIED);
         return ResponseHandler.generate("orderRequestReviewPage:response:denied", HttpStatus.OK);
+    }
+
+    private void notifyUsers (Long id, StatusEnum newStatus) {
+        Long companyId = getCompanyIdByOrderRequestId(id);
+        List<User> users = getUsersByCompanyId(companyId);
+
+        for (User user : users) {
+            Optional<UserPreference> userPreference = userPreferenceRepository.findByUserId(user.getId());
+            if (userPreference.isPresent()) {
+                if (userPreference.get().isSystemNotificationOrderRequest()) {
+                    Notification newNotification = new Notification(
+                            user.getId(), "Order request: " + id + " is " + newStatus ,
+                            "Status changed to: " + newStatus,
+                            Timestamp.valueOf(LocalDateTime.now()).getTime(), false
+                    );
+                    notificationService.createNotification(newNotification);
+                }
+                if (userPreference.get().isEmailNotificationOrderRequest()) {
+                    try {
+                        emailService.sendOrderRequestStatusUpdate(user, id.toString(), newStatus.toString());
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    private Long getCompanyIdByOrderRequestId(Long  orderRequestId) {
+        OrderRequest orderRequest = orderRequestRepository.findById(orderRequestId).orElseThrow();
+        return orderRequest.getCompanyId();
+    }
+
+    private List<User> getUsersByCompanyId(Long companyId) {
+        List<UserCompany> userCompanies = userCompanyRepository.findAllByCompanyId(companyId);
+        return userCompanies.stream()
+                .map(userCompany -> userRepository.findById(userCompany.getUserId()).orElse(null))
+                .collect(Collectors.toList());
     }
 
     public Long addOrderRequest(NewOrderRequestDto newOrderRequestDto) {

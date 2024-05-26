@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Order Status Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<h1>Order Request Status Update</h1>
+<p>Dear <span th:text="${user.firstName}"></span> <span th:text="${user.lastName}"></span>,</p>
+<p>Your order request with ID <strong><span th:text="${orderId}"></span></strong> has changed status to: <strong><span th:text="${status}"></span></strong>.</p>
+<p>Best regards,</p>
+<p>Steelduxx</p>
+</body>
+</html>

@@ -5,7 +5,7 @@ import { IconCircleCheck } from '@tabler/icons-react';
 interface CustomNotificationCardProps {
   title: any;
   message: any;
-  datetime: any;
+  datetime: number;
   onClick: () => void;
 }
 
@@ -16,7 +16,8 @@ export default function CustomCard({
   onClick,
 }: CustomNotificationCardProps) {
   const formatDatetime = (timestamp: number) => {
-    const date = new Date(timestamp * 1000);
+    const date = new Date(timestamp);
+
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();

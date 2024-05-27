@@ -10,6 +10,7 @@ import type { Order } from '@/types/api';
 import { getOrderStateColor, getOrderTransportTypeColor } from './helpers';
 import { useAuth } from '@/hooks/useAuth';
 import { MultiSearch } from '@/components/multisearch';
+import LoaderComponent from '@/components/loader';
 
 export const OrderListPage: FC = () => {
   const [searchValues, setSearchValues] = useState<string[]>([]);
@@ -43,7 +44,7 @@ export const OrderListPage: FC = () => {
   };
 
   if (status === 'pending') {
-    return <div>{t('orderListPage:loading')}</div>;
+    return <LoaderComponent />;
   }
 
   if (status === 'error' || !orders) {

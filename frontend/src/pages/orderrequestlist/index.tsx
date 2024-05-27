@@ -10,6 +10,7 @@ import type { OrderRequest } from '@/types/api';
 import { IconArrowRight } from '@tabler/icons-react';
 import { useNavigate } from '@tanstack/react-router';
 import { MultiSearch } from '@/components/multisearch';
+import LoaderComponent from '@/components/loader';
 
 export const OrderRequestListPage: FC = () => {
   const { t } = useTranslation();
@@ -26,7 +27,7 @@ export const OrderRequestListPage: FC = () => {
   });
 
   if (status === 'pending' || status === 'error' || orderRequests == null) {
-    return <div>{t('orderRequestListPage:loading')}</div>;
+    return <LoaderComponent />;
   }
 
   const tableData = Object.values(orderRequests).reduce<

@@ -10,6 +10,7 @@ import { MapInfo } from './components/MapInfo';
 import { ProductList } from './components/ProductList';
 import { Title } from '@mantine/core';
 import { DocumentSection } from './components/DocumentSection';
+import LoaderComponent from '@/components/loader';
 
 export const OrderDetailsPage: FC = () => {
   const { t } = useTranslation();
@@ -39,7 +40,7 @@ export const OrderDetailsPage: FC = () => {
   });
 
   if (status === 'pending') {
-    return <div>{t('orderDetailsPage:loading')}</div>;
+    return <LoaderComponent />;
   }
 
   if (status === 'error' || !orderDetails) {

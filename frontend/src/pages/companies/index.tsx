@@ -6,6 +6,7 @@ import { CompanyCard } from './components/CompanyCard';
 import { search } from '@/lib/util/search';
 import { fetchCompanyInfoList } from './helpers';
 import { MultiSearch } from '@/components/multisearch';
+import LoaderComponent from '@/components/loader';
 
 export const CompaniesPage: FC = () => {
   const [searchValues, setSearchValues] = useState<string[]>([]);
@@ -16,7 +17,7 @@ export const CompaniesPage: FC = () => {
   });
 
   if (status === 'pending') {
-    return <div>Loading...</div>;
+    return <LoaderComponent />;
   }
 
   if (status === 'error' || !data) {

@@ -334,7 +334,8 @@
       "logout": "Uitloggen",
       "changePassword": "Wachtwoord veranderen",
       "logoutConfirmTitle": "Uitloggen",
-      "logoutConfirmText": "Weet u zeker dat u wilt uitloggen?"
+      "logoutConfirmText": "Weet u zeker dat u wilt uitloggen?",
+      "preferences": "Instellingen"
     },
     "deleteRequestConfirmation": {
       "deleteConfirmTitle": "Aanvraag verwijderen",
@@ -498,5 +499,13 @@
       "remove": "Document Verwijderen",
       "replace": "Document Vervangen"
     }
+  },
+  "preferences": {
+    "title": "Instellingen",
+    "notificationTitle": "Notificaties ",
+    "notificationOrderStatusTitle": "Order status",
+    "notificationOrderRequestTitle": "Order aanvragen",
+    "systemNotification": "Systeem Notificaties",
+    "emailNotification": "Email Notificaties"
   }
 }

@@ -6,12 +6,14 @@ import {
   IconChevronRight,
   IconLogout,
   IconPassword,
+  IconSettings,
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useModalStore } from '@/stores/useModalStore';
 import { ChangePasswordModal } from '@/components/modals/components/ChangePasswordModal';
 import { ConfirmModal } from '@/components/modals';
 import { useAppshellStore } from '../stores/useAppshellStore';
+import { UserPreferencesModal } from '@/components/modals/components/UserPreferencesModal';
 
 export const UserDisplay: FC = () => {
   const { signOut, user } = useAuth();
@@ -36,6 +38,10 @@ export const UserDisplay: FC = () => {
 
   const handleChangePasswordOptionClick = () => {
     openModal(<ChangePasswordModal />);
+  };
+
+  const handlePreferencesOptionClick = () => {
+    openModal(<UserPreferencesModal />);
   };
 
   return (
@@ -72,6 +78,10 @@ export const UserDisplay: FC = () => {
             <div onClick={handleChangePasswordOptionClick}>
               <IconPassword size={19} />
               <Text>{t('appshell:userOptions:changePassword')}</Text>
+            </div>
+            <div onClick={handlePreferencesOptionClick}>
+              <IconSettings size={19} />
+              <Text>{t('appshell:userOptions:preferences')}</Text>
             </div>
           </div>
         </Popover.Dropdown>

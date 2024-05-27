@@ -7,8 +7,10 @@ import com.ap.steelduxxklantenportaal.exceptions.UserAlreadyExistsException;
 import com.ap.steelduxxklantenportaal.models.ChoosePasswordToken;
 import com.ap.steelduxxklantenportaal.models.RefreshToken;
 import com.ap.steelduxxklantenportaal.models.User;
+import com.ap.steelduxxklantenportaal.models.UserPreference;
 import com.ap.steelduxxklantenportaal.repositories.ChoosePasswordTokenRepository;
 import com.ap.steelduxxklantenportaal.repositories.RefreshTokenRepository;
+import com.ap.steelduxxklantenportaal.repositories.UserPreferenceRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 import com.ap.steelduxxklantenportaal.utils.Cookies;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
@@ -51,6 +53,8 @@ public class AuthService {
     private final ChoosePasswordTokenRepository choosePasswordTokenRepository;
     private final EmailService emailService;
 
+    private final UserPreferenceRepository userPreferenceRepository;
+
     public AuthService(
             UserRepository userRepository,
             RefreshTokenRepository refreshTokenRepository,
@@ -58,7 +62,7 @@ public class AuthService {
             AuthenticationManager authenticationManager,
             PasswordEncoder passwordEncoder,
             ChoosePasswordTokenRepository choosePasswordTokenRepository,
-            EmailService emailService) {
+            EmailService emailService, UserPreferenceRepository userPreferenceRepository) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.jwtService = jwtService;
@@ -66,6 +70,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
         this.choosePasswordTokenRepository = choosePasswordTokenRepository;
         this.emailService = emailService;
+        this.userPreferenceRepository = userPreferenceRepository;
     }
 
     public ResponseEntity<Object> signIn(SignInRequestDto signInRequestDTO, HttpServletResponse response) {
@@ -142,7 +147,11 @@ public class AuthService {
 
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User(email, encodedPassword, firstName, lastName, role);
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        UserPreference userPreference = new UserPreference(user.getId());
+        userPreferenceRepository.save(userPreference);
+        return user;
     }
 
     // Generate a refreshtoken for a user, save it and add it to cookies

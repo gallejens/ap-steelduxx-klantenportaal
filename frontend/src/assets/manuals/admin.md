@@ -107,7 +107,7 @@ On this page admins are able to approve or deny a customers order request.
 
 **Search function**
 
-In the top left corner you can find the search function. Typing in this box will filter the orders by the inputted text.
+In the top left corner you can find the search function. Typing in this box will filter the information based on the inputted text.
 
 When you press enter the text you put in will be stored and you will be able to add another search condition.
 
@@ -147,7 +147,7 @@ where you can only edit the products in that order request. The proccess of edit
 
 **Search function**
 
-In the top left corner you can find the search function. Typing in this box will filter the orders by the inputted text.
+In the top left corner you can find the search function. Typing in this box will filter the information based on the inputted text.
 
 When you press enter the text you put in will be stored and you will be able to add another search condition.
 

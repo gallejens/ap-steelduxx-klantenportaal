@@ -12,6 +12,7 @@ import {
 import { useModalStore } from '@/stores/useModalStore';
 import { HsCodeSelector } from '@/components/hscodeselector';
 import { PRODUCT_CONTAINER_SIZES, PRODUCT_CONTAINER_TYPES } from '@/constants';
+import { convertRecordToSelectInputData } from '@/lib/util/inputs';
 
 type NewProductModalProps = {
   onSubmit: (newProduct: Product) => void;
@@ -191,12 +192,7 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
               placeholder={t(
                 'newOrderPage:productForm:container:type:typeInputPlaceholder'
               )}
-              data={Object.entries(PRODUCT_CONTAINER_TYPES).reduce<
-                { value: string; label: string }[]
-              >((acc, [key, value]) => {
-                acc.push({ value: key, label: value });
-                return acc;
-              }, [])}
+              data={convertRecordToSelectInputData(PRODUCT_CONTAINER_TYPES)}
               withAsterisk
               {...newProductForm.getInputProps('containerType')}
             />

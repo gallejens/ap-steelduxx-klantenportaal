@@ -10,8 +10,10 @@ import { IconArrowRight } from '@tabler/icons-react';
 import { useNavigate } from '@tanstack/react-router';
 import { MultiSearch } from '@/components/multisearch';
 import LoaderComponent from '@/components/loader';
+import { useTranslation } from 'react-i18next';
 
 export const OrderRequestListPage: FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchValues, setSearchValues] = useState<string[]>([]);
   const { data: orderRequests, status } = useQuery({

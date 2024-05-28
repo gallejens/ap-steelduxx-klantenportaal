@@ -1,205 +1,47 @@
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode,
-  type WheelEvent,
-} from 'react';
+import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles/table.module.scss';
 import { Pagination, Text } from '@mantine/core';
-import { useElementSize, useLocalStorage } from '@mantine/hooks';
-import { useRemToPx } from '@/hooks/useRemToPx';
 import { DEFAULT_EMPTY_CELL_PLACEHOLDER, DEFAULT_WIDTHS } from './constants';
 import { SortButton } from './components/SortButton';
 import type { NTable } from './types';
-import {
-  applyResizeHandlerDraggingStyles,
-  buildColumnSizeStorageKey,
-  normalizeSearchValues,
-} from './util';
 import { ColumnSelector } from './components/ColumnSelector';
 import classNames from 'classnames';
+import { useTableDisableColumns } from './hooks/useTableDisableColumns';
+import { useTableDataTransformation } from './hooks/useTableDataTransformation';
+import { useTablePagination } from './hooks/useTablePagination';
+import { useTableColumnWidth } from './hooks/useTableColumnWidth';
+import { useVerticalScrolling } from '@/hooks/useVerticalScrolling';
 
 export const Table = <T extends string>(props: NTable.Props<T>) => {
+  console.log('Starting table render');
+
   const { t } = useTranslation();
 
-  const [activePage, setActivePage] = useState<number>(1);
-  const { ref: bodyRef, height: tableHeight } = useElementSize();
-  const cellHeightInPx = useRemToPx(styles.cell_height);
-
-  const [sort, setSort] = useState<NTable.Sort<T>>({
-    column:
-      props.columns.find(c => c.defaultSort)?.key ?? props.columns[0]?.key,
-    direction: 'asc',
+  const { disabledColumns, toggleDisableColumn } = useTableDisableColumns<T>({
+    storageKey: props.storageKey,
   });
 
-  const columnRefs = useRef<Partial<Record<T, HTMLDivElement | null>>>({});
-  const [resizingColumnKey, setResizingColumnKey] = useState<T | null>(null);
+  const {
+    rows: allRows,
+    sortOnColumn,
+    sort,
+  } = useTableDataTransformation(props);
 
-  const [disabledColumns, setDisabledColumns] = useLocalStorage<T[]>({
-    key: `disabledColumns_${props.storageKey}`,
-    defaultValue: [],
+  const {
+    ref: bodyRef,
+    rows: rowsOnPage,
+    amountOfPages,
+    currentPage,
+    setCurrentPage,
+  } = useTablePagination<T>(allRows);
+
+  const { columnRefs, startResizingColumn } = useTableColumnWidth<T>({
+    storageKey: props.storageKey,
+    lastColumnKey: props.columns[props.columns.length - 1].key,
   });
 
-  const tableRef = useRef<HTMLDivElement | null>(null);
-
-  const columnKeyToIndex = props.columns.reduce(
-    (acc, c, i) => {
-      acc[c.key] = i;
-      return acc;
-    },
-    {} as Record<T, number>
-  );
-
-  const handleSortIconClick = (column: T) => {
-    setSort(s => ({
-      column,
-      direction: s.column === column && s.direction === 'asc' ? 'desc' : 'asc',
-    }));
-  };
-
-  const filteredRows = useMemo(() => {
-    const searchValues = normalizeSearchValues(props.searchValue);
-
-    let filteredRows = props.data;
-    for (const searchValue of searchValues) {
-      filteredRows = filteredRows.filter(row => {
-        for (const columnKey of Object.keys(row) as T[]) {
-          if (props.columns[columnKeyToIndex[columnKey]]?.excludeFromSearch) {
-            continue;
-          }
-          if (row[columnKey]?.toString().toLowerCase().includes(searchValue)) {
-            return true;
-          }
-        }
-        return false;
-      });
-    }
-
-    return filteredRows;
-  }, [props.data, props.columns, props.searchValue]);
-
-  const processedRows = useMemo(() => {
-    return [...filteredRows].sort((a, b) => {
-      const aValue = a[sort.column];
-      const bValue = b[sort.column];
-
-      if (aValue === null || aValue === undefined) return 1;
-      if (bValue === null || bValue === undefined) return -1;
-
-      if (typeof aValue === 'number' && typeof bValue === 'number') {
-        return sort.direction === 'asc' ? aValue - bValue : bValue - aValue;
-      }
-
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return sort.direction === 'asc'
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
-
-      return 0;
-    });
-  }, [filteredRows, sort]);
-
-  // calculate amount of rows per page based on available space and amount of rows
-  const pageSize = Math.floor(tableHeight / cellHeightInPx) - 1; // offset for header
-  const totalPages = Math.ceil((processedRows ?? []).length / pageSize);
-
-  // if active page is greater than total pages after resizing window, set it to last page
-  useEffect(() => {
-    if (activePage > totalPages && totalPages > 0) {
-      setActivePage(totalPages);
-    }
-  }, [totalPages]);
-
-  // placeholder for empty cells
-  const emptyCellPlaceholder =
-    props.emptyCellPlaceholder ?? DEFAULT_EMPTY_CELL_PLACEHOLDER;
-
-  // get rows on current page
-  const rows = processedRows.slice(
-    (activePage - 1) * pageSize,
-    activePage * pageSize
-  );
-
-  // Load all column sizes from storage
-  useEffect(() => {
-    const savedSizesJSON = localStorage.getItem(
-      buildColumnSizeStorageKey(props.storageKey)
-    );
-    if (!savedSizesJSON) return;
-
-    const savedSizes: Record<string, string> = JSON.parse(savedSizesJSON);
-
-    for (const [key, ref] of Object.entries(columnRefs.current) as [
-      T,
-      HTMLDivElement | null,
-    ][]) {
-      if (ref === null) continue;
-      const savedSize = savedSizes[key];
-      if (!savedSize) continue;
-      ref.style.width = savedSize;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (resizingColumnKey === null || columnRefs.current === null) return;
-
-    const columnRef = columnRefs.current[resizingColumnKey];
-    const lastColumnRef =
-      columnRefs.current[props.columns[props.columns.length - 1].key];
-    if (!columnRef || !lastColumnRef) return;
-
-    const mouseUpHandler = () => {
-      setResizingColumnKey(null);
-    };
-
-    const mouseMoveHandler = (e: MouseEvent) => {
-      const originalWidth = columnRef.getBoundingClientRect().width;
-      const newWidth = originalWidth + e.movementX;
-      columnRef.style.width = `${newWidth}px`;
-    };
-
-    window.addEventListener('mouseup', mouseUpHandler);
-    window.addEventListener('mousemove', mouseMoveHandler);
-
-    return () => {
-      window.removeEventListener('mouseup', mouseUpHandler);
-      window.removeEventListener('mousemove', mouseMoveHandler);
-
-      applyResizeHandlerDraggingStyles(false);
-
-      // save column sizes to storage
-      const sizes: Record<string, string> = {};
-      for (const [key, ref] of Object.entries(columnRefs.current) as [
-        T,
-        HTMLDivElement | null,
-      ][]) {
-        if (ref === null) continue;
-        sizes[key] = ref.style.width;
-      }
-
-      localStorage.setItem(
-        buildColumnSizeStorageKey(props.storageKey),
-        JSON.stringify(sizes)
-      );
-    };
-  }, [resizingColumnKey]);
-
-  const toggleDisableColumn = (column: T) => {
-    setDisabledColumns(s =>
-      s.includes(column) ? [...s.filter(c => c !== column)] : [...s, column]
-    );
-  };
-
-  const handleScrollEvent = (e: WheelEvent) => {
-    if (e.deltaY === 0 || tableRef.current === null) return;
-    e.preventDefault();
-
-    tableRef.current.scrollLeft += e.deltaY;
-  };
+  const { ref: tableRef } = useVerticalScrolling();
 
   return (
     <div className={styles.table_wrapper}>
@@ -210,11 +52,10 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
         <div
           className={styles.table}
           ref={tableRef}
-          onWheel={handleScrollEvent}
         >
           {props.columns.map(column => {
             if (disabledColumns.includes(column.key)) return null;
-            if (column.emptyHeader && rows.length === 0) return null;
+            if (column.emptyHeader && rowsOnPage.length === 0) return null;
 
             return (
               <div
@@ -244,14 +85,14 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                   </Text>
                   {!column.disallowSorting && (
                     <SortButton
-                      onClick={handleSortIconClick}
+                      onClick={sortOnColumn}
                       columnKey={column.key}
                       sort={sort}
                     />
                   )}
                 </div>
-                {rows.length > 0 ? (
-                  rows.map((row, idx) => {
+                {rowsOnPage.length > 0 ? (
+                  rowsOnPage.map((row, idx) => {
                     let value: ReactNode = row[column.key];
                     let showInTextElement = true;
 
@@ -287,7 +128,8 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                           >
                             {value ??
                               column.emptyCellPlaceholder ??
-                              emptyCellPlaceholder}
+                              props.emptyCellPlaceholder ??
+                              DEFAULT_EMPTY_CELL_PLACEHOLDER}
                           </Text>
                         ) : (
                           value
@@ -307,8 +149,7 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
                   <div
                     className={styles.resize_handle}
                     onMouseDown={() => {
-                      setResizingColumnKey(column.key);
-                      applyResizeHandlerDraggingStyles(true);
+                      startResizingColumn(column.key);
                     }}
                   />
                 )}
@@ -323,21 +164,23 @@ export const Table = <T extends string>(props: NTable.Props<T>) => {
             fs='italic'
             c='dimmed'
           >
-            {t('table:rowsAmount')}: {processedRows.length}
+            {t('table:rowsAmount')}: {allRows.length}
           </Text>
         </div>
         <Pagination
-          total={totalPages}
-          value={activePage}
-          onChange={page => setActivePage(page)}
+          total={amountOfPages}
+          value={currentPage}
+          onChange={setCurrentPage}
         />
         <div className={styles.right_side}>
           <ColumnSelector
-            columns={props.columns.map(c => ({
-              label: t(`${props.translationKey}:${c.key}`),
-              key: c.key,
-              disabled: disabledColumns.includes(c.key),
-            }))}
+            columns={props.columns
+              .filter(c => !c.emptyHeader)
+              .map(c => ({
+                label: t(`${props.translationKey}:${c.key}`),
+                key: c.key,
+                disabled: disabledColumns.includes(c.key),
+              }))}
             onClick={toggleDisableColumn}
           />
         </div>

@@ -7,9 +7,10 @@ import type { NTable } from '../types';
 export const useTablePagination = <T extends string>(rows: NTable.Row<T>[]) => {
   const [currentPage, setCurrentPage] = useState(1);
 
+  // refHeight is only accurate after 2 renders so we need to keep that in mind
   const { ref, height: tableHeight } = useElementSize();
   const cellHeightInPx = useRemToPx(styles.cell_height);
-  const pageSize = Math.floor(tableHeight / cellHeightInPx) - 1; // offset for header
+  const pageSize = Math.max(0, Math.floor(tableHeight / cellHeightInPx) - 1); // -1 offset for header
   const amountOfPages = Math.ceil(rows.length / pageSize);
 
   useEffect(() => {

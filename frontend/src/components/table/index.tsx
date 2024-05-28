@@ -14,8 +14,6 @@ import { useTableColumnWidth } from './hooks/useTableColumnWidth';
 import { useVerticalScrolling } from '@/hooks/useVerticalScrolling';
 
 export const Table = <T extends string>(props: NTable.Props<T>) => {
-  console.log('Starting table render');
-
   const { t } = useTranslation();
 
   const { disabledColumns, toggleDisableColumn } = useTableDisableColumns<T>({

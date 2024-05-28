@@ -107,15 +107,97 @@ On this page admins are able to approve or deny a customers order request.
 
 **Search function**
 
-You can search here for 
+In the top left corner you can find the search function. Typing in this box will filter the orders by the inputted text.
+
+When you press enter the text you put in will be stored and you will be able to add another search condition.
+
+These stored conditions will appear next to the search function. You can remove a search condition by pressing the 'x' next to the condition.
+
+**Order Requests Table**
+
+This table shows all the order requests made by customers. It is sepperated in 3 sections: Pending, Approved and Denied.
+
+*Pending:* Here you can see all the order requests that yet have to be reviewed. When you press on the arrow at the end of an order request row
+
+you will be routed to the order request review page.
+
+**Order Requests review page**
+
+On this page you will be able to approve or deny a order request by clicking the big green 'Approve' button or big red 'Deny' button.
+
+Additionaly you can edit an order request if needed. You can edit everything like the transport type, port of origin and products.
+
+To edit a product you have to click the pen icon next to the product row that you want to edit.
+
+You then get a pop-up where you can edit the product information. Once you are doen you can click edit on the bottom right of the pop-up.
+
+Once everything that you wanted to adjust is adjusted you can click the black button that reads 'Edit order request' to confirm your adjustments.
+
+****
+
+*Approved:* Here you can see all the order requests that have been approved. Clicking the arrow next to an order request will bring you to a page
+
+where you can only edit the products in that order request. The proccess of editing is similar to the Order Requests Review page.
+
+*Denied:* Here you can see all the order requests that have been denied. Clicking the arrow next to an order request will bring you to a page
+
+where you can only edit the products in that order request. The proccess of editing is similar to the Order Requests Review page.
+
+## Registrations page
+
+**Search function**
+
+In the top left corner you can find the search function. Typing in this box will filter the orders by the inputted text.
+
+When you press enter the text you put in will be stored and you will be able to add another search condition.
+
+These stored conditions will appear next to the search function. You can remove a search condition by pressing the 'x' next to the condition.
+
+**Registrations Table**
+
+This table shows all the registrations request made by customers. It is sepperated in 3 sections: Pending, Approved and Denied.
+
+*Pending:* Here you can see all the registrations that yet have to be reviewed. When you press on the arrow at the end of an registration request row
+
+you will be routed to the registration review page.
+
+**Registration review page**
+
+On this page you can see all the onfromation of the customer that he filled in. You can either Approve or Deny that customer by pressing one of the buttons.
+
+When you press the big green 'Approve' button you will have to add the Company COde of that customer to confirm the aprrovement.
+
+When you press the big red 'Deny' button you will first have to write a motivation text to clarify the reason for denying that customer.
+
+****
+
+*Approved:* Here you can see all the registration requests that have been approved.
+
+*Denied:* Here you can see all the registration requests that have been denied. Clicking the trashcan icon next to an registration request will delete that customer.
 
 ## Company Info page
 
-On this page you can see information about your company like phone number, address, head account (name, last name and email).
+On this page you can see information about all the companies and admins like phone number, address, head account (name, last name and email).
 
-When you press the arrow button on the top right corner of the company card it will expand the company card.
+**Admin card**
 
-Expanding this card shows all the subaccount created for this company. 
+When you press the arrow button on the top right corner of a admin card it will expand the admin card.
+
+Expanding this card shows all the admin subaccounts and their information. 
+
+To create a subaccount you need to press the plus button to the left of the arrow button (that expands/collapses the admin card).
+
+Once pressed, you have to enter the email, first name and last name of the person that the subaccount will belong to.
+
+The head account can also delete subaccounts by pressing the trashcan icon next to the subaccounts information.
+
+The head account can also promote a subaccount to be a head account which in exchange will make the head account a subaccount.
+
+**Company cards**
+
+When you press the arrow button on the top right corner of a company card it will expand the company card.
+
+Expanding this card shows all the companies subaccounts and their information. 
 
 To create a subaccount you need to press the plus button to the left of the arrow button (that expands/collapses the company card).
 
@@ -125,3 +207,4 @@ The head account can also delete subaccounts by pressing the trashcan icon next 
 
 The head account can also promote a subaccount to be a head account which in exchange will make the head account a subaccount.
 
+As a admin you are also able to delete a company by pressing the trashcan icon in a company card.

@@ -153,7 +153,7 @@ On this page you can see information about your company like phone number, addre
 
 When you press the arrow button on the top right corner of the company card it will expand the company card.
 
-Expanding this card shows all the subaccount created for this company. 
+Expanding this card shows all the companies subaccounts and their information. 
 
 To create a subaccount you need to press the plus button to the left of the arrow button (that expands/collapses the company card).
 

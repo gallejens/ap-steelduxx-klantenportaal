@@ -470,9 +470,19 @@
     "backButton": "Go Back",
     "approveButton": "Approve",
     "denyButton": "Deny",
+    "confirmButton": "Edit order request",
     "response": {
-      "success": "Order Request approved!",
-      "denied": "Order Request denied!"
+      "success": "Order request approved!",
+      "denied": "Order request denied!",
+      "edited": "Order request edited!"
+    },
+    "editProductModal": {
+      "title": "Edit product",
+      "confirmButton": "Edit",
+      "response": {
+        "failed": "Something went wrong while editing the product. Please try again.",
+        "success": "Product has been successfully edited."
+      }
     }
   },
   "pageTitleHelper": {

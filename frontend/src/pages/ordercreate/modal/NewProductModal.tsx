@@ -108,6 +108,7 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
       >
         <div>
           <HsCodeSelector
+            className={styles.hsCode_field}
             label={t('newOrderPage:productForm:hsCode:hsCodeInputDescription')}
             placeholder={t(
               'newOrderPage:productForm:hsCode:hsCodeInputPlaceholder'

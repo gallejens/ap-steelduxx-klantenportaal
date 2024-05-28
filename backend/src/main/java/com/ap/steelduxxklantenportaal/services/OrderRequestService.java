@@ -7,6 +7,7 @@ import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestProductDto;
 import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestUploadDto;
 import com.ap.steelduxxklantenportaal.enums.OrderTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
+import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;
 import com.ap.steelduxxklantenportaal.models.*;
 import com.ap.steelduxxklantenportaal.repositories.*;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
@@ -195,6 +196,7 @@ public class OrderRequestService {
                 company.get().getName(),
                 orderRequest.getTransportType().toString(),
                 orderRequest.getPortOfOriginCode(),
+                orderRequest.getPortOfDestinationCode(),
                 orderRequest.getOrderType().toString(),
                 orderRequestProductDtos);
     }
@@ -233,5 +235,30 @@ public class OrderRequestService {
             orderRequest.setStatus(status);
             orderRequestRepository.save(orderRequest);
         }
+    }
+
+    public OrderRequest editOrderRequest(Long id, OrderRequestDto orderRequestDto) {
+        return orderRequestRepository.findById(id).map(orderRequest -> {
+            orderRequest.setTransportType(TransportTypeEnum.valueOf(orderRequestDto.transportType()));
+            orderRequest.setPortOfOriginCode(orderRequestDto.portOfOriginCode());
+            orderRequest.setPortOfDestinationCode(orderRequestDto.portOfDestinationCode());
+
+            return orderRequestRepository.save(orderRequest);
+        })
+        .orElseThrow();
+    }
+
+    public OrderRequestProduct editOrderRequestProduct(Long productId, OrderRequestProductDto orderRequestProductDto) {
+        return orderRequestProductRepository.findById(productId)
+                .map(orderRequestProduct -> {
+                    orderRequestProduct.setQuantity(orderRequestProductDto.quantity());
+                    orderRequestProduct.setWeight(orderRequestProductDto.weight());
+                    orderRequestProduct.setContainerNumber(orderRequestProductDto.containerNumber());
+                    orderRequestProduct.setContainerSize(orderRequestProductDto.containerSize());
+                    orderRequestProduct.setContainerType(orderRequestProductDto.containerType());
+
+                    return orderRequestProductRepository.save(orderRequestProduct);
+                })
+                .orElseThrow();
     }
 }

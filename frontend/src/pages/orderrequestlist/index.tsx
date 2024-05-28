@@ -1,5 +1,4 @@
 import { type FC, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ActionIcon, Tabs } from '@mantine/core';
 import { Table } from '@/components/table';
 import { doApiAction } from '@/lib/api';
@@ -13,7 +12,6 @@ import { MultiSearch } from '@/components/multisearch';
 import LoaderComponent from '@/components/loader';
 
 export const OrderRequestListPage: FC = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchValues, setSearchValues] = useState<string[]>([]);
   const { data: orderRequests, status } = useQuery({

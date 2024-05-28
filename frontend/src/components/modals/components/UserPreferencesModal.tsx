@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { doApiAction } from '@/lib/api';
-import { UserPreferences } from '@/types/userpreferences';
+import type { UserPreferences } from '@/types/userpreferences';
 import { Modal } from '..';
 import { IconMail, IconMessage } from '@tabler/icons-react';
 
@@ -78,7 +78,7 @@ export const UserPreferencesModal: FC = () => {
         </Grid.Col>
         <Grid.Col span={3}>
           <Tooltip
-            label={t(`preferences:systemNotification`)}
+            label={t('preferences:systemNotification')}
             position='right'
             transitionProps={{ transition: 'rotate-right', duration: 300 }}
           >
@@ -87,7 +87,7 @@ export const UserPreferencesModal: FC = () => {
         </Grid.Col>
         <Grid.Col span={3}>
           <Tooltip
-            label={t(`preferences:emailNotification`)}
+            label={t('preferences:emailNotification')}
             position='right'
             transitionProps={{ transition: 'rotate-right', duration: 300 }}
           >

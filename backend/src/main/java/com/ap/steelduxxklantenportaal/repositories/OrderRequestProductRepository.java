@@ -9,5 +9,4 @@ import com.ap.steelduxxklantenportaal.models.OrderRequestProduct;
 @Repository
 public interface OrderRequestProductRepository extends JpaRepository<OrderRequestProduct, Long> {
     List<OrderRequestProduct> findAllByOrderRequestId(long orderRequestId);
-
 }

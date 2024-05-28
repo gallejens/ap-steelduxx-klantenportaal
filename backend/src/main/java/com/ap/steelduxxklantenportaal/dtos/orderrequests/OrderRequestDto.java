@@ -5,7 +5,8 @@ import java.util.List;
 public record OrderRequestDto(
           String companyName,
           String transportType,
-          String portCode,
+          String portOfOriginCode,
+          String portOfDestinationCode,
           String cargoType,
           List<OrderRequestProductDto> products) {
 }

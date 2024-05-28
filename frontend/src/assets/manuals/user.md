@@ -11,8 +11,8 @@ The top navbar has 4 functions.
 ## Left Navbar
 This navbar can route you to 3 different pages
 1. The button with a house icon (blue) brings you to the home page
-2. The button with files icon (green) brings you to the orders page
-3. The button with list icon (red) brings you to the company info page
+2. The button with the files icon (green) brings you to the orders page
+3. The button with a list icon (red) brings you to the company info page
 
 There also is an account icon on the bottom of the left navbar. When pressed, 3 options will show up.
 1. Logout
@@ -26,12 +26,15 @@ Once you press logout there will be a pop-up that will make you confirm your log
 **Change password**
 
 Once you press change password there will be a pop-up where you have to type your old password once and then your new one twice.
+
 When you fill in the old and new password you press the black 'confirm' button to change your password.
 
 **Preferences**
 
 Once you press preferences there will be a pop-up where you can choose your preferences for the notifications.
+
 You can choose to enable or disable in browser notifications and/or emails for order status and/or order request.
+
 ## Home page
 
 The home page welcomes you and shows 2 cards. These cards give information about a certain page.

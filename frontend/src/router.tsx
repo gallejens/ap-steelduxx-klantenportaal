@@ -170,15 +170,9 @@ const companiesRoute = createRoute({
 });
 
 // Wiki pages
-const userManualRoute = createRoute({
+const manualRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/manual/user',
-  component: ManualPage,
-});
-
-const adminManualRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/manual/admin',
+  path: '/manual/$language/$type',
   component: ManualPage,
 });
 
@@ -201,8 +195,7 @@ const routeTree = rootRoute.addChildren([
     userRequestReviewRoute,
     companiesRoute,
   ]),
-  userManualRoute,
-  adminManualRoute,
+  manualRoute,
 ]);
 
 export const router = createRouter({

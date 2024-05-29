@@ -24,26 +24,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: var(--mantine-spacing-md);
 
-    & > .card {
-      width: 17rem;
-      height: 25rem;
-
+    & > .card_container {
       display: flex;
-      flex-direction: column;
+      gap: var(--mantine-spacing-md);
 
-      & > .icon {
-        width: 100%;
-        aspect-ratio: 1.5;
+      & > .card {
+        width: 17rem;
 
         display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+        flex-direction: column;
 
-      &:hover {
-        cursor: pointer;
+        & > .icon {
+          width: 100%;
+          aspect-ratio: 1.5;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }

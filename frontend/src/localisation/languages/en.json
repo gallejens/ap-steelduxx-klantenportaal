@@ -171,7 +171,6 @@
     "shipLocation": "Ship Location",
     "imo": "IMO",
     "mmsi": "MMSI",
-    "hsCode": "HsCode",
     "documents": {
       "downloadFailed": "Failed to download document",
       "uploadResponse": {

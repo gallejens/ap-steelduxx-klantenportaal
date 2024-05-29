@@ -40,6 +40,6 @@ class UserRequestListTest {
         List<UserRequestDto> savedUserRequests = userRequestController.getAllUserRequests();
 
         // Then
-        assertThat(savedUserRequests).hasSameSizeAs(mockUserRequests.size());
+        assertThat(savedUserRequests).hasSameSizeAs(mockUserRequests);
     }
 }

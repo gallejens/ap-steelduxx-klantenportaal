@@ -10,10 +10,10 @@ import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;
 import com.ap.steelduxxklantenportaal.models.Company;
 
 public class OrderRequestObjectMother {
-        static final OrderRequestProductDto product1 = new OrderRequestProductDto("1234", "Steel pipes", 12, 123000,
+        static final OrderRequestProductDto product1 = new OrderRequestProductDto(1, "1234", "Steel pipes", 12, 123000,
                         "12345",
                         ContainerSizeEnum.SIZE_20, ContainerTypeEnum.OT);
-        static final OrderRequestProductDto product2 = new OrderRequestProductDto("4321", "Steel pipes", 5, 1000,
+        static final OrderRequestProductDto product2 = new OrderRequestProductDto(2, "4321", "Steel pipes", 5, 1000,
                         "54321",
                         ContainerSizeEnum.SIZE_20, ContainerTypeEnum.OT);
         static final NewOrderRequestDto orderRequest1 = new NewOrderRequestDto(TransportTypeEnum.IMPORT, "NLROT",

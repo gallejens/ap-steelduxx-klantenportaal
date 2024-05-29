@@ -18,20 +18,9 @@ public class UserPreferenceService {
         this.userPreferenceRepository = userPreferenceRepository;
     }
 
-    public UserPreferenceDto convertToDto(UserPreference userPreference) {
-        return new UserPreferenceDto(
-                userPreference.getUserId(),
-                userPreference.isSystemNotificationOrderStatus(),
-                userPreference.isEmailNotificationOrderStatus(),
-                userPreference.isSystemNotificationOrderRequest(),
-                userPreference.isEmailNotificationOrderRequest()
-        );
-    }
-
     public UserPreferenceDto getPreferences(Long userId) {
-        return userPreferenceRepository.findByUserId(userId)
-                .map(this::convertToDto)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        var userPreferences = userPreferenceRepository.findByUserId(userId).orElse(new UserPreference(userId));
+        return UserPreference.toDto(userPreferences);
     }
 
     public ResponseEntity<Object> updateNotification(Long userId, Integer userPreferenceType, boolean enabled) {

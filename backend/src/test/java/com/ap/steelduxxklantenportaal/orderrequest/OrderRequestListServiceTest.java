@@ -79,6 +79,7 @@ class OrderRequestListServiceTest {
 
     private OrderRequestProduct createProduct(OrderRequestProductDto productDto) {
         OrderRequestProduct orderRequestProduct = new OrderRequestProduct();
+        orderRequestProduct.setId(productDto.id());
         orderRequestProduct.setHsCode(productDto.hsCode());
         orderRequestProduct.setName(productDto.name());
         orderRequestProduct.setQuantity(productDto.quantity());

@@ -70,7 +70,7 @@ export const ProductCard: FC<Props> = props => {
               />
               <IconListItem
                 icon={IconRuler2}
-                text={`${props.product.containerSize.replace('SIZE_', '')} ft`}
+                text={`${props.product.containerSize?.replace('SIZE_', '')} ft`}
               />
               <IconListItem
                 icon={IconContainer}

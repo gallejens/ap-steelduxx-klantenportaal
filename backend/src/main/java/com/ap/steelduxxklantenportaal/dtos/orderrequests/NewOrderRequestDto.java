@@ -2,10 +2,10 @@ package com.ap.steelduxxklantenportaal.dtos.orderrequests;
 
 import java.util.List;
 
-import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;
+import com.ap.steelduxxklantenportaal.enums.OrderTransportTypeEnum;
 
 public record NewOrderRequestDto(
-                TransportTypeEnum transportType,
+                OrderTransportTypeEnum transportType,
                 String portOfOriginCode,
                 String portOfDestinationCode,
                 boolean isContainerOrder,

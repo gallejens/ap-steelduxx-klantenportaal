@@ -57,4 +57,20 @@ public class FileSystemStorageService {
             System.out.println("Could not initialize storage");
         }
     }
+
+    public static byte[] convertFileToByteArray(MultipartFile file) {
+        try {
+            return file.getBytes();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public static byte[] convertFileToByteArray(Resource resource) {
+        try {
+            return resource.getContentAsByteArray();
+        } catch (IOException e) {
+            return null;
+        }
+    }
 }

@@ -18,13 +18,13 @@ import com.ap.steelduxxklantenportaal.repositories.CompanyInfoAccountRepository;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import com.ap.steelduxxklantenportaal.repositories.UserRepository;
 
-import io.jsonwebtoken.io.IOException;
 import jakarta.mail.MessagingException;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -165,13 +165,13 @@ public class OrdersService {
                 .body(new ByteArrayResource(data));
     }
 
-    public boolean uploadDocument(String orderId, MultipartFile file, OrderDocumentType type, String customerCode) throws java.io.IOException {
+    public boolean uploadDocument(String orderId, MultipartFile file, OrderDocumentType type, String customerCode) {
         var user = AuthService.getCurrentUser();
         if (user == null) {
             return false;
         }
 
-        var byteArray = convertFileToByteArray(file);
+        var byteArray = FileSystemStorageService.convertFileToByteArray(file);
         if (byteArray == null) {
             return false;
         }
@@ -193,13 +193,5 @@ public class OrdersService {
         }
 
         return String.format("/admin/upload/%s", customerCode);
-    }
-
-    private byte[] convertFileToByteArray(MultipartFile file) throws java.io.IOException {
-        try {
-            return file.getBytes();
-        } catch (IOException e) {
-            return null;
-        }
     }
 }

@@ -1,21 +1,22 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.NewOrderRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestListDto;
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestProductDto;
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestUploadDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.ExternalApiOrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDocumentUploadDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.*;
+import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
+import com.ap.steelduxxklantenportaal.enums.OrderTransportTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.OrderTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
-import com.ap.steelduxxklantenportaal.enums.TransportTypeEnum;
 import com.ap.steelduxxklantenportaal.models.*;
 import com.ap.steelduxxklantenportaal.repositories.*;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
-
 import jakarta.mail.MessagingException;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -58,11 +59,49 @@ public class OrderRequestService {
     }
 
     public ResponseEntity<Object> approveOrderRequest(Long id) {
-        OrderRequestDto orderRequestDto = getOrderRequestDto(id);
+        var orderRequest = orderRequestRepository.findById(id).orElseThrow();
+        var company = companyRepository.findById(orderRequest.getCompanyId()).orElseThrow();
+
+        var requestBody = buildExternalApiOrderRequestDto(orderRequest);
+        var createdOrder = externalApiService.doRequest(company.getReferenceCode(), "/order/new", HttpMethod.POST, requestBody, OrderDto.class);
+
+        var orderRequestDocuments = orderRequestDocumentRepository.findAllByOrderRequestId(orderRequest.getId());
+        for (var orderRequestDocument : orderRequestDocuments) {
+            var resource = fileSystemStorageService.load(orderRequestDocument.getFileName());
+            var byteArray = FileSystemStorageService.convertFileToByteArray(resource);
+            if (byteArray == null) {
+                continue;
+            }
+
+            var uploadBody = new OrderDocumentUploadDto(createdOrder.referenceNumber(), orderRequestDocument.getType(), byteArray);
+            externalApiService.doRequest(company.getReferenceCode(), "/document/upload", HttpMethod.POST, uploadBody, Void.class);
+        }
+
         updateOrderRequestStatus(id, StatusEnum.APPROVED);
-        externalApiService.createOrder(orderRequestDto);
         notifyUsers(id, StatusEnum.APPROVED);
+
         return ResponseHandler.generate("orderRequestReviewPage:response:success", HttpStatus.CREATED);
+    }
+
+    private ExternalApiOrderRequestDto buildExternalApiOrderRequestDto(OrderRequest orderRequest) {
+        String portCode;
+        if (orderRequest.getTransportType() == OrderTransportTypeEnum.IMPORT) {
+            portCode = orderRequest.getPortOfOriginCode();
+        } else {
+            portCode = orderRequest.getPortOfDestinationCode();
+        }
+
+        var orderRequestProducts = orderRequestProductRepository
+                .findAllByOrderRequestId(orderRequest.getId()).stream()
+                .map(OrderRequestProduct::toDto)
+                .toList();
+
+        return new ExternalApiOrderRequestDto(
+                "",
+                orderRequest.getTransportType(),
+                portCode,
+                orderRequest.getOrderType(),
+                orderRequestProducts);
     }
 
     public ResponseEntity<Object> denyOrderRequest(Long id) {
@@ -71,7 +110,7 @@ public class OrderRequestService {
         return ResponseHandler.generate("orderRequestReviewPage:response:denied", HttpStatus.OK);
     }
 
-    private void notifyUsers (Long id, StatusEnum newStatus) {
+    private void notifyUsers(Long id, StatusEnum newStatus) {
         Long companyId = getCompanyIdByOrderRequestId(id);
         List<User> users = getUsersByCompanyId(companyId);
 
@@ -80,7 +119,7 @@ public class OrderRequestService {
             if (userPreference.isPresent()) {
                 if (userPreference.get().isSystemNotificationOrderRequest()) {
                     Notification newNotification = new Notification(
-                            user.getId(), "Order request: " + id + " is " + newStatus ,
+                            user.getId(), "Order request: " + id + " is " + newStatus,
                             "Status changed to: " + newStatus,
                             Timestamp.valueOf(LocalDateTime.now()).getTime(), false
                     );
@@ -97,7 +136,7 @@ public class OrderRequestService {
         }
     }
 
-    private Long getCompanyIdByOrderRequestId(Long  orderRequestId) {
+    private Long getCompanyIdByOrderRequestId(Long orderRequestId) {
         OrderRequest orderRequest = orderRequestRepository.findById(orderRequestId).orElseThrow();
         return orderRequest.getCompanyId();
     }
@@ -113,6 +152,7 @@ public class OrderRequestService {
         var user = AuthService.getCurrentUser();
         if (user == null)
             return null;
+
         var company = companyRepository.findByUserId(user.getId());
         if (company.isEmpty())
             return null;
@@ -154,7 +194,7 @@ public class OrderRequestService {
         return ResponseHandler.generate("newOrderPage:success", HttpStatus.CREATED, orderRequestId);
     }
 
-    public OrderRequestListDto convertOrderRequestListToDTO(OrderRequest orderRequest) {
+    public OrderRequestDto convertOrderRequestListToDTO(OrderRequest orderRequest) {
         List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository
                 .findAllByOrderRequestId(orderRequest.getId()).stream()
                 .map(OrderRequestProduct::toDto)
@@ -162,7 +202,7 @@ public class OrderRequestService {
 
         var company = companyRepository.findById(orderRequest.getCompanyId()).orElseThrow();
 
-        return new OrderRequestListDto(
+        return new OrderRequestDto(
                 orderRequest.getId(),
                 company.getName(),
                 orderRequest.getStatus(),
@@ -173,79 +213,53 @@ public class OrderRequestService {
                 orderRequestProductDtos);
     }
 
-    public OrderRequestDto convertOrderRequestToDTO(OrderRequest orderRequest) {
-        List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository
-                .findAllByOrderRequestId(orderRequest.getId()).stream()
-                .map(OrderRequestProduct::toDto)
-                .toList();
-
-        var company = companyRepository.findById(orderRequest.getCompanyId()).orElseThrow();
-
-        return new OrderRequestDto(
-                company.getName(),
-                orderRequest.getTransportType().toString(),
-                orderRequest.getPortOfOriginCode(),
-                orderRequest.getPortOfDestinationCode(),
-                orderRequest.getOrderType().toString(),
-                orderRequestProductDtos);
-    }
-
-    public List<OrderRequestListDto> getAll() {
+    public List<OrderRequestDto> getAll() {
         List<OrderRequest> orderRequests = orderRequestRepository.findAll();
         return orderRequests.stream()
                 .map(this::convertOrderRequestListToDTO)
                 .toList();
     }
 
-    public OrderRequestListDto getOrderRequest(Long id) {
+    public OrderRequestDto getOrderRequest(Long id) {
         OrderRequest orderRequest = orderRequestRepository.findById(id).orElseThrow();
         return convertOrderRequestListToDTO(orderRequest);
     }
 
-    public OrderRequestDto getOrderRequestDto(Long id) {
-        OrderRequest orderRequest = orderRequestRepository.findById(id).orElseThrow();
-        return convertOrderRequestToDTO(orderRequest);
-    }
-
-    public void saveOrderRequestDocument(OrderRequestUploadDto orderRequestUploadDto) {
-        var fileName = fileSystemStorageService.store(orderRequestUploadDto.file());
+    public void saveOrderRequestDocument(OrderRequestDocumentUploadDto orderRequestDocumentUploadDto) {
+        var fileName = fileSystemStorageService.store(orderRequestDocumentUploadDto.file());
         if (fileName == null)
             return;
 
-        var orderRequestDocument = new OrderRequestDocument(orderRequestUploadDto.orderRequestId(),
-                orderRequestUploadDto.type(), fileName);
+        var orderRequestDocument = new OrderRequestDocument(orderRequestDocumentUploadDto.orderRequestId(),
+                orderRequestDocumentUploadDto.type(), fileName);
         orderRequestDocumentRepository.save(orderRequestDocument);
     }
 
     public void updateOrderRequestStatus(Long orderId, StatusEnum status) {
-        Optional<OrderRequest> optionalOrderRequest = orderRequestRepository.findById(orderId);
-        if (optionalOrderRequest.isPresent()) {
-            OrderRequest orderRequest = optionalOrderRequest.get();
+        orderRequestRepository.findById(orderId).map(orderRequest -> {
             orderRequest.setStatus(status);
-            orderRequestRepository.save(orderRequest);
-        }
-    }
-
-    public void editOrderRequest(Long id, OrderRequestDto orderRequestDto) {
-        orderRequestRepository.findById(id).map(orderRequest -> {
-            orderRequest.setTransportType(TransportTypeEnum.valueOf(orderRequestDto.transportType()));
-            orderRequest.setPortOfOriginCode(orderRequestDto.portOfOriginCode());
-            orderRequest.setPortOfDestinationCode(orderRequestDto.portOfDestinationCode());
-
             return orderRequestRepository.save(orderRequest);
-        })
-        .orElseThrow();
+        }).orElseThrow();
     }
 
-    public void editOrderRequestProduct(Long productId, OrderRequestProductDto orderRequestProductDto) {
+    public void editOrderRequest(Long id, OrderRequestEditDto orderRequestEditDto) {
+        orderRequestRepository.findById(id).map(orderRequest -> {
+                    orderRequest.setTransportType(orderRequestEditDto.transportType());
+                    orderRequest.setPortOfOriginCode(orderRequestEditDto.portOfOriginCode());
+                    orderRequest.setPortOfDestinationCode(orderRequestEditDto.portOfDestinationCode());
+                    return orderRequestRepository.save(orderRequest);
+                })
+                .orElseThrow();
+    }
+
+    public void editOrderRequestProduct(Long productId, OrderRequestProductEditDto orderRequestProductEditDto) {
         orderRequestProductRepository.findById(productId)
                 .map(orderRequestProduct -> {
-                    orderRequestProduct.setQuantity(orderRequestProductDto.quantity());
-                    orderRequestProduct.setWeight(orderRequestProductDto.weight());
-                    orderRequestProduct.setContainerNumber(orderRequestProductDto.containerNumber());
-                    orderRequestProduct.setContainerSize(orderRequestProductDto.containerSize());
-                    orderRequestProduct.setContainerType(orderRequestProductDto.containerType());
-
+                    orderRequestProduct.setQuantity(orderRequestProductEditDto.quantity());
+                    orderRequestProduct.setWeight(orderRequestProductEditDto.weight());
+                    orderRequestProduct.setContainerNumber(orderRequestProductEditDto.containerNumber());
+                    orderRequestProduct.setContainerSize(orderRequestProductEditDto.containerSize());
+                    orderRequestProduct.setContainerType(orderRequestProductEditDto.containerType());
                     return orderRequestProductRepository.save(orderRequestProduct);
                 })
                 .orElseThrow();

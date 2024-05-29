@@ -277,7 +277,6 @@
     "emptyProducts": "Add at least one product."
   },
   "userRequestReviewPage": {
-    "backButton": "Go Back",
     "approveButton": "Approve",
     "denyButton": "Deny",
     "response": {
@@ -479,7 +478,7 @@
     "containerType": "Container Type"
   },
   "orderRequestReviewPage": {
-    "backButton": "Go Back",
+    "infoTitle": "Information",
     "approveButton": "Approve",
     "denyButton": "Deny",
     "confirmButton": "Edit order request",
@@ -535,7 +534,8 @@
     "title": "Products",
     "tooltips": {
       "add": "Add Product",
-      "remove": "Remove Product"
+      "remove": "Remove Product",
+      "edit": "Edit Product"
     }
   }
 }

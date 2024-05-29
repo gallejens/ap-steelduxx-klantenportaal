@@ -80,7 +80,7 @@ export type ProductContainerType = 'OT' | 'FT' | 'DV' | 'HC' | 'RF';
 
 export type OrderDocumentType = 'bl' | 'packing' | 'customs';
 
-export type UserRequestStatus = 'PENDING' | 'APPROVED' | 'DENIED';
+export type RequestStatus = 'PENDING' | 'APPROVED' | 'DENIED';
 
 export type UserRequest = {
   followId: number;
@@ -90,17 +90,17 @@ export type UserRequest = {
   firstName: string;
   lastName: string;
   denyMessage: string;
-  status: UserRequestStatus;
+  status: RequestStatus;
 };
 
 export type OrderRequest = {
-  id: string;
+  id: number;
   companyName: string;
-  transportType: string;
+  transportType: OrderTransportType;
   portOfOriginCode: string;
   portOfDestinationCode: string;
-  status: string;
-  product: Product[];
+  status: RequestStatus;
+  products: (Product & { id: number })[];
 };
 
 export type Company = {

@@ -13,6 +13,7 @@ type Props = {
   products: Product[];
   onAddProduct?: () => void;
   onRemoveProduct?: (idx: number) => void;
+  onEditProduct?: (idx: number) => void;
 };
 
 export const ProductsList: FC<Props> = props => {
@@ -40,6 +41,13 @@ export const ProductsList: FC<Props> = props => {
               props.onRemoveProduct !== undefined
                 ? () => {
                     props.onRemoveProduct?.(idx);
+                  }
+                : undefined
+            }
+            onEdit={
+              props.onEditProduct !== undefined
+                ? () => {
+                    props.onEditProduct?.(idx);
                   }
                 : undefined
             }

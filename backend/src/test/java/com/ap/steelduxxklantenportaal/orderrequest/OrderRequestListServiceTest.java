@@ -69,12 +69,12 @@ class OrderRequestListServiceTest {
         OrderRequestListDto firstOrderRequest = orderRequestList.get(0);
         assertEquals(1, firstOrderRequest.id());
         assertEquals("C123", firstOrderRequest.companyName());
-        assertEquals(2, firstOrderRequest.product().size());
+        assertEquals(2, firstOrderRequest.products().size());
 
         OrderRequestListDto secondOrderRequest = orderRequestList.get(1);
         assertEquals(2, secondOrderRequest.id());
         assertEquals("C123", secondOrderRequest.companyName());
-        assertEquals(0, secondOrderRequest.product().size());
+        assertEquals(0, secondOrderRequest.products().size());
     }
 
     private OrderRequestProduct createProduct(OrderRequestProductDto productDto) {

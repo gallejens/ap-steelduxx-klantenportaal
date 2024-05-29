@@ -43,4 +43,16 @@ public class OrderRequestProduct {
         product.setContainerType(dto.containerType());
         return product;
     }
+
+    public static OrderRequestProductDto toDto(OrderRequestProduct orderRequestProduct) {
+        return new OrderRequestProductDto(
+                orderRequestProduct.getId(),
+                orderRequestProduct.getHsCode(),
+                orderRequestProduct.getName(),
+                orderRequestProduct.getQuantity(),
+                orderRequestProduct.getWeight(),
+                orderRequestProduct.getContainerNumber(),
+                orderRequestProduct.getContainerSize(),
+                orderRequestProduct.getContainerType());
+    }
 }

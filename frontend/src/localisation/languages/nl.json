@@ -276,7 +276,6 @@
     "emptyProducts": "Voeg minstens een product toe."
   },
   "userRequestReviewPage": {
-    "backButton": "Terug Gaan",
     "approveButton": "Goedkeuren",
     "denyButton": "Afkeuren",
     "response": {
@@ -478,7 +477,7 @@
     "containerType": "Container type"
   },
   "orderRequestReviewPage": {
-    "backButton": "Terug Gaan",
+    "infoTitle": "Informatie",
     "approveButton": "Goedkeuren",
     "denyButton": "Afkeuren",
     "confirmButton": "Order aanvraag bewerken",
@@ -534,7 +533,8 @@
     "title": "Producten",
     "tooltips": {
       "add": "Product Toevoegen",
-      "remove": "Product Verwijderen"
+      "remove": "Product Verwijderen",
+      "edit": "Edit Product"
     }
   }
 }

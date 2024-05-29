@@ -12,12 +12,14 @@ import {
   IconForms,
   IconRuler2,
   IconContainer,
+  IconEdit,
 } from '@tabler/icons-react';
 import { PRODUCT_CONTAINER_TYPES } from '@/constants';
 
 type Props = {
   product: Product;
   onRemove?: () => void;
+  onEdit?: () => void;
 };
 
 export const ProductCard: FC<Props> = props => {
@@ -31,6 +33,13 @@ export const ProductCard: FC<Props> = props => {
               icon={<IconTrash />}
               tooltipKey='productsList:tooltips:remove'
               onClick={props.onRemove}
+            ></IconButton>
+          )}
+          {props.onEdit !== undefined && (
+            <IconButton
+              icon={<IconEdit />}
+              tooltipKey='productsList:tooltips:edit'
+              onClick={props.onEdit}
             ></IconButton>
           )}
         </div>
@@ -61,7 +70,7 @@ export const ProductCard: FC<Props> = props => {
               />
               <IconListItem
                 icon={IconRuler2}
-                text={`${props.product.containerSize}`}
+                text={`${props.product.containerSize.replace('SIZE_', '')} ft`}
               />
               <IconListItem
                 icon={IconContainer}

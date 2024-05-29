@@ -41,8 +41,8 @@ public class OrderRequestController {
 
     @GetMapping("{id}")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public OrderRequestListDto getOrderRequestById(@PathVariable String id) {
-        return orderRequestService.getOrderRequest(Long.parseLong(id));
+    public OrderRequestListDto getOrderRequestById(@PathVariable Long id) {
+        return orderRequestService.getOrderRequest(id);
     }
 
     @PostMapping("/upload-file")
@@ -65,6 +65,7 @@ public class OrderRequestController {
     }
 
     @PutMapping("/{id}/edit")
+    @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
     public ResponseEntity<Object> editOrderRequest(@PathVariable Long id, @RequestBody OrderRequestDto orderRequestDto) {
         orderRequestService.editOrderRequest(id, orderRequestDto);
         return ResponseHandler.generate("orderRequestReviewPage:response:edited", HttpStatus.OK);
@@ -72,9 +73,9 @@ public class OrderRequestController {
     }
 
     @PutMapping("/{id}/product/edit")
+    @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
     public ResponseEntity<Object> editOrderRequestProduct(@PathVariable Long id, @RequestBody OrderRequestProductDto orderRequestProductDto) {
         orderRequestService.editOrderRequestProduct(id, orderRequestProductDto);
         return ResponseHandler.generate("orderRequestReviewPage:editProductModal:response:success", HttpStatus.OK);
     }
-
 }

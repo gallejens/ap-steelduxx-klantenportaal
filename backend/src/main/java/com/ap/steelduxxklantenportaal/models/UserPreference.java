@@ -36,13 +36,13 @@ public class UserPreference {
         this.userId = userId;
     }
 
-    public static UserPreferenceDto toDto(UserPreference userPreference) {
+    public UserPreferenceDto toDto() {
         return new UserPreferenceDto(
-                userPreference.getUserId(),
-                userPreference.isSystemNotificationOrderStatus(),
-                userPreference.isEmailNotificationOrderStatus(),
-                userPreference.isSystemNotificationOrderRequest(),
-                userPreference.isEmailNotificationOrderRequest()
+                userId,
+                systemNotificationOrderStatus,
+                emailNotificationOrderStatus,
+                systemNotificationOrderRequest,
+                emailNotificationOrderRequest
         );
     }
 }

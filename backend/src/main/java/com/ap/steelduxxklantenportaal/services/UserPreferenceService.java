@@ -3,9 +3,6 @@ package com.ap.steelduxxklantenportaal.services;
 import com.ap.steelduxxklantenportaal.dtos.UserPreferenceDto;
 import com.ap.steelduxxklantenportaal.models.UserPreference;
 import com.ap.steelduxxklantenportaal.repositories.UserPreferenceRepository;
-import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Consumer;
@@ -19,18 +16,22 @@ public class UserPreferenceService {
     }
 
     public UserPreferenceDto getPreferences(Long userId) {
-        var userPreferences = userPreferenceRepository.findByUserId(userId).orElse(new UserPreference(userId));
-        return UserPreference.toDto(userPreferences);
+        var userPreferences = userPreferenceRepository.findByUserId(userId);
+        if (userPreferences.isPresent()) {
+            return userPreferences.get().toDto();
+        }
+
+        var newUserPreferences = new UserPreference(userId);
+        userPreferenceRepository.save(newUserPreferences);
+
+        return newUserPreferences.toDto();
     }
 
-    public ResponseEntity<Object> updateNotification(Long userId, Integer userPreferenceType, boolean enabled) {
-        return userPreferenceRepository.findByUserId(userId)
-                .map(userPreference -> {
-                    updatePreference(userPreference, userPreferenceType, enabled);
-                    userPreferenceRepository.save(userPreference);
-                    return ResponseHandler.generate("userPreference:response:success", HttpStatus.CREATED);
-                })
-                .orElseGet(() -> ResponseHandler.generate("userPreference:response:not found", HttpStatus.NOT_FOUND));
+    public void updateNotification(Long userId, Integer userPreferenceType, boolean enabled) {
+        var userPreferences = userPreferenceRepository.findByUserId(userId).orElse(null);
+        if (userPreferences == null) return;
+        updatePreference(userPreferences, userPreferenceType, enabled);
+        userPreferenceRepository.save(userPreferences);
     }
 
     private void updatePreference(UserPreference userPreference, Integer userPreferenceType, boolean status) {
@@ -52,13 +53,5 @@ public class UserPreferenceService {
                 throw new IllegalArgumentException("Invalid preference type");
         }
         updater.accept(status);
-    }
-
-    public ResponseEntity<Object> enableNotification(Long userId, Integer userPreferenceType) {
-        return updateNotification(userId, userPreferenceType, true);
-    }
-
-    public ResponseEntity<Object> disableNotification(Long userId, Integer userPreferenceType) {
-        return updateNotification(userId, userPreferenceType, false);
     }
 }

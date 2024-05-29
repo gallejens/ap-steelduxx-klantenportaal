@@ -11,7 +11,8 @@ export const useTablePagination = <T extends string>(rows: NTable.Row<T>[]) => {
   const { ref, height: tableHeight } = useElementSize();
   const cellHeightInPx = useRemToPx(styles.cell_height);
   const pageSize = Math.max(0, Math.floor(tableHeight / cellHeightInPx) - 1); // -1 offset for header
-  const amountOfPages = Math.ceil(rows.length / pageSize);
+  const amountOfPages =
+    pageSize === 0 ? 1 : Math.max(1, Math.ceil(rows.length / pageSize));
 
   useEffect(() => {
     if (currentPage > amountOfPages && amountOfPages > 0) {

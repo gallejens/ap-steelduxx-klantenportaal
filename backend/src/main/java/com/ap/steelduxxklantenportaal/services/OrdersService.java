@@ -67,9 +67,10 @@ public class OrdersService {
 
         return externalApiService.doRequest(endpoint, HttpMethod.GET, OrderDto[].class);
     }
+
     public OrderDto[] getAllOrdersForCheck() {
         String endpoint = "/admin/order/all";
-        return externalApiService.doSystemRequest(endpoint, HttpMethod.GET, OrderDto[].class);
+        return externalApiService.doRequest("ADMIN", endpoint, HttpMethod.GET, OrderDto[].class);
     }
 
     public List<OrderStatusDto> getAllOrderStatus(OrderDto[] orders){

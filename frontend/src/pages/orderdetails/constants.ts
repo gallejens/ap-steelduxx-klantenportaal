@@ -1,4 +1,4 @@
-import type { OrderDetails, OrderDocumentType } from '@/types/api';
+import type { OrderDetails, OrderDocumentType, OrderState } from '@/types/api';
 
 export const ORDER_DOCUMENT_TYPE_TO_ORDERDETAIL_KEY: Record<
   OrderDocumentType,
@@ -8,3 +8,8 @@ export const ORDER_DOCUMENT_TYPE_TO_ORDERDETAIL_KEY: Record<
   packing: 'packingListDownloadLink',
   customs: 'customsDownloadLink',
 };
+
+export const SHOULD_SHOW_MAP_STATES = new Set<OrderState>([
+  'SAILING',
+  'LOADED',
+]);

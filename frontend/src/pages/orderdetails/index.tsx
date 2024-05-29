@@ -7,10 +7,11 @@ import { doApiAction } from '@/lib/api';
 import type { OrderDetails } from '@/types/api';
 import { OrderInfo } from './components/OrderInfo';
 import { MapInfo } from './components/MapInfo';
-import { ProductList } from './components/ProductList';
-import { Title } from '@mantine/core';
+import { Divider, Title } from '@mantine/core';
 import { DocumentSection } from './components/DocumentSection';
 import LoaderComponent from '@/components/loader';
+import { ProductsList } from '@/components/productslist';
+import { SHOULD_SHOW_MAP_STATES } from './constants';
 
 export const OrderDetailsPage: FC = () => {
   const { t } = useTranslation();
@@ -53,32 +54,36 @@ export const OrderDetailsPage: FC = () => {
 
   return (
     <div className={styles.orderDetails}>
-      <Title
-        order={2}
-        className={styles.header}
-      >
-        {t('orderDetailPage:orderDetails')}: {orderDetails.referenceNumber}
-      </Title>
-      <div className={styles.container}>
-        <div className={styles.columnLeft}>
-          <div className={styles.topRow}>
-            <OrderInfo orderDetail={orderDetails} />
-            <div className={styles.documentsContainer}>
-              <DocumentSection
-                orderDetails={orderDetails}
-                customerCode={customerCode}
-              />
+      <div className={styles.header}>
+        <Title order={2}>{t('orderDetailPage:title')}</Title>
+        <Title order={3}>
+          {orderDetails.referenceNumber} -{' '}
+          {orderDetails.customerReferenceNumber}
+        </Title>
+      </div>
+      <Divider orientation='horizontal' />
+      <div className={styles.body}>
+        <div className={styles.general_info}>
+          <OrderInfo orderDetail={orderDetails} />
+          <Divider />
+          <DocumentSection
+            orderDetails={orderDetails}
+            customerCode={customerCode}
+          />
+        </div>
+        <Divider orientation='vertical' />
+        <ProductsList
+          products={orderDetails.products}
+          className={styles.products}
+        />
+        {SHOULD_SHOW_MAP_STATES.has(orderDetails.state) && (
+          <>
+            <Divider orientation='vertical' />
+            <div className={styles.map}>
+              <MapInfo imo={orderDetails.shipIMO} />
             </div>
-          </div>
-          <div className={styles.bottomRow}>
-            <ProductList orderDetail={orderDetails} />
-          </div>
-        </div>
-        <div className={styles.columnRight}>
-          {orderDetails.state === 'SAILING' ? (
-            <MapInfo orderDetail={orderDetails} />
-          ) : null}
-        </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -509,8 +509,8 @@
   "preferences": {
     "title": "Preferences",
     "notificationTitle": "Notifications ",
-    "notificationOrderStatusTitle": "Order status",
-    "notificationOrderRequestTitle": "Order request",
+    "notificationOrderStatusTitle": "Order Status Changed",
+    "notificationOrderRequestTitle": "Order Request Activity",
     "systemNotification": "System Notifications",
     "emailNotification": "Email Notifications"
   },

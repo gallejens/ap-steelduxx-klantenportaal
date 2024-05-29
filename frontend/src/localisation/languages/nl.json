@@ -507,8 +507,8 @@
   "preferences": {
     "title": "Instellingen",
     "notificationTitle": "Notificaties ",
-    "notificationOrderStatusTitle": "Order status",
-    "notificationOrderRequestTitle": "Order aanvragen",
+    "notificationOrderStatusTitle": "Order status verandering",
+    "notificationOrderRequestTitle": "Order aanvraag activiteit",
     "systemNotification": "Systeem Notificaties",
     "emailNotification": "Email Notificaties"
   },

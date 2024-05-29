@@ -44,7 +44,7 @@ Wanneer je op een kaart klikt, brengt het je naar de pagina die op de kaart werd
 
 ## Orders pagina
 
-De orders pagina heeft veel functies. Laten we ze allemaal een voor een doornemen.
+De orders pagina heeft veel functies. Laten we ze allemaal één voor één doornemen.
 
 **Zoekfunctie**
 
@@ -78,7 +78,9 @@ Rechtsonder vind je een knop genaamd 'Kolommen'. Wanneer je op deze knop drukt, 
 
 Door op een header te klikken, wordt deze (on)zichtbaar gemaakt op basis van het pictogram links van de tableheader.
 
-Wanneer het pictogram een oog is, betekent dit dat de kolom met die header zichtbaar zal zijn in de ordertabel, maar wanneer het een oog met een lijn erdoor is, betekent dit dat die kolom niet zichtbaar zal zijn in de ordertabel.
+Wanneer het pictogram een oog is, betekent dit dat de kolom met die header zichtbaar zal zijn in de ordertabel, 
+
+maar wanneer het een oog met een lijn erdoor is, betekent dit dat die kolom niet zichtbaar zal zijn in de ordertabel.
 
 ## Nieuwe Order pagina
 
@@ -120,7 +122,9 @@ Zodra je alles hebt ingevuld, kun je op de knop 'Product toevoegen' rechtsonder 
 
 Je kunt zoveel producten toevoegen als je wilt, maar je moet er minstens één toevoegen.
 
-Je kunt ook een product verwijderen dat je hebt toegevoegd, indien nodig. Dit doe je door op het prullenbakpictogram aan het einde van de rij van het product dat je wilt verwijderen te drukken.
+Je kunt ook een product verwijderen dat je hebt toegevoegd, indien nodig. 
+
+Dit doe je door op het prullenbakpictogram aan het einde van de rij van het product dat je wilt verwijderen te drukken.
 
 Zodra je alles naar wens hebt ingevuld, kun je op de knop linksonder 'Maak order aanvraag aan' drukken om de nieuwe order aan te vragen.
 
@@ -136,7 +140,9 @@ Deze sectie heeft de meeste informatie. Je kunt daar bijna alles vinden zoals de
 
 In deze sectie kan je 3 soorten documenten uploaden, downloaden of vervangen. Wanneer er geen document aanwezig is, kan je op het uploadpictogram klikken om een bestand te uploaden.
 
-Zodra er een bestand beschikbaar is voor een documenttype, kan je dat bestand downloaden door op het downloadpictogram te klikken of het vervangen door op het uploadpictogram te klikken.
+Zodra er een bestand beschikbaar is voor een documenttype, kan je dat bestand downloaden door op het downloadpictogram te klikken 
+
+of het vervangen door op het uploadpictogram te klikken.
 
 **Schip locatie**
 

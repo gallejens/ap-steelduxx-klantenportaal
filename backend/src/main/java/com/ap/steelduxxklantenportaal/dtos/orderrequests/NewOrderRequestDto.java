@@ -1,8 +1,8 @@
 package com.ap.steelduxxklantenportaal.dtos.orderrequests;
 
-import java.util.List;
-
 import com.ap.steelduxxklantenportaal.enums.OrderTransportTypeEnum;
+
+import java.util.List;
 
 public record NewOrderRequestDto(
                 OrderTransportTypeEnum transportType,

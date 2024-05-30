@@ -41,12 +41,12 @@ public class OrderServiceTest {
     @Test
     void testGetAllOrdersForCheck() {
         OrderDto[] expectedOrders = new OrderDto[0];
-        when(externalApiService.doSystemRequest("/admin/order/all", HttpMethod.GET, OrderDto[].class)).thenReturn(expectedOrders);
+        when(externalApiService.doRequest("ADMIN", "/admin/order/all", HttpMethod.GET, OrderDto[].class)).thenReturn(expectedOrders);
 
         OrderDto[] result = ordersService.getAllOrdersForCheck();
 
         assertArrayEquals(expectedOrders, result);
-        verify(externalApiService).doSystemRequest("/admin/order/all", HttpMethod.GET, OrderDto[].class);
+        verify(externalApiService).doRequest("ADMIN", "/admin/order/all", HttpMethod.GET, OrderDto[].class);
     }
 
     @Test

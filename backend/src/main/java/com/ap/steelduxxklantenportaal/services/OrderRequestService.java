@@ -4,7 +4,6 @@ import com.ap.steelduxxklantenportaal.dtos.externalapi.ExternalApiOrderRequestDt
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDocumentUploadDto;
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDto;
 import com.ap.steelduxxklantenportaal.dtos.orderrequests.*;
-import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
 import com.ap.steelduxxklantenportaal.enums.OrderTransportTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.OrderTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -239,7 +237,7 @@ public class OrderRequestService {
         orderRequestRepository.findById(orderId).map(orderRequest -> {
             orderRequest.setStatus(status);
             return orderRequestRepository.save(orderRequest);
-        }).orElseThrow();
+        });
     }
 
     public void editOrderRequest(Long id, OrderRequestEditDto orderRequestEditDto) {

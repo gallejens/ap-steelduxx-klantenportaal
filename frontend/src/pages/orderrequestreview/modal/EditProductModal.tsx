@@ -32,7 +32,7 @@ export const EditProductModal: FC<{
       quantity: props.product.quantity,
       weight: props.product.weight,
       containerNumber: props.product.containerNumber ?? '',
-      containerSize: props.product.containerSize?.replace('SIZE_', '') ?? '',
+      containerSize: props.product.containerSize ?? '',
       containerType: props.product.containerType ?? '',
     },
     validate: {

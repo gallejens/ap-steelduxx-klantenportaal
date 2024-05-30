@@ -83,7 +83,9 @@ export const OrderDocuments: FC<Props> = props => {
               <Title order={5}>
                 {ORDER_DOCUMENT_TYPES[type as OrderDocumentType]}
               </Title>
-              <Text>{fileName ?? t('orderDocuments:noFile')}</Text>
+              <Text truncate='end'>
+                {fileName ?? t('orderDocuments:noFile')}
+              </Text>
             </div>
             <div className={styles.actions}>
               {fileName !== null && 'onDownload' in props && (

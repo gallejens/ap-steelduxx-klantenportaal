@@ -21,6 +21,7 @@ public class OrderRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long companyId;
+    private String customerReferenceNumber;
     @Enumerated(EnumType.STRING)
     private OrderTransportTypeEnum transportType;
     private String portOfOriginCode;
@@ -30,9 +31,10 @@ public class OrderRequest {
     @Enumerated(EnumType.STRING)
     private OrderTypeEnum orderType;
 
-    public OrderRequest(Long companyId, OrderTransportTypeEnum transportType, String portOfOriginCode,
+    public OrderRequest(Long companyId, String customerReferenceNumber, OrderTransportTypeEnum transportType, String portOfOriginCode,
             String portOfDestinationCode, StatusEnum status, OrderTypeEnum orderType) {
         this.companyId = companyId;
+        this.customerReferenceNumber = customerReferenceNumber;
         this.transportType = transportType;
         this.portOfOriginCode = portOfOriginCode;
         this.portOfDestinationCode = portOfDestinationCode;

@@ -62,10 +62,10 @@ public class EmailService {
         String htmlContent = templateEngine.process("order-status-update", context);
         sendHtmlMail(user.getEmail(), "Order Status Change", htmlContent);
     }
-    void sendOrderRequestStatusUpdate(User user, String id, String newStatus) throws MessagingException {
+    void sendOrderRequestStatusUpdate(User user, String customerReferenceNumber, String newStatus) throws MessagingException {
         Context context = new Context();
         context.setVariable("user", user);
-        context.setVariable("orderId", id);
+        context.setVariable("customerReferenceNumber", customerReferenceNumber);
         context.setVariable("status", newStatus);
 
         String htmlContent = templateEngine.process("order-request-status-update", context);

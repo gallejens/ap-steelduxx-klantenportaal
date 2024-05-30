@@ -5,7 +5,6 @@ import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDocumentUploadDto;
 import com.ap.steelduxxklantenportaal.dtos.externalapi.OrderDto;
 import com.ap.steelduxxklantenportaal.dtos.orderrequests.*;
 import com.ap.steelduxxklantenportaal.enums.OrderTransportTypeEnum;
-import com.ap.steelduxxklantenportaal.enums.OrderTypeEnum;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import com.ap.steelduxxklantenportaal.models.*;
 import com.ap.steelduxxklantenportaal.repositories.*;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,7 +55,11 @@ public class OrderRequestService {
     }
 
     public ResponseEntity<Object> approveOrderRequest(Long id) {
-        var orderRequest = orderRequestRepository.findById(id).orElseThrow();
+        var orderRequest = orderRequestRepository.findById(id).orElse(null);
+        if (orderRequest == null) {
+            return ResponseHandler.generate("orderRequestReviewPage:response:failed", HttpStatus.NO_CONTENT);
+        }
+
         var company = companyRepository.findById(orderRequest.getCompanyId()).orElseThrow();
 
         var requestBody = buildExternalApiOrderRequestDto(orderRequest);
@@ -76,7 +78,7 @@ public class OrderRequestService {
         }
 
         updateOrderRequestStatus(id, StatusEnum.APPROVED);
-        notifyUsers(id, StatusEnum.APPROVED);
+        notifyUsers(id, orderRequest.getCustomerReferenceNumber(), StatusEnum.APPROVED);
 
         return ResponseHandler.generate("orderRequestReviewPage:response:success", HttpStatus.CREATED);
     }
@@ -95,7 +97,7 @@ public class OrderRequestService {
                 .toList();
 
         return new ExternalApiOrderRequestDto(
-                "",
+                orderRequest.getCustomerReferenceNumber(),
                 orderRequest.getTransportType(),
                 portCode,
                 orderRequest.getOrderType(),
@@ -103,12 +105,18 @@ public class OrderRequestService {
     }
 
     public ResponseEntity<Object> denyOrderRequest(Long id) {
+        var orderRequest = orderRequestRepository.findById(id).orElse(null);
+        if (orderRequest == null) {
+            return ResponseHandler.generate("orderRequestReviewPage:response:failed", HttpStatus.NO_CONTENT);
+        }
+
         updateOrderRequestStatus(id, StatusEnum.DENIED);
-        notifyUsers(id, StatusEnum.DENIED);
+        notifyUsers(id, orderRequest.getCustomerReferenceNumber(), StatusEnum.DENIED);
+
         return ResponseHandler.generate("orderRequestReviewPage:response:denied", HttpStatus.OK);
     }
 
-    private void notifyUsers(Long id, StatusEnum newStatus) {
+    private void notifyUsers(Long id, String customerReferenceNumber, StatusEnum newStatus) {
         Long companyId = getCompanyIdOfOrderRequest(id);
         List<User> users = getUsersByCompanyId(companyId);
 
@@ -118,17 +126,18 @@ public class OrderRequestService {
 
             if (userPreference.isSystemNotificationOrderRequest()) {
                 Notification newNotification = new Notification(
-                        user.getId(), "Order request " + id + " has been " + newStatus.toString().toLowerCase(),
-                        "The status of order request " + id +  " has been changed to: " + newStatus.toString().toLowerCase(),
+                        user.getId(),
+                        "Order request has been " + newStatus.toString().toLowerCase(),
+                        String.format("The status of order request with reference code '%s' has been %s.", customerReferenceNumber, newStatus.toString().toLowerCase()),
                         Timestamp.valueOf(LocalDateTime.now()).getTime(), false
                 );
                 notificationService.createNotification(newNotification);
             }
+
             if (userPreference.isEmailNotificationOrderRequest()) {
                 try {
-                    emailService.sendOrderRequestStatusUpdate(user, id.toString(), newStatus.toString());
-                } catch (MessagingException e) {
-                    e.printStackTrace();
+                    emailService.sendOrderRequestStatusUpdate(user, customerReferenceNumber, newStatus.toString().toLowerCase());
+                } catch (MessagingException ignored) {
                 }
             }
         }
@@ -157,16 +166,14 @@ public class OrderRequestService {
 
         var companyId = company.get().getId();
 
-        OrderTypeEnum orderType = newOrderRequestDto.isContainerOrder() ? OrderTypeEnum.CONTAINER
-                : OrderTypeEnum.BULK;
-
         OrderRequest orderRequest = new OrderRequest(
                 companyId,
+                newOrderRequestDto.customerReferenceNumber(),
                 newOrderRequestDto.transportType(),
                 newOrderRequestDto.portOfOriginCode(),
                 newOrderRequestDto.portOfDestinationCode(),
                 StatusEnum.PENDING,
-                orderType);
+                newOrderRequestDto.orderType());
 
         OrderRequest savedOrderRequest = orderRequestRepository.save(orderRequest);
 

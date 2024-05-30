@@ -7,8 +7,10 @@
   display: flex;
   gap: var(--mantine-spacing-md);
 
+  overflow: hidden;
+
   & > .inputs {
-    width: calc(100% / 4);
+    width: calc(100% / 3);
     height: 100%;
 
     display: flex;
@@ -17,10 +19,23 @@
 
     flex-shrink: 0;
 
+    overflow: auto;
+
     & > .form {
       display: flex;
       flex-direction: column;
-      gap: var(--mantine-spacing-md);
+      gap: var(--mantine-spacing-xs);
+
+      & > .double {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--mantine-spacing-xs);
+
+        & > * {
+          width: 50%;
+        }
+      }
     }
 
     & > .documents {

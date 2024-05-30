@@ -182,26 +182,35 @@
   "newOrderPage": {
     "title": "Order Info",
     "orderForm": {
+      "customerReferenceNumber": {
+        "title": "Reference Code",
+        "description": "Fill in your own reference code to identify the order",
+        "placeholder": "1005839AEB",
+        "error": "Reference Code is required"
+      },
       "transportType": {
-        "transportTypeInputTitle": "Transport type",
-        "transportTypeInputDescription": "Select the transport type of the order here",
-        "transportTypeInputPlaceholder": "IMPORT / EXPORT",
-        "transportTypeInputError": "Transport type is required"
+        "title": "Transport Type",
+        "description": "Select the transport type of the order here",
+        "placeholder": "IMPORT / EXPORT",
+        "error": "Transport Type is required"
+      },
+      "orderType": {
+        "title": "Order Type",
+        "description": "Select the type of the order here",
+        "placeholder": "BULK / CONTAINER",
+        "error": "Order Type is required"
       },
       "portDestinationCode": {
-        "portDestinationCodeInputTitle": "Port code of destination",
-        "portDestinationCodeInputDescription": "Fill in the port code of the destination here",
-        "portDestinationCodeInputPlaceholder": "CNSHG",
-        "portDestinationCodeInputError": "Port Code of destination is required"
+        "title": "Destination Portcode",
+        "description": "Fill in the port code of the destination here",
+        "placeholder": "CNSHG",
+        "error": "Port Code of destination is required"
       },
       "portOriginCode": {
-        "portOriginCodeInputTitle": "Port code of origin",
-        "portOriginCodeInputDescription": "Fill in the port code of the origin here",
-        "portOriginCodeInputPlaceholder": "CNSHG",
-        "portOriginCodeInputError": "Port Code of origin is required"
-      },
-      "checkBoxContainer": {
-        "checkBoxLabel": "Container order"
+        "title": "Origin Portcode",
+        "description": "Fill in the port code of the origin here",
+        "placeholder": "CNSHG",
+        "error": "Port Code of origin is required"
       }
     },
     "productForm": {
@@ -468,6 +477,7 @@
     "response": {
       "success": "Order request approved!",
       "denied": "Order request denied!",
+      "failed": "Failed to do action, try again later",
       "edited": "Order request edited!"
     },
     "editProductModal": {

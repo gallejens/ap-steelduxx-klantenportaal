@@ -6,17 +6,38 @@ The top navbar has 4 functions.
 1. The button on the left side is to open and collapse the left navbar
 2. The book button is to open the manual
 3. The textbubble button shows your notifications when clicked
-4. The button with a flag is to select a language, when clicked the languages will be shown and you can chose for your preferred language
+4. The button with a flag is to select a language, when clicked the languages will be shown and you can choose for your preferred language
 
 ## Left Navbar
 This navbar can route you to 3 different pages
 1. The button with a house icon (blue) brings you to the home page
-2. The button with files icon (green) brings you to the orders page
-3. The button with list icon (red) brings you to the company info page
+2. The button with the files icon (green) brings you to the orders page
+3. The button with a list icon (red) brings you to the company info page
+
+There also is an account icon on the bottom of the left navbar. When pressed, 3 options will show up.
+1. Logout
+2. Change password
+3. Preferences
+
+**Logout**
+
+Once you press logout there will be a pop-up that will make you confirm your logout.
+
+**Change password**
+
+Once you press change password there will be a pop-up where you have to type your old password once and then your new one twice.
+
+When you fill in the old and new password you press the black 'confirm' button to change your password.
+
+**Preferences**
+
+Once you press preferences there will be a pop-up where you can choose your preferences for the notifications.
+
+You can choose to enable or disable in browser notifications and/or emails for order status and/or order request.
 
 ## Home page
 
-The home page welcomes you and shows 2 cards. These cards give information about a curtain page.
+The home page welcomes you and shows 2 cards. These cards give information about a certain page.
 
 When you click on a card it brings you to the page that was described on the card.
 
@@ -70,7 +91,7 @@ On this page you can request a new order.
 
 *Transport type:*
 
-Here you can chose between 'IMPORT' and 'EXPORT'
+Here you can choose between 'IMPORT' and 'EXPORT'
 
 Picking import will lock the port code of destination to 'BEANR - Antwerp (Belgium)'
 
@@ -78,7 +99,7 @@ Picking export will lock the port code of origin to 'BEANR - Antwerp (Belgium)'
 
 *Port code of origin/destination:*
 
-Here you can type the port code and there also will be some suggestions showing based on the text you fill in.
+Here you can type the port code and there will also be some suggestions based on the text you fill in.
 
 *Container order*
 
@@ -98,7 +119,9 @@ If you checked the 'Container order' then you will also need to add extra inform
 
 Once you fill everything in you can press the 'Add product' button on the bottom right of the pop up to add the product to the order.
 
-You can add as many products as you want but you have to add atleast one.
+You can add as many products as you want but you have to add at least one.
+
+You can also delete a product you added if needed. You do this by pressing the trashcan icon next at the end of the row of the product you want to delete.
 
 Once you filled everything in as needed then you can press the bottom left button 'Create order request' to request the new order.
 
@@ -114,7 +137,7 @@ This section has the most information. You can find almost everything there like
 
 In this section you can upload, download or replace 3 types of documents. When there isn't a document present you can click the upload icon to upload a file.
 
-Once there is a file accessible for a documenttype you can donwload that file by clicking the download icon or replace it by clicking the upload icon.
+Once there is a file accessible for a document type you can download that file by clicking the download icon or replace it by clicking the upload icon.
 
 **Ship location**
 
@@ -126,17 +149,17 @@ This table shows all the products that are in th order.
 
 ## Company Info page
 
-On this page you can see information about your company like phonenumber, adress, headccount (name, lastname and email).
+On this page you can see information about your company like phone number, address, head account (name, last name and email).
 
-When you press the arrow button ont the top right corner of the company card it will expand the company card.
+When you press the arrow button on the top right corner of the company card it will expand the company card.
 
-Expanding this card show all the subaccount created for this company. 
+Expanding this card shows all the companies subaccounts and their information. 
 
 To create a subaccount you need to press the plus button to the left of the arrow button (that expands/collapses the company card).
 
-Once pressed, you have to enter the email, firstname and lastname of the person that the subaccount will belong to.
+Once pressed, you have to enter the email, first name and last name of the person that the subaccount will belong to.
 
-The headaccount can also delete subaccounts by pressing the trashcan icon next to the subaccounts information.
+The head account can also delete subaccounts by pressing the trashcan icon next to the subaccounts information.
 
-The headaccount can also promote a subaccount to be a headaccount which in exchange will make the headaccount a subaccount.
+The head account can also promote a subaccount to be a head account which in exchange will make the head account a subaccount.
 

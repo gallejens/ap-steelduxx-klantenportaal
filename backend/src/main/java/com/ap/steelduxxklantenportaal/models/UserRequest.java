@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.models;
 
+import com.ap.steelduxxklantenportaal.dtos.UserRequestDto;
 import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
@@ -50,9 +51,9 @@ public class UserRequest {
     private String denyMessage;
 
     public UserRequest(String companyName, String country, String phoneNr, String vatNr, String postalCode,
-            String district, String street, String streetNr, String boxNr, String extraInfo, String firstName,
-            String lastName,
-            String email, Long createdOn, StatusEnum status, String denyMessage) {
+                       String district, String street, String streetNr, String boxNr, String extraInfo, String firstName,
+                       String lastName,
+                       String email, Long createdOn, StatusEnum status, String denyMessage) {
         this.companyName = companyName;
         this.country = country;
         this.phoneNr = phoneNr;
@@ -69,5 +70,27 @@ public class UserRequest {
         this.createdOn = createdOn;
         this.status = status;
         this.denyMessage = denyMessage;
+    }
+
+    public UserRequestDto toDto() {
+        return new UserRequestDto(
+                id,
+                companyName,
+                country,
+                phoneNr,
+                vatNr,
+                postalCode,
+                district,
+                street,
+                streetNr,
+                boxNr,
+                extraInfo,
+                firstName,
+                lastName,
+                email,
+                createdOn,
+                status,
+                denyMessage
+        );
     }
 }

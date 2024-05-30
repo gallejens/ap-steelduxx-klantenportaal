@@ -102,13 +102,11 @@ public class OrdersService {
         }
     }
 
-
     public OrderDetailsDto getOrderDetails(String orderId, String customerCode) {
         var user = AuthService.getCurrentUser();
         if (user == null)
             return null;
 
-        // if user is admin and customercode was provided then use admin endpoint
         boolean isAdmin = user.hasPermission(PermissionEnum.ADMIN);
         String endpoint;
         if (isAdmin && customerCode != null) {

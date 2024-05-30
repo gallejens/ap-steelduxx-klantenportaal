@@ -39,10 +39,10 @@ class UserRequestDetailsTest {
     @Test
     void givenUserRequestId_whenGettingUserRequestById_thenCorrectUserRequestIsReturned() {
         // Given
-        Mockito.when(userRequestService.getUserRequest(1)).thenReturn(UserRequestMotherObject.request1);
+        Mockito.when(userRequestService.getUserRequest(1L)).thenReturn(UserRequestMotherObject.request1);
 
         // When
-        UserRequestDto savedUserRequest = userRequestController.getUserRequestById("1");
+        UserRequestDto savedUserRequest = userRequestController.getUserRequestById(1L);
 
         // Then
         Assertions.assertEquals(1, savedUserRequest.followId());

@@ -5,8 +5,6 @@ import com.ap.steelduxxklantenportaal.enums.OrderDocumentType;
 import com.ap.steelduxxklantenportaal.services.OrdersService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 
-import java.io.IOException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +43,7 @@ public class OrdersController {
 
     @PostMapping("/document/upload")
     @PreAuthorize("hasAuthority('ACCESS')")
-    public ResponseEntity<Object> uploadDocument(@ModelAttribute OrderDocumentUploadDto orderDocumentUploadDto) throws IOException {
+    public ResponseEntity<Object> uploadDocument(@ModelAttribute OrderDocumentUploadDto orderDocumentUploadDto) {
         var success = ordersService.uploadDocument(
                 orderDocumentUploadDto.orderId(),
                 orderDocumentUploadDto.file(),

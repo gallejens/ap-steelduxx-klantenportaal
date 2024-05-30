@@ -51,38 +51,17 @@ public class UserRequestService {
         this.emailService = emailService;
     }
 
-    public UserRequestDto convertUserRequestToDTO(UserRequest userRequest) {
-        return new UserRequestDto(
-                userRequest.getId(),
-                userRequest.getCompanyName(),
-                userRequest.getCountry(),
-                userRequest.getPhoneNr(),
-                userRequest.getVatNr(),
-                userRequest.getPostalCode(),
-                userRequest.getDistrict(),
-                userRequest.getStreet(),
-                userRequest.getStreetNr(),
-                userRequest.getBoxNr(),
-                userRequest.getExtraInfo(),
-                userRequest.getFirstName(),
-                userRequest.getLastName(),
-                userRequest.getEmail(),
-                userRequest.getCreatedOn(),
-                userRequest.getStatus(),
-                userRequest.getDenyMessage());
-    }
-
     public List<UserRequestDto> getAll() {
-        List<UserRequest> userRequest = userRequestRepository.findAll();
+        List<UserRequest> userRequests = userRequestRepository.findAll();
 
-        return userRequest.stream()
-                .map(this::convertUserRequestToDTO)
+        return userRequests.stream()
+                .map(UserRequest::toDto)
                 .toList();
     }
 
-    public UserRequestDto getUserRequest(Number id) {
-        UserRequest userRequest = userRequestRepository.findById(id);
-        return convertUserRequestToDTO(userRequest);
+    public UserRequestDto getUserRequest(Long id) {
+        UserRequest userRequest = userRequestRepository.findById(id).orElseThrow();
+        return userRequest.toDto();
     }
 
     private void addRequest(UserRequestDto userRequestDTO) throws MessagingException {
@@ -123,7 +102,7 @@ public class UserRequestService {
         return ResponseHandler.generate("userRequestForm:userRequestRequested", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> approveUserRequest(Number id, UserRequestApproveDto userRequestApproveDto)
+    public ResponseEntity<Object> approveUserRequest(Long id, UserRequestApproveDto userRequestApproveDto)
             throws MessagingException, UserAlreadyExistsException {
         boolean requestForCompanyExists = companyRepository
                 .findByReferenceCode(userRequestApproveDto.referenceCode())
@@ -133,8 +112,7 @@ public class UserRequestService {
             return ResponseHandler.generate("userRequestReviewPage:response:exists", HttpStatus.OK);
         }
 
-        UserRequestDto userRequestDto = getUserRequest(id);
-        UserRequest userRequest = userRequestRepository.findById(id);
+        UserRequest userRequest = userRequestRepository.findById(id).orElseThrow();
 
         // Edit status to APPROVED
         userRequest.setStatus(StatusEnum.APPROVED);
@@ -142,25 +120,25 @@ public class UserRequestService {
 
         // Set user values in DB
         var user = authService.addNewUser(
-                userRequestDto.email(),
+                userRequest.getEmail(),
                 UUID.randomUUID().toString(),
-                userRequestDto.firstName(),
-                userRequestDto.lastName(),
+                userRequest.getFirstName(),
+                userRequest.getLastName(),
                 RoleEnum.ROLE_HEAD_USER
         );
 
         // Set company values in DB
         var company = companyRepository.save(new Company(
-                        userRequestDto.companyName(),
-                        userRequestDto.country(),
-                        userRequestDto.phoneNr(),
-                        userRequestDto.vatNr(),
-                        userRequestDto.postalCode(),
-                        userRequestDto.district(),
-                        userRequestDto.street(),
-                        userRequestDto.streetNr(),
-                        userRequestDto.boxNr(),
-                        userRequestDto.extraInfo(),
+                        userRequest.getCompanyName(),
+                        userRequest.getCountry(),
+                        userRequest.getPhoneNr(),
+                        userRequest.getVatNr(),
+                        userRequest.getPostalCode(),
+                        userRequest.getDistrict(),
+                        userRequest.getStreet(),
+                        userRequest.getStreetNr(),
+                        userRequest.getBoxNr(),
+                        userRequest.getExtraInfo(),
                         userRequestApproveDto.referenceCode()
                 )
         );
@@ -172,16 +150,15 @@ public class UserRequestService {
                 )
         );
 
-        authService.sendChoosePasswordEmail(userRequestDto.email(), 30L * 24 * 60 * 60); // one month
+        authService.sendChoosePasswordEmail(userRequest.getEmail(), 30L * 24 * 60 * 60); // one month
 
         return ResponseHandler.generate("userRequestReviewPage:response:success", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> denyUserRequest(Number id, UserRequestDenyDto userRequestDenyDto) {
-        UserRequest userRequest = userRequestRepository.findById(id);
+    public ResponseEntity<Object> denyUserRequest(Long id, UserRequestDenyDto userRequestDenyDto) {
+        UserRequest userRequest = userRequestRepository.findById(id).orElseThrow();
 
         userRequest.setStatus(StatusEnum.DENIED);
-
         userRequest.setDenyMessage(userRequestDenyDto.denyMessage());
 
         userRequestRepository.save(userRequest);

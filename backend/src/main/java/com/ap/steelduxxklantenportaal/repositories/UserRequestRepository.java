@@ -10,10 +10,5 @@ import com.ap.steelduxxklantenportaal.enums.StatusEnum;
 
 @Repository
 public interface UserRequestRepository extends JpaRepository<UserRequest, Long> {
-
     Optional<UserRequest> findByStatusInAndVatNrAndEmail(List<StatusEnum> statuses, String vatNr, String email);
-
-    UserRequest findById(Number id);
-
-    void deleteById(Number id);
 }

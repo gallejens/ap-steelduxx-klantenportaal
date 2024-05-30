@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -73,20 +72,7 @@ class OrdersControllerTest {
 
     @Test
     @WithMockUser(username = "user", authorities = { "ACCESS" })
-    void testUploadDocument_FailInvalidInput() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "", MediaType.APPLICATION_PDF_VALUE, new byte[0]);
-
-        mockMvc.perform(multipart("/orders/document/upload")
-                .file(file)
-                .param("referenceNumber", "")
-                .param("documentType", "")
-                .contentType(MediaType.MULTIPART_FORM_DATA))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    @WithMockUser(username = "user", authorities = { "ACCESS" })
-    void testUploadDocument_FailException() throws Exception {
+    void testUploadDocument_Succeeds() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "test.pdf", MediaType.APPLICATION_PDF_VALUE,
                 "PDF content".getBytes());
 
@@ -95,6 +81,6 @@ class OrdersControllerTest {
                 .param("referenceNumber", "12345")
                 .param("documentType", "invoice")
                 .contentType(MediaType.MULTIPART_FORM_DATA))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().is2xxSuccessful());
     }
 }

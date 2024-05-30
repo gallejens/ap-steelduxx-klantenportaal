@@ -35,23 +35,13 @@ public class UserPreferenceService {
     }
 
     private void updatePreference(UserPreference userPreference, Integer userPreferenceType, boolean status) {
-        Consumer<Boolean> updater;
-        switch (userPreferenceType) {
-            case 1:
-                updater = userPreference::setSystemNotificationOrderStatus;
-                break;
-            case 2:
-                updater = userPreference::setEmailNotificationOrderStatus;
-                break;
-            case 3:
-                updater = userPreference::setSystemNotificationOrderRequest;
-                break;
-            case 4:
-                updater = userPreference::setEmailNotificationOrderRequest;
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid preference type");
-        }
+        Consumer<Boolean> updater = switch (userPreferenceType) {
+            case 1 -> userPreference::setSystemNotificationOrderStatus;
+            case 2 -> userPreference::setEmailNotificationOrderStatus;
+            case 3 -> userPreference::setSystemNotificationOrderRequest;
+            case 4 -> userPreference::setEmailNotificationOrderRequest;
+            default -> throw new IllegalArgumentException("Invalid preference type");
+        };
         updater.accept(status);
     }
 }

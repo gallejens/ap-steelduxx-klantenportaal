@@ -1,11 +1,30 @@
-import { Title, Anchor, List, Text } from '@mantine/core';
+import { Title, Anchor, List, Text, Divider } from '@mantine/core';
 import type { Components } from 'react-markdown';
 
 export const MARKDOWN_COMPONENTS: Partial<Components> = {
-  h1: ({ children }) => <Title>{children}</Title>,
-  h2: ({ children }) => <Title order={2}>{children}</Title>,
-  h3: ({ children }) => <Title order={4}>{children}</Title>,
-  p: ({ children }) => <Text>{children}</Text>,
+  h1: ({ children }) => (
+    <>
+      <Title>{children}</Title>
+      <Divider my='xs' />
+    </>
+  ),
+  h2: ({ children }) => (
+    <Title
+      order={2}
+      mt={'md'}
+    >
+      {children}
+    </Title>
+  ),
+  h3: ({ children }) => (
+    <Title
+      order={4}
+      mt={'sm'}
+    >
+      {children}
+    </Title>
+  ),
+  p: ({ children }) => <Text ml={'xs'}>{children}</Text>,
   strong: ({ children }) => (
     <Text
       fw={700}
@@ -31,6 +50,13 @@ export const MARKDOWN_COMPONENTS: Partial<Components> = {
       {children}
     </Anchor>
   ),
-  ul: ({ children }) => <List>{children}</List>,
-  ol: ({ children }) => <List type='ordered'>{children}</List>,
+  ul: ({ children }) => <List ml={'xs'}>{children}</List>,
+  ol: ({ children }) => (
+    <List
+      ml={'xs'}
+      type='ordered'
+    >
+      {children}
+    </List>
+  ),
 };

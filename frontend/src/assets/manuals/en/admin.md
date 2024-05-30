@@ -17,22 +17,19 @@ This navbar can route you to 5 different pages:
 4. The button with a person icon (pink) brings you to the registrations page.
 5. The button with a list icon (red) brings you to the company info page.
 
-There is also an account icon at the bottom of the left navbar. When pressed, 3 options will show up:
-1. Logout
-2. Change password
-3. Preferences
+There is also an account icon at the bottom of the left navbar. When pressed, a few options will show up:
 
-**Logout**
+### Logout
 
 Once you press logout, there will be a pop-up that will make you confirm your logout.
 
-**Change password**
+### Change password
 
 Once you press change password, there will be a pop-up where you have to type your old password once and then your new one twice.
 
 When you fill in the old and new password, you press the black 'confirm' button to change your password.
 
-**Preferences**
+### Preferences
 
 Once you press preferences, there will be a pop-up where you can choose your preferences for the notifications.
 
@@ -48,7 +45,7 @@ When you click on a card, it brings you to the page that was described on the ca
 
 The orders page has a lot of functions. Let's go through all of them one by one.
 
-**Search function**
+### Search function
 
 In the top left corner, you can find the search function. Typing in this box will filter the orders by the inputted text.
 
@@ -56,7 +53,7 @@ When you press enter, the text you put in will be stored and you will be able to
 
 These stored conditions will appear next to the search function. You can remove a search condition by pressing the 'x' next to the condition.
 
-**Orders list**
+### Orders list
 
 On the top of the table, you can see the table headers. Next to each header, there is a button with an arrow icon.
 
@@ -66,11 +63,11 @@ You can make columns wider or slimmer by dragging the line between 2 columns.
 
 Once you have found your desired order, you can click anywhere on the row of that order and it will bring you to a page with details about the order.
 
-**Pagination**
+### Pagination
 
 At the bottom of the orders page, you can see pagination. There you can go through all the orders one by one.
 
-**Columns button**
+### Columns button
 
 At the bottom right, you can find a button called 'Columns'. When you press this button, a list of table headers will pop up.
 
@@ -84,21 +81,21 @@ but when it's an eye with a line through it, this means that that column will no
 
 The order details page is split up into 4 sections.
 
-**General info**
+### General info
 
 This section has the most information. You can find almost everything there like the port of origin/destination, shipping state, ETS, ATS, ETA, ATA, IMO, MMSI and more.
 
-**Document**
+### Document
 
 In this section, you can upload, download or replace 3 types of documents. When there isn't a document present, you can click the upload icon to upload a file.
 
 Once there is a file accessible for a document type, you can download that file by clicking the download icon or replace it by clicking the upload icon.
 
-**Ship location**
+### Ship location
 
 This shows a map of the ship that is transporting the order. On the map, you can click the green button that says 'Details' to see more info about the ship.
 
-**Products**
+### Products
 
 This table shows all the products that are in the order.
 
@@ -106,7 +103,7 @@ This table shows all the products that are in the order.
 
 On this page, admins are able to approve or deny a customer's order request.
 
-**Search function**
+### Search function
 
 In the top left corner, you can find the search function. Typing in this box will filter the information based on the inputted text.
 
@@ -114,7 +111,7 @@ When you press enter, the text you put in will be stored and you will be able to
 
 These stored conditions will appear next to the search function. You can remove a search condition by pressing the 'x' next to the condition.
 
-**Order Requests Table**
+### Order Requests Table
 
 This table shows all the order requests made by customers. It is separated into 3 sections: Pending, Approved and Denied.
 
@@ -122,7 +119,15 @@ This table shows all the order requests made by customers. It is separated into 
 
 you will be routed to the order request review page.
 
-**Order Requests review page**
+*Approved:* Here you can see all the order requests that have been approved. Clicking the arrow next to an order request will bring you to a page
+
+where you can only edit the products in that order request. The process of editing is similar to the Order Requests Review page.
+
+*Denied:* Here you can see all the order requests that have been denied. Clicking the arrow next to an order request will bring you to a page
+
+where you can only edit the products in that order request. The process of editing is similar to the Order Requests Review page.
+
+### Order Requests review page
 
 On this page, you will be able to approve or deny an order request by clicking the big green 'Approve' button or the big red 'Deny' button.
 
@@ -134,19 +139,11 @@ You then get a pop-up where you can edit the product information. Once you are d
 
 Once everything that you wanted to adjust is adjusted, you can click the black button that reads 'Edit order request' to confirm your adjustments.
 
-****
-
-*Approved:* Here you can see all the order requests that have been approved. Clicking the arrow next to an order request will bring you to a page
-
-where you can only edit the products in that order request. The process of editing is similar to the Order Requests Review page.
-
-*Denied:* Here you can see all the order requests that have been denied. Clicking the arrow next to an order request will bring you to a page
-
-where you can only edit the products in that order request. The process of editing is similar to the Order Requests Review page.
+### 
 
 ## Registrations page
 
-**Search function**
+### Search function
 
 In the top left corner, you can find the search function. Typing in this box will filter the information based on the inputted text.
 
@@ -154,7 +151,7 @@ When you press enter, the text you put in will be stored and you will be able to
 
 These stored conditions will appear next to the search function. You can remove a search condition by pressing the 'x' next to the condition.
 
-**Registrations Table**
+### Registrations Table
 
 This table shows all the registration requests made by customers. It is separated into 3 sections: Pending, Approved and Denied.
 
@@ -162,7 +159,11 @@ This table shows all the registration requests made by customers. It is separate
 
 you will be routed to the registration review page.
 
-**Registration review page**
+*Approved:* Here you can see all the registration requests that have been approved.
+
+*Denied:* Here you can see all the registration requests that have been denied. Clicking the trashcan icon next to a registration request will delete that customer.
+
+### Registration review page
 
 On this page, you can see all the information that the customer has filled in. You can either Approve or Deny that customer by pressing one of the buttons.
 
@@ -170,17 +171,13 @@ When you press the big green 'Approve' button, you will have to add the Company 
 
 When you press the big red 'Deny' button, you will first have to write a motivation text to clarify the reason for denying that customer.
 
-****
-
-*Approved:* Here you can see all the registration requests that have been approved.
-
-*Denied:* Here you can see all the registration requests that have been denied. Clicking the trashcan icon next to a registration request will delete that customer.
+### 
 
 ## Company Info page
 
 On this page, you can see information about all the companies and admins like phone number, address, head account (name, last name and email).
 
-**Admin card**
+### Admin card
 
 When you press the arrow button on the top right corner of an admin card, it will expand the admin card.
 
@@ -198,7 +195,7 @@ As an admin, you are also able to delete a company by pressing the trashcan icon
 
 As an admin, you can also create and promote subaccounts.
 
-**Company cards**
+### Company cards
 
 When you press the arrow button on the top right corner of a company card, it will expand the company card.
 

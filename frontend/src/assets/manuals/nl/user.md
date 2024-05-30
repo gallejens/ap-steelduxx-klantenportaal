@@ -10,31 +10,29 @@ De bovenste navigatiebalk heeft 4 functies.
 4. De knop met een vlag is om een taal te selecteren, wanneer erop wordt geklikt worden de talen getoond en kun je je voorkeurstaal kiezen
 
 ## Linker Navigatiebalk
-Deze navigatiebalk kan je naar 3 verschillende pagina's leiden
-1. De knop met een huispictogram (blauw) brengt je naar de home pagina
-2. De knop met het bestandenpictogram (groen) brengt je naar de orders pagina
-3. De knop met een lijstpictogram (rood) brengt je naar de bedrijfsinformatie pagina
 
-Er is ook een accountpictogram onderaan de linker navigatiebalk. Wanneer ingedrukt, verschijnen er 3 opties.
-1. Uitloggen
-2. Wachtwoord wijzigen
-3. Instellingen
+Deze navigatiebalk kan je naar 5 verschillende pagina's leiden.
+1. De knop met een huisicoon (blauw) brengt je naar de home pagina.
+2. De knop met een bestandenicoon (groen) brengt je naar de orders pagina.
+3. De knop met een lijsticoon (rood) brengt je naar de bedrijfsgegevens pagina (alleen zichtbaar als hoofdaccount).
 
-**Uitloggen**
+Er is ook een accounticoon aan de onderkant van de linkernavigatiebalk. Wanneer erop geklikt wordt, verschijnen er enkele opties.
 
-Zodra je op uitloggen drukt, verschijnt er een pop-up die je uitlog bevestiging vraagt.
+### Uitloggen
 
-**Wachtwoord wijzigen**
+Wanneer je op uitloggen drukt, verschijnt er een pop-up waarin je je uitloggen moet bevestigen.
 
-Zodra je op wachtwoord wijzigen drukt, verschijnt er een pop-up waarin je je oude wachtwoord een keer moet typen en vervolgens je nieuwe wachtwoord twee keer.
+### Wachtwoord wijzigen
+
+Wanneer je op wachtwoord wijzigen drukt, verschijnt er een pop-up waarin je je oude wachtwoord één keer en je nieuwe wachtwoord twee keer moet invoeren.
 
 Wanneer je het oude en nieuwe wachtwoord hebt ingevuld, druk je op de zwarte 'bevestigen' knop om je wachtwoord te wijzigen.
 
-**Instellingen**
+### Instellingen
 
-Zodra je op instellingen drukt, verschijnt er een pop-up waarin je je voorkeuren voor de meldingen kunt kiezen.
+Wanneer je op Instellingen drukt, verschijnt er een pop-up waarin je je voorkeuren voor de meldingen kunt kiezen.
 
-Je kunt ervoor kiezen om meldingen in de browser en/of e-mails voor orderstatus en/of orderverzoek in te schakelen of uit te schakelen.
+Je kunt ervoor kiezen om in-browser meldingen en/of e-mails voor orderstatus en/of orderverzoeken in te schakelen of uit te schakelen.
 
 ## Home pagina
 
@@ -46,7 +44,7 @@ Wanneer je op een kaart klikt, brengt het je naar de pagina die op de kaart werd
 
 De orders pagina heeft veel functies. Laten we ze allemaal één voor één doornemen.
 
-**Zoekfunctie**
+### Zoekfunctie
 
 In de linkerbovenhoek vind je de zoekfunctie. Typen in dit vak zal de orders filteren op de ingevoerde tekst.
 
@@ -54,11 +52,11 @@ Wanneer je op enter drukt, wordt de ingevoerde tekst opgeslagen en kun je een an
 
 Deze opgeslagen voorwaarden verschijnen naast de zoekfunctie. Je kunt een zoekvoorwaarde verwijderen door op de 'x' naast de voorwaarde te drukken.
 
-**Nieuwe Order knop**
+### Nieuwe Order knop
 
 Deze knop brengt je naar een pagina waar je een nieuwe order kunt aanvragen. Deze pagina wordt later uitgelegd.
 
-**Orderlijst**
+### Orderlijst
 
 Bovenaan de tabel zie je de tableheaders. Naast elke header staat een knop met een pijlpictogram.
 
@@ -68,11 +66,11 @@ Je kunt kolommen breder of smaller maken door de lijn tussen 2 kolommen te slepe
 
 Zodra je de gewenste order hebt gevonden, kan je ergens op de rij van die order klikken en het brengt je naar een pagina met details over de order.
 
-**Paginering**
+### Paginering
 
 Onderaan de orderpagina zie je een paginering. Daar kan je alle orders een voor een doorlopen.
 
-**Kolommen knop**
+### Kolommen knop
 
 Rechtsonder vind je een knop genaamd 'Kolommen'. Wanneer je op deze knop drukt, verschijnt er een lijst met tableheaders.
 
@@ -88,35 +86,40 @@ Zoals eerder gezegd, is deze pagina toegankelijk vanaf de orders pagina door op 
 
 Op deze pagina kun je een nieuwe order aanvragen.
 
-**Orderinformatie**
+### Orderinformatie
+
+*Referentie Code:*
+
+Hier kan je een referentie code invullen om later het order te kunnen identificeren. 
+Door deze code kan je ervoor zorgen dat een order in het klantenportaal hetzelfde referentienummer heeft als in je eigen interne systeem.
 
 *Transporttype:*
 
 Hier kun je kiezen tussen 'IMPORT' en 'EXPORT'
 
-Bij het kiezen van import wordt de poortcode van bestemming vergrendeld op 'BEANR - Antwerpen (België)'
+Gebaseerd op je keuze zal er 1 van de havencodes worden vergrendeld op 'BEANR - Antwerpen (België)'
 
-Bij het kiezen van export wordt de poortcode van oorsprong vergrendeld op 'BEANR - Antwerpen (België)'
+*Order type:*
 
-*Poortcode van oorsprong/bestemming:*
+Here you can choose between 'BULK' and 'CONTAINER'
 
-Hier kun je de poortcode typen en er zullen ook enkele suggesties zijn op basis van de tekst die je invoert.
+Based on the choice, the products of the order will require container information or not.
 
-*Container order*
+*Havencode van oorsprong/bestemming:*
 
-Door dit vakje aan te vinken, worden 'containernummer', 'containergrootte (feet)' en 'containertype' toegevoegd aan de producttabel.
+Hier kun je de havencode typen en er zullen ook suggesties zijn op basis van de tekst die je invoert.
 
-**Documenten**
+### Documenten
 
-Hier kun je een bestand uploaden voor 'Bill of lading', 'Packing list' en/of 'Customs Declaration'.
+Hier kun je een document uploaden voor 'Bill of lading', 'Packing list' en/of 'Customs Declaration'.
 
-**Producten**
+Deze bestanden zijn niet vereist maar je kan ze uploaden indien ze al ter beschikking zijn
+
+### Producten
 
 Zodra je de orderinformatie hebt ingevuld, kan je producten aan de order toevoegen. Om een product toe te voegen, moet je op de knop 'Product toevoegen' in de rechterbovenhoek drukken.
 
 Zodra je hebt gedrukt, verschijnt er een kaart. In deze kaart kan je de benodigde informatie invullen om het product te voltooien.
-
-Als je het vakje 'Container order' hebt aangevinkt, moet je ook extra informatie aan het product toevoegen.
 
 Zodra je alles hebt ingevuld, kun je op de knop 'Product toevoegen' rechtsonder in de pop-up drukken om het product aan de order toe te voegen.
 
@@ -132,11 +135,11 @@ Zodra je alles naar wens hebt ingevuld, kun je op de knop linksonder 'Maak order
 
 De orderdetails pagina is opgesplitst in 4 secties.
 
-**Algemeen info**
+### Algemeen info
 
-Deze sectie heeft de meeste informatie. Je kunt daar bijna alles vinden zoals de poort van oorsprong/bestemming, shiping status, ETS, ATS, ETA, ATA, IMO, MMSI en meer.
+Deze sectie heeft de meeste informatie. Je kunt daar bijna alles vinden zoals de havencode van oorsprong/bestemming, shiping status, ETS, ATS, ETA, ATA, IMO, MMSI en meer.
 
-**Documenten**
+### Documenten
 
 In deze sectie kan je 3 soorten documenten uploaden, downloaden of vervangen. Wanneer er geen document aanwezig is, kan je op het uploadpictogram klikken om een bestand te uploaden.
 
@@ -144,11 +147,11 @@ Zodra er een bestand beschikbaar is voor een documenttype, kan je dat bestand do
 
 of het vervangen door op het uploadpictogram te klikken.
 
-**Schip locatie**
+### Schip locatie
 
 Dit toont een kaart van het schip dat de genoemde order vervoert. Op de kaart kan je op de groene knop klikken die 'Details' zegt om meer informatie over het schip te zien.
 
-**Producten**
+### Producten
 
 Deze tabel toont alle producten die in de order zitten.
 

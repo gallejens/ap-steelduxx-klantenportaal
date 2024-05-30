@@ -17,22 +17,19 @@ Deze navigatiebalk kan je naar 5 verschillende pagina's leiden.
 4. De knop met een personenicoon (roze) brengt je naar de registraties pagina.
 5. De knop met een lijsticoon (rood) brengt je naar de bedrijfsgegevens pagina.
 
-Er is ook een accounticoon aan de onderkant van de linkernavigatiebalk. Wanneer erop geklikt wordt, verschijnen er 3 opties.
-1. Uitloggen
-2. Wachtwoord wijzigen
-3. Instellingen
+Er is ook een accounticoon aan de onderkant van de linkernavigatiebalk. Wanneer erop geklikt wordt, verschijnen er enkele opties.
 
-**Uitloggen**
+### Uitloggen
 
 Wanneer je op uitloggen drukt, verschijnt er een pop-up waarin je je uitloggen moet bevestigen.
 
-**Wachtwoord wijzigen**
+### Wachtwoord wijzigen
 
 Wanneer je op wachtwoord wijzigen drukt, verschijnt er een pop-up waarin je je oude wachtwoord één keer en je nieuwe wachtwoord twee keer moet invoeren.
 
 Wanneer je het oude en nieuwe wachtwoord hebt ingevuld, druk je op de zwarte 'bevestigen' knop om je wachtwoord te wijzigen.
 
-**Instellingen**
+### Instellingen
 
 Wanneer je op Instellingen drukt, verschijnt er een pop-up waarin je je voorkeuren voor de meldingen kunt kiezen.
 
@@ -48,7 +45,7 @@ Wanneer je op een kaart klikt, word je naar de pagina gebracht die op de kaart w
 
 De orders pagina heeft veel functies. Laten we ze allemaal één voor één doornemen.
 
-**Zoekfunctie**
+### Zoekfunctie
 
 In de linkerbovenhoek vind je de zoekfunctie. Typen in dit vak zal de orders filteren op de ingevoerde tekst.
 
@@ -56,7 +53,7 @@ Wanneer je op enter drukt, wordt de ingevoerde tekst opgeslagen en kun je een an
 
 Deze opgeslagen voorwaarden verschijnen naast de zoekfunctie. Je kunt een zoekvoorwaarde verwijderen door op de 'x' naast de voorwaarde te drukken.
 
-**Orderlijst**
+### Orderlijst
 
 Bovenaan de tabel zie je de tableheaders. Naast elke header staat een knop met een pijlpictogram.
 
@@ -66,11 +63,11 @@ Je kunt kolommen breder of smaller maken door de lijn tussen 2 kolommen te slepe
 
 Zodra je de gewenste order hebt gevonden, kan je ergens op de rij van die order klikken en het brengt je naar een pagina met details over de order.
 
-**Paginering**
+### Paginering
 
 Onderaan de orderpagina zie je een paginering. Daar kan je alle orders een voor een doorlopen.
 
-**Kolommen knop**
+### Kolommen knop
 
 Rechtsonder vind je een knop genaamd 'Kolommen'. Wanneer je op deze knop drukt, verschijnt er een lijst met tableheaders.
 
@@ -84,11 +81,11 @@ maar wanneer het een oog met een lijn erdoor is, betekent dit dat die kolom niet
 
 De orderdetails pagina is opgesplitst in 4 secties.
 
-**Algemeen info**
+### Algemeen info
 
-Deze sectie heeft de meeste informatie. Je kunt daar bijna alles vinden zoals de poort van oorsprong/bestemming, shiping status, ETS, ATS, ETA, ATA, IMO, MMSI en meer.
+Deze sectie heeft de meeste informatie. Je kunt daar bijna alles vinden zoals de havencode van oorsprong/bestemming, shiping status, ETS, ATS, ETA, ATA, IMO, MMSI en meer.
 
-**Documenten**
+### Documenten
 
 In deze sectie kan je 3 soorten documenten uploaden, downloaden of vervangen. Wanneer er geen document aanwezig is, kan je op het uploadpictogram klikken om een bestand te uploaden.
 
@@ -96,11 +93,11 @@ Zodra er een bestand beschikbaar is voor een documenttype, kan je dat bestand do
 
 of het vervangen door op het uploadpictogram te klikken.
 
-**Schip locatie**
+### Schip locatie
 
 Dit toont een kaart van het schip dat de genoemde order vervoert. Op de kaart kan je op de groene knop klikken die 'Details' zegt om meer informatie over het schip te zien.
 
-**Producten**
+### Producten
 
 Deze tabel toont alle producten die in de order zitten.
 
@@ -108,7 +105,7 @@ Deze tabel toont alle producten die in de order zitten.
 
 Op deze pagina kunnen beheerders een bestellingsverzoek van een klant goedkeuren of weigeren.
 
-**Zoekfunctie**
+### Zoekfunctie
 
 In de linkerbovenhoek vind je de zoekfunctie. Typen in dit vak filtert de informatie op de ingevoerde tekst.
 
@@ -116,7 +113,7 @@ Wanneer je op enter drukt, wordt de ingevoerde tekst opgeslagen en kun je een an
 
 Deze opgeslagen voorwaarden verschijnen naast de zoekfunctie. Je kunt een zoekvoorwaarde verwijderen door op de 'x' naast de voorwaarde te drukken.
 
-**Order aanvragen Tabel**
+### Order aanvragen Tabel
 
 Deze tabel toont alle order aanvragen van klanten. Het is onderverdeeld in 3 secties: Pending, Approved en Denied.
 
@@ -124,7 +121,7 @@ Deze tabel toont alle order aanvragen van klanten. Het is onderverdeeld in 3 sec
 
 word je naar de beoordelingspagina voor order aanvraag geleid.
 
-**Order aanvragen beoordelingspagina**
+### Order aanvragen beoordelingspagina
 
 Op deze pagina kun je een order aanvraag goedkeuren of weigeren door op de grote groene 'Goedkeuren' knop of de grote rode 'Afkeuren' knop te klikken.
 
@@ -136,8 +133,6 @@ Je krijgt dan een pop-up waarin je de productinformatie kunt bewerken. Zodra je 
 
 Zodra alles wat je wilde aanpassen is aangepast, kun je op de zwarte knop klikken die 'order aanvraag bewerken' leest om je aanpassingen te bevestigen.
 
-****
-
 *Approved:* Hier zie je alle order aanvragen die zijn goedgekeurd. Door op de pijl naast een order aanvraag te klikken, word je naar een pagina geleid
 
 waar je alleen de producten in dat order aanvraag kunt bewerken. Het proces van bewerken is vergelijkbaar met de order aanvragen beoordelingspagina.
@@ -148,7 +143,7 @@ waar je alleen de producten in dat order aanvraag kunt bewerken. Het proces van 
 
 ## Registratie pagina
 
-**Zoekfunctie**
+### Zoekfunctie
 
 In de linkerbovenhoek vind je de zoekfunctie. Typen in dit vak filtert de informatie op de ingevoerde tekst.
 
@@ -156,7 +151,7 @@ Wanneer je op enter drukt, wordt de ingevoerde tekst opgeslagen en kun je een an
 
 Deze opgeslagen voorwaarden verschijnen naast de zoekfunctie. Je kunt een zoekvoorwaarde verwijderen door op de 'x' naast de voorwaarde te drukken.
 
-**Registraties Tabel**
+### Registraties Tabel
 
 Deze tabel toont alle registratieverzoeken van klanten. Het is onderverdeeld in 3 secties: Pending, Approved en Denied.
 
@@ -164,15 +159,13 @@ Deze tabel toont alle registratieverzoeken van klanten. Het is onderverdeeld in 
 
 word je naar de beoordelingspagina voor registraties geleid.
 
-**Registratie beoordelingspagina**
+### Registratie beoordelingspagina
 
 Op deze pagina kun je alle informatie zien die de klant heeft ingevuld. Je kunt die klant goedkeuren of weigeren door op een van de knoppen te drukken.
 
 Wanneer je op de grote groene 'Goedkeuren' knop drukt, moet je de Bedrijfscode van die klant invoeren om de goedkeuring te bevestigen.
 
 Wanneer je op de grote rode 'Afkeuren' knop drukt, moet je eerst een motivatie tekst schrijven om de reden voor het weigeren van die klant te verduidelijken.
-
-****
 
 *Approved:* Hier zie je alle registratieverzoeken die zijn goedgekeurd.
 
@@ -182,7 +175,7 @@ Wanneer je op de grote rode 'Afkeuren' knop drukt, moet je eerst een motivatie t
 
 Op deze pagina kun je informatie zien over alle bedrijven en admins zoals telefoonnummer, adres, hoofdaccount (naam, achternaam en e-mail).
 
-**Admins kaart**
+### Admins kaart 
 
 Wanneer je op de pijlknop in de rechterbovenhoek van een adminskaart drukt, wordt de adminskaart uitgebreid.
 
@@ -200,7 +193,7 @@ Als admin kun je ook een bedrijf verwijderen door op het prullenbakpictogram in 
 
 Als admin kan je ook subaccounts aanmaken en promoveren van bedrijven.
 
-**Bedrijfs kaarten**
+### Bedrijfs kaarten
 
 Wanneer je op de pijlknop in de rechterbovenhoek van een bedrijfkaart drukt, wordt de bedrijfkaart uitgebreid.
 

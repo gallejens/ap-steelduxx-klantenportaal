@@ -26,7 +26,6 @@ public class OrderRequestService {
     private final OrderRequestProductRepository orderRequestProductRepository;
     private final OrderRequestDocumentRepository orderRequestDocumentRepository;
     private final CompanyRepository companyRepository;
-    private final UserCompanyRepository userCompanyRepository;
     private final UserRepository userRepository;
     private final UserPreferenceRepository userPreferenceRepository;
     private final NotificationService notificationService;
@@ -38,14 +37,13 @@ public class OrderRequestService {
             OrderRequestRepository orderRequestRepository,
             OrderRequestProductRepository orderRequestProductRepository,
             OrderRequestDocumentRepository orderRequestDocumentRepository,
-            CompanyRepository companyRepository, UserCompanyRepository userCompanyRepository, UserRepository userRepository, UserPreferenceRepository userPreferenceRepository, NotificationService notificationService, EmailService emailService,
+            CompanyRepository companyRepository, UserRepository userRepository, UserPreferenceRepository userPreferenceRepository, NotificationService notificationService, EmailService emailService,
             ExternalApiService externalApiService,
             FileSystemStorageService fileSystemStorageService) {
         this.orderRequestRepository = orderRequestRepository;
         this.orderRequestProductRepository = orderRequestProductRepository;
         this.orderRequestDocumentRepository = orderRequestDocumentRepository;
         this.companyRepository = companyRepository;
-        this.userCompanyRepository = userCompanyRepository;
         this.userRepository = userRepository;
         this.userPreferenceRepository = userPreferenceRepository;
         this.notificationService = notificationService;
@@ -118,7 +116,7 @@ public class OrderRequestService {
 
     private void notifyUsers(Long id, String customerReferenceNumber, StatusEnum newStatus) {
         Long companyId = getCompanyIdOfOrderRequest(id);
-        List<User> users = getUsersByCompanyId(companyId);
+        List<User> users = userRepository.findAllByCompanyId(companyId);
 
         for (User user : users) {
             var userPreference = userPreferenceRepository.findByUserId(user.getId()).orElse(null);
@@ -146,13 +144,6 @@ public class OrderRequestService {
     private Long getCompanyIdOfOrderRequest(Long orderRequestId) {
         OrderRequest orderRequest = orderRequestRepository.findById(orderRequestId).orElseThrow();
         return orderRequest.getCompanyId();
-    }
-
-    private List<User> getUsersByCompanyId(Long companyId) {
-        List<UserCompany> userCompanies = userCompanyRepository.findAllByCompanyId(companyId);
-        return userCompanies.stream()
-                .map(userCompany -> userRepository.findById(userCompany.getUserId()).orElse(null))
-                .collect(Collectors.toList());
     }
 
     public Long addOrderRequest(NewOrderRequestDto newOrderRequestDto) {

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,4 +22,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Transactional
     void setDeleted(long id);
+
+    @Query(value = """
+            SELECT u.*
+            FROM users AS u
+            LEFT JOIN user_company AS uc ON uc.user_id = u.id
+            LEFT JOIN companies AS c ON c.id = uc.company_id
+            WHERE c.id = ?1
+            """, nativeQuery = true)
+    List<User> findAllByCompanyId(Long companyId);
 }

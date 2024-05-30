@@ -21,7 +21,7 @@ public class OrderStatusChecker {
     }
 
     @Scheduled(fixedRate = 60000 * 5)
-    public void checkAllOrderStatus(){
+    public void checkAllOrderStatus() {
         var orders = ordersService.getAllOrdersForCheck();
         if (orders != null) {
             ordersService.checkForOrderStatusChanges(orders);

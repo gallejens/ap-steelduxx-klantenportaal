@@ -53,11 +53,12 @@ public class EmailService {
         sendHtmlMail(user.getEmail(), "Choose Your Password", htmlContent);
     }
 
-     void sendOrderStatusUpdate(User user, String id, String newStatus) throws MessagingException {
+     void sendOrderStatusUpdate(User user, String customerReferenceNumber, String oldState, String newState) throws MessagingException {
         Context context = new Context();
         context.setVariable("user", user);
-        context.setVariable("orderId", id);
-        context.setVariable("status", newStatus);
+        context.setVariable("customerReferenceNumber", customerReferenceNumber);
+        context.setVariable("oldState", oldState);
+         context.setVariable("newState", newState);
 
         String htmlContent = templateEngine.process("order-status-update", context);
         sendHtmlMail(user.getEmail(), "Order Status Change", htmlContent);

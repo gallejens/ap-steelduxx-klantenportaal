@@ -20,7 +20,7 @@ public class OrderStatusChecker {
         checkAllOrderStatus();
     }
 
-    @Scheduled(fixedRate = 60000*15)
+    @Scheduled(fixedRate = 60000 * 5)
     public void checkAllOrderStatus(){
         var orders = ordersService.getAllOrdersForCheck();
         if (orders != null) {

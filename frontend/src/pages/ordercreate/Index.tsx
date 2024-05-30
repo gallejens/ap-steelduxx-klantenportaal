@@ -1,11 +1,4 @@
-import {
-  ActionIcon,
-  Divider,
-  Select,
-  Title,
-  Button,
-  Checkbox,
-} from '@mantine/core';
+import { Divider, Select, Title, Button, Checkbox } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,9 +10,6 @@ import {
 import { ConfirmModal } from '@/components/modals';
 import { useModalStore } from '@/stores/useModalStore';
 import styles from './styles/orderCreate.module.scss';
-import { Table } from '@/components/table';
-import { IconTrash } from '@tabler/icons-react';
-import { NewProductModal } from './modal/NewProductModal';
 import { notifications } from '@/components/notifications';
 import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { useNavigate } from '@tanstack/react-router';
@@ -27,6 +17,8 @@ import { DEFAULT_PORT_CODE } from './constants';
 import { PortcodesSelector } from '@/components/portcodesselector';
 import { OrderDocuments } from '@/components/orderdocuments';
 import { transformDocumentsToFileNames } from './helpers';
+import { ProductsList } from '@/components/productslist';
+import { NewProductModal } from './modal/NewProductModal';
 
 type NewOrderFormValues = {
   transportType: OrderTransportType;
@@ -83,7 +75,7 @@ export const OrderCreatePage: FC = () => {
     setProducts([]);
   });
 
-  const openProductModal = () => {
+  const handleAddProduct = () => {
     openModal(
       <NewProductModal
         onSubmit={product => {
@@ -94,8 +86,8 @@ export const OrderCreatePage: FC = () => {
     );
   };
 
-  const deleteProduct = (index: number) => {
-    setProducts(s => s.filter((_, i) => i !== index));
+  const handleRemoveProduct = (idx: number) => {
+    setProducts(s => s.filter((_, i) => i !== idx));
   };
 
   const handleCreateOrderRequestButton = () => {
@@ -118,20 +110,6 @@ export const OrderCreatePage: FC = () => {
       />
     );
   };
-
-  const containerColumns = [
-    {
-      key: 'containerNumber',
-      initialWidth: 175,
-    },
-    {
-      key: 'containerSize',
-      initialWidth: 200,
-    },
-    {
-      key: 'containerType',
-    },
-  ];
 
   const createOrder = async () => {
     if (!newOrderForm.isValid()) {
@@ -266,53 +244,12 @@ export const OrderCreatePage: FC = () => {
         </Button>
       </div>
       <Divider orientation='vertical' />
-      <div className={styles.products}>
-        <div className={styles.header}>
-          <Title order={3}>{t('newOrderPage:products')}</Title>
-          <Button onClick={openProductModal}>
-            {t('newOrderPage:productForm:addProductButton')}
-          </Button>
-        </div>
-        <div className={styles.table}>
-          <Table
-            storageKey='neworderproducts_list'
-            columns={[
-              {
-                key: 'hsCode',
-                initialWidth: 100,
-              },
-              {
-                key: 'name',
-                initialWidth: 250,
-              },
-              {
-                key: 'quantity',
-                initialWidth: 100,
-              },
-              {
-                key: 'weight',
-                initialWidth: 175,
-              },
-              ...(newOrderForm.values.isContainerOrder ? containerColumns : []),
-              {
-                key: 'actions',
-                emptyHeader: true,
-                disallowSorting: true,
-                disableResizing: true,
-              },
-            ]}
-            data={products.map((p, index) => ({
-              ...p,
-              actions: (
-                <ActionIcon onClick={() => deleteProduct(index)}>
-                  <IconTrash />
-                </ActionIcon>
-              ),
-            }))}
-            translationKey={'newOrderPage:table'}
-          ></Table>
-        </div>
-      </div>
+      <ProductsList
+        className={styles.products}
+        products={products}
+        onAddProduct={handleAddProduct}
+        onRemoveProduct={handleRemoveProduct}
+      />
     </div>
   );
 };

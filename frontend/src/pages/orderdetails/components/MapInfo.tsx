@@ -1,43 +1,58 @@
 import type { FC } from 'react';
 import styles from '../styles/orderDetails.module.scss';
-import type { OrderDetails } from '@/types/api';
 import { useTranslation } from 'react-i18next';
-import { Title } from '@mantine/core';
+import { Divider, Title } from '@mantine/core';
+import { useElementSize } from '@mantine/hooks';
 
-interface MapInfoProps {
-  orderDetail: OrderDetails;
-}
+const IFRAME_HEADER_SIZE = 28;
+const IFRAME_MARGIN = 8;
 
-export const MapInfo: FC<MapInfoProps> = ({ orderDetail }) => {
+const getIframeContent = (imo: string, height: number) => {
+  return `
+        <script type="text/javascript">
+          var width="100%";
+          var height="${height + IFRAME_HEADER_SIZE}";
+          var names=true;
+          var imo="${imo}";
+          var show_track=true;
+          var zoom=1;
+        </script>
+        <script type="text/javascript" src="https://www.vesselfinder.com/aismap.js"></script>
+      `;
+};
+
+type Props = {
+  imo: string;
+};
+
+export const MapInfo: FC<Props> = ({ imo }) => {
   const { t } = useTranslation();
-  const getIframeContent = (imo: string) => {
-    return `
-          <script type="text/javascript">
-            var width="100%";
-            var height="300";
-            var names=true;
-            var imo="${imo}";
-            var show_track=true;
-            var zoom=10;
-          </script>
-          <script type="text/javascript" src="https://www.vesselfinder.com/aismap.js"></script>
-        `;
-  };
+  const { ref, height } = useElementSize();
 
   return (
-    <div className={styles.mapContainer}>
+    <div className={styles.map_info}>
       <Title
         order={3}
         className={styles.title}
       >
         {t('orderDetailPage:shipLocation')}
       </Title>
-      <iframe
-        title='VesselFinder Map'
-        style={{ width: '100%', height: '420px' }}
-        srcDoc={orderDetail ? getIframeContent(orderDetail.shipIMO) : ''}
-        frameBorder='0'
-      />
+      <Divider orientation='horizontal' />
+      <div
+        className={styles.frame_container}
+        ref={ref}
+      >
+        <iframe
+          style={{
+            position: 'absolute',
+            top: `-${IFRAME_HEADER_SIZE}px`,
+            left: `-${IFRAME_MARGIN}px`,
+            width: `calc(100% + ${IFRAME_MARGIN * 2}px)`,
+            height: `${height + IFRAME_HEADER_SIZE}px`,
+          }}
+          srcDoc={getIframeContent(imo, height)}
+        />
+      </div>
     </div>
   );
 };

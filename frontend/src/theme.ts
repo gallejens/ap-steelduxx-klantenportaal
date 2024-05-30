@@ -1,8 +1,10 @@
 import {
   Autocomplete,
+  Divider,
   FileInput,
   Input,
   NumberInput,
+  Paper,
   PasswordInput,
   Select,
   createTheme,
@@ -54,7 +56,6 @@ export const theme = createTheme({
         },
       },
     }),
-    // password somehow doesnt use the inputwrapper so manually override
     PasswordInput: PasswordInput.extend({
       defaultProps: {
         classNames: {
@@ -89,6 +90,18 @@ export const theme = createTheme({
         classNames: {
           label: styles.input_label,
         },
+      },
+    }),
+    Paper: Paper.extend({
+      defaultProps: {
+        classNames: {
+          root: styles.paper,
+        },
+      },
+    }),
+    Divider: Divider.extend({
+      defaultProps: {
+        color: 'var(--mantine-color-default-border)',
       },
     }),
   },

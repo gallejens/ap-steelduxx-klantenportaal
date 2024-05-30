@@ -82,6 +82,11 @@ $cell_height: 2.5rem;
     display: flex;
     justify-content: center;
 
+    & > .left_side {
+      position: absolute;
+      left: 0;
+    }
+
     & > .right_side {
       position: absolute;
       right: 0;

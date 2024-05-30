@@ -91,8 +91,8 @@
     "confirmButton": "Confirm",
     "success": "Request has been send succesfully."
   },
-  "welcomePage": {
-    "welcomeTitle": "Welcome",
+  "homePage": {
+    "title": "Welcome",
     "cards": {
       "orders": {
         "title": "Orders",
@@ -124,7 +124,12 @@
     },
     "tableLoading": "Loading...",
     "tableError": "Can't load requests",
-    "tableEmpty": "No requests"
+    "tableEmpty": "No requests",
+    "tabs": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "DENIED": "Denied"
+    }
   },
   "orderListPage": {
     "header": {
@@ -145,7 +150,7 @@
       "ats": "ATS",
       "eta": "ETA",
       "ata": "ATA",
-      "totalWeight": "Total Weight",
+      "totalWeight": "Total Weight (kg)",
       "totalContainers": "Total Containers",
       "containerTypes": "Container Types"
     },
@@ -153,36 +158,19 @@
     "error": "Can't load orders"
   },
   "orderDetailPage": {
-    "orderDetails": "Order Details",
+    "title": "Order Details",
     "generalInfo": "General Info",
-    "customerReference": "Customer Reference",
-    "state": "State",
-    "transportType": "Transport Type",
-    "portInformation": "Port Information",
-    "origin": "Origin",
-    "destination": "Destination",
-    "timeInformation": "Time Information",
-    "ets": "ETS",
-    "ats": "ATS",
-    "eta": "ETA",
-    "ata": "ATA",
+    "times": {
+      "departure": "Departure",
+      "arrival": "Arrival",
+      "estimated": "Estimated",
+      "actual": "Actual"
+    },
     "estimatedTimeCargoOnQuay": "Estimated Time Cargo On Quay",
     "actualTimeCargoLoaded": "Actual Time Cargo Loaded",
-    "shipInformation": "Ship Information",
-    "shipName": "Name",
     "shipLocation": "Ship Location",
     "imo": "IMO",
     "mmsi": "MMSI",
-    "type": "Type",
-    "products": "Products",
-    "hsCode": "HsCode",
-    "name": "Name",
-    "quantity": "Quantity",
-    "weight": "Weight (kg)",
-    "container": "Container",
-    "containerNumber": "Container Number",
-    "containerSize": "Container Size (feet)",
-    "containerType": "Container Type",
     "documents": {
       "downloadFailed": "Failed to download document",
       "uploadResponse": {
@@ -193,7 +181,6 @@
   },
   "newOrderPage": {
     "title": "Order Info",
-    "products": "Products",
     "orderForm": {
       "transportType": {
         "transportTypeInputTitle": "Transport type",
@@ -246,7 +233,7 @@
           "numberInputError": "Container number of product is required"
         },
         "size": {
-          "sizeInputDescription": "Container size (feet)",
+          "sizeInputDescription": "Container size (ft)",
           "sizeInputPlaceholder": "20",
           "sizeInputError": "Container size of product is required"
         },
@@ -262,9 +249,9 @@
       "hsCode": "HsCode",
       "name": "Name",
       "quantity": "Quantity",
-      "weight": "Total weight (kg)",
+      "weight": "Total Weight (kg)",
       "containerNumber": "Container number",
-      "containerSize": "Container size (feet)",
+      "containerSize": "Container size (ft)",
       "containerType": "Container type"
     },
     "addOrderButton": "Create order request",
@@ -273,7 +260,6 @@
     "emptyProducts": "Add at least one product."
   },
   "userRequestReviewPage": {
-    "backButton": "Go Back",
     "approveButton": "Approve",
     "denyButton": "Deny",
     "response": {
@@ -401,7 +387,8 @@
   "table": {
     "columnSelectorButton": "Columns",
     "trueValue": "Yes",
-    "falseValue": "No"
+    "falseValue": "No",
+    "rowsAmount": "Amount of rows"
   },
   "companiesPage": {
     "table": {
@@ -411,6 +398,8 @@
       "actions": "Actions"
     },
     "headAccount": "Head Account",
+    "subAccounts": "Subaccounts",
+    "noSubAccounts": "There are no subaccounts for this company",
     "deleteAccount": {
       "title": "Delete Account",
       "text": "Are you sure you want to delete this account?",
@@ -450,6 +439,11 @@
       "transportType": "Transport type",
       "portOfOriginCode": "Port of Origin Code",
       "portOfDestinationCode": "Port of Destination Code"
+    },
+    "tabs": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "DENIED": "Denied"
     }
   },
   "orderRequestForm": {
@@ -463,11 +457,11 @@
     "quantity": "Quantity",
     "weight": "Weight",
     "containerNumber": "Container Number",
-    "containerSize": "Container size (feet)",
+    "containerSize": "Container size (ft)",
     "containerType": "Container Type"
   },
   "orderRequestReviewPage": {
-    "backButton": "Go Back",
+    "infoTitle": "Information",
     "approveButton": "Approve",
     "denyButton": "Deny",
     "confirmButton": "Edit order request",
@@ -514,9 +508,17 @@
   "preferences": {
     "title": "Preferences",
     "notificationTitle": "Notifications ",
-    "notificationOrderStatusTitle": "Order status",
-    "notificationOrderRequestTitle": "Order request",
+    "notificationOrderStatusTitle": "Order Status Changed",
+    "notificationOrderRequestTitle": "Order Request Activity",
     "systemNotification": "System Notifications",
     "emailNotification": "Email Notifications"
+  },
+  "productsList": {
+    "title": "Products",
+    "tooltips": {
+      "add": "Add Product",
+      "remove": "Remove Product",
+      "edit": "Edit Product"
+    }
   }
 }

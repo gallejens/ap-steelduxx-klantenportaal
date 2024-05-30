@@ -29,3 +29,23 @@ export const getOrderTransportTypeColor = (state: OrderTransportType) => {
       return 'gray';
   }
 };
+
+export const transformContainerTypesLabel = (
+  containerTypes: string[] | null
+) => {
+  if (containerTypes === null || containerTypes.length === 0) {
+    return 'N/A';
+  }
+
+  const containerTypesMap: Record<string, number> = {};
+  for (const containerType of containerTypes) {
+    containerTypesMap[containerType] =
+      (containerTypesMap[containerType] ?? 0) + 1;
+  }
+
+  const labels = Object.entries(containerTypesMap).map(
+    ([type, count]) => `${count}x ${type}`
+  );
+
+  return labels.join(', ');
+};

@@ -4,6 +4,7 @@ import styles from '../styles/companies.module.scss';
 import {
   Collapse,
   Divider,
+  Paper,
   Table,
   Text,
   TextInput,
@@ -30,6 +31,7 @@ import { doApiAction, type GenericAPIResponse } from '@/lib/api';
 import { notifications } from '@/components/notifications';
 import { ADMINS_COMPANY_LABEL } from '../constants';
 import { IconButton } from '@/components/iconbutton';
+import { IconListItem } from '@/components/iconlistitem';
 
 export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
   const [opened, setOpened] = useState(false);
@@ -173,7 +175,7 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
   );
 
   return (
-    <div className={styles.company_card}>
+    <Paper className={styles.company_card}>
       <div className={styles.title}>
         <Title order={3}>{company?.name ?? ADMINS_COMPANY_LABEL}</Title>
         <div className={styles.buttons}>
@@ -211,26 +213,23 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
         <div>
           {company !== null && (
             <>
-              <div>
-                <IconReport size={20} />
-                <Text size='sm'>{company.vatNr}</Text>
-              </div>
-              <div>
-                <IconPhone size={20} />
-                <Text size='sm'>{company.phoneNr}</Text>
-              </div>
-              <div>
-                <IconPin size={20} />
-                <Text size='sm'>
-                  {company.country} - {company.postalCode} {company.district} -{' '}
-                  {company.street} {company.streetNr}
-                </Text>
-              </div>
+              <IconListItem
+                icon={IconReport}
+                text={company.vatNr}
+              />
+              <IconListItem
+                icon={IconPhone}
+                text={company.phoneNr}
+              />
+              <IconListItem
+                icon={IconPin}
+                text={`${company.country} - ${company.postalCode} ${company.district} - ${company.street} ${company.streetNr}`}
+              />
               {company.extraInfo && (
-                <div>
-                  <IconPlus size={20} />
-                  <Text size='sm'>{company.extraInfo}</Text>
-                </div>
+                <IconListItem
+                  icon={IconPlus}
+                  text={company.extraInfo}
+                />
               )}
             </>
           )}
@@ -253,64 +252,75 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
         className={styles.collapsable}
       >
         <Divider my='xs' />
-        <TextInput
-          size='xs'
-          leftSection={<IconSearch size={16} />}
-          value={searchValue}
-          onChange={e => setSearchValue(e.currentTarget.value)}
-          className={styles.search}
-        />
-        <div className={styles.table}>
-          <Table
-            stickyHeader
-            withColumnBorders
-            withRowBorders={false}
-            striped
-          >
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>
-                  <Text size='sm'>{t('companiesPage:table:email')}</Text>
-                </Table.Th>
-                <Table.Th>
-                  <Text size='sm'>{t('companiesPage:table:firstName')}</Text>
-                </Table.Th>
-                <Table.Th>
-                  <Text size='sm'>{t('companiesPage:table:lastName')}</Text>
-                </Table.Th>
-                <Table.Th>
-                  <Text size='sm'>{t('companiesPage:table:actions')}</Text>
-                </Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {search(normalAccounts, searchValue).map(a => (
-                <Table.Tr key={a.email}>
-                  <Table.Td>{a.email}</Table.Td>
-                  <Table.Td>{a.firstName}</Table.Td>
-                  <Table.Td>{a.lastName}</Table.Td>
-                  <Table.Td className={styles.actions}>
-                    {showChangeHeadAccount && (
-                      <IconButton
-                        tooltipKey='companiesPage:tooltips:changeHead'
-                        onClick={() => openChangeHeadAccountModal(a.email)}
-                        icon={<IconChevronUp />}
-                      />
-                    )}
-                    {showDeleteSubAccount && (
-                      <IconButton
-                        tooltipKey='companiesPage:tooltips:delete'
-                        onClick={() => openDeleteSubAccountModal(a.email)}
-                        icon={<IconTrash />}
-                      />
-                    )}
-                  </Table.Td>
-                </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
-        </div>
+        {normalAccounts.length > 0 ? (
+          <>
+            <div className={styles.header}>
+              <Title order={5}>{t('companiesPage:subAccounts')}</Title>
+              <TextInput
+                size='xs'
+                leftSection={<IconSearch size={16} />}
+                value={searchValue}
+                onChange={e => setSearchValue(e.currentTarget.value)}
+                className={styles.search}
+              />
+            </div>
+            <div className={styles.table}>
+              <Table
+                stickyHeader
+                withColumnBorders
+                withRowBorders={false}
+                striped
+              >
+                <Table.Thead>
+                  <Table.Tr>
+                    <Table.Th>
+                      <Text size='sm'>{t('companiesPage:table:email')}</Text>
+                    </Table.Th>
+                    <Table.Th>
+                      <Text size='sm'>
+                        {t('companiesPage:table:firstName')}
+                      </Text>
+                    </Table.Th>
+                    <Table.Th>
+                      <Text size='sm'>{t('companiesPage:table:lastName')}</Text>
+                    </Table.Th>
+                    <Table.Th>
+                      <Text size='sm'>{t('companiesPage:table:actions')}</Text>
+                    </Table.Th>
+                  </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                  {search(normalAccounts, searchValue).map(a => (
+                    <Table.Tr key={a.email}>
+                      <Table.Td>{a.email}</Table.Td>
+                      <Table.Td>{a.firstName}</Table.Td>
+                      <Table.Td>{a.lastName}</Table.Td>
+                      <Table.Td className={styles.actions}>
+                        {showChangeHeadAccount && (
+                          <IconButton
+                            tooltipKey='companiesPage:tooltips:changeHead'
+                            onClick={() => openChangeHeadAccountModal(a.email)}
+                            icon={<IconChevronUp />}
+                          />
+                        )}
+                        {showDeleteSubAccount && (
+                          <IconButton
+                            tooltipKey='companiesPage:tooltips:delete'
+                            onClick={() => openDeleteSubAccountModal(a.email)}
+                            icon={<IconTrash />}
+                          />
+                        )}
+                      </Table.Td>
+                    </Table.Tr>
+                  ))}
+                </Table.Tbody>
+              </Table>
+            </div>
+          </>
+        ) : (
+          <Text>{t('companiesPage:noSubAccounts')}</Text>
+        )}
       </Collapse>
-    </div>
+    </Paper>
   );
 });

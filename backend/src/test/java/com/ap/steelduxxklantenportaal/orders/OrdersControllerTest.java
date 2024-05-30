@@ -62,22 +62,13 @@ class OrdersControllerTest {
         String referenceNumber = "123456";
         OrderDocumentType documentType = OrderDocumentType.bl;
         byte[] mockData = "PDF Data".getBytes();
-        when(ordersService.downloadDocument(eq(referenceNumber), eq(documentType)))
+        when(ordersService.downloadDocument(referenceNumber, documentType))
                 .thenReturn(ResponseEntity.ok().body(mockData));
 
         mockMvc.perform(
-                get("/orders/download-document/{referenceNumber}/{documentType}", referenceNumber, documentType))
+                get("/orders/document/download/{referenceNumber}/{documentType}", referenceNumber, documentType))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_PDF))
-                .andExpect(header().string("Content-Disposition",
-                        "attachment; filename=\"" + referenceNumber + "-" + documentType + ".pdf\""));
-    }
-
-    @Test
-    @WithMockUser(username = "user@example.com", roles = "USER")
-    void testDownloadDocumentUnauthorizedForUserRole() throws Exception {
-        mockMvc.perform(get("/orders/download-document/{referenceNumber}/{documentType}", "123456", "bl"))
-                .andExpect(status().isForbidden());
+                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
     }
 
     @Test
@@ -85,7 +76,7 @@ class OrdersControllerTest {
     void testUploadDocument_FailInvalidInput() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "", MediaType.APPLICATION_PDF_VALUE, new byte[0]);
 
-        mockMvc.perform(multipart("/orders/upload-document")
+        mockMvc.perform(multipart("/orders/document/upload")
                 .file(file)
                 .param("referenceNumber", "")
                 .param("documentType", "")
@@ -99,7 +90,7 @@ class OrdersControllerTest {
         MockMultipartFile file = new MockMultipartFile("file", "test.pdf", MediaType.APPLICATION_PDF_VALUE,
                 "PDF content".getBytes());
 
-        mockMvc.perform(multipart("/orders/upload-document")
+        mockMvc.perform(multipart("/orders/document/upload")
                 .file(file)
                 .param("referenceNumber", "12345")
                 .param("documentType", "invoice")

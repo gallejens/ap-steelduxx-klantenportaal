@@ -2,12 +2,12 @@ import { useMemo, type FC } from 'react';
 import styles from '../styles/appshell.module.scss';
 import { useNavigate, useRouterState } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { TABS } from '../constant';
 import { useAppshellStore } from '../stores/useAppshellStore';
 import classNames from 'classnames';
 import { rgbaToCss, rgbToCss } from '@/lib/util/rgb';
 import { useAuth } from '@/hooks/useAuth';
 import { Tooltip } from '@mantine/core';
+import { TABS } from '@/tabs';
 
 export const Tabs: FC = () => {
   const { user } = useAuth();

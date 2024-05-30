@@ -8,6 +8,7 @@ import { IconBook } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from '@tanstack/react-router';
 import { LanguageSelector } from '@/components/languageselector';
+import { useTranslation } from 'react-i18next';
 
 export const Header: FC = () => {
   const [collapsed, setCollapsed] = useAppshellStore(s => [
@@ -16,17 +17,20 @@ export const Header: FC = () => {
   ]);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const {
+    i18n: { language },
+  } = useTranslation();
 
   const handleNavigateToManual = () => {
     if (!user) return;
 
     if (user.role === 'ROLE_ADMIN' || user.role === 'ROLE_HEAD_ADMIN') {
       navigate({
-        to: '/manual/admin',
+        to: `/manual/${language}/admin`,
       });
     } else {
       navigate({
-        to: '/manual/user',
+        to: `/manual/${language}/user`,
       });
     }
   };

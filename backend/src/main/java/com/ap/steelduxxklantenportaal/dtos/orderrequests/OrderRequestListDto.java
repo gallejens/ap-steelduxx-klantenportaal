@@ -14,6 +14,6 @@ public record OrderRequestListDto(
         TransportTypeEnum transportType,
         String portOfOriginCode,
         String portOfDestinationCode,
-        List<OrderRequestProductDto> product) {
+        List<OrderRequestProductDto> products) {
 
 }

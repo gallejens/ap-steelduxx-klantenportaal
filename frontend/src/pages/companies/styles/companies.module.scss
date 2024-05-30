@@ -39,14 +39,7 @@
 }
 
 .company_card {
-  display: flex;
-  flex-direction: column;
-
   overflow: hidden;
-
-  padding: var(--mantine-spacing-xs) var(--mantine-spacing-xl);
-  border-radius: var(--mantine-radius-default);
-  border: 1px solid var(--mantine-color-default-border);
 
   & > .title {
     display: flex;
@@ -69,11 +62,6 @@
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
-
-      & > div {
-        display: flex;
-        gap: var(--mantine-spacing-xs);
-      }
     }
 
     & > :first-child {
@@ -90,10 +78,18 @@
     flex-direction: column;
     overflow: hidden;
 
-    & > .search {
-      width: 30%;
-      min-width: 15rem;
+    & > .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--mantine-spacing-xs);
+
       margin-bottom: var(--mantine-spacing-xs);
+
+      & > .search {
+        width: 30%;
+        min-width: 15rem;
+      }
     }
 
     & > .table {

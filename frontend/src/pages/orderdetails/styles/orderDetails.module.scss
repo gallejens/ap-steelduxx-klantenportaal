@@ -1,288 +1,125 @@
-@use '../../../styles//mixins.scss';
-
-$section-background: #ffffff;
-
 .orderDetails {
   height: 100%;
+  width: 100%;
+
   display: flex;
   flex-direction: column;
+  gap: var(--mantine-spacing-md);
 
-  .header {
-    margin-bottom: var(--mantine-spacing-sm);
-    width: 100%;
-  }
+  user-select: text;
 
-  .container {
+  & > .header {
     width: 100%;
+
     display: flex;
-    column-gap: var(--mantine-spacing-xl);
+    justify-content: space-between;
+    align-items: center;
+  }
 
-    .columnLeft {
-      width: 70%;
+  & > .body {
+    width: 100%;
+    flex-grow: 1;
 
+    display: flex;
+    gap: var(--mantine-spacing-md);
+
+    overflow: hidden;
+
+    & > .general_info {
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      gap: var(--mantine-spacing-xs);
 
-      .topRow {
-        height: 52%;
-
-        display: flex;
-        justify-content: space-around;
-
-        gap: var(--mantine-spacing-sm);
-        margin-bottom: var(--mantine-spacing-md);
-
-        .orderInfo {
-          width: 60%;
-
-          display: flex;
-          column-gap: var(--mantine-spacing-md);
-
-          .generalInfo {
-            width: 100%;
-            flex-grow: 0;
-
-            background-color: $section-background;
-            border-radius: var(--mantine-radius-md);
-            box-shadow: var(--mantine-shadow-sm);
-
-            padding: var(--mantine-spacing-md);
-          }
-
-          .firstRow {
-            display: flex;
-            flex-direction: row;
-            justify-content: start;
-
-            padding-bottom: var(--mantine-spacing-sm);
-            margin-bottom: var(--mantine-spacing-sm);
-            border-bottom: 1.5px solid var(--mantine-color-default-border);
-
-            .titleInfo {
-              width: 64%;
-              display: flex;
-              justify-content: space-between;
-
-              margin-top: 6px;
-              margin-left: var(--mantine-spacing-sm);
-            }
-
-            .transportBadge {
-              margin-top: 3px;
-            }
-          }
-
-          .secondRow {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
-
-            padding-bottom: var(--mantine-spacing-sm);
-            margin-bottom: var(--mantine-spacing-sm);
-            border-bottom: 1.5px solid var(--mantine-color-default-border);
-
-            .subColumnLeft,
-            .subColumnRight {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-            }
-            .subColumnMiddle {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-            }
-          }
-
-          .thirdRow {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-
-            align-items: center;
-
-            padding-bottom: var(--mantine-spacing-sm);
-            margin-bottom: var(--mantine-spacing-sm);
-
-            .subColumn3,
-            .subColumn4,
-            .subColumn5,
-            .subColumn6 {
-              width: 25%;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-            }
-          }
-
-          .fourthRow {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-
-            align-items: center;
-
-            padding-bottom: var(--mantine-spacing-sm);
-            margin-bottom: var(--mantine-spacing-sm);
-            border-bottom: 1.5px solid var(--mantine-color-default-border);
-
-            .subColumn7,
-            .subColumn8 {
-              width: 50%;
-
-              display: flex;
-              flex-direction: column;
-              justify-content: space-around;
-
-              align-items: center;
-            }
-          }
-
-          .fifthRow {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-
-            align-items: center;
-
-            .subColumn9,
-            .subColumn10,
-            .subColumn11 {
-              width: 33%;
-
-              display: flex;
-              flex-direction: column;
-
-              align-items: center;
-              justify-content: center;
-              gap: 5%;
-            }
-          }
-        }
-
-        .documentsContainer {
-          width: 40%;
-
-          background-color: $section-background;
-          border-radius: var(--mantine-radius-md);
-          box-shadow: var(--mantine-shadow-sm);
-
-          display: flex;
-          flex-direction: column;
-
-          padding: var(--mantine-spacing-md);
-
-          .documentsFileselector {
-            margin-top: var(--mantine-spacing-sm);
-            margin-bottom: var(--mantine-spacing-sm);
-          }
-
-          .order_documents {
-            display: flex;
-            flex-direction: column;
-            gap: var(--mantine-spacing-md);
-
-            & > div {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-
-              padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
-              border-radius: var(--mantine-radius-default);
-              border: 1px solid var(--mantine-color-default-border);
-
-              & > .info {
-                display: flex;
-                flex-direction: column;
-              }
-            }
-          }
-        }
-      }
-
-      .bottomRow {
-        height: 48%;
-        min-height: 390px;
-
-        display: flex;
-        justify-content: space-between;
-
-        gap: var(--mantine-spacing-sm);
-
-        .productsList {
-          width: 100%;
-
-          background-color: $section-background;
-          border-radius: var(--mantine-radius-md);
-          box-shadow: var(--mantine-shadow-sm);
-
-          padding: var(--mantine-spacing-md);
-
-          .tableContainer {
-            overflow-y: auto;
-            max-height: 300px;
-
-            margin-top: var(--mantine-spacing-sm);
-
-            table {
-              width: 100%;
-              border-collapse: collapse;
-              table-layout: fixed;
-
-              thead {
-                th {
-                  padding: 8px;
-                  border-bottom: 1px solid #ddd;
-                  background-color: #f0f0f0;
-                  position: sticky;
-                  top: 0;
-                  z-index: 5;
-                  text-align: center;
-                }
-              }
-
-              tbody {
-                tr {
-                  border-bottom: 1px solid #eee;
-
-                  &:last-child {
-                    border-bottom: none;
-                  }
-
-                  td {
-                    padding: 8px;
-                    text-align: center;
-                    vertical-align: middle;
-                  }
-                }
-              }
-            }
-          }
-        }
+      & > div:first-child {
+        flex-grow: 1;
       }
     }
 
-    .columnRight {
-      width: 30%;
+    & > .products {
+      flex-grow: 1;
+    }
 
+    & > .map {
+      width: 40%;
+    }
+  }
+}
+
+.order_info {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
+
+  & > .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > .badges {
       display: flex;
-      flex-direction: column;
-
-      .mapContainer {
-        width: 100%;
-
-        background-color: $section-background;
-        border-radius: var(--mantine-radius-md);
-        box-shadow: var(--mantine-shadow-sm);
-
-        padding: var(--mantine-spacing-md);
-      }
+      gap: var(--mantine-spacing-xs);
     }
   }
 
-  .subTitle {
-    font-weight: 500;
+  & > .ports {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  & > .times {
+    display: grid;
+    grid-column-gap: var(--mantine-spacing-xs);
+
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  & > .cargo_times {
+    display: flex;
+    flex-direction: column;
+
+    & > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  & > .ship {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+
+.map_info {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
+
+  & > .frame_container {
+    width: 100%;
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
   }
 }

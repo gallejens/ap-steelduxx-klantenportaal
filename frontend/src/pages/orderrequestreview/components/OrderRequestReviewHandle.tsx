@@ -1,49 +1,49 @@
-import { type FC, useState } from 'react';
+import { type FC } from 'react';
 import { Button } from '@mantine/core';
 import styles from '../styles/orderRequestReview.module.scss';
 import { useTranslation } from 'react-i18next';
 import { notifications } from '@/components/notifications';
-import { type GenericAPIResponse, doApiAction } from '@/lib/api';
-import { useParams } from '@tanstack/react-router';
+import { doApiAction } from '@/lib/api';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import { ConfirmModal } from '@/components/modals';
+import { useModalStore } from '@/stores/useModalStore';
 
-type Props = {
-  onSubmit?: () => void;
-  onSuccess?: () => void;
-};
-
-export const OrderRequestReviewHandle: FC<Props> = props => {
+export const OrderRequestReviewHandle: FC = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { orderrequestid: orderRequestId } = useParams({
     from: '/app/order-requests/$orderrequestid',
   });
-
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [actionType, setActionType] = useState('');
+  const { openModal, closeModal } = useModalStore();
 
   const handleApproveClick = async () => {
-    setActionType('approve');
-    setIsConfirmModalOpen(true);
+    openModal(
+      <ConfirmModal
+        title={t('appshell:approveRequestConfirmation:approveConfirmTitle')}
+        text={t('appshell:approveRequestConfirmation:approveConfirmText')}
+        onConfirm={async () => {
+          await approveOrderRequest();
+          closeModal();
+        }}
+      />
+    );
   };
 
   const handleDenyClick = async () => {
-    setActionType('deny');
-    setIsConfirmModalOpen(true);
-  };
-
-  const handleConfirm = async () => {
-    setIsConfirmModalOpen(false);
-    if (actionType === 'approve') {
-      await approveOrderRequest();
-    } else if (actionType === 'deny') {
-      await denyOrderRequest();
-    }
+    openModal(
+      <ConfirmModal
+        title={t('appshell:denyRequestConfirmation:denyConfirmTitle')}
+        text={t('appshell:denyRequestConfirmation:denyConfirmText')}
+        onConfirm={async () => {
+          await denyOrderRequest();
+          closeModal();
+        }}
+      />
+    );
   };
 
   const approveOrderRequest = async () => {
-    const resultApprove = await doApiAction<
-      GenericAPIResponse<{ message: string }>
-    >({
+    const resultApprove = await doApiAction({
       endpoint: `/order-requests/${orderRequestId}/approve`,
       method: 'POST',
       body: {},
@@ -54,17 +54,11 @@ export const OrderRequestReviewHandle: FC<Props> = props => {
       autoClose: 10000,
     });
 
-    props.onSubmit?.();
-
-    if (resultApprove?.message === 'orderRequestReviewPage:response:success') {
-      props.onSuccess?.();
-    }
+    navigate({ to: '/app/order-requests' });
   };
 
   const denyOrderRequest = async () => {
-    const resultDeny = await doApiAction<
-      GenericAPIResponse<{ message: string }>
-    >({
+    const resultDeny = await doApiAction({
       endpoint: `/order-requests/${orderRequestId}/deny`,
       method: 'POST',
       body: {},
@@ -75,53 +69,27 @@ export const OrderRequestReviewHandle: FC<Props> = props => {
       autoClose: 10000,
     });
 
-    props.onSubmit?.();
-
-    if (resultDeny?.message === 'orderRequestReviewPage:response:denied') {
-      props.onSuccess?.();
-    }
+    navigate({ to: '/app/order-requests' });
   };
 
   return (
-    <>
-      <div className={styles.button_container}>
-        <Button
-          className={styles.approve_button}
-          variant='filled'
-          color='#1F9254'
-          size='lg'
-          onClick={handleApproveClick}
-        >
-          {t('userRequestReviewPage:approveButton')}
-        </Button>
-
-        <Button
-          className={styles.deny_button}
-          variant='filled'
-          color='#A30D11'
-          size='lg'
-          onClick={handleDenyClick}
-        >
-          {t('userRequestReviewPage:denyButton')}
-        </Button>
-      </div>
-
-      {isConfirmModalOpen && (
-        <ConfirmModal
-          title={
-            actionType === 'approve'
-              ? t('appshell:approveRequestConfirmation:approveConfirmTitle')
-              : t('appshell:denyRequestConfirmation:denyConfirmTitle')
-          }
-          text={
-            actionType === 'approve'
-              ? t('appshell:approveRequestConfirmation:approveConfirmText')
-              : t('appshell:denyRequestConfirmation:denyConfirmText')
-          }
-          onConfirm={handleConfirm}
-          onCancel={() => setIsConfirmModalOpen(false)}
-        />
-      )}
-    </>
+    <div className={styles.userrequest_handle}>
+      <Button
+        variant='filled'
+        color='#1F9254'
+        size='lg'
+        onClick={handleApproveClick}
+      >
+        {t('userRequestReviewPage:approveButton')}
+      </Button>
+      <Button
+        variant='filled'
+        color='#A30D11'
+        size='lg'
+        onClick={handleDenyClick}
+      >
+        {t('userRequestReviewPage:denyButton')}
+      </Button>
+    </div>
   );
 };

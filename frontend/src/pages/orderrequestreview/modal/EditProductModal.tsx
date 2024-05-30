@@ -5,13 +5,12 @@ import { Button, Divider, NumberInput, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import styles from '../styles/editproductmodal.module.scss';
 import { doApiAction } from '@/lib/api';
-import type { Product } from '@/types/api';
-import {
-  PRODUCT_CONTAINER_SIZES,
-  PRODUCT_CONTAINER_TYPES,
-} from '@/pages/ordercreate/constants';
+import type { OrderRequest } from '@/types/api';
 import { notifications } from '@/components/notifications/lib';
 import { useQueryClient } from '@tanstack/react-query';
+import { PRODUCT_CONTAINER_SIZES, PRODUCT_CONTAINER_TYPES } from '@/constants';
+import { convertRecordToSelectInputData } from '@/lib/util/inputs';
+import { useModalStore } from '@/stores/useModalStore';
 
 type EditProductValues = {
   quantity: number;
@@ -22,12 +21,11 @@ type EditProductValues = {
 };
 
 export const EditProductModal: FC<{
-  onConfirm: () => void;
-  product: Product;
-  orderRequestId: string;
+  product: OrderRequest['products'][number];
 }> = props => {
   const { t } = useTranslation();
   const client = useQueryClient();
+  const { closeModal } = useModalStore();
 
   const editProductForm = useForm<EditProductValues>({
     initialValues: {
@@ -63,7 +61,7 @@ export const EditProductModal: FC<{
   const handleSubmit = async (values: EditProductValues) => {
     if (!isContainerProduct) {
       const resultNonContainerProduct = await doApiAction({
-        endpoint: `order-requests/${props.orderRequestId}/product/edit`,
+        endpoint: `order-requests/${props.product.id}/product/edit`,
         method: 'PUT',
         body: {
           quantity: values.quantity,
@@ -79,7 +77,7 @@ export const EditProductModal: FC<{
       });
     } else {
       const resultContainerProduct = await doApiAction({
-        endpoint: `order-requests/${props.orderRequestId}/product/edit`,
+        endpoint: `order-requests/${props.product.id}/product/edit`,
         method: 'PUT',
         body: {
           quantity: values.quantity,
@@ -100,7 +98,7 @@ export const EditProductModal: FC<{
 
     client.invalidateQueries({ queryKey: ['orderRequestValue'] });
 
-    props.onConfirm();
+    closeModal();
   };
 
   return (
@@ -193,12 +191,7 @@ export const EditProductModal: FC<{
               placeholder={t(
                 'newOrderPage:productForm:container:type:typeInputPlaceholder'
               )}
-              data={Object.entries(PRODUCT_CONTAINER_TYPES).reduce<
-                { value: string; label: string }[]
-              >((acc, [key, value]) => {
-                acc.push({ value: key, label: value });
-                return acc;
-              }, [])}
+              data={convertRecordToSelectInputData(PRODUCT_CONTAINER_TYPES)}
               allowDeselect={false}
               {...editProductForm.getInputProps('containerType')}
             />

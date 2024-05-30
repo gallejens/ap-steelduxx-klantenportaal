@@ -10,8 +10,9 @@ import {
   type ProductContainerType,
 } from '@/types/api';
 import { useModalStore } from '@/stores/useModalStore';
-import { PRODUCT_CONTAINER_SIZES, PRODUCT_CONTAINER_TYPES } from '../constants';
 import { HsCodeSelector } from '@/components/hscodeselector';
+import { PRODUCT_CONTAINER_SIZES, PRODUCT_CONTAINER_TYPES } from '@/constants';
+import { convertRecordToSelectInputData } from '@/lib/util/inputs';
 
 type NewProductModalProps = {
   onSubmit: (newProduct: Product) => void;
@@ -53,6 +54,10 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
           : null,
       weight: value =>
         !value ? t('newOrderPage:productForm:weight:weightInputError') : null,
+      containerNumber: value =>
+        !value && props.isContainerOrder
+          ? t('newOrderPage:productForm:container:number:numberInputError')
+          : null,
       containerSize: value =>
         !value && props.isContainerOrder
           ? t('newOrderPage:productForm:container:size:sizeInputError')
@@ -108,7 +113,6 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
       >
         <div>
           <HsCodeSelector
-            className={styles.hsCode_field}
             label={t('newOrderPage:productForm:hsCode:hsCodeInputDescription')}
             placeholder={t(
               'newOrderPage:productForm:hsCode:hsCodeInputPlaceholder'
@@ -162,6 +166,7 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
               placeholder={t(
                 'newOrderPage:productForm:container:number:numberInputPlaceholder'
               )}
+              withAsterisk
               {...newProductForm.getInputProps('containerNumber')}
             />
           )}
@@ -186,12 +191,7 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
               placeholder={t(
                 'newOrderPage:productForm:container:type:typeInputPlaceholder'
               )}
-              data={Object.entries(PRODUCT_CONTAINER_TYPES).reduce<
-                { value: string; label: string }[]
-              >((acc, [key, value]) => {
-                acc.push({ value: key, label: value });
-                return acc;
-              }, [])}
+              data={convertRecordToSelectInputData(PRODUCT_CONTAINER_TYPES)}
               withAsterisk
               {...newProductForm.getInputProps('containerType')}
             />

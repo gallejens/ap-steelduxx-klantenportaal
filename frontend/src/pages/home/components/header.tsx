@@ -1,22 +1,18 @@
 import type { FC } from 'react';
-import { Text } from '@mantine/core';
-import { t } from 'i18next';
+import { Title } from '@mantine/core';
 import styles from '../styles/home.module.scss';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 export const Header: FC = () => {
   const { user } = useAuth();
-  // if (user === null) return null;
+  const { t } = useTranslation();
 
   return (
     <div className={styles.header}>
-      <Text
-        size={'35'}
-        fw={700}
-        inline={true}
-      >
-        {t('welcomePage:welcomeTitle')} {user?.firstName} {user?.lastName}
-      </Text>
+      <Title order={1}>
+        {t('homePage:title')} {user?.firstName} {user?.lastName}
+      </Title>
     </div>
   );
 };

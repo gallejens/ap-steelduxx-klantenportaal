@@ -1,5 +1,6 @@
 package com.ap.steelduxxklantenportaal.models;
 
+import com.ap.steelduxxklantenportaal.dtos.UserPreferenceDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,9 +34,15 @@ public class UserPreference {
 
     public UserPreference(Long userId) {
         this.userId = userId;
-        this.systemNotificationOrderStatus = true;
-        this.emailNotificationOrderStatus = true;
-        this.systemNotificationOrderRequest = true;
-        this.emailNotificationOrderRequest = true;
+    }
+
+    public UserPreferenceDto toDto() {
+        return new UserPreferenceDto(
+                userId,
+                systemNotificationOrderStatus,
+                emailNotificationOrderStatus,
+                systemNotificationOrderRequest,
+                emailNotificationOrderRequest
+        );
     }
 }

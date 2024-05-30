@@ -3,30 +3,49 @@ import Markdown from 'react-markdown';
 import { PublicPageWrapper } from '@/components/publicpagewrapper';
 import styles from './styles/manual.module.scss';
 import { MARKDOWN_COMPONENTS } from './constant';
-import { useRouterState } from '@tanstack/react-router';
+import { useParams } from '@tanstack/react-router';
 import { useAuth } from '@/hooks/useAuth';
 import type { Auth } from '@/types/auth';
 import { Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import userManual from '@/assets/manuals/user.md?raw';
-import adminManual from '@/assets/manuals/admin.md?raw';
+import enUserManual from '@/assets/manuals/en/user.md?raw';
+import enAdminManual from '@/assets/manuals/en/admin.md?raw';
+import nlUserManual from '@/assets/manuals/nl/user.md?raw';
+import nlAdminManual from '@/assets/manuals/nl/admin.md?raw';
 
-const MANUALS: Record<string, { md: string; roles?: Auth.Role[] }> = {
-  user: { md: userManual },
-  admin: { md: adminManual, roles: ['ROLE_ADMIN', 'ROLE_HEAD_ADMIN'] },
+const MANUALS: Record<
+  string,
+  { languages: Record<string, string>; roles?: Auth.Role[] }
+> = {
+  user: {
+    languages: {
+      en: enUserManual,
+      nl: nlUserManual,
+    },
+  },
+  admin: {
+    languages: {
+      en: enAdminManual,
+      nl: nlAdminManual,
+    },
+    roles: ['ROLE_ADMIN', 'ROLE_HEAD_ADMIN'],
+  },
 };
 
 export const ManualPage: FC = () => {
-  const { location } = useRouterState();
   const { user } = useAuth();
+  const { language, type } = useParams({
+    from: '/manual/$language/$type',
+  });
   const { t } = useTranslation();
 
-  const manualType = location.pathname.split('/').pop() ?? '';
-  const manual = MANUALS[manualType];
+  const manual = MANUALS[type];
+  const markdown = manual?.languages[language];
 
   const canViewPage =
     manual !== undefined &&
+    markdown !== undefined &&
     (manual.roles ? user !== null && manual.roles.includes(user.role) : true);
 
   return (
@@ -37,9 +56,7 @@ export const ManualPage: FC = () => {
     >
       <div className={styles.manual_page}>
         {canViewPage ? (
-          <Markdown components={MARKDOWN_COMPONENTS}>
-            {MANUALS[manualType].md}
-          </Markdown>
+          <Markdown components={MARKDOWN_COMPONENTS}>{markdown}</Markdown>
         ) : (
           <Text>{t('manualPage:noAccess')}</Text>
         )}

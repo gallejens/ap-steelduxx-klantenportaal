@@ -22,6 +22,18 @@ import { OrderCreatePage } from './pages/ordercreate/Index';
 import { OrderRequestListPage } from './pages/orderrequestlist';
 import { OrderRequestReviewPage } from './pages/orderrequestreview';
 import { ManualPage } from './pages/manual';
+import type { Auth } from './types/auth';
+
+const requirePermissionBeforeLoad = (requiredPermission: Auth.Permission) => {
+  return () => {
+    const userInfo = useAuthStore.getState().user;
+    if (!userInfo || !userInfo.permissions.includes(requiredPermission)) {
+      throw redirect({
+        to: '/app/home',
+      });
+    }
+  };
+};
 
 const rootRoute = createRootRoute({
   beforeLoad: async () => {
@@ -98,6 +110,7 @@ const userRequestListRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
   path: 'requests',
   component: UserRequestListPage,
+  beforeLoad: requirePermissionBeforeLoad('MANAGE_USER_REQUESTS'),
 });
 
 const orderListRoute = createRoute({
@@ -110,12 +123,14 @@ const orderRequestsListRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
   path: 'order-requests',
   component: OrderRequestListPage,
+  beforeLoad: requirePermissionBeforeLoad('MANAGE_ORDER_REQUESTS'),
 });
 
 const orderRequestReviewRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
   path: '/order-requests/$orderrequestid',
   component: OrderRequestReviewPage,
+  beforeLoad: requirePermissionBeforeLoad('MANAGE_ORDER_REQUESTS'),
 });
 
 const orderDetailsRoute = createRoute({
@@ -137,30 +152,27 @@ const orderCreateRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
   path: '/orders/new',
   component: OrderCreatePage,
+  beforeLoad: requirePermissionBeforeLoad('CREATE_NEW_ORDERS'),
 });
 
 const userRequestReviewRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
   path: '/requests/$request_id',
   component: UserRequestReviewPage,
+  beforeLoad: requirePermissionBeforeLoad('MANAGE_USER_REQUESTS'),
 });
 
 const companiesRoute = createRoute({
   getParentRoute: () => authorizedOnlyRoute,
   path: 'companies',
   component: CompaniesPage,
+  beforeLoad: requirePermissionBeforeLoad('VIEW_COMPANIES'),
 });
 
 // Wiki pages
-const userManualRoute = createRoute({
+const manualRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/manual/user',
-  component: ManualPage,
-});
-
-const adminManualRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/manual/admin',
+  path: '/manual/$language/$type',
   component: ManualPage,
 });
 
@@ -183,8 +195,7 @@ const routeTree = rootRoute.addChildren([
     userRequestReviewRoute,
     companiesRoute,
   ]),
-  userManualRoute,
-  adminManualRoute,
+  manualRoute,
 ]);
 
 export const router = createRouter({

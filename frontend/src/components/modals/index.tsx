@@ -1,8 +1,6 @@
 import { useModalStore } from '@/stores/useModalStore';
-import { Modal as MantineModal } from '@mantine/core';
+import { Divider, Modal as MantineModal } from '@mantine/core';
 import { type FC, type PropsWithChildren } from 'react';
-import styles from './styles/modal.module.scss';
-import classNames from 'classnames';
 
 import { ConfirmModal } from './components/ConfirmModal';
 
@@ -25,22 +23,33 @@ export const Modal: FC<
   const { closeModal } = useModalStore();
 
   return (
-    <MantineModal
+    <MantineModal.Root
       opened
       centered
       closeOnClickOutside={false}
       closeOnEscape={false}
-      title={props.title}
       onClose={() => {
         closeModal();
         props.onClose?.();
       }}
       size={props.size ?? 'md'}
+      padding={0}
     >
-      <div className={classNames(props.className, styles.modal_body)}>
-        {props.children}
-      </div>
-    </MantineModal>
+      <MantineModal.Overlay />
+      <MantineModal.Content>
+        <MantineModal.Header>
+          <MantineModal.Title>{props.title}</MantineModal.Title>
+          <MantineModal.CloseButton />
+        </MantineModal.Header>
+        <Divider
+          orientation='horizontal'
+          mb='xs'
+        />
+        <MantineModal.Body>
+          <div className={props.className}>{props.children}</div>
+        </MantineModal.Body>
+      </MantineModal.Content>
+    </MantineModal.Root>
   );
 };
 

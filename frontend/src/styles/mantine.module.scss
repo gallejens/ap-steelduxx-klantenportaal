@@ -6,3 +6,8 @@
   font-size: 0.9rem !important;
   margin-bottom: 0.4rem;
 }
+
+.paper {
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-lg);
+  border: 1px solid var(--mantine-color-default-border);
+}

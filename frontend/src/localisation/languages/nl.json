@@ -91,8 +91,8 @@
     "confirmButton": "Bevestigen",
     "success": "Aanvraag is succesvol verzonden."
   },
-  "welcomePage": {
-    "welcomeTitle": "Welkom",
+  "homePage": {
+    "title": "Welkom",
     "cards": {
       "orders": {
         "title": "Orders",
@@ -124,7 +124,12 @@
     },
     "tableLoading": "Bezig met laden...",
     "tableError": "Kan aanvragen niet laden",
-    "tableEmpty": "Geen aanvragen"
+    "tableEmpty": "Geen aanvragen",
+    "tabs": {
+      "PENDING": "Openstaand",
+      "APPROVED": "Goedgekeurd",
+      "DENIED": "Afgekeurd"
+    }
   },
   "orderListPage": {
     "header": {
@@ -144,7 +149,7 @@
       "ats": "ATS",
       "eta": "ETA",
       "ata": "ATA",
-      "totalWeight": "Totaal Gewicht",
+      "totalWeight": "Totaal Gewicht (kg)",
       "totalContainers": "Aantal Containers",
       "containerTypes": "Container Types"
     },
@@ -152,36 +157,19 @@
     "error": "Kan orders niet laten"
   },
   "orderDetailPage": {
-    "orderDetails": "Bestelling Details",
+    "title": "Bestelling Details",
     "generalInfo": "Algemeen Informatie",
-    "customerReference": "Klanten Referentie",
-    "state": "Status",
-    "transportType": "Transport Type",
-    "portInformation": "Haven Informatie",
-    "origin": "Herkomst",
-    "destination": "Bestemming",
-    "timeInformation": "Tijd Informatie",
-    "ets": "ETS",
-    "ats": "ATS",
-    "eta": "ETA",
-    "ata": "ATA",
+    "times": {
+      "departure": "Vertrek",
+      "arrival": "Aankomst",
+      "estimated": "Geschatte",
+      "actual": "Effectieve"
+    },
     "estimatedTimeCargoOnQuay": "Geschatte tijd van lading op kade",
     "actualTimeCargoLoaded": "Werkelijke tijd van lading op kade",
-    "shipInformation": "Schip Informatie",
-    "shipName": "Naam",
-    "shipLocation": "Schip Locatie",
+    "shipLocation": "Scheepslocatie",
     "imo": "IMO",
     "mmsi": "MMSI",
-    "type": "Type",
-    "products": "Producten",
-    "hsCode": "HsCode",
-    "name": "Naam",
-    "quantity": "Aantal",
-    "weight": "Gewicht (kg)",
-    "container": "Container",
-    "containerNumber": "Container Nummer",
-    "containerSize": "Container Grootte (voet)",
-    "containerType": "Container Type",
     "documents": {
       "downloadFailed": "Kon bestand niet downloaden",
       "uploadResponse": {
@@ -192,7 +180,6 @@
   },
   "newOrderPage": {
     "title": "Order Informatie",
-    "products": "Producten",
     "orderForm": {
       "transportType": {
         "transportTypeInputTitle": "Transport type",
@@ -245,7 +232,7 @@
           "numberInputError": "Container nummer van product is vereist"
         },
         "size": {
-          "sizeInputDescription": "Container grootte (feet)",
+          "sizeInputDescription": "Container grootte (ft)",
           "sizeInputPlaceholder": "20",
           "sizeInputError": "Container grootte van product is vereist"
         },
@@ -261,9 +248,9 @@
       "hsCode": "HsCode",
       "name": "Name",
       "quantity": "Hoeveelheid",
-      "weight": "Totaal gewicht (kg)",
+      "weight": "Totaal Gewicht (kg)",
       "containerNumber": "Container nummer",
-      "containerSize": "Container grootte (voet)",
+      "containerSize": "Container grootte (ft)",
       "containerType": "Container type"
     },
     "addOrderButton": "Maak order aanvraag aan",
@@ -272,7 +259,6 @@
     "emptyProducts": "Voeg minstens een product toe."
   },
   "userRequestReviewPage": {
-    "backButton": "Terug Gaan",
     "approveButton": "Goedkeuren",
     "denyButton": "Afkeuren",
     "response": {
@@ -400,7 +386,8 @@
   "table": {
     "columnSelectorButton": "Kolommen",
     "trueValue": "Ja",
-    "falseValue": "Nee"
+    "falseValue": "Nee",
+    "rowsAmount": "Aantal rijen"
   },
   "companiesPage": {
     "table": {
@@ -410,6 +397,8 @@
       "actions": "Acties"
     },
     "headAccount": "Hoofd Gebruiker",
+    "subAccounts": "Subaccounts",
+    "noSubAccounts": "Er zijn geen subaccounts voor dit bedrijf",
     "deleteAccount": {
       "title": "Gebruiker Verwijderen",
       "text": "Ben je zeker dat je deze gebruiker wil verwijderen?",
@@ -449,6 +438,11 @@
       "transportType": "Transport type",
       "portOfOriginCode": "Haven van Herkomst Code",
       "portOfDestinationCode": "Haven van Bestemming Code"
+    },
+    "tabs": {
+      "PENDING": "Openstaand",
+      "APPROVED": "Goedgekeurd",
+      "DENIED": "Afgekeurd"
     }
   },
   "orderRequestForm": {
@@ -462,11 +456,11 @@
     "quantity": "Aantal",
     "weight": "Gewicht",
     "containerNumber": "Container nummer",
-    "containerSize": "Container grootte (feet)",
+    "containerSize": "Container grootte (ft)",
     "containerType": "Container type"
   },
   "orderRequestReviewPage": {
-    "backButton": "Terug Gaan",
+    "infoTitle": "Informatie",
     "approveButton": "Goedkeuren",
     "denyButton": "Afkeuren",
     "confirmButton": "Order aanvraag bewerken",
@@ -513,9 +507,17 @@
   "preferences": {
     "title": "Instellingen",
     "notificationTitle": "Notificaties ",
-    "notificationOrderStatusTitle": "Order status",
-    "notificationOrderRequestTitle": "Order aanvragen",
+    "notificationOrderStatusTitle": "Order status verandering",
+    "notificationOrderRequestTitle": "Order aanvraag activiteit",
     "systemNotification": "Systeem Notificaties",
     "emailNotification": "Email Notificaties"
+  },
+  "productsList": {
+    "title": "Producten",
+    "tooltips": {
+      "add": "Product Toevoegen",
+      "remove": "Product Verwijderen",
+      "edit": "Edit Product"
+    }
   }
 }

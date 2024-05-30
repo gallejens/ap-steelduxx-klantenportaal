@@ -1,7 +1,6 @@
 import { Checkbox, Grid, Text, Tooltip } from '@mantine/core';
-import type { FC } from 'react';
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import type { ChangeEvent, FC } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { doApiAction } from '@/lib/api';
@@ -27,56 +26,56 @@ const mapToPreferenceType = (key: keyof UserPreferences): number | null => {
 export const UserPreferencesModal: FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
 
-  const { data: userpreferences } = useQuery({
+  if (!user) throw new Error('No user for preferences modal');
+
+  const { data: userPreferences } = useQuery({
     queryKey: ['preferences'],
     queryFn: () =>
       doApiAction<UserPreferences>({
-        endpoint: `preferences/${user?.id}`,
+        endpoint: `/preferences/${user.id}`,
         method: 'GET',
       }),
   });
 
-  const [preferences, setPreferences] = useState<UserPreferences | null>(null);
+  const updateMutation = useMutation({
+    mutationFn: ({
+      preferenceType,
+      state,
+    }: {
+      preferenceType: number;
+      state: boolean;
+    }) =>
+      doApiAction({
+        endpoint: `/preferences/${user.id}/${state ? 'on' : 'off'}`,
+        method: 'POST',
+        body: JSON.stringify(preferenceType),
+      }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['preferences'] });
+    },
+  });
 
-  useEffect(() => {
-    if (userpreferences) {
-      setPreferences(userpreferences);
-    }
-  }, [userpreferences]);
+  const handleCheckboxChange = (preferenceKey: keyof UserPreferences) => {
+    const preferenceType = mapToPreferenceType(preferenceKey);
+    if (!preferenceType) throw new Error('Invalid preference type');
 
-  const handleCheckboxChange =
-    (preferenceKey: keyof UserPreferences) =>
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (preferences) {
-        const newPreferences = {
-          ...preferences,
-          [preferenceKey]: event.currentTarget.checked,
-        };
-        setPreferences(newPreferences);
-
-        const preferenceType = mapToPreferenceType(preferenceKey);
-        if (preferenceType !== null) {
-          doApiAction({
-            endpoint: `/preferences/${user?.id}/${event.currentTarget.checked ? 'on' : 'off'}`,
-            method: 'POST',
-            body: JSON.stringify(preferenceType),
-          });
-        }
-      }
+    return (event: ChangeEvent<HTMLInputElement>) => {
+      updateMutation.mutate({
+        preferenceType,
+        state: event.currentTarget.checked,
+      });
     };
-
-  if (!preferences) {
-    return null;
-  }
+  };
 
   return (
     <Modal title={t('preferences:title')}>
       <Grid align='center'>
-        <Grid.Col span={6}>
+        <Grid.Col span='auto'>
           <Text fw={700}>{t('preferences:notificationTitle')}</Text>
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col span='content'>
           <Tooltip
             label={t('preferences:systemNotification')}
             position='right'
@@ -85,7 +84,10 @@ export const UserPreferencesModal: FC = () => {
             <IconMessage size={20} />
           </Tooltip>
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col
+          span='content'
+          offset={1}
+        >
           <Tooltip
             label={t('preferences:emailNotification')}
             position='right'
@@ -96,35 +98,41 @@ export const UserPreferencesModal: FC = () => {
         </Grid.Col>
       </Grid>
       <Grid align='center'>
-        <Grid.Col span={6}>
+        <Grid.Col span='auto'>
           <Text>{t('preferences:notificationOrderStatusTitle')}</Text>
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col span='content'>
           <Checkbox
-            checked={preferences.systemNotificationOrderStatus}
+            checked={userPreferences?.systemNotificationOrderStatus}
             onChange={handleCheckboxChange('systemNotificationOrderStatus')}
           />
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col
+          span='content'
+          offset={1}
+        >
           <Checkbox
-            checked={preferences.emailNotificationOrderStatus}
+            checked={userPreferences?.emailNotificationOrderStatus}
             onChange={handleCheckboxChange('emailNotificationOrderStatus')}
           />
         </Grid.Col>
       </Grid>
       <Grid align='center'>
-        <Grid.Col span={6}>
+        <Grid.Col span='auto'>
           <Text>{t('preferences:notificationOrderRequestTitle')}</Text>
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col span='content'>
           <Checkbox
-            checked={preferences.systemNotificationOrderRequest}
+            checked={userPreferences?.systemNotificationOrderRequest}
             onChange={handleCheckboxChange('systemNotificationOrderRequest')}
           />
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col
+          span='content'
+          offset={1}
+        >
           <Checkbox
-            checked={preferences.emailNotificationOrderRequest}
+            checked={userPreferences?.emailNotificationOrderRequest}
             onChange={handleCheckboxChange('emailNotificationOrderRequest')}
           />
         </Grid.Col>

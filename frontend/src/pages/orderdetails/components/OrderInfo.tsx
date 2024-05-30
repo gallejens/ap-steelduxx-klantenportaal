@@ -2,110 +2,109 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../styles/orderDetails.module.scss';
 import type { OrderDetails } from '@/types/api';
-import { Title, Text, Badge } from '@mantine/core';
+import { Title, Text, Badge, Divider } from '@mantine/core';
 import {
   getOrderStateColor,
   getOrderTransportTypeColor,
 } from '@/pages/orderlist/helpers';
 import { IconArrowBadgeRight } from '@tabler/icons-react';
 
-interface OrderInfoProps {
+type Props = {
   orderDetail: OrderDetails;
-}
+};
 
-export const OrderInfo: FC<OrderInfoProps> = ({ orderDetail }) => {
+export const OrderInfo: FC<Props> = ({ orderDetail }) => {
   const { t } = useTranslation();
 
-  if (!orderDetail) {
-    return <div>{t('orderDetailsPage:loading')}</div>;
-  }
-
   return (
-    <div className={styles.orderInfo}>
-      <div className={styles.generalInfo}>
-        <div className={styles.firstRow}>
-          <Title
-            className={styles.title}
-            order={3}
+    <div className={styles.order_info}>
+      <div className={styles.header}>
+        <Title order={3}>{t('orderDetailPage:generalInfo')}</Title>
+        <div className={styles.badges}>
+          <Badge
+            color={getOrderStateColor(orderDetail.state)}
+            size='lg'
           >
-            {t('orderDetailPage:generalInfo')}:
-          </Title>
-          <div className={styles.titleInfo}>
-            <Text>{orderDetail.customerReferenceNumber ?? ''}</Text>
-            <Badge
-              className={styles.transportBadge}
-              color={getOrderTransportTypeColor(orderDetail.transportType)}
-            >
-              {orderDetail.transportType}
-            </Badge>
-          </div>
+            {orderDetail.state}
+          </Badge>
+          <Badge
+            color={getOrderTransportTypeColor(orderDetail.transportType)}
+            size='lg'
+          >
+            {orderDetail.transportType}
+          </Badge>
         </div>
-        <div className={styles.secondRow}>
-          <div className={styles.subColumnLeft}>
-            <Text>{orderDetail.portOfDestinationName}</Text>
-            <Text>{orderDetail.portOfDestinationCode}</Text>
-          </div>
-          <div className={styles.subColumnMiddle}>
-            <Text
-              fw={600}
-              c={getOrderStateColor(orderDetail.state)}
-            >
-              {orderDetail.state}
-            </Text>
-            <IconArrowBadgeRight />
-          </div>
-          <div className={styles.subColumnRight}>
-            <Text>{orderDetail.portOfOriginName}</Text>
-            <Text>{orderDetail.portOfOriginCode}</Text>
-          </div>
+      </div>
+      <Divider orientation='horizontal' />
+      <div className={styles.ports}>
+        <div>
+          <Text size='sm'>{orderDetail.portOfOriginName}</Text>
+          <Text c='dimmed'>{orderDetail.portOfOriginCode}</Text>
         </div>
-        <div className={styles.thirdRow}>
-          <div className={styles.subColumn3}>
-            <Text className={styles.subTitle}>{t('orderDetailPage:ets')}:</Text>
-            <Text>{orderDetail.ets ?? '?'}</Text>
-          </div>
-          <div className={styles.subColumn4}>
-            <Text className={styles.subTitle}>{t('orderDetailPage:ats')}:</Text>
-            <Text>{orderDetail.ats ?? '?'}</Text>
-          </div>
-          <div className={styles.subColumn5}>
-            <Text className={styles.subTitle}>{t('orderDetailPage:eta')}:</Text>
-            <Text>{orderDetail.eta ?? '?'}</Text>
-          </div>
-          <div className={styles.subColumn6}>
-            <Text className={styles.subTitle}>{t('orderDetailPage:ata')}:</Text>
-            <Text>{orderDetail.ata ?? '?'}</Text>
-          </div>
+        <IconArrowBadgeRight size={40} />
+        <div>
+          <Text size='sm'>{orderDetail.portOfDestinationName}</Text>
+          <Text c='dimmed'>{orderDetail.portOfDestinationCode}</Text>
         </div>
-        <div className={styles.fourthRow}>
-          <div className={styles.subColumn7}>
-            <Text className={styles.subTitle}>
-              {t('orderDetailPage:estimatedTimeCargoOnQuay')}:
-            </Text>
-            <Text>{orderDetail.estimatedTimeCargoOnQuay || '?'}</Text>
-          </div>
-          <div className={styles.subColumn8}>
-            <Text className={styles.subTitle}>
-              {t('orderDetailPage:actualTimeCargoLoaded')}:
-            </Text>
-            <Text>{orderDetail.actualTimeCargoLoaded || '?'}</Text>
-          </div>
+      </div>
+      <Divider orientation='horizontal' />
+      <div className={styles.times}>
+        <div />
+        <Text
+          c='dimmed'
+          size='sm'
+        >
+          {t('orderDetailPage:times:estimated')}:
+        </Text>
+        <Text
+          c='dimmed'
+          size='sm'
+        >
+          {t('orderDetailPage:times:actual')}:
+        </Text>
+        <Title order={5}>{t('orderDetailPage:times:departure')}</Title>
+        <Text>{orderDetail.ets ?? '/'}</Text>
+        <Text>{orderDetail.eta ?? '/'}</Text>
+        <Title order={5}>{t('orderDetailPage:times:arrival')}</Title>
+        <Text>{orderDetail.ats ?? '/'}</Text>
+        <Text>{orderDetail.ata ?? '/'}</Text>
+      </div>
+      <Divider orientation='horizontal' />
+      <div className={styles.cargo_times}>
+        <div>
+          <Text size='sm'>
+            {t('orderDetailPage:estimatedTimeCargoOnQuay')}:
+          </Text>
+          <Text>{orderDetail.estimatedTimeCargoOnQuay ?? '/'}</Text>
         </div>
-        <div className={styles.fifthRow}>
-          <div className={styles.subColumn9}>
-            <Text>{orderDetail.shipName ?? '?'}</Text>
-            <Text>{orderDetail.shipType ?? '?'}</Text>
-          </div>
-          <div className={styles.subColumn10}>
-            <Text className={styles.subTitle}>{t('orderDetailPage:imo')}:</Text>
-            <Text>{orderDetail.shipIMO ?? '?'}</Text>
-          </div>
-          <div className={styles.subColumn11}>
-            <Text className={styles.subTitle}>
-              {t('orderDetailPage:mmsi')}:
-            </Text>
-            <Text>{orderDetail.shipMMSI ?? '?'}</Text>
-          </div>
+        <div>
+          <Text size='sm'>{t('orderDetailPage:actualTimeCargoLoaded')}:</Text>
+          <Text>{orderDetail.actualTimeCargoLoaded ?? '/'}</Text>
+        </div>
+      </div>
+      <Divider orientation='horizontal' />
+      <div className={styles.ship}>
+        <div>
+          <Title order={5}>{orderDetail.shipName ?? '?'}</Title>
+          <Text c='dimmed'>{orderDetail.shipType ?? '?'}</Text>
+        </div>
+        <div>
+          <Text
+            c='dimmed'
+            size='sm'
+          >
+            {t('orderDetailPage:imo')}
+          </Text>
+          <Text>{orderDetail.shipIMO ?? '?'}</Text>
+        </div>
+        <div>
+          <Text
+            c='dimmed'
+            size='sm'
+          >
+            {t('orderDetailPage:mmsi')}
+          </Text>
+          <Text>{orderDetail.shipMMSI ?? '?'}</Text>
         </div>
       </div>
     </div>

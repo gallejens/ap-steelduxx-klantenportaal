@@ -154,28 +154,17 @@ public class OrderRequestService {
         return ResponseHandler.generate("newOrderPage:success", HttpStatus.CREATED, orderRequestId);
     }
 
-    public OrderRequestProductDto convertProductsToDTO(OrderRequestProduct orderRequestProduct) {
-        return new OrderRequestProductDto(
-                orderRequestProduct.getHsCode(),
-                orderRequestProduct.getName(),
-                orderRequestProduct.getQuantity(),
-                orderRequestProduct.getWeight(),
-                orderRequestProduct.getContainerNumber(),
-                orderRequestProduct.getContainerSize(),
-                orderRequestProduct.getContainerType());
-    }
-
     public OrderRequestListDto convertOrderRequestListToDTO(OrderRequest orderRequest) {
         List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository
                 .findAllByOrderRequestId(orderRequest.getId()).stream()
-                .map(this::convertProductsToDTO)
+                .map(OrderRequestProduct::toDto)
                 .collect(Collectors.toList());
 
-        var company = companyRepository.findById(orderRequest.getCompanyId());
+        var company = companyRepository.findById(orderRequest.getCompanyId()).orElseThrow();
 
         return new OrderRequestListDto(
                 orderRequest.getId(),
-                company.get().getName(),
+                company.getName(),
                 orderRequest.getStatus(),
                 orderRequest.getOrderType(),
                 orderRequest.getTransportType(),
@@ -187,13 +176,13 @@ public class OrderRequestService {
     public OrderRequestDto convertOrderRequestToDTO(OrderRequest orderRequest) {
         List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository
                 .findAllByOrderRequestId(orderRequest.getId()).stream()
-                .map(this::convertProductsToDTO)
+                .map(OrderRequestProduct::toDto)
                 .toList();
 
-        var company = companyRepository.findById(orderRequest.getCompanyId());
+        var company = companyRepository.findById(orderRequest.getCompanyId()).orElseThrow();
 
         return new OrderRequestDto(
-                company.get().getName(),
+                company.getName(),
                 orderRequest.getTransportType().toString(),
                 orderRequest.getPortOfOriginCode(),
                 orderRequest.getPortOfDestinationCode(),
@@ -202,8 +191,8 @@ public class OrderRequestService {
     }
 
     public List<OrderRequestListDto> getAll() {
-        List<OrderRequest> orderRequest = orderRequestRepository.findAll();
-        return orderRequest.stream()
+        List<OrderRequest> orderRequests = orderRequestRepository.findAll();
+        return orderRequests.stream()
                 .map(this::convertOrderRequestListToDTO)
                 .toList();
     }
@@ -237,8 +226,8 @@ public class OrderRequestService {
         }
     }
 
-    public OrderRequest editOrderRequest(Long id, OrderRequestDto orderRequestDto) {
-        return orderRequestRepository.findById(id).map(orderRequest -> {
+    public void editOrderRequest(Long id, OrderRequestDto orderRequestDto) {
+        orderRequestRepository.findById(id).map(orderRequest -> {
             orderRequest.setTransportType(TransportTypeEnum.valueOf(orderRequestDto.transportType()));
             orderRequest.setPortOfOriginCode(orderRequestDto.portOfOriginCode());
             orderRequest.setPortOfDestinationCode(orderRequestDto.portOfDestinationCode());
@@ -248,8 +237,8 @@ public class OrderRequestService {
         .orElseThrow();
     }
 
-    public OrderRequestProduct editOrderRequestProduct(Long productId, OrderRequestProductDto orderRequestProductDto) {
-        return orderRequestProductRepository.findById(productId)
+    public void editOrderRequestProduct(Long productId, OrderRequestProductDto orderRequestProductDto) {
+        orderRequestProductRepository.findById(productId)
                 .map(orderRequestProduct -> {
                     orderRequestProduct.setQuantity(orderRequestProductDto.quantity());
                     orderRequestProduct.setWeight(orderRequestProductDto.weight());

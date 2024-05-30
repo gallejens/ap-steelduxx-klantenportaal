@@ -17,6 +17,8 @@ public class HsCodesService {
 
     private final RestTemplate restTemplate;
 
+    private final String[] labelEndingTrimStrings = {" &hellip;", ", of", ","};
+
     public HsCodesService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -42,15 +44,14 @@ public class HsCodesService {
     }
 
     private String getLabelFromSuggestion(String suggestionValue) {
-        String label = suggestionValue.replaceAll(".+<br>", ""); // remove everything up until <br> after which starts the label
-        label = label.substring(0, label.indexOf("&hellip;")).trim(); // remove end
+        String label = suggestionValue.replaceAll(".+<br>", "").trim(); // remove everything up until <br> after which starts the label
 
-        if (label.endsWith(", of")) {
-            label = label.substring(0, label.indexOf(", of"));
+        for (var trimString : labelEndingTrimStrings) {
+            boolean endsWith = label.endsWith(trimString);
+            if (!endsWith) continue;
+            label = label.substring(0, label.lastIndexOf(trimString)).trim();
         }
-        if (label.endsWith(",")) {
-            label = label.substring(0, label.indexOf(","));
-        }
+
         return label;
     }
 }

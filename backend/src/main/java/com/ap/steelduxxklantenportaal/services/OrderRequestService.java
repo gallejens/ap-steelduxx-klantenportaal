@@ -109,32 +109,32 @@ public class OrderRequestService {
     }
 
     private void notifyUsers(Long id, StatusEnum newStatus) {
-        Long companyId = getCompanyIdByOrderRequestId(id);
+        Long companyId = getCompanyIdOfOrderRequest(id);
         List<User> users = getUsersByCompanyId(companyId);
 
         for (User user : users) {
-            Optional<UserPreference> userPreference = userPreferenceRepository.findByUserId(user.getId());
-            if (userPreference.isPresent()) {
-                if (userPreference.get().isSystemNotificationOrderRequest()) {
-                    Notification newNotification = new Notification(
-                            user.getId(), "Order request: " + id + " is " + newStatus,
-                            "Status changed to: " + newStatus,
-                            Timestamp.valueOf(LocalDateTime.now()).getTime(), false
-                    );
-                    notificationService.createNotification(newNotification);
-                }
-                if (userPreference.get().isEmailNotificationOrderRequest()) {
-                    try {
-                        emailService.sendOrderRequestStatusUpdate(user, id.toString(), newStatus.toString());
-                    } catch (MessagingException e) {
-                        e.printStackTrace();
-                    }
+            var userPreference = userPreferenceRepository.findByUserId(user.getId()).orElse(null);
+            if (userPreference == null) continue;
+
+            if (userPreference.isSystemNotificationOrderRequest()) {
+                Notification newNotification = new Notification(
+                        user.getId(), "Order request " + id + " has been " + newStatus.toString().toLowerCase(),
+                        "The status of order request " + id +  " has been changed to: " + newStatus.toString().toLowerCase(),
+                        Timestamp.valueOf(LocalDateTime.now()).getTime(), false
+                );
+                notificationService.createNotification(newNotification);
+            }
+            if (userPreference.isEmailNotificationOrderRequest()) {
+                try {
+                    emailService.sendOrderRequestStatusUpdate(user, id.toString(), newStatus.toString());
+                } catch (MessagingException e) {
+                    e.printStackTrace();
                 }
             }
         }
     }
 
-    private Long getCompanyIdByOrderRequestId(Long orderRequestId) {
+    private Long getCompanyIdOfOrderRequest(Long orderRequestId) {
         OrderRequest orderRequest = orderRequestRepository.findById(orderRequestId).orElseThrow();
         return orderRequest.getCompanyId();
     }
@@ -192,11 +192,11 @@ public class OrderRequestService {
         return ResponseHandler.generate("newOrderPage:success", HttpStatus.CREATED, orderRequestId);
     }
 
-    public OrderRequestDto convertOrderRequestListToDTO(OrderRequest orderRequest) {
-        List<OrderRequestProductDto> orderRequestProductDtos = orderRequestProductRepository
+    public OrderRequestDto buildOrderRequestDto(OrderRequest orderRequest) {
+        List<OrderRequestProductDto> products = orderRequestProductRepository
                 .findAllByOrderRequestId(orderRequest.getId()).stream()
                 .map(OrderRequestProduct::toDto)
-                .collect(Collectors.toList());
+                .toList();
 
         var company = companyRepository.findById(orderRequest.getCompanyId()).orElseThrow();
 
@@ -208,19 +208,22 @@ public class OrderRequestService {
                 orderRequest.getTransportType(),
                 orderRequest.getPortOfOriginCode(),
                 orderRequest.getPortOfDestinationCode(),
-                orderRequestProductDtos);
+                products);
     }
 
     public List<OrderRequestDto> getAll() {
         List<OrderRequest> orderRequests = orderRequestRepository.findAll();
         return orderRequests.stream()
-                .map(this::convertOrderRequestListToDTO)
+                .map(this::buildOrderRequestDto)
                 .toList();
     }
 
     public OrderRequestDto getOrderRequest(Long id) {
-        OrderRequest orderRequest = orderRequestRepository.findById(id).orElseThrow();
-        return convertOrderRequestListToDTO(orderRequest);
+        OrderRequest orderRequest = orderRequestRepository.findById(id).orElse(null);
+        if (orderRequest == null) {
+            return null;
+        }
+        return buildOrderRequestDto(orderRequest);
     }
 
     public void saveOrderRequestDocument(OrderRequestDocumentUploadDto orderRequestDocumentUploadDto) {

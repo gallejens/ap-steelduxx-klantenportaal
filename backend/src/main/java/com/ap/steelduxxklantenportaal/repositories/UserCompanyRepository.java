@@ -9,7 +9,5 @@ import java.util.List;
 
 @Repository
 public interface UserCompanyRepository extends JpaRepository<UserCompany, Long> {
-    void deleteById(Number id);
-
     List<UserCompany> findAllByCompanyId(Long id);
 }

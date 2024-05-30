@@ -463,7 +463,7 @@
     "infoTitle": "Informatie",
     "approveButton": "Goedkeuren",
     "denyButton": "Afkeuren",
-    "confirmButton": "Order aanvraag bewerken",
+    "confirmButton": "Bewerkingen Opslaan",
     "response": {
       "success": "Order aanvraag goedgekeurd!",
       "denied": "Order aanvraag afgekeurd!",

@@ -464,7 +464,7 @@
     "infoTitle": "Information",
     "approveButton": "Approve",
     "denyButton": "Deny",
-    "confirmButton": "Edit order request",
+    "confirmButton": "Save Changes",
     "response": {
       "success": "Order request approved!",
       "denied": "Order request denied!",

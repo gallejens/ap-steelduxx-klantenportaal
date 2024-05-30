@@ -63,6 +63,6 @@ public class OrderServiceTest {
         ordersService.checkForOrderStatusChanges(orders);
 
         verify(notificationService, never()).createNotification(any());
-        verify(emailService, never()).sendHtmlEmail(anyString(), anyString(), anyString());
+        verify(emailService, never()).sendHtmlMail(anyString(), anyString(), anyString());
     }
 }

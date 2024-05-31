@@ -26,17 +26,22 @@ export const CompaniesPage: FC = () => {
 
   return (
     <div className={styles.companies_page}>
-      <div className={styles.header}>
-        <MultiSearch
-          onChange={newValues => setSearchValues(newValues)}
-          inputWidth='30rem'
-        />
-      </div>
+      {data.length > 1 && (
+        <div className={styles.header}>
+          <MultiSearch
+            onChange={newValues => setSearchValues(newValues)}
+            inputWidth='30rem'
+          />
+        </div>
+      )}
       <div className={styles.list}>
-        {search(data, searchValues).map((c, idx) => (
+        {search(data, searchValues).map((c, idx, all) => (
           <div key={`company-${idx}`}>
-            <CompanyCard {...c} />
-            {c.company === null && <Divider />}
+            <CompanyCard
+              {...c}
+              alwaysOpen={all.length === 1}
+            />
+            {idx === 0 && all.length > 1 && <Divider mt='md' />}
           </div>
         ))}
       </div>

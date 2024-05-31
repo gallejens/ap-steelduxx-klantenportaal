@@ -33,8 +33,10 @@ import { ADMINS_COMPANY_LABEL } from '../constants';
 import { IconButton } from '@/components/iconbutton';
 import { IconListItem } from '@/components/iconlistitem';
 
-export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
-  const [opened, setOpened] = useState(false);
+type Props = CompanyInfo & { alwaysOpen: boolean };
+
+export const CompanyCard = memo<Props>(({ company, accounts, alwaysOpen }) => {
+  const [opened, setOpened] = useState(alwaysOpen);
   const [searchValue, setSearchValue] = useState('');
   const { t } = useTranslation();
   const { openModal, closeModal } = useModalStore();
@@ -193,19 +195,20 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
               icon={<IconTrash />}
             />
           )}
-          {opened ? (
-            <IconButton
-              tooltipKey='companiesPage:tooltips:collapse'
-              onClick={() => setOpened(false)}
-              icon={<IconChevronUp />}
-            />
-          ) : (
-            <IconButton
-              tooltipKey='companiesPage:tooltips:expand'
-              onClick={() => setOpened(true)}
-              icon={<IconChevronDown />}
-            />
-          )}
+          {!alwaysOpen &&
+            (opened ? (
+              <IconButton
+                tooltipKey='companiesPage:tooltips:collapse'
+                onClick={() => setOpened(false)}
+                icon={<IconChevronUp />}
+              />
+            ) : (
+              <IconButton
+                tooltipKey='companiesPage:tooltips:expand'
+                onClick={() => setOpened(true)}
+                icon={<IconChevronDown />}
+              />
+            ))}
         </div>
       </div>
       <Divider my='xs' />

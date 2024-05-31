@@ -43,7 +43,6 @@
 
       & > .street_row {
         display: flex;
-        justify-content: space-between;
         gap: var(--mantine-spacing-md);
 
         & > :first-child {
@@ -51,11 +50,12 @@
         }
 
         & > :not(:first-child) {
-          width: calc(25% - var(--mantine-spacing-md));
-        }
-
-        & > * {
-          flex-shrink: 0;
+          margin-top: 1px;
+          width: calc(
+            (50% - var(--mantine-spacing-md) / 2) / 2 - var(
+                --mantine-spacing-md
+              ) / 2
+          );
         }
       }
     }

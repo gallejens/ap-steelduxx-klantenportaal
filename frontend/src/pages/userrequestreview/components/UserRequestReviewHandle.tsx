@@ -202,7 +202,6 @@ export const UserRequestReviewHandle: FC<Props> = props => {
             </div>
           </form>
         ) : null}
-
         {isDenied ? (
           <form
             onSubmit={denyForm.onSubmit(values =>

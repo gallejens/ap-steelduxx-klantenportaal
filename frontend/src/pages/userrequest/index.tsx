@@ -8,21 +8,19 @@ import { Text } from '@mantine/core';
 export const UserRequestPage: FC = () => {
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
-  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
 
   return (
     <PublicPageWrapper
       title={t('userRequestForm:title')}
       panelWidth={submitted ? '55vh' : '110vh'}
       footer={submitted ? undefined : <UserRequestFooter />}
-      hideLanguageSelector={showLanguageSelector}
+      hideLanguageSelector={submitted}
     >
       {submitted ? (
         <Text>{t('userRequestForm:success')}</Text>
       ) : (
         <UserRequestForm
           onSuccess={() => {
-            setShowLanguageSelector(true);
             setSubmitted(true);
           }}
         />

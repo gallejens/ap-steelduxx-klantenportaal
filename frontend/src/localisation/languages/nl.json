@@ -20,29 +20,32 @@
   "userRequestForm": {
     "title": "Vraag account aan",
     "companyInputTitle": "Bedrijf",
-    "companyInputDescription": "Vul hier de naam van het bedrijf",
+    "companyInputDescription": "Vul hier de naam van het bedrijf in",
     "companyInputPlaceholder": "Steelduxx",
     "companyInputError": "Bedrijfsnaam is vereist",
+
     "countryInputTitle": "Land",
-    "countryInputDescription": "Vul hier het land van het bedrijf",
+    "countryInputDescription": "Vul hier het land van het bedrijf in",
     "countryInputPlaceholder": "Belgie",
     "countryInputError": "Land is vereist",
 
     "phoneNrInputTitle": "Telefoonnummer",
-    "phoneNrInputDesription": "Vul hier de telefoonnummer van het bedrijf",
+    "phoneNrInputDesription": "Vul hier de telefoonnummer van het bedrijf in",
     "phoneNrInputPlaceholder": "+32 123 456 789",
     "phoneNrInputError": "Ongeldig telefoonnummer",
+
     "vatNrInputTitle": "BTW nummer",
-    "vatNrInputDescription": "Vul hier de BTW nummer van het bedrijf",
+    "vatNrInputDescription": "Vul hier het BTW nummer van het bedrijf in",
     "vatNrInputPlaceholder": "BE 0123 456 789",
     "vatNrInputError": "Ongeldig BTW nummer",
 
-    "postalCodeInputTitle": "ZIP",
-    "postalCodeInputDescription": "Vul hier de zip van het bedrijf",
+    "postalCodeInputTitle": "Postcode",
+    "postalCodeInputDescription": "Vul hier de postcode van het bedrijf in",
     "postalCodeInputPlaceholder": "2000",
-    "postalCodeInputError": "ZIP is vereist",
+    "postalCodeInputError": "Postcode is vereist",
+
     "districtInputTitle": "Gemeente",
-    "districtInputDescription": "Vul hier de gemeente van het bedrijf",
+    "districtInputDescription": "Vul hier de gemeente van het bedrijf in",
     "districtInputPlaceholder": "Antwerpen",
     "districtInputError": "Gemeente is vereist",
 
@@ -50,24 +53,30 @@
     "streetInputDescription": "Straat",
     "streetInputPlaceholder": "Duboisstraat",
     "streetInputError": "Straat is vereist",
+
     "streetNrInputDescription": "Straatnummer",
     "streetNrInputPlaceholder": "50",
     "streetNrInputError": "Nummer is vereist",
+
     "boxNrInputDescription": "Bus nummer",
     "boxNrInputPlaceholder": "1",
     "boxNrInputError": "Ongeldig bus nummer",
+
     "extraInfoInputDescription": "Extra",
     "extraInfoInputPlaceholder": "Zone A",
 
-    "firstNameInputTitle": "Contactpersoon",
-    "firstNameInputDescription": "Voornaam",
+    "firstNameInputTitle": "Voornaam",
+    "firstNameInputDescription": "Vul hier de voornaam van de contactpersoon in",
     "firstNameInputPlaceholder": "John",
     "firstNameInputError": "Voornaam is vereist",
-    "lastNameInputDescription": "Achternaam",
+
+    "lastNameInputTitle": "Achternaam",
+    "lastNameInputDescription": "Vul hier de achternaam van de contactpersoon in",
     "lastNameInputPlaceholder": "Doe",
     "lastNameInputError": "Achternaam is vereist",
 
-    "emailInputDescription": "E-mail",
+    "emailInputTitle": "E-mail",
+    "emailInputDescription": "Vul hier het e-mailadres van de contactpersoon in",
     "emailInputError": "Ongeldig e-mailadres",
 
     "userRequestButton": "Request",

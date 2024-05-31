@@ -23,6 +23,7 @@
     "companyInputDescription": "Fill in the name of the company here",
     "companyInputPlaceholder": "Steelduxx",
     "companyInputError": "Company name is required",
+
     "countryInputTitle": "Country",
     "countryInputDescription": "Fill in the country of the company here",
     "countryInputPlaceholder": "Belgium",
@@ -32,6 +33,7 @@
     "phoneNrInputDescription": "Fill in the phone number of the company here",
     "phoneNrInputPlaceholder": "+32 123 456 789",
     "phoneNrInputError": "Invalid phone number",
+
     "vatNrInputTitle": "VAT number",
     "vatNrInputDescription": "Fill in the VAT number of the company here",
     "vatNrInputPlaceholder": "BE 0123 456 789",
@@ -41,6 +43,7 @@
     "postalCodeInputDescription": "Fill in the zip of the company here",
     "postalCodeInputPlaceholder": "2000",
     "postalCodeInputError": "ZIP is required",
+
     "districtInputTitle": "District",
     "districtInputDescription": "Fill in the district of the company here",
     "districtInputPlaceholder": "Antwerp",
@@ -50,24 +53,30 @@
     "streetInputDescription": "Street",
     "streetInputPlaceholder": "Duboisstraat",
     "streetInputError": "Street is required",
+
     "streetNrInputDescription": "Street number",
     "streetNrInputPlaceholder": "50",
     "streetNrInputError": "Nr is required",
+
     "boxNrInputDescription": "Bus number",
     "boxNrInputPlaceholder": "1",
     "boxNrInputError": "Invalid bus",
+
     "extraInfoInputDescription": "Extra",
     "extraInfoInputPlaceholder": "Zone A",
 
-    "firstNameInputTitle": "Contact person",
-    "firstNameInputDescription": "First name",
+    "firstNameInputTitle": "First name",
+    "firstNameInputDescription": "Fill in the first name of the contact person here",
     "firstNameInputPlaceholder": "John",
     "firstNameInputError": "First name is required",
-    "lastNameInputDescription": "Last name",
+
+    "lastNameInputTitle": "Last name",
+    "lastNameInputDescription": "Fill in the last name of the contact person here",
     "lastNameInputPlaceholder": "Doe",
     "lastNameInputError": "Last name is required",
 
-    "emailInputDescription": "Email",
+    "emailInputTitle": "Email",
+    "emailInputDescription": "Fill in the email of the contact person here",
     "emailInputError": "Invalid email address",
 
     "userRequestButton": "Request",

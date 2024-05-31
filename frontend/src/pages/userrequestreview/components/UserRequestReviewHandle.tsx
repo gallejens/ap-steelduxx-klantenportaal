@@ -195,7 +195,6 @@ export const UserRequestReviewHandle: FC<Props> = props => {
               searchable
               {...approveForm.getInputProps('referenceCode')}
             />
-
             <div className={styles.confirm_button}>
               <Button type='submit'>
                 {t('userRequestForm:confirmButton')}

@@ -1,12 +1,13 @@
-import { Center, Popover, Text } from '@mantine/core';
+import { Center, Indicator, Popover, Text } from '@mantine/core';
 import { IconMessage } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
-import CustomCard from './Notificationcard';
+import { NotificationCard } from './Notificationcard';
 import { type NotificationData } from '../types/notificationdata';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { doApiAction } from '@/lib/api';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '@/components/iconbutton';
+import styles from '../styles/notificationspopover.module.scss';
 
 export function NotificationPopover() {
   const { user } = useAuth();
@@ -51,44 +52,46 @@ export function NotificationPopover() {
 
   return (
     <Popover
-      width={300}
+      width={400}
       position='bottom'
       withArrow
       shadow='md'
-      offset={{ mainAxis: 10, crossAxis: -50 }}
+      offset={{ mainAxis: 10, crossAxis: -100 }}
     >
       <Popover.Target>
         <IconButton
           tooltipKey='appshell:header:tooltips:notifications'
           icon={
-            <IconMessage
-              color={
-                notifications?.length ? 'red' : 'var(--mantine-color-primary-0)'
-              }
-            />
+            <Indicator
+              color='red'
+              size='12'
+              radius='xl'
+              offset={6}
+              processing
+              disabled={notifications.length === 0}
+            >
+              <IconMessage color={'var(--mantine-color-primary-0)'} />
+            </Indicator>
           }
           transparent
         />
       </Popover.Target>
       <Popover.Dropdown bg='var(--mantine-color-body)'>
-        <div>
+        <div className={styles.notification_list}>
           {notifications.length === 0 ? (
             <Center>
               <Text>{t('notifications:noNotifications')}</Text>
             </Center>
           ) : (
-            notifications.map(
-              (notification: NotificationData, index: number) => (
-                <div key={index}>
-                  <CustomCard
-                    title={notification.title}
-                    message={notification.message}
-                    datetime={notification.createdAt}
-                    onClick={() => readMutation.mutate(notification.id)}
-                  />
-                </div>
-              )
-            )
+            notifications.map((notification: NotificationData, idx: number) => (
+              <NotificationCard
+                key={idx}
+                title={notification.title}
+                message={notification.message}
+                datetime={notification.createdAt}
+                onClick={() => readMutation.mutate(notification.id)}
+              />
+            ))
           )}
         </div>
       </Popover.Dropdown>

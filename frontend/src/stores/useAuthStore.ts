@@ -8,7 +8,6 @@ type AuthState = {
 };
 
 type AuthStateActions = {
-  setUser: (user: AuthState['user']) => void;
   setLoading: (loading: AuthState['loading']) => void;
   fetchUserInfo: () => Promise<AuthState['user']>;
 };
@@ -17,7 +16,6 @@ export const useAuthStore = create<AuthState & AuthStateActions>(
   (set, get) => ({
     user: null,
     loading: false,
-    setUser: user => set({ user, loading: false }),
     setLoading: loading => set({ loading }),
     fetchUserInfo: async () => {
       get().setLoading(true);
@@ -26,7 +24,7 @@ export const useAuthStore = create<AuthState & AuthStateActions>(
         endpoint: '/auth/info',
       });
       const user = response?.data ?? null;
-      get().setUser(user);
+      set({ user, loading: false });
       return user;
     },
   })

@@ -34,13 +34,10 @@ export const CompaniesPage: FC = () => {
       </div>
       <div className={styles.list}>
         {search(data, searchValues).map((c, idx) => (
-          <>
-            <CompanyCard
-              key={c.company?.name ?? `unknown-company-${idx}`}
-              {...c}
-            />
+          <div key={`company-${idx}`}>
+            <CompanyCard {...c} />
             {c.company === null && <Divider />}
-          </>
+          </div>
         ))}
       </div>
     </div>

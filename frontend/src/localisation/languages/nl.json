@@ -20,29 +20,32 @@
   "userRequestForm": {
     "title": "Vraag account aan",
     "companyInputTitle": "Bedrijf",
-    "companyInputDescription": "Vul hier de naam van het bedrijf",
+    "companyInputDescription": "Vul hier de naam van het bedrijf in",
     "companyInputPlaceholder": "Steelduxx",
     "companyInputError": "Bedrijfsnaam is vereist",
+
     "countryInputTitle": "Land",
-    "countryInputDescription": "Vul hier het land van het bedrijf",
+    "countryInputDescription": "Vul hier het land van het bedrijf in",
     "countryInputPlaceholder": "Belgie",
     "countryInputError": "Land is vereist",
 
     "phoneNrInputTitle": "Telefoonnummer",
-    "phoneNrInputDesription": "Vul hier de telefoonnummer van het bedrijf",
+    "phoneNrInputDesription": "Vul hier de telefoonnummer van het bedrijf in",
     "phoneNrInputPlaceholder": "+32 123 456 789",
     "phoneNrInputError": "Ongeldig telefoonnummer",
+
     "vatNrInputTitle": "BTW nummer",
-    "vatNrInputDescription": "Vul hier de BTW nummer van het bedrijf",
+    "vatNrInputDescription": "Vul hier het BTW nummer van het bedrijf in",
     "vatNrInputPlaceholder": "BE 0123 456 789",
     "vatNrInputError": "Ongeldig BTW nummer",
 
-    "postalCodeInputTitle": "ZIP",
-    "postalCodeInputDescription": "Vul hier de zip van het bedrijf",
+    "postalCodeInputTitle": "Postcode",
+    "postalCodeInputDescription": "Vul hier de postcode van het bedrijf in",
     "postalCodeInputPlaceholder": "2000",
-    "postalCodeInputError": "ZIP is vereist",
+    "postalCodeInputError": "Postcode is vereist",
+
     "districtInputTitle": "Gemeente",
-    "districtInputDescription": "Vul hier de gemeente van het bedrijf",
+    "districtInputDescription": "Vul hier de gemeente van het bedrijf in",
     "districtInputPlaceholder": "Antwerpen",
     "districtInputError": "Gemeente is vereist",
 
@@ -50,24 +53,30 @@
     "streetInputDescription": "Straat",
     "streetInputPlaceholder": "Duboisstraat",
     "streetInputError": "Straat is vereist",
+
     "streetNrInputDescription": "Straatnummer",
     "streetNrInputPlaceholder": "50",
     "streetNrInputError": "Nummer is vereist",
+
     "boxNrInputDescription": "Bus nummer",
     "boxNrInputPlaceholder": "1",
     "boxNrInputError": "Ongeldig bus nummer",
+
     "extraInfoInputDescription": "Extra",
     "extraInfoInputPlaceholder": "Zone A",
 
-    "firstNameInputTitle": "Contactpersoon",
-    "firstNameInputDescription": "Voornaam",
+    "firstNameInputTitle": "Voornaam",
+    "firstNameInputDescription": "Vul hier de voornaam van de contactpersoon in",
     "firstNameInputPlaceholder": "John",
     "firstNameInputError": "Voornaam is vereist",
-    "lastNameInputDescription": "Achternaam",
+
+    "lastNameInputTitle": "Achternaam",
+    "lastNameInputDescription": "Vul hier de achternaam van de contactpersoon in",
     "lastNameInputPlaceholder": "Doe",
     "lastNameInputError": "Achternaam is vereist",
 
-    "emailInputDescription": "E-mail",
+    "emailInputTitle": "E-mail",
+    "emailInputDescription": "Vul hier het e-mailadres van de contactpersoon in",
     "emailInputError": "Ongeldig e-mailadres",
 
     "userRequestButton": "Request",
@@ -181,26 +190,35 @@
   "newOrderPage": {
     "title": "Order Informatie",
     "orderForm": {
+      "customerReferenceNumber": {
+        "title": "Referentie Code",
+        "description": "Vul je eigen referentiecode in om het order te identificeren",
+        "placeholder": "1005839AEB",
+        "error": "Referentie Code is vereist"
+      },
       "transportType": {
-        "transportTypeInputTitle": "Transport type",
-        "transportTypeInputDescription": "Selecteer het transport type van het order",
-        "transportTypeInputPlaceholder": "IMPORT / EXPORT",
-        "transportTypeInputError": "Transport type is vereist"
+        "title": "Transport type",
+        "description": "Selecteer het transport type van het order",
+        "placeholder": "IMPORT / EXPORT",
+        "error": "Transport type is vereist"
+      },
+      "orderType": {
+        "title": "Order Type",
+        "description": "Selecteer het type van het order",
+        "placeholder": "BULK / CONTAINER",
+        "error": "Order type is vereist"
       },
       "portDestinationCode": {
-        "portDestinationCodeInputTitle": "Haven code van bestemming",
-        "portDestinationCodeInputDescription": "Vul hier de havencode van de bestemming in",
-        "portDestinationCodeInputPlaceholder": "BEANR",
-        "portDestinationCodeInputError": "De havencode van de bestemming is vereist"
+        "title": "Bestemming Havencode",
+        "description": "Vul hier de havencode van de bestemming in",
+        "placeholder": "BEANR",
+        "error": "De havencode van de bestemming is vereist"
       },
       "portOriginCode": {
-        "portOriginCodeInputTitle": "Haven code van oorsprong",
-        "portOriginCodeInputDescription": "Vul hier de havencode van de oorsprong in",
-        "portOriginCodeInputPlaceholder": "CNSHG",
-        "portOriginCodeInputError": "De havencode van de oorsprong is vereist"
-      },
-      "checkBoxContainer": {
-        "checkBoxLabel": "Container order"
+        "title": "Oorsprong Havencode",
+        "description": "Vul hier de havencode van de oorsprong in",
+        "placeholder": "CNSHG",
+        "error": "De havencode van de oorsprong is vereist"
       }
     },
     "productForm": {
@@ -321,7 +339,7 @@
       "changePassword": "Wachtwoord veranderen",
       "logoutConfirmTitle": "Uitloggen",
       "logoutConfirmText": "Weet u zeker dat u wilt uitloggen?",
-      "preferences": "Instellingen"
+      "preferences": "Voorkeuren"
     },
     "deleteRequestConfirmation": {
       "deleteConfirmTitle": "Aanvraag verwijderen",
@@ -463,10 +481,11 @@
     "infoTitle": "Informatie",
     "approveButton": "Goedkeuren",
     "denyButton": "Afkeuren",
-    "confirmButton": "Order aanvraag bewerken",
+    "confirmButton": "Bewerkingen Opslaan",
     "response": {
       "success": "Order aanvraag goedgekeurd!",
       "denied": "Order aanvraag afgekeurd!",
+      "failed": "Er is een probleem opgetreden, probeer later opnieuw",
       "edited": "Order aanvraag bewerkt!"
     },
     "editProductModal": {

@@ -1,4 +1,4 @@
-import { Divider, Select, Title, Button, Checkbox } from '@mantine/core';
+import { Divider, Select, Title, Button, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,10 +21,11 @@ import { ProductsList } from '@/components/productslist';
 import { NewProductModal } from './modal/NewProductModal';
 
 type NewOrderFormValues = {
+  customerReferenceNumber: string;
   transportType: OrderTransportType;
-  portOfDestinationCode: string;
+  orderType: 'BULK' | 'CONTAINER';
   portOfOriginCode: string;
-  isContainerOrder: boolean;
+  portOfDestinationCode: string;
 };
 
 export const OrderCreatePage: FC = () => {
@@ -40,38 +41,43 @@ export const OrderCreatePage: FC = () => {
 
   const newOrderForm = useForm<NewOrderFormValues>({
     initialValues: {
+      customerReferenceNumber: '',
       transportType: 'IMPORT',
-      portOfDestinationCode: DEFAULT_PORT_CODE,
+      orderType: 'BULK',
       portOfOriginCode: '',
-      isContainerOrder: false,
+      portOfDestinationCode: DEFAULT_PORT_CODE,
     },
     validate: {
+      customerReferenceNumber: value =>
+        !value && t('newOrderPage:orderForm:customerReferenceNumber:error'),
       transportType: value =>
-        !value &&
-        t('newOrderPage:orderForm:transportType:transportTypeInputError'),
+        !value && t('newOrderPage:orderForm:transportType:error'),
+      orderType: value => !value && t('newOrderPage:orderForm:orderType:error'),
       portOfDestinationCode: value =>
-        !value &&
-        t(
-          'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputError'
-        ),
+        !value && t('newOrderPage:orderForm:portDestinationCode:error'),
       portOfOriginCode: value =>
-        !value &&
-        t('newOrderPage:orderForm:portOriginCode:portOriginCodeInputError'),
+        !value && t('newOrderPage:orderForm:portOriginCode:error'),
     },
     validateInputOnBlur: true,
   });
 
   newOrderForm.watch('transportType', ({ value }) => {
     if (value === 'IMPORT') {
+      newOrderForm.setFieldValue(
+        'portOfOriginCode',
+        newOrderForm.getValues().portOfDestinationCode
+      );
       newOrderForm.setFieldValue('portOfDestinationCode', DEFAULT_PORT_CODE);
-      newOrderForm.setFieldValue('portOfOriginCode', '');
     } else {
-      newOrderForm.setFieldValue('portOfDestinationCode', '');
+      newOrderForm.setFieldValue(
+        'portOfDestinationCode',
+        newOrderForm.getValues().portOfOriginCode
+      );
       newOrderForm.setFieldValue('portOfOriginCode', DEFAULT_PORT_CODE);
     }
   });
 
-  newOrderForm.watch('isContainerOrder', () => {
+  newOrderForm.watch('orderType', () => {
     setProducts([]);
   });
 
@@ -81,7 +87,7 @@ export const OrderCreatePage: FC = () => {
         onSubmit={product => {
           setProducts(s => [...s, product]);
         }}
-        isContainerOrder={newOrderForm.values.isContainerOrder}
+        showContainerFields={newOrderForm.values.orderType === 'CONTAINER'}
       />
     );
   };
@@ -176,56 +182,69 @@ export const OrderCreatePage: FC = () => {
       <div className={styles.inputs}>
         <Title order={3}>{t('newOrderPage:title')}</Title>
         <form className={styles.form}>
-          <Select
-            label={t(
-              'newOrderPage:orderForm:transportType:transportTypeInputTitle'
-            )}
+          <TextInput
+            label={t('newOrderPage:orderForm:customerReferenceNumber:title')}
             description={t(
-              'newOrderPage:orderForm:transportType:transportTypeInputDescription'
+              'newOrderPage:orderForm:customerReferenceNumber:description'
             )}
             placeholder={t(
-              'newOrderPage:orderForm:transportType:transportTypeInputPlaceholder'
+              'newOrderPage:orderForm:customerReferenceNumber:placeholder'
             )}
-            data={['IMPORT', 'EXPORT']}
             required
-            searchable
-            clearable={false}
-            allowDeselect={false}
-            {...newOrderForm.getInputProps('transportType')}
+            {...newOrderForm.getInputProps('customerReferenceNumber')}
           />
-          <PortcodesSelector
-            label={t(
-              'newOrderPage:orderForm:portOriginCode:portOriginCodeInputTitle'
-            )}
-            description={t(
-              'newOrderPage:orderForm:portOriginCode:portOriginCodeInputDescription'
-            )}
-            placeholder={t(
-              'newOrderPage:orderForm:portOriginCode:portOriginCodeInputPlaceholder'
-            )}
-            required={newOrderForm.values.transportType === 'IMPORT'}
-            disabled={newOrderForm.values.transportType !== 'IMPORT'}
-            {...newOrderForm.getInputProps('portOfOriginCode')}
-          />
-          <PortcodesSelector
-            label={t(
-              'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputTitle'
-            )}
-            description={t(
-              'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputDescription'
-            )}
-            placeholder={t(
-              'newOrderPage:orderForm:portDestinationCode:portDestinationCodeInputPlaceholder'
-            )}
-            required={newOrderForm.values.transportType === 'EXPORT'}
-            disabled={newOrderForm.values.transportType !== 'EXPORT'}
-            {...newOrderForm.getInputProps('portOfDestinationCode')}
-          />
-          <Checkbox
-            size='md'
-            label={t('newOrderPage:orderForm:checkBoxContainer:checkBoxLabel')}
-            {...newOrderForm.getInputProps('isContainerOrder')}
-          />
+          <div className={styles.double}>
+            <Select
+              label={t('newOrderPage:orderForm:transportType:title')}
+              description={t(
+                'newOrderPage:orderForm:transportType:description'
+              )}
+              placeholder={t(
+                'newOrderPage:orderForm:transportType:placeholder'
+              )}
+              data={['IMPORT', 'EXPORT']}
+              required
+              clearable={false}
+              allowDeselect={false}
+              {...newOrderForm.getInputProps('transportType')}
+            />
+            <Select
+              label={t('newOrderPage:orderForm:orderType:title')}
+              description={t('newOrderPage:orderForm:orderType:description')}
+              placeholder={t('newOrderPage:orderForm:orderType:placeholder')}
+              data={['BULK', 'CONTAINER']}
+              required
+              clearable={false}
+              allowDeselect={false}
+              {...newOrderForm.getInputProps('orderType')}
+            />
+          </div>
+          <div className={styles.double}>
+            <PortcodesSelector
+              label={t('newOrderPage:orderForm:portOriginCode:title')}
+              description={t(
+                'newOrderPage:orderForm:portOriginCode:description'
+              )}
+              placeholder={t(
+                'newOrderPage:orderForm:portOriginCode:placeholder'
+              )}
+              required={newOrderForm.values.transportType === 'IMPORT'}
+              disabled={newOrderForm.values.transportType !== 'IMPORT'}
+              {...newOrderForm.getInputProps('portOfOriginCode')}
+            />
+            <PortcodesSelector
+              label={t('newOrderPage:orderForm:portDestinationCode:title')}
+              description={t(
+                'newOrderPage:orderForm:portDestinationCode:description'
+              )}
+              placeholder={t(
+                'newOrderPage:orderForm:portDestinationCode:placeholder'
+              )}
+              required={newOrderForm.values.transportType === 'EXPORT'}
+              disabled={newOrderForm.values.transportType !== 'EXPORT'}
+              {...newOrderForm.getInputProps('portOfDestinationCode')}
+            />
+          </div>
         </form>
         <Divider />
         <OrderDocuments

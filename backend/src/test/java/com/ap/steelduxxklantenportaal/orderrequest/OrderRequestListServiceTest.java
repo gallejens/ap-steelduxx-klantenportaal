@@ -13,7 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestListDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestDto;
 import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestProductDto;
 import com.ap.steelduxxklantenportaal.models.OrderRequest;
 import com.ap.steelduxxklantenportaal.models.OrderRequestProduct;
@@ -61,17 +61,17 @@ class OrderRequestListServiceTest {
         when(companyRepository.findById(1L)).thenReturn(Optional.of(OrderRequestObjectMother.company1));
 
         // When
-        List<OrderRequestListDto> orderRequestList = orderRequestService.getAll();
+        List<OrderRequestDto> orderRequestList = orderRequestService.getAll();
 
         // Then
         assertEquals(2, orderRequestList.size());
 
-        OrderRequestListDto firstOrderRequest = orderRequestList.get(0);
+        OrderRequestDto firstOrderRequest = orderRequestList.get(0);
         assertEquals(1, firstOrderRequest.id());
         assertEquals("C123", firstOrderRequest.companyName());
         assertEquals(2, firstOrderRequest.products().size());
 
-        OrderRequestListDto secondOrderRequest = orderRequestList.get(1);
+        OrderRequestDto secondOrderRequest = orderRequestList.get(1);
         assertEquals(2, secondOrderRequest.id());
         assertEquals("C123", secondOrderRequest.companyName());
         assertEquals(0, secondOrderRequest.products().size());

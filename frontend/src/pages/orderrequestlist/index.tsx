@@ -60,7 +60,7 @@ export const OrderRequestListPage: FC = () => {
               navigate({
                 to: '/app/order-requests/$orderrequestid',
                 params: {
-                  orderrequestid: orderRequest.id,
+                  orderrequestid: orderRequest.id.toString(),
                 },
               });
             }}

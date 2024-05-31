@@ -270,7 +270,7 @@ public class AuthService {
 
     public static User getCurrentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null)
+        if (auth == null || !auth.isAuthenticated())
             return null;
         var user = auth.getPrincipal();
         if (user == null)

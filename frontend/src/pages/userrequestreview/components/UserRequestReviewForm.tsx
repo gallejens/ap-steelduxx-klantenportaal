@@ -27,29 +27,24 @@ export const UserRequestReviewForm: FC<UserRequest.UserRequestValue> = () => {
   return (
     <form className={styles.userrequest_review_page_form}>
       <div className={styles.company_detail_fields}>
-        <div className={styles.company_fields}>
+        <div className={styles.double_row}>
           <TextInput
-            className={styles.companyName_field}
             label={t('userRequestForm:companyInputTitle')}
             value={userRequestValue?.companyName}
             disabled
           />
           <TextInput
-            className={styles.country_field}
             label={t('userRequestForm:countryInputTitle')}
             value={userRequestValue?.country}
             disabled
           />
         </div>
-
         <TextInput
-          className={styles.email_field}
-          label={t('userRequestForm:emailInputDescription')}
+          label={t('userRequestForm:emailInputTitle')}
           value={userRequestValue?.email}
           disabled
         />
-
-        <div className={styles.number_fields}>
+        <div className={styles.double_row}>
           <TextInput
             label={t('userRequestForm:phoneNrInputTitle')}
             value={userRequestValue?.phoneNr}
@@ -61,7 +56,7 @@ export const UserRequestReviewForm: FC<UserRequest.UserRequestValue> = () => {
             disabled
           />
         </div>
-        <div className={styles.place_fields}>
+        <div className={styles.double_row}>
           <NumberInput
             label={t('userRequestForm:postalCodeInputTitle')}
             value={userRequestValue?.postalCode}
@@ -101,21 +96,18 @@ export const UserRequestReviewForm: FC<UserRequest.UserRequestValue> = () => {
           value={userRequestValue?.extraInfo}
           disabled
         />
-      </div>
-      <div className={styles.name_fields}>
-        <TextInput
-          label={t('userRequestForm:firstNameInputTitle')}
-          description={t('userRequestForm:firstNameInputDescription')}
-          value={userRequestValue?.firstName}
-          disabled
-        />
-        <TextInput
-          className={styles.lastname_field}
-          label={' '}
-          description={t('userRequestForm:lastNameInputDescription')}
-          value={userRequestValue?.lastName}
-          disabled
-        />
+        <div className={styles.double_row}>
+          <TextInput
+            label={t('userRequestForm:firstNameInputTitle')}
+            value={userRequestValue?.firstName}
+            disabled
+          />
+          <TextInput
+            label={t('userRequestForm:lastNameInputTitle')}
+            value={userRequestValue?.lastName}
+            disabled
+          />
+        </div>
       </div>
     </form>
   );

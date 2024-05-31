@@ -10,16 +10,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.thymeleaf.TemplateEngine;
 
 @ExtendWith(MockitoExtension.class)
 class EmailServiceTest {
 
     @Mock
     private JavaMailSender mailSender;
-
-    @Mock
-    private TemplateEngine templateEngine;
 
     @InjectMocks
     private EmailService emailService;

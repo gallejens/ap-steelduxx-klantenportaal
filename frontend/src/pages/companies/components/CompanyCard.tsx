@@ -41,8 +41,6 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
   const client = useQueryClient();
   const { user } = useAuth();
 
-  if (!user) throw new Error('User not found');
-
   const isAdminCompany = company === null;
 
   const [headAccount, ...normalAccounts] = useMemo(() => {
@@ -162,6 +160,8 @@ export const CompanyCard = memo<CompanyInfo>(({ company, accounts }) => {
       autoClose: 10000,
     });
   };
+
+  if (!user) return null;
 
   const showDeleteSubAccount = user.permissions.includes(
     isAdminCompany ? 'DELETE_ADMIN_ACCOUNTS' : 'DELETE_USER_ACCOUNTS'

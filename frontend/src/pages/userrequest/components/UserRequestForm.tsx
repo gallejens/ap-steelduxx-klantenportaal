@@ -1,9 +1,9 @@
 import { notifications } from '@/components/notifications';
 import { type GenericAPIResponse, doApiAction } from '@/lib/api';
-import { Button, NumberInput, Select, TextInput } from '@mantine/core';
+import { Button, Divider, NumberInput, Select, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
 import { checkVAT, countries } from 'jsvat';
-import type { FC } from 'react';
+import { useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   isPossiblePhoneNumber,
@@ -16,12 +16,12 @@ import { COUNTRIES } from '../constants';
 import type { UserRequest } from '@/types/userrequest';
 
 type Props = {
-  onSubmit?: () => void;
   onSuccess?: () => void;
 };
 
 export const UserRequestForm: FC<Props> = props => {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
 
   const UserRequestForm = useForm<UserRequest.UserRequestFormValues>({
     initialValues: {
@@ -44,6 +44,11 @@ export const UserRequestForm: FC<Props> = props => {
       companyName: value => {
         if (!value) {
           return t('userRequestForm:companyInputError');
+        }
+      },
+      country: value => {
+        if (!value) {
+          return t('userRequestForm:countryInputError');
         }
       },
       email: isEmail(t('userRequestForm:emailInputError')),
@@ -112,6 +117,8 @@ export const UserRequestForm: FC<Props> = props => {
       return;
     }
 
+    setLoading(true);
+
     const result = await doApiAction<GenericAPIResponse<{ message: string }>>({
       endpoint: '/user-requests/new',
       method: 'POST',
@@ -142,7 +149,7 @@ export const UserRequestForm: FC<Props> = props => {
       });
     }
 
-    props.onSubmit?.();
+    setLoading(false);
 
     if (isSuccess) {
       props.onSuccess?.();
@@ -157,9 +164,8 @@ export const UserRequestForm: FC<Props> = props => {
       )}
     >
       <div className={styles.company_detail_fields}>
-        <div className={styles.company_fields}>
+        <div className={styles.row}>
           <TextInput
-            className={styles.company_name_input}
             label={t('userRequestForm:companyInputTitle')}
             description={t('userRequestForm:companyInputDescription')}
             placeholder={t('userRequestForm:companyInputPlaceholder')}
@@ -167,17 +173,16 @@ export const UserRequestForm: FC<Props> = props => {
             {...UserRequestForm.getInputProps('companyName')}
           />
           <Select
-            className={styles.company_country_input}
             label={t('userRequestForm:countryInputTitle')}
             description={t('userRequestForm:countryInputDescription')}
             placeholder={t('userRequestForm:countryInputPlaceholder')}
             data={COUNTRIES}
             searchable
+            required
             {...UserRequestForm.getInputProps('country')}
           />
         </div>
-
-        <div className={styles.number_fields}>
+        <div className={styles.row}>
           <TextInput
             label={t('userRequestForm:phoneNrInputTitle')}
             description={t('userRequestForm:phoneNrInputDescription')}
@@ -189,10 +194,11 @@ export const UserRequestForm: FC<Props> = props => {
             label={t('userRequestForm:vatNrInputTitle')}
             description={t('userRequestForm:vatNrInputDescription')}
             placeholder={t('userRequestForm:vatNrInputPlaceholder')}
+            required
             {...UserRequestForm.getInputProps('vatNr')}
           />
         </div>
-        <div className={styles.place_fields}>
+        <div className={styles.row}>
           <NumberInput
             label={t('userRequestForm:postalCodeInputTitle')}
             description={t('userRequestForm:postalCodeInputDescription')}
@@ -211,7 +217,7 @@ export const UserRequestForm: FC<Props> = props => {
             {...UserRequestForm.getInputProps('district')}
           />
         </div>
-        <div className={styles.street_fields}>
+        <div className={styles.street_row}>
           <TextInput
             label={t('userRequestForm:streetInputTitle')}
             description={t('userRequestForm:streetInputDescription')}
@@ -220,16 +226,14 @@ export const UserRequestForm: FC<Props> = props => {
             {...UserRequestForm.getInputProps('street')}
           />
           <TextInput
-            className={styles.street_nr_input}
-            label={t(' ')}
+            label=' '
             description={t('userRequestForm:streetNrInputDescription')}
             placeholder={t('userRequestForm:streetNrInputPlaceholder')}
             maxLength={4}
             {...UserRequestForm.getInputProps('streetNr', { required: true })}
           />
           <NumberInput
-            className={styles.bus_nr_input}
-            label={t(' ')}
+            label=' '
             description={t('userRequestForm:boxNrInputDescription')}
             placeholder={t('userRequestForm:boxNrInputPlaceholder')}
             hideControls
@@ -246,6 +250,7 @@ export const UserRequestForm: FC<Props> = props => {
           {...UserRequestForm.getInputProps('extraInfo')}
         />
       </div>
+      <Divider orientation='vertical' />
       <div className={styles.name_fields}>
         <TextInput
           label={t('userRequestForm:firstNameInputTitle')}
@@ -255,23 +260,26 @@ export const UserRequestForm: FC<Props> = props => {
           {...UserRequestForm.getInputProps('firstName')}
         />
         <TextInput
-          className={styles.lastname_field}
-          label={' '}
+          label={t('userRequestForm:lastNameInputTitle')}
           description={t('userRequestForm:lastNameInputDescription')}
           placeholder={t('userRequestForm:lastNameInputPlaceholder')}
-          {...UserRequestForm.getInputProps('lastName', { required: true })}
+          required
+          {...UserRequestForm.getInputProps('lastName')}
         />
         <TextInput
-          className={styles.email_field}
-          label={t(' ')}
+          label={t('userRequestForm:emailInputTitle')}
           description={t('userRequestForm:emailInputDescription')}
           placeholder={EMAIL_PLACEHOLDER}
-          {...UserRequestForm.getInputProps('email', { required: true })}
+          required
+          {...UserRequestForm.getInputProps('email')}
         />
       </div>
       <div className={styles.go_login_userrequest_button}>
         <div className={styles.userrequest_button}>
-          <Button type='submit'>
+          <Button
+            type='submit'
+            loading={loading}
+          >
             {t('userRequestForm:userRequestButton')}
           </Button>
         </div>

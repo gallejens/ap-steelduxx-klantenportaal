@@ -1,10 +1,6 @@
 package com.ap.steelduxxklantenportaal.controllers;
 
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.NewOrderRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestDto;
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestListDto;
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestProductDto;
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestUploadDto;
+import com.ap.steelduxxklantenportaal.dtos.orderrequests.*;
 import com.ap.steelduxxklantenportaal.services.OrderRequestService;
 import com.ap.steelduxxklantenportaal.utils.ResponseHandler;
 import org.springframework.http.HttpStatus;
@@ -13,9 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("order-requests")
@@ -34,21 +27,22 @@ public class OrderRequestController {
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public ResponseEntity<List<OrderRequestListDto>> getAllOrderRequests() {
-        var orderRequests = orderRequestService.getAll();
-        return ResponseEntity.ok(orderRequests);
+    @ResponseStatus(HttpStatus.OK)
+    public List<OrderRequestDto> getAllOrderRequests() {
+        return orderRequestService.getAll();
     }
 
     @GetMapping("{id}")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public OrderRequestListDto getOrderRequestById(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public OrderRequestDto getOrderRequestById(@PathVariable Long id) {
         return orderRequestService.getOrderRequest(id);
     }
 
     @PostMapping("/upload-file")
     @PreAuthorize("hasAuthority('CREATE_NEW_ORDERS')")
-    public ResponseEntity<Object> uploadOrderRequestFile(@ModelAttribute OrderRequestUploadDto orderRequestUploadDto) {
-        orderRequestService.saveOrderRequestDocument(orderRequestUploadDto);
+    public ResponseEntity<Object> uploadOrderRequestFile(@ModelAttribute OrderRequestDocumentUploadDto orderRequestDocumentUploadDto) {
+        orderRequestService.saveOrderRequestDocument(orderRequestDocumentUploadDto);
         return ResponseHandler.generate("", HttpStatus.OK);
     }
 
@@ -66,16 +60,16 @@ public class OrderRequestController {
 
     @PutMapping("/{id}/edit")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public ResponseEntity<Object> editOrderRequest(@PathVariable Long id, @RequestBody OrderRequestDto orderRequestDto) {
-        orderRequestService.editOrderRequest(id, orderRequestDto);
+    public ResponseEntity<Object> editOrderRequest(@PathVariable Long id, @RequestBody OrderRequestEditDto orderRequestEditDto) {
+        orderRequestService.editOrderRequest(id, orderRequestEditDto);
         return ResponseHandler.generate("orderRequestReviewPage:response:edited", HttpStatus.OK);
 
     }
 
     @PutMapping("/{id}/product/edit")
     @PreAuthorize("hasAuthority('MANAGE_ORDER_REQUESTS')")
-    public ResponseEntity<Object> editOrderRequestProduct(@PathVariable Long id, @RequestBody OrderRequestProductDto orderRequestProductDto) {
-        orderRequestService.editOrderRequestProduct(id, orderRequestProductDto);
+    public ResponseEntity<Object> editOrderRequestProduct(@PathVariable Long id, @RequestBody OrderRequestProductEditDto orderRequestProductEditDto) {
+        orderRequestService.editOrderRequestProduct(id, orderRequestProductEditDto);
         return ResponseHandler.generate("orderRequestReviewPage:editProductModal:response:success", HttpStatus.OK);
     }
 }

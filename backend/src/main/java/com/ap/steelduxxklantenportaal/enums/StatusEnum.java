@@ -1,5 +1,8 @@
 package com.ap.steelduxxklantenportaal.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum StatusEnum {
     PENDING("Pending"),
     APPROVED("Approved"),
@@ -10,9 +13,5 @@ public enum StatusEnum {
 
     StatusEnum(String value) {
         this.value = value;
-    }
-
-    public String getValue() {
-        return value;
     }
 }

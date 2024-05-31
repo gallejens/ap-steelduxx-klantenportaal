@@ -23,6 +23,7 @@
     "companyInputDescription": "Fill in the name of the company here",
     "companyInputPlaceholder": "Steelduxx",
     "companyInputError": "Company name is required",
+
     "countryInputTitle": "Country",
     "countryInputDescription": "Fill in the country of the company here",
     "countryInputPlaceholder": "Belgium",
@@ -32,6 +33,7 @@
     "phoneNrInputDescription": "Fill in the phone number of the company here",
     "phoneNrInputPlaceholder": "+32 123 456 789",
     "phoneNrInputError": "Invalid phone number",
+
     "vatNrInputTitle": "VAT number",
     "vatNrInputDescription": "Fill in the VAT number of the company here",
     "vatNrInputPlaceholder": "BE 0123 456 789",
@@ -41,6 +43,7 @@
     "postalCodeInputDescription": "Fill in the zip of the company here",
     "postalCodeInputPlaceholder": "2000",
     "postalCodeInputError": "ZIP is required",
+
     "districtInputTitle": "District",
     "districtInputDescription": "Fill in the district of the company here",
     "districtInputPlaceholder": "Antwerp",
@@ -50,24 +53,30 @@
     "streetInputDescription": "Street",
     "streetInputPlaceholder": "Duboisstraat",
     "streetInputError": "Street is required",
+
     "streetNrInputDescription": "Street number",
     "streetNrInputPlaceholder": "50",
     "streetNrInputError": "Nr is required",
+
     "boxNrInputDescription": "Bus number",
     "boxNrInputPlaceholder": "1",
     "boxNrInputError": "Invalid bus",
+
     "extraInfoInputDescription": "Extra",
     "extraInfoInputPlaceholder": "Zone A",
 
-    "firstNameInputTitle": "Contact person",
-    "firstNameInputDescription": "First name",
+    "firstNameInputTitle": "First name",
+    "firstNameInputDescription": "Fill in the first name of the contact person here",
     "firstNameInputPlaceholder": "John",
     "firstNameInputError": "First name is required",
-    "lastNameInputDescription": "Last name",
+
+    "lastNameInputTitle": "Last name",
+    "lastNameInputDescription": "Fill in the last name of the contact person here",
     "lastNameInputPlaceholder": "Doe",
     "lastNameInputError": "Last name is required",
 
-    "emailInputDescription": "Email",
+    "emailInputTitle": "Email",
+    "emailInputDescription": "Fill in the email of the contact person here",
     "emailInputError": "Invalid email address",
 
     "userRequestButton": "Request",
@@ -182,26 +191,35 @@
   "newOrderPage": {
     "title": "Order Info",
     "orderForm": {
+      "customerReferenceNumber": {
+        "title": "Reference Code",
+        "description": "Fill in your own reference code to identify the order",
+        "placeholder": "1005839AEB",
+        "error": "Reference Code is required"
+      },
       "transportType": {
-        "transportTypeInputTitle": "Transport type",
-        "transportTypeInputDescription": "Select the transport type of the order here",
-        "transportTypeInputPlaceholder": "IMPORT / EXPORT",
-        "transportTypeInputError": "Transport type is required"
+        "title": "Transport Type",
+        "description": "Select the transport type of the order here",
+        "placeholder": "IMPORT / EXPORT",
+        "error": "Transport Type is required"
+      },
+      "orderType": {
+        "title": "Order Type",
+        "description": "Select the type of the order here",
+        "placeholder": "BULK / CONTAINER",
+        "error": "Order Type is required"
       },
       "portDestinationCode": {
-        "portDestinationCodeInputTitle": "Port code of destination",
-        "portDestinationCodeInputDescription": "Fill in the port code of the destination here",
-        "portDestinationCodeInputPlaceholder": "CNSHG",
-        "portDestinationCodeInputError": "Port Code of destination is required"
+        "title": "Destination Portcode",
+        "description": "Fill in the port code of the destination here",
+        "placeholder": "CNSHG",
+        "error": "Port Code of destination is required"
       },
       "portOriginCode": {
-        "portOriginCodeInputTitle": "Port code of origin",
-        "portOriginCodeInputDescription": "Fill in the port code of the origin here",
-        "portOriginCodeInputPlaceholder": "CNSHG",
-        "portOriginCodeInputError": "Port Code of origin is required"
-      },
-      "checkBoxContainer": {
-        "checkBoxLabel": "Container order"
+        "title": "Origin Portcode",
+        "description": "Fill in the port code of the origin here",
+        "placeholder": "CNSHG",
+        "error": "Port Code of origin is required"
       }
     },
     "productForm": {
@@ -464,10 +482,11 @@
     "infoTitle": "Information",
     "approveButton": "Approve",
     "denyButton": "Deny",
-    "confirmButton": "Edit order request",
+    "confirmButton": "Save Changes",
     "response": {
       "success": "Order request approved!",
       "denied": "Order request denied!",
+      "failed": "Failed to do action, try again later",
       "edited": "Order request edited!"
     },
     "editProductModal": {

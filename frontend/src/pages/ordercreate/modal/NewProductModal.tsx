@@ -16,7 +16,7 @@ import { convertRecordToSelectInputData } from '@/lib/util/inputs';
 
 type NewProductModalProps = {
   onSubmit: (newProduct: Product) => void;
-  isContainerOrder: boolean;
+  showContainerFields: boolean;
 };
 
 type NewProductFormValues = {
@@ -55,15 +55,15 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
       weight: value =>
         !value ? t('newOrderPage:productForm:weight:weightInputError') : null,
       containerNumber: value =>
-        !value && props.isContainerOrder
+        !value && props.showContainerFields
           ? t('newOrderPage:productForm:container:number:numberInputError')
           : null,
       containerSize: value =>
-        !value && props.isContainerOrder
+        !value && props.showContainerFields
           ? t('newOrderPage:productForm:container:size:sizeInputError')
           : null,
       containerType: value =>
-        !value && props.isContainerOrder
+        !value && props.showContainerFields
           ? t('newOrderPage:productForm:container:type:typeInputError')
           : null,
     },
@@ -75,7 +75,7 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
       name: values.name,
       quantity: values.quantity,
       weight: values.weight,
-      ...(props.isContainerOrder
+      ...(props.showContainerFields
         ? {
             containerNumber: values.containerNumber ?? null,
             containerSize: values.containerSize as ProductContainerSize,
@@ -156,46 +156,46 @@ export const NewProductModal: FC<NewProductModalProps> = props => {
             {...newProductForm.getInputProps('weight')}
           />
         </div>
-        {props.isContainerOrder && <Divider />}
-        <div>
-          {props.isContainerOrder && (
-            <TextInput
-              label={t(
-                'newOrderPage:productForm:container:number:numberInputDescription'
-              )}
-              placeholder={t(
-                'newOrderPage:productForm:container:number:numberInputPlaceholder'
-              )}
-              withAsterisk
-              {...newProductForm.getInputProps('containerNumber')}
-            />
-          )}
-        </div>
-        {props.isContainerOrder && (
-          <div>
-            <Select
-              label={t(
-                'newOrderPage:productForm:container:size:sizeInputDescription'
-              )}
-              placeholder={t(
-                'newOrderPage:productForm:container:size:sizeInputPlaceholder'
-              )}
-              data={PRODUCT_CONTAINER_SIZES}
-              withAsterisk
-              {...newProductForm.getInputProps('containerSize')}
-            />
-            <Select
-              label={t(
-                'newOrderPage:productForm:container:type:typeInputDescription'
-              )}
-              placeholder={t(
-                'newOrderPage:productForm:container:type:typeInputPlaceholder'
-              )}
-              data={convertRecordToSelectInputData(PRODUCT_CONTAINER_TYPES)}
-              withAsterisk
-              {...newProductForm.getInputProps('containerType')}
-            />
-          </div>
+        {props.showContainerFields && (
+          <>
+            <Divider />
+            <div>
+              <TextInput
+                label={t(
+                  'newOrderPage:productForm:container:number:numberInputDescription'
+                )}
+                placeholder={t(
+                  'newOrderPage:productForm:container:number:numberInputPlaceholder'
+                )}
+                withAsterisk
+                {...newProductForm.getInputProps('containerNumber')}
+              />
+            </div>
+            <div>
+              <Select
+                label={t(
+                  'newOrderPage:productForm:container:size:sizeInputDescription'
+                )}
+                placeholder={t(
+                  'newOrderPage:productForm:container:size:sizeInputPlaceholder'
+                )}
+                data={PRODUCT_CONTAINER_SIZES}
+                withAsterisk
+                {...newProductForm.getInputProps('containerSize')}
+              />
+              <Select
+                label={t(
+                  'newOrderPage:productForm:container:type:typeInputDescription'
+                )}
+                placeholder={t(
+                  'newOrderPage:productForm:container:type:typeInputPlaceholder'
+                )}
+                data={convertRecordToSelectInputData(PRODUCT_CONTAINER_TYPES)}
+                withAsterisk
+                {...newProductForm.getInputProps('containerType')}
+              />
+            </div>
+          </>
         )}
         <div className={styles.confirm_button}>
           <Button type='submit'>

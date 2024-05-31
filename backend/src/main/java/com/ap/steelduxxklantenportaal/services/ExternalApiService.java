@@ -1,19 +1,17 @@
 package com.ap.steelduxxklantenportaal.services;
 
-import com.ap.steelduxxklantenportaal.dtos.ExternalApiAuthDto;
-import com.ap.steelduxxklantenportaal.dtos.orderrequests.OrderRequestDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.ExternalApiTokenResponseDto;
+import com.ap.steelduxxklantenportaal.dtos.externalapi.ExternalApiTokenRequestDto;
 import com.ap.steelduxxklantenportaal.enums.PermissionEnum;
 import com.ap.steelduxxklantenportaal.models.User;
 import com.ap.steelduxxklantenportaal.repositories.CompanyRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class ExternalApiService {
@@ -21,94 +19,44 @@ public class ExternalApiService {
     private final CompanyRepository companyRepository;
     @Value("${external.api.base-url}")
     private String baseUrl;
-    private final HashMap<Long, String> userTokens;
-    private  String systemToken;
+    private final HashMap<String, String> tokens;
 
     public ExternalApiService(RestTemplate restTemplate, CompanyRepository companyRepository) {
         this.restTemplate = restTemplate;
         this.companyRepository = companyRepository;
-        this.userTokens = new HashMap<>();
-    }
-    public String getSystemToken() {
-        String existingSystemToken = systemToken;
-        if(existingSystemToken != null){
-            return existingSystemToken;
-        }
-        String referenceCode = "ADMIN";
-        String token = requestToken(referenceCode);
-        systemToken = token;
-        return token;
+        this.tokens = new HashMap<>();
     }
 
-    public <T> T doSystemRequest(String endpoint, HttpMethod method, Class<T> responseType) {
-        return internalSystemRequest(endpoint, method, responseType, false);
-    }
-    private <T> T internalSystemRequest(String endpoint, HttpMethod method, Class<T> responseType,
-                                        boolean isRetry) {
-        String token = getSystemToken();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        try {
-            ResponseEntity<T> response = restTemplate.exchange(baseUrl + endpoint, method, entity, responseType);
-            return response.getBody();
-        } catch (RestClientException e) {
-            if (isRetry) {
-                return null;
-            }
-
-            // if call is not a retry, remove existing token and retry;
-            return internalSystemRequest(endpoint,method,responseType,true);
-        }
-    }
-
-    private String getToken(User user) {
-        String existingToken = userTokens.get(user.getId());
+    private String getToken(String referenceCode) {
+        String existingToken = tokens.get(referenceCode);
         if (existingToken != null) {
             return existingToken;
         }
 
-        String referenceCode;
-        if (user.hasPermission(PermissionEnum.ADMIN)) {
-            referenceCode = "ADMIN";
-        } else {
-            var company = companyRepository.findByUserId(user.getId()).orElseThrow();
-            referenceCode = company.getReferenceCode();
-        }
+        try {
+            var body = new ExternalApiTokenRequestDto(referenceCode, String.format("SECRET-KEY-%s", referenceCode));
+            var response = execute(null, "/authenticate/token", HttpMethod.POST, body, ExternalApiTokenResponseDto.class);
 
-        // Save requested token to userId
-        String token = requestToken(referenceCode);
-        if (token == null) {
+            var responseBody = response.getBody();
+            if (responseBody == null) {
+                return null;
+            }
+
+            var newToken = responseBody.token();
+            tokens.put(referenceCode, newToken);
+
+            return newToken;
+        } catch (RestClientException e) {
             return null;
         }
-
-        userTokens.put(user.getId(), token);
-
-        return token;
     }
 
-    private String requestToken(String referenceCode) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    public <T> T doRequest(String referenceCode, String endpoint, HttpMethod method, Class<T> responseType) {
+        return internalRequest(referenceCode, endpoint, method, null, responseType, false);
+    }
 
-        Map<String, String> body = new HashMap<>();
-        body.put("group", referenceCode);
-        body.put("apiKey", String.format("SECRET-KEY-%s", referenceCode));
-
-        HttpEntity<Map<String, String>> entity = new HttpEntity<>(body, headers);
-
-        ResponseEntity<ExternalApiAuthDto> response = restTemplate.postForEntity(baseUrl + "/authenticate/token",
-                entity, ExternalApiAuthDto.class);
-
-        var responseBody = response.getBody();
-        if (responseBody == null) {
-            return null;
-        }
-
-        return responseBody.token();
+    public <T> T doRequest(String referenceCode, String endpoint, HttpMethod method, Object body, Class<T> responseType) {
+        return internalRequest(referenceCode, endpoint, method, body, responseType, false);
     }
 
     public <T> T doRequest(String endpoint, HttpMethod method, Class<T> responseType) {
@@ -116,73 +64,58 @@ public class ExternalApiService {
     }
 
     public <T> T doRequest(String endpoint, HttpMethod method, Object body, Class<T> responseType) {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            return null;
-        }
-
-        var user = (User) auth.getPrincipal();
+        var user = AuthService.getCurrentUser();
         if (user == null) {
             return null;
         }
 
-        return internalRequest(user, endpoint, method, body, responseType, false);
+        var referenceCode = getReferenceCodeForUser(user);
+        if (referenceCode == null) {
+            return null;
+        }
+
+        return internalRequest(referenceCode, endpoint, method, body, responseType, false);
     }
 
-    private <T> T internalRequest(User user, String endpoint, HttpMethod method, Object body, Class<T> responseType,
-            boolean isRetry) {
-        String token = getToken(user);
+    private <T> T internalRequest(String referenceCode, String endpoint, HttpMethod method, Object body, Class<T> responseType,
+                                  boolean isRetry) {
+        String token = getToken(referenceCode);
         if (token == null)
             return null;
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-
-        HttpEntity<Object> entity = new HttpEntity<>(body, headers);
-
         try {
-            ResponseEntity<T> response = restTemplate.exchange(baseUrl + endpoint, method, entity, responseType);
+            var response = execute(token, endpoint, method, body, responseType);
             return response.getBody();
         } catch (RestClientException e) {
             if (isRetry) {
                 return null;
             }
 
-            // if call is not a retry, remove existing token and retry;
-            userTokens.remove(user.getId());
-            return internalRequest(user, endpoint, method, body, responseType, true);
+            tokens.remove(referenceCode);
+            return internalRequest(referenceCode, endpoint, method, body, responseType, true);
         }
     }
 
-    public void createOrder(OrderRequestDto orderDto) {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            throw new RestClientException("Unauthorized access");
+    private String getReferenceCodeForUser(User user) {
+        if (user.hasPermission(PermissionEnum.ADMIN)) {
+            return "ADMIN";
         }
 
-        var user = (User) auth.getPrincipal();
-        if (user == null) {
-            throw new RestClientException("User not found");
+        var company = companyRepository.findByUserId(user.getId()).orElse(null);
+        if (company == null) {
+            return null;
         }
 
-        String token = getToken(user);
-        if (token == null) {
-            throw new RestClientException("Failed to get token");
-        }
+        return company.getReferenceCode();
+    }
 
+    private <T> ResponseEntity<T> execute(String token, String endpoint, HttpMethod method, Object body, Class<T> responseType) throws RestClientException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(token);
-
-        HttpEntity<OrderRequestDto> entity = new HttpEntity<>(orderDto, headers);
-
-        try {
-            ResponseEntity<Void> response = restTemplate.postForEntity(baseUrl + "/order/new", entity, Void.class);
-            if (!response.getStatusCode().is2xxSuccessful()) {
-                throw new RestClientException("Failed to create order");
-            }
-        } catch (RestClientException e) {
-            throw new RestClientException("Failed to create order: " + e.getMessage());
+        if (token != null) {
+            headers.setBearerAuth(token);
         }
+        HttpEntity<Object> entity = new HttpEntity<>(body, headers);
+        return restTemplate.exchange(baseUrl + endpoint, method, entity, responseType);
     }
 }

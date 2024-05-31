@@ -47,8 +47,8 @@ public class UserRequestController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USER_REQUESTS')")
-    public UserRequestDto getUserRequestById(@PathVariable String id) {
-        return userRequestValueService.getUserRequest(Integer.parseInt(id));
+    public UserRequestDto getUserRequestById(@PathVariable Long id) {
+        return userRequestValueService.getUserRequest(id);
     }
 
     @PostMapping("/{id}/approve")

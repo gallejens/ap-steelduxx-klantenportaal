@@ -195,7 +195,6 @@ export const UserRequestReviewHandle: FC<Props> = props => {
               searchable
               {...approveForm.getInputProps('referenceCode')}
             />
-
             <div className={styles.confirm_button}>
               <Button type='submit'>
                 {t('userRequestForm:confirmButton')}
@@ -203,7 +202,6 @@ export const UserRequestReviewHandle: FC<Props> = props => {
             </div>
           </form>
         ) : null}
-
         {isDenied ? (
           <form
             onSubmit={denyForm.onSubmit(values =>

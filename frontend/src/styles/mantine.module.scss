@@ -4,7 +4,11 @@
 .input_label {
   font-weight: 600 !important;
   font-size: 0.9rem !important;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.1rem;
+}
+
+.input_error {
+  position: absolute;
 }
 
 .paper {

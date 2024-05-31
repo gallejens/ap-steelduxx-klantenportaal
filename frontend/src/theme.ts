@@ -2,11 +2,11 @@ import {
   Autocomplete,
   Divider,
   FileInput,
-  Input,
   NumberInput,
   Paper,
   PasswordInput,
   Select,
+  TextInput,
   createTheme,
 } from '@mantine/core';
 import styles from './styles/mantine.module.scss';
@@ -49,10 +49,11 @@ export const theme = createTheme({
   black: PRIMARY_COLORS[9],
   white: PRIMARY_COLORS[0],
   components: {
-    InputWrapper: Input.Wrapper.extend({
+    TextInput: TextInput.extend({
       defaultProps: {
         classNames: {
           label: styles.input_label,
+          error: styles.input_error,
         },
       },
     }),
@@ -60,6 +61,7 @@ export const theme = createTheme({
       defaultProps: {
         classNames: {
           label: styles.input_label,
+          error: styles.input_error,
         },
         placeholder: PASSWORD_PLACEHOLDER,
       },
@@ -68,6 +70,7 @@ export const theme = createTheme({
       defaultProps: {
         classNames: {
           label: styles.input_label,
+          error: styles.input_error,
         },
       },
     }),
@@ -75,6 +78,7 @@ export const theme = createTheme({
       defaultProps: {
         classNames: {
           label: styles.input_label,
+          error: styles.input_error,
         },
       },
     }),
@@ -82,6 +86,7 @@ export const theme = createTheme({
       defaultProps: {
         classNames: {
           label: styles.input_label,
+          error: styles.input_error,
         },
       },
     }),
@@ -89,6 +94,7 @@ export const theme = createTheme({
       defaultProps: {
         classNames: {
           label: styles.input_label,
+          error: styles.input_error,
         },
       },
     }),

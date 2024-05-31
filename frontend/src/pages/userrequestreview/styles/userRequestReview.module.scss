@@ -25,93 +25,33 @@
       flex-direction: column;
       justify-content: space-between;
       width: 100%;
+      gap: var(--mantine-spacing-md);
 
-      & > .company_fields {
+      & > .double_row {
         display: flex;
-        flex-direction: row;
         justify-content: space-between;
+        gap: var(--mantine-spacing-md);
 
-        & > .companyName_field {
-          width: calc(0.95 / 2 * 100%);
-        }
-
-        & > .country_field {
-          width: calc(0.95 / 2 * 100%);
-        }
-      }
-
-      & > .company_fields {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-
-        & > .companyName_field {
-          width: calc(0.95 / 2 * 100%);
-        }
-
-        & > .country_field {
-          width: calc(0.95 / 2 * 100%);
-        }
-      }
-
-      & > .email_field {
-        margin-top: var(--mantine-spacing-md);
-      }
-
-      & > .number_fields,
-      .place_fields {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-top: var(--mantine-spacing-md);
-
-        & > div {
-          width: calc(0.95 / 2 * 100%);
-        }
-        & > div:last-child {
-          width: calc(0.95 / 2 * 100%);
+        & > * {
+          width: 100%;
         }
       }
 
       & > .street_fields {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-top: var(--mantine-spacing-md);
-        margin-bottom: var(--mantine-spacing-md);
+        gap: var(--mantine-spacing-md);
 
-        & > .street_field {
-          width: calc(0.95 / 2 * 100%);
+        & > :first-child {
+          width: calc(50% - var(--mantine-spacing-md) / 2);
         }
-        & > .streetNr_field {
-          width: calc(0.632 / 3 * 100%);
+
+        & > :not(:first-child) {
+          width: calc(
+            (50% - var(--mantine-spacing-md) / 2) / 2 - var(
+                --mantine-spacing-md
+              ) / 2
+          );
         }
-        & > .boxNr_field {
-          width: calc(0.6325 / 3 * 100%);
-        }
-      }
-
-      & > .extraInfo_field {
-        margin-bottom: var(--mantine-spacing-md);
-      }
-
-      & > .extraInfo_field {
-        margin-bottom: var(--mantine-spacing-md);
-      }
-    }
-
-    & > .name_fields {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      width: 100%;
-
-      & > div {
-        width: calc(0.95 / 2 * 100%);
-      }
-      & > div:last-child {
-        margin-top: 5px; // Align correctly because of no label
-        width: calc(0.95 / 2 * 100%);
       }
     }
   }

@@ -64,10 +64,6 @@ $navbar_header_height: 4.5rem;
       gap: var(--mantine-spacing-lg);
       justify-content: center;
       align-items: center;
-
-      & > *:hover {
-        cursor: pointer;
-      }
     }
   }
 

@@ -37,13 +37,13 @@ export const Modal: FC<
     >
       <MantineModal.Overlay />
       <MantineModal.Content>
-        <MantineModal.Header>
-          <MantineModal.Title>{props.title}</MantineModal.Title>
+        <MantineModal.Header mih={'0'}>
+          <MantineModal.Title fw={600}>{props.title}</MantineModal.Title>
           <MantineModal.CloseButton />
         </MantineModal.Header>
         <Divider
           orientation='horizontal'
-          mb='xs'
+          my='xs'
         />
         <MantineModal.Body>
           <div className={props.className}>{props.children}</div>

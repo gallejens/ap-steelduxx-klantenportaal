@@ -71,17 +71,17 @@ export const UserDisplay: FC = () => {
         </Popover.Target>
         <Popover.Dropdown>
           <div className={styles.user_display_popover}>
-            <div onClick={handleLogoutOptionClick}>
-              <IconLogout size={19} />
-              <Text>{t('appshell:userOptions:logout')}</Text>
+            <div onClick={handlePreferencesOptionClick}>
+              <IconSettings size={19} />
+              <Text>{t('appshell:userOptions:preferences')}</Text>
             </div>
             <div onClick={handleChangePasswordOptionClick}>
               <IconPassword size={19} />
               <Text>{t('appshell:userOptions:changePassword')}</Text>
             </div>
-            <div onClick={handlePreferencesOptionClick}>
-              <IconSettings size={19} />
-              <Text>{t('appshell:userOptions:preferences')}</Text>
+            <div onClick={handleLogoutOptionClick}>
+              <IconLogout size={19} />
+              <Text>{t('appshell:userOptions:logout')}</Text>
             </div>
           </div>
         </Popover.Dropdown>

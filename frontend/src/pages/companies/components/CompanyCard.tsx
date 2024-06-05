@@ -195,20 +195,19 @@ export const CompanyCard = memo<Props>(({ company, accounts, alwaysOpen }) => {
               icon={<IconTrash />}
             />
           )}
-          {!alwaysOpen &&
-            (opened ? (
-              <IconButton
-                tooltipKey='companiesPage:tooltips:collapse'
-                onClick={() => setOpened(false)}
-                icon={<IconChevronUp />}
-              />
-            ) : (
-              <IconButton
-                tooltipKey='companiesPage:tooltips:expand'
-                onClick={() => setOpened(true)}
-                icon={<IconChevronDown />}
-              />
-            ))}
+          {opened ? (
+            <IconButton
+              tooltipKey='companiesPage:tooltips:collapse'
+              onClick={() => setOpened(false)}
+              icon={<IconChevronUp />}
+            />
+          ) : (
+            <IconButton
+              tooltipKey='companiesPage:tooltips:expand'
+              onClick={() => setOpened(true)}
+              icon={<IconChevronDown />}
+            />
+          )}
         </div>
       </div>
       <Divider my='xs' />

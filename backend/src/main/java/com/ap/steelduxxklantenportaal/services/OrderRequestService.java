@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -196,7 +197,10 @@ public class OrderRequestService {
                 .map(OrderRequestProduct::toDto)
                 .toList();
 
-        var company = companyRepository.findById(orderRequest.getCompanyId()).orElseThrow();
+        var company = companyRepository.findById(orderRequest.getCompanyId()).orElse(null);
+        if (company == null) {
+            return null;
+        }
 
         return new OrderRequestDto(
                 orderRequest.getId(),
@@ -213,6 +217,7 @@ public class OrderRequestService {
         List<OrderRequest> orderRequests = orderRequestRepository.findAll();
         return orderRequests.stream()
                 .map(this::buildOrderRequestDto)
+                .filter(Objects::nonNull)
                 .toList();
     }
 
